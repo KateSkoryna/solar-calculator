@@ -3,21 +3,41 @@ import { Lexend, Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { locales } from "@/i18n";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import "../globals.css";
+import { isValidLocale } from "@/lib/utils";
 
 const lexend = Lexend({
   variable: "--font-lexend",
   subsets: ["latin"],
   weight: ["400", "700", "900"],
-  fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif"],
+  fallback: [
+    "system-ui",
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "Segoe UI",
+    "Roboto",
+    "Helvetica",
+    "Arial",
+    "sans-serif",
+  ],
 });
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif"],
+  fallback: [
+    "system-ui",
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "Segoe UI",
+    "Roboto",
+    "Helvetica",
+    "Arial",
+    "sans-serif",
+  ],
 });
 
 export const metadata: Metadata = {
@@ -35,7 +55,7 @@ export default async function LocaleLayout({
   const { locale } = await params;
 
   // Validate locale
-  if (!locales.includes(locale as any)) {
+  if (!isValidLocale(locale)) {
     notFound();
   }
 
@@ -44,7 +64,9 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className={`${lexend.variable} ${inter.variable}`}>
+      <body
+        className={`${lexend.variable} ${inter.variable} flex min-h-dvh flex-col`}
+      >
         <ThemeProvider
           attribute="data-theme"
           defaultTheme="light"
@@ -52,7 +74,9 @@ export default async function LocaleLayout({
           disableTransitionOnChange={false}
         >
           <NextIntlClientProvider messages={messages}>
-            {children}
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
