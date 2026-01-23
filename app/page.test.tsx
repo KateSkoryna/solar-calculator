@@ -1,5 +1,15 @@
 import { render, screen } from '@testing-library/react'
-import Home from './page'
+import Home from './[locale]/page'
+
+jest.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => {
+    if (key === 'title') return 'Solar Calculator for Commercial Vehicles'
+    if (key === 'description')
+      return 'Coming soon: Calculate your solar panel ROI'
+    if (key === 'deploymentSuccess') return 'Deployed successfully on Vercel!'
+    return key
+  },
+}))
 
 describe('Home Page', () => {
   it('renders the Solar Calculator title', () => {
