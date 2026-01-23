@@ -156,7 +156,33 @@ Built with Next.js 16, React 19, and TypeScript.
 - `npm run dev` - Start development server
 - `npm run build` - Create production build
 - `npm start` - Start production server
-- `npm run lint` - Run ESLint
+- `npm run lint` - Run ESLint to check for issues
+- `npm run lint:fix` - Run ESLint and auto-fix issues
+- `npm test` - Run Jest tests
+- `npm run test:watch` - Run tests in watch mode
+
+### Testing Strategy
+
+This project uses a **hybrid testing approach** to keep tests organized and maintainable:
+
+**Unit & Component Tests** - Colocated next to source code with `.test.ts` or `.test.tsx` extension. Jest automatically discovers these files throughout the project.
+
+```
+app/
+├── page.tsx
+├── page.test.tsx          # Unit test for page
+components/
+├── ui/
+│   ├── Button.tsx
+│   └── Button.test.tsx    # Component test
+lib/
+├── calculations.ts
+└── calculations.test.ts   # Logic test
+```
+
+**E2E Tests** - Separate `/e2e` folder for end-to-end tests (when adding Playwright/Cypress later).
+
+**Integration Tests** - Optional `/tests` folder for integration tests with shared setup.
 
 ### Prisma Commands
 
