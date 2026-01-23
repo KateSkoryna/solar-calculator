@@ -1,7 +1,7 @@
 {
   "home": {
     "title": "Solarrechner für Nutzfahrzeuge",
-    "description": "Demnächst: Berechnen Sie Ihren Solaranlagen-ROI und Umweltauswirkungen",
+    "description": "Deine kostenlose und unabhängige Ressource für Solarberatung rund um Fahrzeuge.",
     "deploymentSuccess": "Erfolgreich auf Vercel bereitgestellt!"
   },
   "theme": {
@@ -12,5 +12,17 @@
     "en": "Englisch",
     "es": "Spanisch",
     "de": "Deutsch"
+  },
+  "header": {
+    "title": "Solarrechner",
+    "home": "Startseite",
+    "calculator": "Rechner",
+    "about": "Über uns"
+  },
+  "footer": {
+    "title": "Solarrechner",
+    "description": "Berechnen Sie ROI, Energieeinsparungen und CO₂-Reduktion Ihrer Solarpanels für Nutzfahrzeugflotten.",
+    "followUs": "Folge uns",
+    "copyright": "© {currentYear} Solarrechner. Alle Rechte vorbehalten."
   }
 }
