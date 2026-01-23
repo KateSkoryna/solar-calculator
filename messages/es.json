@@ -1,0 +1,16 @@
+{
+  "home": {
+    "title": "Calculadora Solar para Vehículos Comerciales",
+    "description": "Próximamente: Calcule su ROI de paneles solares e impacto ambiental",
+    "deploymentSuccess": "¡Desplegado exitosamente en Vercel!"
+  },
+  "theme": {
+    "light": "Modo Claro",
+    "dark": "Modo Oscuro"
+  },
+  "language": {
+    "en": "Inglés",
+    "es": "Español",
+    "de": "Alemán"
+  }
+}

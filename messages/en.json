@@ -1,0 +1,16 @@
+{
+  "home": {
+    "title": "Solar Calculator for Commercial Vehicles",
+    "description": "Coming soon: Calculate your solar panel ROI and environmental impact",
+    "deploymentSuccess": "Deployed successfully on Vercel!"
+  },
+  "theme": {
+    "light": "Light Mode",
+    "dark": "Dark Mode"
+  },
+  "language": {
+    "en": "English",
+    "es": "Spanish",
+    "de": "German"
+  }
+}

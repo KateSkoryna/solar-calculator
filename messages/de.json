@@ -1,0 +1,16 @@
+{
+  "home": {
+    "title": "Solarrechner für Nutzfahrzeuge",
+    "description": "Demnächst: Berechnen Sie Ihren Solaranlagen-ROI und Umweltauswirkungen",
+    "deploymentSuccess": "Erfolgreich auf Vercel bereitgestellt!"
+  },
+  "theme": {
+    "light": "Heller Modus",
+    "dark": "Dunkler Modus"
+  },
+  "language": {
+    "en": "Englisch",
+    "es": "Spanisch",
+    "de": "Deutsch"
+  }
+}
