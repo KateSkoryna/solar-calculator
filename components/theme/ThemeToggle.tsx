@@ -22,21 +22,26 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      className="px-6 py-3 rounded-2xl font-bold font-[family:var(--font-inter)] transition-colors hover:opacity-80 flex items-center gap-2"
-      style={{
-        background: "var(--card)",
-        color: "var(--text-heading)",
-        border: "2px solid var(--border)",
-      }}
+      className="
+    p-2
+    rounded-lg
+    font-bold
+    font-[family:var(--font-inter)]
+    transition-colors
+    hover:opacity-80
+    flex items-center gap-2
+    bg-[color:var(--card)]
+    text-[color:var(--text-heading)]
+    border-2 border-[color:var(--border)]
+  "
       aria-label="Toggle theme"
     >
       <Image
         src={theme === "light" ? "/moon.svg" : "/sun.svg"}
         alt={theme === "light" ? "Moon icon" : "Sun icon"}
-        width={20}
-        height={20}
+        width={18}
+        height={18}
       />
-      <span>{theme === "light" ? t("dark") : t("light")}</span>
     </button>
   );
 }

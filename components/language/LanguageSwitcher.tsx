@@ -28,41 +28,40 @@ export default function LanguageSwitcher() {
   };
 
   return (
-    <details
-      ref={detailsRef}
-      className="relative"
-      style={{
-        cursor: "pointer",
-      }}
-    >
+    <details ref={detailsRef} className="relative cursor-pointer">
       <summary
-        className="px-4 py-2 rounded-xl font-bold font-[family:var(--font-inter)] transition-colors text-sm list-none flex items-center gap-2"
-        style={{
-          background: "var(--card)",
-          color: "var(--text-heading)",
-          border: "2px solid var(--border)",
-        }}
+        className="
+          px-4 py-2 rounded-lg font-bold font-[family:var(--font-inter)] 
+          text-sm flex items-center gap-2 transition-colors
+          bg-[color:var(--card)] text-[color:var(--text-heading)]
+          list-none
+           border-2 border-[color:var(--border)]
+        "
       >
         <span>{currentLocale.toUpperCase()}</span>
         <span className="text-xs">▼</span>
       </summary>
+
       <ul
-        className="absolute top-full mt-2 rounded-xl overflow-hidden min-w-full"
-        style={{
-          background: "var(--card)",
-          border: "2px solid var(--border)",
-          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-        }}
+        className="
+          absolute top-[calc(100%+2px)] rounded-lg overflow-hidden min-w-full
+          bg-[color:var(--card)] border-2 border-[color:var(--border)]
+          shadow-[0_4px_6px_rgba(0,0,0,0.1)]
+        "
       >
         {locales.map((loc) => (
           <li key={loc}>
             <button
               onClick={() => handleLocaleChange(loc)}
-              className="w-full px-4 py-2 font-bold font-[family:var(--font-inter)] transition-colors text-sm text-left hover:opacity-80"
-              style={{
-                background: currentLocale === loc ? "var(--primary)" : "var(--card)",
-                color: currentLocale === loc ? "var(--text-on-primary)" : "var(--text-body)",
-              }}
+              className={`
+                w-full px-4 py-2 font-bold font-[family:var(--font-inter)] 
+                text-sm text-left transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-[color:var(--primary)]
+                ${
+                  currentLocale === loc
+                    ? "bg-[color:var(--primary)] focus:outline-none focus:ring-0 text-[color:var(--text-on-primary)]"
+                    : "bg-[color:var(--card)] focus:outline-none focus:ring-0 text-[color:var(--text-body)]"
+                }
+              `}
               aria-label={`Switch to ${t(loc)}`}
             >
               {t(loc)}
