@@ -10,7 +10,7 @@ export default function ClientMenu() {
 
   return (
     <div className="flex items-center gap-4">
-      <NavLink href="/login">
+      <NavLink href="/login" className="!text-white hover:!text-[var(--accent)] focus:!text-[var(--accent)] active:!text-[var(--accent)]">
         {t("login")}
       </NavLink>
       <LanguageSwitcher />
