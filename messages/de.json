@@ -13,6 +13,11 @@
     "es": "Spanisch",
     "de": "Deutsch"
   },
+  "clientmenu": {
+    "login": "Anmeldung",
+    "signin": "Anmeldung",
+    "logout": "Abmelden"
+  },
   "header": {
     "title": "Solarrechner",
     "home": "Startseite",

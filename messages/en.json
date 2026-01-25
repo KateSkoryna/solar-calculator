@@ -13,6 +13,11 @@
     "es": "Spanish",
     "de": "German"
   },
+  "clientmenu": {
+    "login": "Login",
+    "signin": "Sign In",
+    "logout": "Logout"
+  },
   "header": {
     "title": "Solar Calculator",
     "home": "Home",

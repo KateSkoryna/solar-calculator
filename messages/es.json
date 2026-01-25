@@ -13,6 +13,11 @@
     "es": "Español",
     "de": "Alemán"
   },
+  "clientmenu": {
+    "login": "Iniciar Sesión",
+    "signin": "Registrarse",
+    "logout": "Cerrar Sesión"
+  },
   "header": {
     "title": "Calculadora Solar",
     "home": "Inicio",
