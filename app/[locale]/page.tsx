@@ -7,9 +7,9 @@ export default function Home() {
   return (
     <Container>
       <div className="mx-auto max-w-4xl text-center py-4">
-        <h1 className="text-text-heading">{t("title")}</h1>
+        <h1 className="text-[var(--text-heading)]">{t("title")}</h1>
 
-        <p className="mb-8 text-xl font-ui text-text-body">
+        <p className="mb-8 text-xl font-[family:var(--font-inter)] text-[var(--text-body)]">
           {t("description")}
         </p>
       </div>
