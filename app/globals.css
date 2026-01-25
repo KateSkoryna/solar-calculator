@@ -9,6 +9,7 @@
 
   /* Light Mode Colors */
   --primary: #b6f065;
+  --accent: #5414b5;
   --background: #e8e3d9;
   --card: #e8e3d9;
   --input: #f1f3f5;
@@ -23,6 +24,7 @@
 
 :root[data-theme="dark"] {
   --primary: #b6f065;
+  --accent: #abeb4a;
   --background: #232e26;
   --card: #232e26;
   --input: #333333;
@@ -31,21 +33,6 @@
   --text-on-primary: #1a1a1a;
   --info-box: #2a2a2a;
   --border: #d6e1d4;
-}
-
-@theme inline {
-  --color-primary: var(--primary);
-  --color-background: var(--background);
-  --color-card: var(--card);
-  --color-input: var(--input);
-  --color-main: var(--main);
-  --color-text-heading: var(--text-heading);
-  --color-text-body: var(--text-body);
-  --color-text-on-primary: var(--text-on-primary);
-  --color-info-box: var(--info-box);
-  --color-border: var(--border);
-  --font-sans: var(--font-lexend);
-  --font-ui: var(--font-inter);
 }
 
 body {
@@ -110,7 +97,7 @@ button:disabled,
 }
 
 .btn-secondary:hover:not(:disabled) {
-  border-color: var(--primary);
+  border-color: var(--accent);
 }
 
 /* Inputs */
@@ -132,8 +119,7 @@ input:focus,
 textarea:focus,
 select:focus {
   outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(182, 240, 101, 0.1);
+  border-color: var(--accent);
 }
 
 input::placeholder,
@@ -144,19 +130,8 @@ textarea::placeholder {
 
 /* Links */
 a {
-  color: var(--text-heading);
   text-decoration: none;
   transition: color 0.2s ease;
-}
-
-a:hover {
-  color: var(--primary);
-}
-
-a:focus {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
-  border-radius: 0.25rem;
 }
 
 /* Lists */
