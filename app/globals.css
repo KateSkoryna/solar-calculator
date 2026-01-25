@@ -35,6 +35,14 @@
   --border: #d6e1d4;
 }
 
+.invert-bg-color {
+  background-color: #232e26;
+}
+
+:root[data-theme="dark"] .invert-bg-color {
+  background-color: #e8e3d9;
+}
+
 body {
   background: var(--background);
   color: var(--text-body);
