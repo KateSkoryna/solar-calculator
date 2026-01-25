@@ -1,8 +1,8 @@
 import Container from "@/components/layout/Container";
-import ImageBackground from "@/components/home/ImageBackground";
 import HeroSection from "@/components/home/HeroSection";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import Background from "@/components/home/Background";
 
 export default function Home() {
   const t = useTranslations("home");
@@ -27,12 +27,10 @@ export default function Home() {
 
   return (
     <>
-      <ImageBackground image="/forestlight.webp" />
-
-      {/* Hero Section with forestlight background */}
+      <Background />
       <HeroSection>
         <Container>
-          <div className="mx-auto max-w-4xl text-center p-12">
+          <div className="mx-auto text-center py-12">
             <h1 className="!text-[var(--accent)] text-center mb-6">
               {t("title")}
             </h1>
@@ -69,7 +67,6 @@ export default function Home() {
         </Container>
       </HeroSection>
 
-      {/* Additional content sections */}
       <Container>
         <div className="mx-auto max-w-4xl py-16">
           <h2 className="text-3xl font-bold text-[var(--text-heading)] mb-6">
