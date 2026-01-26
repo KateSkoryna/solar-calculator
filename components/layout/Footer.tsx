@@ -1,6 +1,5 @@
 import { useTranslations } from "next-intl";
 import { FaLinkedinIn, FaGithub } from "react-icons/fa";
-import { MdAlternateEmail } from "react-icons/md";
 import { BiLogoGmail } from "react-icons/bi";
 import Container from "./Container";
 
@@ -27,7 +26,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="mt-auto border-t border-border">
+    <footer className="border-t border-border">
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-4">
           <div className="lg:max-w-xs">
