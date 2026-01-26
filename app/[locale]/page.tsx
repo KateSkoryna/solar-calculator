@@ -23,6 +23,11 @@ export default function Home() {
       title: t("feature3Title"),
       description: t("feature3Description"),
     },
+    {
+      id: "feature4",
+      title: t("feature4Title"),
+      description: t("feature4Description"),
+    },
   ];
 
   return (
@@ -30,32 +35,32 @@ export default function Home() {
       <Background />
       <HeroSection>
         <Container>
-          <div className="mx-auto text-center py-12">
-            <h1 className="!text-[var(--accent)] text-center mb-6">
+          <div className="mx-auto text-center py-4 sm:py-6 md:py-8 lg:py-12 xl:py-16">
+            <h1 className="!text-[var(--accent)] text-center mb-6 text-2xl md:text-[2rem] lg:text-[2.5rem] leading-tight">
               {t("title")}
             </h1>
 
-            <p className="mb-12 text-xl font-[family:var(--font-inter)] text-[var(--text-body)]">
+            <p className="mb-8 text-xl font-[family:var(--font-inter)] text-white md:text-[var(--description-text)]">
               {t("description")}
             </p>
 
-            <div className="flex flex-col items-start gap-6">
+            <div className="grid grid-cols-2 gap-3 md:gap-4 lg:flex lg:flex-col lg:items-start">
               {features.map((feature) => (
                 <div
                   key={feature.id}
-                  className="w-1/2 bg-[var(--card)] p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow text-left"
+                  className="bg-[var(--card)] p-3 md:p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow text-left lg:w-1/2 flex flex-col"
                 >
-                  <h3 className="text-2xl font-semibold text-[var(--text-heading)] mb-3">
+                  <h3 className="text-base md:text-base lg:text-2xl font-semibold text-[var(--text-heading)] mb-2 md:mb-3 h-12 md:h-12 lg:h-auto overflow-hidden text-center lg:text-left">
                     {feature.title}
                   </h3>
-                  <p className="text-[var(--text-body)]">
+                  <p className="text-xs md:text-base text-[var(--text-body)] flex-1">
                     {feature.description}
                   </p>
                 </div>
               ))}
             </div>
 
-            <div className="mt-16 text-left">
+            <div className="mt-8 text-center lg:text-left">
               <Link
                 href="/calculator"
                 className="inline-block bg-[var(--accent)] text-white px-16 py-6 rounded-full font-large text-lg hover:opacity-90 transition-opacity"
@@ -68,7 +73,7 @@ export default function Home() {
       </HeroSection>
 
       <Container>
-        <div className="mx-auto max-w-4xl py-16">
+        <div className="mx-auto max-w-4xl py-8 md:py-12 lg:py-16">
           <h2 className="text-3xl font-bold text-[var(--text-heading)] mb-6">
             Why Choose Solar Panels?
           </h2>
@@ -87,7 +92,7 @@ export default function Home() {
           </ul>
         </div>
 
-        <div className="mx-auto max-w-4xl py-16">
+        <div className="mx-auto max-w-4xl py-8 md:py-12 lg:py-16">
           <h2 className="text-3xl font-bold text-[var(--text-heading)] mb-6">
             Our Calculation Process
           </h2>
@@ -111,7 +116,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="mx-auto max-w-4xl py-16 mb-16">
+        <div className="mx-auto max-w-4xl py-8 md:py-12 lg:py-16">
           <h2 className="text-3xl font-bold text-[var(--text-heading)] mb-6">
             Industries We Serve
           </h2>
