@@ -2,7 +2,44 @@
   "home": {
     "title": "Calculadora Solar para Vehículos Comerciales",
     "description": "Tu recurso gratuito e independiente para asesoramiento sobre energía solar en vehículos comerciales",
-    "deploymentSuccess": "¡Desplegado exitosamente en Vercel!"
+    "deploymentSuccess": "¡Desplegado exitosamente en Vercel!",
+    "feature1Title": "Cálculos Precisos",
+    "feature1Description": "Obtén recomendaciones precisas de paneles solares basadas en las especificaciones de tu vehículo y necesidades energéticas.",
+    "feature2Title": "Ahorro de Costos",
+    "feature2Description": "Descubre cuánto puedes ahorrar en combustible y costos energéticos con paneles solares para tu flota.",
+    "feature3Title": "Impacto Ambiental",
+    "feature3Description": "Calcula tu reducción de CO₂ y contribuye a un futuro más sostenible.",
+    "feature4Title": "Panel de Control y Análisis",
+    "feature4Description": "Accede a informes detallados, rastrea los ahorros a lo largo del tiempo y recibe sugerencias impulsadas por IA para optimizar tu inversión solar con información en tiempo real.",
+    "getStarted": "Comenzar"
+  },
+  "calculator": {
+    "title": "Calculadora de Paneles Solares",
+    "description": "Calcula la configuración óptima de paneles solares para tu vehículo comercial.",
+    "vehicleType": "Tipo de Vehículo",
+    "selectVehicle": "Selecciona tipo de vehículo",
+    "van": "Furgoneta",
+    "truck": "Camión",
+    "bus": "Autobús",
+    "dailyDistance": "Distancia Diaria (km)",
+    "distancePlaceholder": "Ingresa la distancia diaria",
+    "roofArea": "Área de Techo Disponible (m²)",
+    "areaPlaceholder": "Ingresa el área del techo",
+    "calculate": "Calcular",
+    "results": "Resultados",
+    "resultsPlaceholder": "Ingresa los detalles de tu vehículo arriba para ver los resultados."
+  },
+  "login": {
+    "title": "Inicia Sesión en tu Cuenta",
+    "email": "Correo Electrónico",
+    "emailPlaceholder": "Ingresa tu correo electrónico",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Ingresa tu contraseña",
+    "rememberMe": "Recordarme",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "loginButton": "Iniciar Sesión",
+    "noAccount": "¿No tienes una cuenta?",
+    "signUp": "Regístrate"
   },
   "theme": {
     "light": "Modo Claro",

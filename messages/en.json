@@ -2,7 +2,44 @@
   "home": {
     "title": "Solar Calculator for Commercial Vehicles",
     "description": "Your free, independant resource for vehicle solar advice",
-    "deploymentSuccess": "Deployed successfully on Vercel!"
+    "deploymentSuccess": "Deployed successfully on Vercel!",
+    "feature1Title": "Accurate Calculations",
+    "feature1Description": "Get precise solar panel recommendations based on your vehicle specifications and energy needs.",
+    "feature2Title": "Cost Savings",
+    "feature2Description": "Discover how much you can save on fuel and energy costs with solar panels for your fleet.",
+    "feature3Title": "Environmental Impact",
+    "feature3Description": "Calculate your CO₂ reduction and contribute to a more sustainable future.",
+    "feature4Title": "Dashboard & Analytics",
+    "feature4Description": "Access detailed reports, track savings over time, and receive AI-powered suggestions to optimize your solar investment with real-time insights.",
+    "getStarted": "Get Started"
+  },
+  "calculator": {
+    "title": "Solar Panel Calculator",
+    "description": "Calculate the optimal solar panel configuration for your commercial vehicle.",
+    "vehicleType": "Vehicle Type",
+    "selectVehicle": "Select vehicle type",
+    "van": "Van",
+    "truck": "Truck",
+    "bus": "Bus",
+    "dailyDistance": "Daily Distance (km)",
+    "distancePlaceholder": "Enter daily distance",
+    "roofArea": "Available Roof Area (m²)",
+    "areaPlaceholder": "Enter roof area",
+    "calculate": "Calculate",
+    "results": "Results",
+    "resultsPlaceholder": "Enter your vehicle details above to see the results."
+  },
+  "login": {
+    "title": "Login to Your Account",
+    "email": "Email Address",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "loginButton": "Login",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up"
   },
   "theme": {
     "light": "Light Mode",

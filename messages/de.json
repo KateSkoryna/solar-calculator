@@ -2,7 +2,44 @@
   "home": {
     "title": "Solarrechner für Nutzfahrzeuge",
     "description": "Deine kostenlose und unabhängige Ressource für Solarberatung rund um Fahrzeuge.",
-    "deploymentSuccess": "Erfolgreich auf Vercel bereitgestellt!"
+    "deploymentSuccess": "Erfolgreich auf Vercel bereitgestellt!",
+    "feature1Title": "Präzise Berechnungen",
+    "feature1Description": "Erhalte genaue Solarpanel-Empfehlungen basierend auf Deinen Fahrzeugspezifikationen und Energiebedarf.",
+    "feature2Title": "Kosteneinsparungen",
+    "feature2Description": "Entdecke, wie viel Du an Kraftstoff- und Energiekosten mit Solarpanels für Deine Flotte sparen kannst.",
+    "feature3Title": "Umweltauswirkungen",
+    "feature3Description": "Berechne Deine CO₂-Reduktion und trage zu einer nachhaltigeren Zukunft bei.",
+    "feature4Title": "Dashboard & Analytics",
+    "feature4Description": "Greife auf detaillierte Berichte zu, verfolge Deine Einsparungen im Laufe der Zeit und erhalte KI-gestützte Vorschläge zur Optimierung Deiner Solar-Investition mit Echtzeit-Einblicken.",
+    "getStarted": "Loslegen"
+  },
+  "calculator": {
+    "title": "Solarpanel-Rechner",
+    "description": "Berechne die optimale Solarpanel-Konfiguration für Dein Nutzfahrzeug.",
+    "vehicleType": "Fahrzeugtyp",
+    "selectVehicle": "Fahrzeugtyp auswählen",
+    "van": "Transporter",
+    "truck": "LKW",
+    "bus": "Bus",
+    "dailyDistance": "Tägliche Strecke (km)",
+    "distancePlaceholder": "Tägliche Strecke eingeben",
+    "roofArea": "Verfügbare Dachfläche (m²)",
+    "areaPlaceholder": "Dachfläche eingeben",
+    "calculate": "Berechnen",
+    "results": "Ergebnisse",
+    "resultsPlaceholder": "Gib oben Deine Fahrzeugdaten ein, um die Ergebnisse zu sehen."
+  },
+  "login": {
+    "title": "Bei Deinem Konto anmelden",
+    "email": "E-Mail-Adresse",
+    "emailPlaceholder": "E-Mail eingeben",
+    "password": "Passwort",
+    "passwordPlaceholder": "Passwort eingeben",
+    "rememberMe": "Angemeldet bleiben",
+    "forgotPassword": "Passwort vergessen?",
+    "loginButton": "Anmelden",
+    "noAccount": "Noch kein Konto?",
+    "signUp": "Registrieren"
   },
   "theme": {
     "light": "Heller Modus",
