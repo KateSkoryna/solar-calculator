@@ -21,6 +21,17 @@
 - Break complex logic into well-named functions
 - Keep functions focused on a single responsibility
 
+### Styling
+- Avoid inline styles using the `style` property
+- Use Tailwind CSS utility classes for styling elements
+- Only use inline styles when absolutely necessary (e.g., dynamic values that can't be expressed with Tailwind classes)
+- Leverage Tailwind's responsive modifiers, state variants, and other utilities
+
+### CSS Media Queries
+- Always place media queries inside selectors, not outside
+- Never wrap selectors with media queries
+- Use nested media query syntax for better organization
+
 ## Tool Usage
 
 ### No Descriptions
