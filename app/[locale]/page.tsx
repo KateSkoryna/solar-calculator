@@ -3,6 +3,8 @@ import HeroSection from "@/components/home/HeroSection";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import Background from "@/components/home/Background";
+import PageTitle from "@/components/common/PageTitle";
+import Section from "@/components/layout/Section";
 
 export default function Home() {
   const t = useTranslations("home");
@@ -35,10 +37,8 @@ export default function Home() {
       <Background />
       <HeroSection>
         <Container>
-          <div className="mx-auto text-center py-4 sm:py-6 md:py-8 lg:py-12 xl:py-16">
-            <h1 className="!text-[var(--accent)] text-center mb-6 text-2xl md:text-[2rem] lg:text-[2.5rem] leading-tight">
-              {t("title")}
-            </h1>
+          <Section>
+            <PageTitle>{t("title")}</PageTitle>
 
             <p className="mb-8 text-xl font-[family:var(--font-inter)] text-white md:text-[var(--description-text)]">
               {t("description")}
@@ -68,7 +68,7 @@ export default function Home() {
                 {t("getStarted")}
               </Link>
             </div>
-          </div>
+          </Section>
         </Container>
       </HeroSection>
 
