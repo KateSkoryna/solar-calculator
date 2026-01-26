@@ -34,7 +34,7 @@ export default function LanguageSwitcher() {
         <span className="text-xs">▼</span>
       </summary>
 
-      <ul className="absolute top-[calc(100%+2px)] rounded-lg overflow-hidden min-w-full bg-[var(--card)] border-2 border-[var(--border)] shadow-[0_4px_6px_rgba(0,0,0,0.1)]">
+      <ul className="absolute top-[calc(100%+2px)] z-50 rounded-lg overflow-hidden min-w-full bg-[var(--card)] border-2 border-[var(--border)] shadow-[0_4px_6px_rgba(0,0,0,0.1)]">
         {locales.map((loc) => (
           <li key={loc}>
             <button

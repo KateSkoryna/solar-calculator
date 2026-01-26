@@ -7,7 +7,7 @@ export default function Header() {
   const t = useTranslations("header");
 
   return (
-    <header className="border-b-1 border-[var(--border)]">
+    <header className="relative z-50 border-b-1 border-[var(--border)]">
       <Container>
         <nav className="flex items-center justify-between py-4">
           <div className="flex items-center gap-8">

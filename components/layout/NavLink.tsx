@@ -7,12 +7,14 @@ interface NavLinkProps {
   href: string;
   children: React.ReactNode;
   className?: string;
+  noHover?: boolean;
 }
 
 export default function NavLink({
   href,
   children,
   className = "",
+  noHover = false,
 }: NavLinkProps) {
   const pathname = usePathname();
 
@@ -23,10 +25,12 @@ export default function NavLink({
     return pathname === href || pathname.endsWith(href);
   };
 
+  const hoverClasses = noHover ? "" : "hover:text-[var(--accent)] focus:text-[var(--accent)]";
+
   return (
     <Link
       href={href}
-      className={`hover:text-[var(--accent)] focus:text-[var(--accent)] focus:outline-none transition-colors ${
+      className={`${hoverClasses} focus:outline-none transition-colors ${
         isActive() ? "text-[var(--accent)]" : "text-[var(--text-body)]"
       } ${className}`}
     >

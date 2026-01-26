@@ -8,9 +8,9 @@ export default function HeroSection({ children }: HeroSectionProps) {
   return (
     <section className="relative">
       <div
-        className=" absolute top-1/2 -translate-y-1/2
+        className="absolute top-1/2 -translate-y-1/2
       left-1/2 -translate-x-1/2
-      w-[90%] h-[95%]
+      w-full h-full
       -z-10 overflow-hidden
 
       lg:left-auto lg:-translate-x-0 lg:right-8

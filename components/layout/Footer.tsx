@@ -38,7 +38,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-lg font-bold mb-4 !text-white text-right">
+            <h4 className="text-lg font-bold mb-4 text-right invert-link">
               {t("followUs")}
             </h4>
             <div className="flex space-x-4 justify-end">
@@ -47,7 +47,7 @@ export default function Footer() {
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="flex items-center justify-center w-10 h-10 rounded-lg border-2 border-white text-white hover:text-[var(--accent)] hover:border-[var(--accent)] focus:border-[var(--accent)] focus:outline-none transition-colors"
+                  className="invert-link flex items-center justify-center w-10 h-10 rounded-lg border-2 transition-colors "
                 >
                   <Icon size={20} />
                 </a>
