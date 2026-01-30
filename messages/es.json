@@ -36,6 +36,7 @@
   },
   "calculator": {
     "title": "Calculadora de Paneles Solares",
+    "subtitle": "Calcula el ahorro energético, ROI y reducción de CO₂ para tu flota de vehículos comerciales",
     "description": "Calcula la configuración óptima de paneles solares para tu vehículo comercial.",
     "vehicleType": "Tipo de Vehículo",
     "vehicleDetails": "Detalles del Vehículo",

@@ -36,6 +36,7 @@
   },
   "calculator": {
     "title": "Solar Panel Calculator",
+    "subtitle": "Calculate energy savings, ROI, and CO₂ reduction for your commercial vehicle fleet",
     "description": "Calculate the optimal solar panel configuration for your commercial vehicle.",
     "vehicleType": "Vehicle Type",
     "vehicleDetails": "Vehicle Details",

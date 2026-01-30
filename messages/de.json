@@ -36,6 +36,7 @@
   },
   "calculator": {
     "title": "Solarpanel-Rechner",
+    "subtitle": "Berechne Energieeinsparungen, ROI und CO₂-Reduktion für Deine Nutzfahrzeugflotte",
     "description": "Berechne die optimale Solarpanel-Konfiguration für Dein Nutzfahrzeug.",
     "vehicleType": "Fahrzeugtyp",
     "vehicleDetails": "Fahrzeugdetails",
