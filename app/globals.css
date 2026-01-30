@@ -12,10 +12,10 @@
   --accent: #5414b5;
   --invert-accent: #b6f065;
   --background: #e8e3d9;
-  --card: #e8e3d9;
+  --card: #ffffff;
   --input: #f1f3f5;
   --main: #f9f9f7;
-  --form-bg: #f8f7f2;
+  --form-bg: #ffffff;
   --text-heading: #1a1a1a;
   --text-body: #1a1a1a;
   --text-on-primary: #1a1a1a;
@@ -26,6 +26,7 @@
   --container-border: #d6e1d4;
   --invert-bg-color: #232e26;
   --description-text: #3c5246;
+  --card-shadow: 0px 2px 8px 0px rgba(99, 99, 99, 0.2);
 }
 
 :root[data-theme="dark"] {
@@ -45,6 +46,7 @@
   --border: #d6e1d4;
   --invert-bg-color: #e8e3d9;
   --description-text: #ffffff;
+  --card-shadow: 0px 2px 8px 0px rgba(99, 99, 99, 0.2);
 }
 
 body {
