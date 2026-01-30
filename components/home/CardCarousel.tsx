@@ -113,13 +113,14 @@ export default function CardCarousel() {
                 key={index}
                 className={`
                   absolute transition-all duration-500 ease-in-out
-                  bg-[var(--card)] rounded-lg shadow-[0px_2px_8px_0px_rgba(99,99,99,0.2)] p-4
+                  bg-[var(--card)] rounded-lg p-4
                   ${isCenter ? "scale-150 z-20 opacity-100" : "scale-100 z-10 opacity-60"}
                   ${isLeft ? "-translate-x-[450px]" : ""}
                   ${isRight ? "translate-x-[450px]" : ""}
                   ${position === "hidden" ? "opacity-0 pointer-events-none" : ""}
                   w-72 h-80
                 `}
+                style={{ boxShadow: "var(--card-shadow)" }}
               >
                 <div className="flex flex-col items-center text-center">
                   {card.icon}

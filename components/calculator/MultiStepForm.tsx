@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import VehicleTypeStep from "./steps/VehicleTypeStep";
-import VehicleDetailsStep from "./steps/VehicleDetailsStep";
 import SetupDetailsStep from "./steps/SetupDetailsStep";
 import UserPromptStep from "./steps/UserPromptStep";
 
@@ -43,7 +42,6 @@ export default function MultiStepForm() {
 
   const steps = [
     { name: t("vehicleType"), component: VehicleTypeStep },
-    { name: t("vehicleDetails"), component: VehicleDetailsStep },
     { name: t("setupDetails"), component: SetupDetailsStep },
     { name: t("userPrompt"), component: UserPromptStep },
   ];
@@ -72,14 +70,14 @@ export default function MultiStepForm() {
   const CurrentStepComponent = steps[currentStep].component;
 
   return (
-    <div className="w-full bg-[var(--form-bg)] p-6 rounded-lg">
+    <div className="w-full bg-[var(--form-bg)] rounded-lg">
       {/* Desktop Tabs - visible on lg screens */}
-      <div className="hidden lg:flex border-b border-[var(--border)] mb-8">
+      <div className="hidden lg:flex border-b border-[var(--border)] mb-4">
         {steps.map((step, index) => (
           <button
             key={index}
             onClick={() => setCurrentStep(index)}
-            className={`flex-1 px-6 py-4 text-sm font-medium transition-colors
+            className={`flex-1 px-6 pb-4 text-sm font-medium transition-colors
               ${
                 currentStep === index
                   ? "text-[var(--accent)] border-b-2 border-[var(--accent)]"
@@ -92,7 +90,7 @@ export default function MultiStepForm() {
       </div>
 
       {/* Mobile: Current Step Name */}
-      <div className="lg:hidden mb-6">
+      <div className="lg:hidden mb-3">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold text-[var(--text-heading)]">
             {steps[currentStep].name}
@@ -120,7 +118,7 @@ export default function MultiStepForm() {
       </div>
 
       {/* Navigation Buttons */}
-      <div className="mt-8 flex justify-between gap-4">
+      <div className="mt-4 flex justify-between gap-4">
         <button
           onClick={handlePrevious}
           disabled={currentStep === 0}
