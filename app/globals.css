@@ -20,6 +20,7 @@
   --text-body: #1a1a1a;
   --text-on-primary: #1a1a1a;
   --invert-text-on-primary: #e8e3d9;
+  --text-white: #ffffff;
   --info-box: #ebe9e0;
   --border: #3c5246;
   --container-border: #d6e1d4;
@@ -39,6 +40,7 @@
   --text-body: #ebf1e9;
   --text-on-primary: #1a1a1a;
   --invert-text-on-primary: #e8e3d9;
+  --text-white: #ffffff;
   --info-box: #2a2a2a;
   --border: #d6e1d4;
   --invert-bg-color: #e8e3d9;
