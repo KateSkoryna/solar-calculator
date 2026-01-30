@@ -11,7 +11,28 @@
     "feature3Description": "Berechne Deine CO₂-Reduktion und trage zu einer nachhaltigeren Zukunft bei.",
     "feature4Title": "Dashboard & Analytics",
     "feature4Description": "Greife auf detaillierte Berichte zu, verfolge Deine Einsparungen im Laufe der Zeit und erhalte KI-gestützte Vorschläge zur Optimierung Deiner Solar-Investition mit Echtzeit-Einblicken.",
-    "getStarted": "Loslegen"
+    "getStarted": "Loslegen",
+    "carousel": {
+      "card1Title": "Warum Solar?",
+      "card1Desc": "Nachhaltige Lösung für Flottenbetreiber",
+      "card1Item1": "Kraftstoffkosten senken",
+      "card1Item2": "CO₂-Fußabdruck reduzieren",
+      "card1Item3": "Fahrzeugreichweite erhöhen",
+      "card1Item4": "Systeme ohne Leerlauf betreiben",
+      "card2Title": "Unser Prozess",
+      "card2Desc": "Fortschrittliche Algorithmen für optimale Konfiguration",
+      "card2Item1": "Fahrzeugdaten analysieren",
+      "card2Item2": "Energieverbrauch berechnen",
+      "card2Item3": "Panel-Platzierung bestimmen",
+      "card2Item4": "ROI-Zeitplan schätzen",
+      "card2Footer": "Sofortergebnisse mit detaillierten Aufschlüsselungen",
+      "card3Title": "Branchen",
+      "card3Desc": "Lösungen für Nutzfahrzeuge",
+      "card3Item1": "Logistik & Lieferung",
+      "card3Item2": "Öffentlicher Nahverkehr",
+      "card3Item3": "Kühltransport",
+      "card3Item4": "Mobile Werkstätten"
+    }
   },
   "calculator": {
     "title": "Solarpanel-Rechner",

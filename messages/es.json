@@ -11,7 +11,28 @@
     "feature3Description": "Calcula tu reducción de CO₂ y contribuye a un futuro más sostenible.",
     "feature4Title": "Panel de Control y Análisis",
     "feature4Description": "Accede a informes detallados, rastrea los ahorros a lo largo del tiempo y recibe sugerencias impulsadas por IA para optimizar tu inversión solar con información en tiempo real.",
-    "getStarted": "Comenzar"
+    "getStarted": "Comenzar",
+    "carousel": {
+      "card1Title": "¿Por qué Solar?",
+      "card1Desc": "Solución sostenible para operadores de flotas",
+      "card1Item1": "Reducir costos de combustible",
+      "card1Item2": "Menor huella de carbono",
+      "card1Item3": "Aumentar autonomía del vehículo",
+      "card1Item4": "Alimentar sistemas sin ralentí",
+      "card2Title": "Nuestro Proceso",
+      "card2Desc": "Algoritmos avanzados para configuración óptima",
+      "card2Item1": "Analizar especificaciones del vehículo",
+      "card2Item2": "Calcular consumo energético",
+      "card2Item3": "Determinar ubicación de paneles",
+      "card2Item4": "Estimar cronograma de ROI",
+      "card2Footer": "Resultados instantáneos con detalles completos",
+      "card3Title": "Industrias",
+      "card3Desc": "Soluciones para vehículos comerciales",
+      "card3Item1": "Logística y entrega",
+      "card3Item2": "Transporte público",
+      "card3Item3": "Transporte refrigerado",
+      "card3Item4": "Talleres móviles"
+    }
   },
   "calculator": {
     "title": "Calculadora de Paneles Solares",
