@@ -1,5 +1,4 @@
 import Container from "@/components/layout/Container";
-import ImageBackground from "@/components/home/Background";
 import { useTranslations } from "next-intl";
 import PageTitle from "@/components/common/PageTitle";
 import Section from "@/components/layout/Section";
@@ -10,7 +9,6 @@ export default function Calculator() {
 
   return (
     <>
-      <ImageBackground />
       <section className="relative">
         <div
           className="absolute top-1/2 -translate-y-1/2

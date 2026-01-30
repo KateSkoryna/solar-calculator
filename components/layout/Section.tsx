@@ -5,12 +5,17 @@ interface SectionProps {
   className?: string;
 }
 
-export default function Section({ children, className = "" }: SectionProps) {
+export default function HeroSectionCover({
+  children,
+  className = "",
+}: SectionProps) {
   return (
-    <div
-      className={`mx-auto text-center py-4 sm:py-6 md:py-8 lg:py-12 ${className}`}
+    <section
+      className={`relative w-full min-w-full text-center py-4 sm:py-6 md:py-8 lg:py-12 bg-cover bg-center bg-[url('/forestdark.webp')] ${className}`}
     >
-      {children}
-    </div>
+      <div className="relative z-10 mx-auto max-w-[1200px] lg:max-w-[1400px] xl:max-w-[1600px] px-6 md:px-8 lg:px-12 xl:px-16">
+        {children}
+      </div>
+    </section>
   );
 }
