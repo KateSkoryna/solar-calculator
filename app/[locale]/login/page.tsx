@@ -1,13 +1,13 @@
-import Container from "@/components/layout/Container";
 import { useTranslations } from "next-intl";
+import Section from "@/components/layout/Section";
 
 export default function Login() {
   const t = useTranslations("login");
 
   return (
-    <Container>
-      <div className="mx-auto max-w-md py-12">
-        <div className="bg-[var(--card)] p-8 rounded-lg shadow-md">
+    <Section>
+      <div className="mx-auto max-w-md">
+        <div className="bg-[var(--form-bg)] p-8 rounded-lg shadow-md">
           <h1 className="!text-[var(--accent)] text-center mb-6">
             {t("title")}
           </h1>
@@ -70,6 +70,6 @@ export default function Login() {
           </div>
         </div>
       </div>
-    </Container>
+    </Section>
   );
 }

@@ -58,7 +58,7 @@ export default function Home() {
 
         <Link
           href="/calculator"
-          className="mt-8 text-center lg:text-left inline-block bg-[var(--primary)] text-[var(--text-on-primary)] px-16 py-6 rounded-full font-large text-lg hover:opacity-90 transition-opacity"
+          className="mt-8 text-center lg:text-left inline-block bg-[var(--accent)] text-[var(--text-on-accent)] px-16 py-6 rounded-full font-large text-lg hover:opacity-90 transition-opacity"
         >
           {t("getStarted")}
         </Link>
