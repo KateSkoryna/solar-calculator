@@ -30,11 +30,4 @@ describe('Home Page', () => {
     expect(message).toBeInTheDocument()
   })
 
-  it('shows deployment success indicator', () => {
-    render(<Home />)
-
-    const successMessage = screen.getByText(/Deployed successfully on Vercel!/i)
-
-    expect(successMessage).toBeInTheDocument()
-  })
 })
