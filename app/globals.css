@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
 :root {
   /* Breakpoints - Common European screen sizes 2024-2025 */
   --breakpoint-mobile: 375px;
