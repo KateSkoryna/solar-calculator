@@ -1,73 +1,107 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { FormData } from "../MultiStepForm";
+import Input from "@/components/form/Input";
+import Dropdown from "@/components/form/Dropdown";
+import Checkbox from "@/components/form/Checkbox";
+import { EngineType, ParkingType } from "@/types/calculator";
 
-interface VehicleDetailsStepProps {
-  formData: FormData;
-  updateFormData: (data: Partial<FormData>) => void;
-}
-
-export default function VehicleDetailsStep({
-  formData,
-  updateFormData,
-}: VehicleDetailsStepProps) {
+export default function VehicleDetailsStep() {
   const t = useTranslations("calculator");
 
   return (
-    <div className="space-y-6">
-      <div>
-        <label className="block text-sm font-medium text-[var(--text-body)] mb-2">
-          {t("dailyDistance")}
-        </label>
-        <input
-          type="number"
-          value={formData.dailyDistance || ""}
-          onChange={(e) =>
-            updateFormData({ dailyDistance: Number(e.target.value) })
-          }
-          className="w-full p-3 border border-[var(--border)] rounded-md
-            bg-[var(--input)] text-[var(--text-body)]
-            focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
-          placeholder={t("distancePlaceholder")}
+    <div className="space-y-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <Input
+          name="manufacturer"
+          label={t("manufacturer")}
+          type="text"
+          placeholder={t("manufacturerPlaceholder")}
+        />
+
+        <Input
+          name="model"
+          label={t("model")}
+          type="text"
+          placeholder={t("modelPlaceholder")}
         />
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-[var(--text-body)] mb-2">
-          {t("fuelConsumption")}
-        </label>
-        <input
+      <Input
+        name="numberOfVehicles"
+        label={t("numberOfVehicles")}
+        type="number"
+        placeholder="1"
+      />
+
+      <Input
+        name="averageDailyDistance"
+        label={t("averageDailyDistance")}
+        type="number"
+        placeholder="0"
+      />
+
+      <Input
+        name="energyConsumption"
+        label={t("energyConsumption")}
+        type="number"
+        placeholder="0.0"
+      />
+
+      <Input
+        name="solarPanelCapacity"
+        label={t("solarPanelCapacity")}
+        type="number"
+        placeholder="0.0"
+      />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <Input
+          name="payloadReserve"
+          label={t("payloadReserve")}
           type="number"
-          value={formData.fuelConsumption || ""}
-          onChange={(e) =>
-            updateFormData({ fuelConsumption: Number(e.target.value) })
-          }
-          className="w-full p-3 border border-[var(--border)] rounded-md
-            bg-[var(--input)] text-[var(--text-body)]
-            focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
-          placeholder={t("consumptionPlaceholder")}
+          placeholder="0.0"
+        />
+
+        <Input
+          name="maxRoofLoad"
+          label={t("maxRoofLoad")}
+          type="number"
+          placeholder="0.0"
         />
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-[var(--text-body)] mb-2">
-          {t("fuelType")}
-        </label>
-        <select
-          value={formData.fuelType}
-          onChange={(e) => updateFormData({ fuelType: e.target.value })}
-          className="w-full p-3 border border-[var(--border)] rounded-md
-            bg-[var(--input)] text-[var(--text-body)]
-            focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
-        >
-          <option value="">{t("selectFuelType")}</option>
-          <option value="diesel">{t("diesel")}</option>
-          <option value="gasoline">{t("gasoline")}</option>
-          <option value="electric">{t("electric")}</option>
-          <option value="hybrid">{t("hybrid")}</option>
-        </select>
-      </div>
+      <Dropdown
+        name="engineType"
+        label={t("engineType")}
+        placeholder={t("selectEngineType")}
+        options={[
+          { value: EngineType.DIESEL, label: t("diesel") },
+          { value: EngineType.PETROL, label: t("petrol") },
+          { value: EngineType.ELECTRIC, label: t("electric") },
+        ]}
+      />
+
+      <Dropdown
+        name="parkingType"
+        label={t("parkingType")}
+        placeholder={t("selectParkingType")}
+        options={[
+          { value: ParkingType.DEPOT, label: t("depot") },
+          { value: ParkingType.STREET, label: t("street") },
+          { value: ParkingType.CUSTOMER_SITE, label: t("customerSite") },
+          { value: ParkingType.MIXED, label: t("mixedParking") },
+        ]}
+      />
+
+      <Input
+        name="operatingMonths"
+        label={t("operatingMonths")}
+        type="number"
+        placeholder="12"
+      />
+
+      <Checkbox name="winterUsage" label={t("winterUsage")} />
     </div>
   );
 }

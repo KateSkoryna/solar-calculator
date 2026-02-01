@@ -1,68 +1,39 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { FormData } from "../MultiStepForm";
+import Input from "@/components/form/Input";
+import Dropdown from "@/components/form/Dropdown";
+import { InstallationType } from "@/types/calculator";
 
-interface SetupDetailsStepProps {
-  formData: FormData;
-  updateFormData: (data: Partial<FormData>) => void;
-}
-
-export default function SetupDetailsStep({
-  formData,
-  updateFormData,
-}: SetupDetailsStepProps) {
+export default function SetupDetailsStep() {
   const t = useTranslations("calculator");
 
   return (
-    <div className="space-y-6">
-      <div>
-        <label className="block text-sm font-medium text-[var(--text-body)] mb-2">
-          {t("roofArea")}
-        </label>
-        <input
-          type="number"
-          value={formData.roofArea || ""}
-          onChange={(e) => updateFormData({ roofArea: Number(e.target.value) })}
-          className="w-full p-3 border border-[var(--border)] rounded-md
-            bg-[var(--input)] text-[var(--text-body)]
-            focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
-          placeholder={t("areaPlaceholder")}
-        />
-      </div>
+    <div className="space-y-3">
+      <Input
+        name="roofArea"
+        label={t("roofArea")}
+        type="number"
+        placeholder={t("areaPlaceholder")}
+      />
 
-      <div>
-        <label className="block text-sm font-medium text-[var(--text-body)] mb-2">
-          {t("budget")}
-        </label>
-        <input
-          type="number"
-          value={formData.budget || ""}
-          onChange={(e) => updateFormData({ budget: Number(e.target.value) })}
-          className="w-full p-3 border border-[var(--border)] rounded-md
-            bg-[var(--input)] text-[var(--text-body)]
-            focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
-          placeholder={t("budgetPlaceholder")}
-        />
-      </div>
+      <Input
+        name="budget"
+        label={t("budget")}
+        type="number"
+        placeholder={t("budgetPlaceholder")}
+      />
 
-      <div>
-        <label className="block text-sm font-medium text-[var(--text-body)] mb-2">
-          {t("installationType")}
-        </label>
-        <select
-          value={formData.installationType}
-          onChange={(e) => updateFormData({ installationType: e.target.value })}
-          className="w-full p-3 border border-[var(--border)] rounded-md
-            bg-[var(--input)] text-[var(--text-body)]
-            focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
-        >
-          <option value="">{t("selectInstallationType")}</option>
-          <option value="roof">{t("roofMounted")}</option>
-          <option value="ground">{t("groundMounted")}</option>
-          <option value="portable">{t("portable")}</option>
-        </select>
-      </div>
+      <Dropdown
+        name="installationType"
+        label={t("installationType")}
+        placeholder={t("selectInstallationType")}
+        options={[
+          { value: InstallationType.ROOF, label: t("roofMounted") },
+          { value: InstallationType.GROUND, label: t("groundMounted") },
+          { value: InstallationType.PORTABLE, label: t("portable") },
+        ]}
+      />
     </div>
   );
 }
