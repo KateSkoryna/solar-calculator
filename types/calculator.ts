@@ -43,3 +43,12 @@ export const ParkingLocation = {
 
 export type ParkingLocation =
   (typeof ParkingLocation)[keyof typeof ParkingLocation];
+
+export const InstallationType = {
+  ROOF: "roof",
+  GROUND: "ground",
+  PORTABLE: "portable",
+};
+
+export type InstallationType =
+  (typeof InstallationType)[keyof typeof InstallationType];
