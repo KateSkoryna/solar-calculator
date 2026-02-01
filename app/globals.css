@@ -8,18 +8,15 @@
   --breakpoint-desktop-lg: 1440px;
 
   /* Light Mode Colors */
-  --primary: #b6f065;
-  --accent: #5414b5;
-  --invert-accent: #b6f065;
+  --accent: #b6f065;
   --background: #e8e3d9;
   --card: #ffffff;
-  --input: #f1f3f5;
+  --input: #f5f5f5;
   --main: #f9f9f7;
   --form-bg: #ffffff;
   --text-heading: #1a1a1a;
   --text-body: #1a1a1a;
-  --text-on-primary: #1a1a1a;
-  --invert-text-on-primary: #e8e3d9;
+  --text-on-accent: #1a1a1a;
   --text-white: #ffffff;
   --info-box: #ebe9e0;
   --border: #3c5246;
@@ -30,17 +27,14 @@
 }
 
 :root[data-theme="dark"] {
-  --primary: #b6f065;
   --accent: #b6f065;
-  --invert-accent: #5414b5;
   --background: #232e26;
   --card: #232e26;
-  --input: #333333;
+  --input: #f5f5f5;
   --form-bg: #2a2a2a;
   --text-heading: #e8e3d9;
   --text-body: #ebf1e9;
-  --text-on-primary: #1a1a1a;
-  --invert-text-on-primary: #e8e3d9;
+  --text-on-accent: #1a1a1a;
   --text-white: #ffffff;
   --info-box: #2a2a2a;
   --border: #d6e1d4;
@@ -76,7 +70,6 @@ body {
 
 /* Buttons */
 button,
-input,
 .btn {
   font-family: var(--font-inter);
   font-weight: 600;
@@ -95,8 +88,8 @@ button:disabled,
 }
 
 .btn-primary {
-  background: var(--primary);
-  color: var(--text-on-primary);
+  background: var(--accent);
+  color: var(--text-on-accent);
 }
 
 .btn-primary:hover:not(:disabled) {
@@ -118,28 +111,10 @@ button:disabled,
 input,
 textarea,
 select {
-  padding: 0.75rem 1rem;
-  border-radius: 0.5rem;
-  border: 2px solid var(--border);
-  background: var(--input);
-  color: var(--text-heading);
   font-family: var(--font-inter);
   font-size: 1rem;
   transition: all 0.2s ease;
   width: 100%;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-  border-color: var(--accent);
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: var(--text-body);
-  opacity: 0.6;
 }
 
 /* Links */
@@ -223,4 +198,11 @@ h2 {
       color: var(--invert-accent);
     }
   }
+}
+
+/* Hide arrow buttons from number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
