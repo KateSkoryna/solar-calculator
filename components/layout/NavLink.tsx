@@ -14,7 +14,6 @@ export default function NavLink({
   href,
   children,
   className = "",
-  noHover = false,
 }: NavLinkProps) {
   const pathname = usePathname();
 
@@ -25,12 +24,10 @@ export default function NavLink({
     return pathname === href || pathname.endsWith(href);
   };
 
-  const hoverClasses = noHover ? "" : "hover:text-[var(--accent)] focus:text-[var(--accent)]";
-
   return (
     <Link
       href={href}
-      className={`${hoverClasses} focus:outline-none transition-colors ${
+      className={` focus:outline-none transition-colors hover:text-[var(--accent)] focus:text-[var(--accent)] text-shadow-sm ${
         isActive() ? "text-[var(--accent)]" : "text-[var(--text-body)]"
       } ${className}`}
     >
