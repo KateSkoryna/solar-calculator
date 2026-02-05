@@ -119,7 +119,9 @@
   "clientmenu": {
     "login": "Login",
     "signin": "Sign In",
-    "logout": "Logout"
+    "logout": "Logout",
+    "userProfile": "User Profile",
+    "myAccount": "My Account"
   },
   "header": {
     "title": "Solar Calculator",

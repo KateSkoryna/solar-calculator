@@ -119,7 +119,9 @@
   "clientmenu": {
     "login": "Anmeldung",
     "signin": "Anmeldung",
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "userProfile": "Profil",
+    "myAccount": "Mein Konto"
   },
   "header": {
     "title": "Solarrechner",

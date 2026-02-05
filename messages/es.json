@@ -119,7 +119,9 @@
   "clientmenu": {
     "login": "Iniciar Sesión",
     "signin": "Registrarse",
-    "logout": "Cerrar Sesión"
+    "logout": "Cerrar Sesión",
+    "userProfile": "Perfil de Usuario",
+    "myAccount": "Mi Cuenta"
   },
   "header": {
     "title": "Calculadora Solar",
