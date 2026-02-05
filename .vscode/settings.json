@@ -3,5 +3,6 @@
   "scss.lint.unknownAtRules": "ignore",
   "less.lint.unknownAtRules": "ignore",
   "editor.formatOnSave": true,
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "liveServer.settings.multiRootWorkspaceName": "solar-calculator"
 }
