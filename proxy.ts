@@ -1,20 +1,41 @@
-import createMiddleware from "next-intl/middleware";
+import createIntlMiddleware from "next-intl/middleware";
 import { locales, defaultLocale } from "./i18n";
+import { NextRequest, NextResponse } from "next/server";
 
-export default createMiddleware({
-  // A list of all locales that are supported
+const intlMiddleware = createIntlMiddleware({
   locales,
-
-  // Used when no locale matches
   defaultLocale,
-
-  // Always use locale prefix for all languages
-  // This means: /en = English, /de = German, /es = Spanish
   localePrefix: "always",
 });
 
+export default function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const token =
+    request.cookies.get("authjs.session-token") ||
+    request.cookies.get("__Secure-authjs.session-token");
+
+  const isLoggedIn = !!token;
+  const isAuthRoute =
+    pathname.endsWith("/login") || pathname.endsWith("/register");
+  const isProtectedRoute = pathname.endsWith("/user");
+
+  if (isProtectedRoute && !isLoggedIn) {
+    const locale = pathname.split("/")[1];
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = `/${locale}/login`;
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  if (isAuthRoute && isLoggedIn) {
+    const locale = pathname.split("/")[1];
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = `/${locale}/user`;
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  return intlMiddleware(request);
+}
+
 export const config = {
-  // Match only internationalized pathnames
-  // Skip api routes, _next folder, and static files
   matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
 };
