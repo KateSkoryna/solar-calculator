@@ -2,11 +2,11 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from "@/lib/prisma"; // Use the main prisma instance
+import { prisma } from "@/lib/prisma";
 import { verifyCredentials } from "@/lib/auth-helpers";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: PrismaAdapter(prisma as any), // <-- Added 'as any' here
+  adapter: PrismaAdapter(prisma as any),
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
