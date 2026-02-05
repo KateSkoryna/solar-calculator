@@ -1,11 +1,11 @@
-import Form from "@/components/login/Form";
+import ForgotPasswordForm from "@/components/auth/ForgotPasswordForm";
 import Section from "@/components/layout/Section";
 
-export default async function Login() {
+export default function ForgotPasswordPage() {
   return (
     <Section>
       <div className="mx-auto max-w-md">
-        <Form />
+        <ForgotPasswordForm />
       </div>
     </Section>
   );

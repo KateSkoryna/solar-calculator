@@ -1,11 +1,11 @@
-import Form from "@/components/login/Form";
+import RegisterForm from "@/components/register/Form";
 import Section from "@/components/layout/Section";
 
-export default async function Login() {
+export default function RegisterPage() {
   return (
     <Section>
       <div className="mx-auto max-w-md">
-        <Form />
+        <RegisterForm />
       </div>
     </Section>
   );
