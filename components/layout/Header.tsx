@@ -1,12 +1,11 @@
 import NavLink from "./NavLink";
 import ClientMenu from "./ClientMenu";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import Container from "./Container";
 import { auth } from "@/auth";
 
 export default async function Header() {
-  const t = useTranslations("header");
-  const session = await auth();
+  const [t, session] = await Promise.all([getTranslations("header"), auth()]);
 
   return (
     <header className="relative z-50 border-b-1 border-[var(--border)]">
