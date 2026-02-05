@@ -37,9 +37,7 @@ export default function Textarea({
         placeholder={placeholder}
       />
       {error && (
-        <p className="text-red-500 text-sm mt-1">
-          {error.message as string}
-        </p>
+        <p className="text-red-500 text-sm mt-1">{error.message as string}</p>
       )}
     </div>
   );
