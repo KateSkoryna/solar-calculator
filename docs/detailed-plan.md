@@ -1,6 +1,6 @@
 # Orcrist-Oriented Detailed Step Plan
 
-This document breaks [`orcrist-implementation-plan.md`](./orcrist-implementation-plan.md) into individual, learnable, demonstrable steps. It follows the same five milestones and scope rules from that plan and from [`orcrist-match-analysis.md`](./orcrist-match-analysis.md).
+This document breaks [`implementation-plan.md`](./implementation-plan.md) into individual, learnable, demonstrable steps. It follows the same five milestones and scope rules from that plan and from [`vacancy-match-analysis.md`](./vacancy-match-analysis.md).
 
 Each step has the same structure:
 
@@ -334,4 +334,4 @@ Steps are meant to be done in order within a milestone. Milestones can be reorde
 
 Work top to bottom within a milestone. After each step, check its **Visible result** against reality before moving on — if you can't produce that result, the step isn't done yet, regardless of how much code was written.
 
-This plan intentionally does not include time estimates per step; see `orcrist-implementation-plan.md` for milestone-level effort estimates (~17-26 focused days total).
+This plan intentionally does not include time estimates per step; see `implementation-plan.md` for milestone-level effort estimates (~17-26 focused days total).
