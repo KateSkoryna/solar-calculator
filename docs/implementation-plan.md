@@ -2,7 +2,7 @@
 
 ## Goal
 
-Upgrade Solar Calculator into a validated, adoption-ready full-stack TypeScript prototype aligned with the Orcrist Technologies Full-Stack Engineer (TypeScript - Prototyping) vacancy.
+Upgrade Solar Calculator into a validated, adoption-ready full-stack TypeScript prototype aligned with the Orcrist Technologies Full-Stack Engineer (TypeScript - Prototyping) role.
 
 The finished project should prove:
 
@@ -17,7 +17,7 @@ The finished project should prove:
 
 ## Scope principle
 
-The project should remain a fleet solar-analysis product. Do not attach unrelated technologies merely to mirror vacancy keywords. Every infrastructure choice must support a visible user or operational need.
+The project should remain a fleet solar-analysis product. Do not attach unrelated technologies merely to mirror target-role keywords. Every infrastructure choice must support a visible user or operational need.
 
 ---
 

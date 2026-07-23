@@ -142,7 +142,7 @@ Steps are meant to be done in order within a milestone. Milestones can be reorde
 
 ### Step 2.8 — Write a PII inventory and redact logs
 
-- **Purpose**: Demonstrate privacy-aware engineering, an explicit vacancy expectation.
+- **Purpose**: Demonstrate privacy-aware engineering, an explicit requirement of the target role.
 - **Technology**: Structured logging (see Milestone 5), grep/audit of log call sites
 - **Main concepts to learn**: PII classification, log redaction patterns, data retention basics
 - **Goal**: `docs/privacy-and-pii.md` listing every PII field and where it's stored/logged; log statements updated to redact emails/tokens.
@@ -238,7 +238,7 @@ Steps are meant to be done in order within a milestone. Milestones can be reorde
 
 ### Step 4.1 — Add PostgreSQL full-text search
 
-- **Purpose**: Satisfy the vacancy's search/data-layer expectation using the existing database instead of a new system.
+- **Purpose**: Satisfy the target role's search/data-layer expectation using the existing database instead of a new system.
 - **Technology**: PostgreSQL `tsvector`/`tsquery`, Prisma raw queries or extensions
 - **Main concepts to learn**: full-text search indexing, `GIN` indexes, combining full-text with structured filters
 - **Goal**: Search across vehicle registration/name, fleet name, calculation ID, location, report status, scenario labels.
