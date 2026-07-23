@@ -8,23 +8,61 @@ generator client {
   provider = "prisma-client"
   output   = "../app/generated/prisma"
 }
+
 datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id                String    @id @default(cuid())
-  email             String    @unique
-  password          String?
-  name              String?
-  emailVerified     DateTime?
-  image             String?
-  resetToken        String?   @unique
-  resetTokenExpiry  DateTime?
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+enum Role {
+  OWNER
+  MANAGER
+  VIEWER
+}
 
-  accounts          Account[]
+enum VehicleType {
+  VAN
+  TRUCK
+  TRAILER
+  BUS
+}
+
+model User {
+  id               String    @id @default(cuid())
+  email            String    @unique
+  password         String?
+  name             String?
+  emailVerified    DateTime?
+  image            String?
+  resetToken       String?   @unique
+  resetTokenExpiry DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  accounts    Account[]
+  memberships FleetMembership[]
+}
+
+model Fleet {
+  id        String      @id @default(cuid())
+  name      String
+  type      VehicleType
+  createdAt DateTime    @default(now())
+
+  memberships FleetMembership[]
+}
+
+model FleetMembership {
+  id        String   @id @default(cuid())
+  fleetId   String
+  userId    String
+  role      Role
+  createdAt DateTime @default(now())
+
+  fleet Fleet @relation(fields: [fleetId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([fleetId, userId])
+  @@index([userId])
 }
 
 model Account {
