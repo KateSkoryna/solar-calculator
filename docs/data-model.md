@@ -170,7 +170,7 @@ erDiagram
 
 ## Design decisions
 
-- **Fleet is the tenant, not a child of one.** No `Organization` table exists. This removes a layer the vacancy analysis doesn't require and keeps every authorization check to a single `fleetId` comparison.
+- **Fleet is the tenant, not a child of one.** No `Organization` table exists. This removes a layer the target role doesn't require and keeps every authorization check to a single `fleetId` comparison.
 - **`Vehicle` rows are a spec + quantity, not one row per physical vehicle.** This matches the current calculator form (`numberOfVehicles` field) and avoids inventing per-VIN tracking the product doesn't need yet.
 - **`LocationProfile` is shared, not embedded in `Vehicle` or `Calculation`.** A fleet's sites (depots) are reused across vehicles and across calculation runs, and a calculation's `locationProfileId` can point at a different site than the vehicle's `homeLocationProfileId` for "what if we parked at site B" comparisons.
 - **`Calculation` is the durable request; `CalculationScenario` is the append-only run.** Re-running a calculation (new assumptions, new formula version) creates a new `CalculationScenario` row rather than mutating the old one. `supersedesScenarioId` links a new run back to the one it replaces so history is traceable; `isCurrent` marks the one the UI shows by default.
