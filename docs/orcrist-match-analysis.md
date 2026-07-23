@@ -23,7 +23,7 @@ Among the four main projects, Solar Calculator is one of the two strongest found
 - a commercial, data-heavy domain
 - Docker-based local development
 
-Unlike QuizDOM and Tie Breaker, it already covers the vacancy's most explicit data-layer requirement: PostgreSQL. It also has a domain where auditability, calculations, data provenance, scenario comparison, and secure organizational access can be introduced naturally.
+Unlike QuizDOM and Tie Breaker, it already covers the vacancy's most explicit data-layer requirement: PostgreSQL. It also has a domain where auditability, calculations, data provenance, scenario comparison, and secure fleet-scoped access can be introduced naturally.
 
 ## Current project baseline
 
@@ -40,10 +40,10 @@ The current Prisma schema, however, contains only authentication-oriented models
 | PostgreSQL | Prisma/PostgreSQL configured | Domain schema is incomplete | Critical |
 | Search integration | Not evident | Add fleet/calculation search | Medium |
 | Product prototyping | Strong domain and UI scope | Need hypotheses, validation results, and scope decisions | High |
-| Feature flags | Not evident | Add organization/tenant rollout controls | Medium |
-| Auth flows | Auth.js and credential/OAuth support | Add organization access model and stronger policy tests | High |
+| Feature flags | Not evident | Add fleet/tenant rollout controls | Medium |
+| Auth flows | Auth.js and credential/OAuth support | Add fleet access model and stronger policy tests | High |
 | Auditability | Not evident | Add calculation and admin audit events | Critical |
-| Multitenancy assumptions | Not evident | Add fleet organization/tenant model | Critical |
+| Multitenancy assumptions | Not evident | Add fleet-based tenant model | Critical |
 | Observability | Not evident | Add logs, metrics, traces, and health checks | High |
 | Kafka/Temporal | Not present | Add a justified orchestration workflow | High |
 | Kubernetes/GitOps | Local Docker only | Add production images and Kubernetes assets | High |
@@ -81,7 +81,7 @@ Scenario charts, ROI timelines, energy production, and CO2-impact views provide 
 
 ### 4. Mission- and compliance-oriented framing
 
-Fleet investment calculations can be made reproducible, explainable, and auditable. This is a natural place to demonstrate provenance, immutable calculation versions, privacy, and secure organizational access.
+Fleet investment calculations can be made reproducible, explainable, and auditable. This is a natural place to demonstrate provenance, immutable calculation versions, privacy, and secure fleet-scoped access.
 
 ## Critical gaps
 
@@ -98,13 +98,12 @@ Required response:
 
 ### 2. No explicit multitenancy
 
-The vacancy expects multitenancy assumptions. A fleet calculator naturally supports organization-based tenancy.
+The vacancy expects multitenancy assumptions. A fleet calculator naturally supports fleet-based tenancy: each fleet is itself the tenant, with no separate organization layer above it.
 
 Recommended model:
 
-- `Organization`
-- `OrganizationMembership`
 - `Fleet`
+- `FleetMembership`
 - `Vehicle`
 - `Calculation`
 - `CalculationScenario`
@@ -112,7 +111,7 @@ Recommended model:
 - `AuditEvent`
 - `FeatureFlag`
 
-All domain records should be scoped by `organizationId`.
+All domain records should be scoped by `fleetId`.
 
 ### 3. No calculation provenance
 
@@ -142,7 +141,7 @@ The repository has local Docker startup, but it does not yet prove Kubernetes/Gi
 
 ### Tenant model
 
-Use organizations as tenants. Each user belongs to one or more organizations through memberships.
+Use fleets as tenants. Each user belongs to one or more fleets through memberships. There is no separate organization entity; a fleet is the top-level tenant.
 
 Roles:
 
@@ -155,9 +154,8 @@ Roles:
 
 Core entities:
 
-- `Organization`
-- `OrganizationMembership`
 - `Fleet`
+- `FleetMembership`
 - `Vehicle`
 - `LocationProfile`
 - `Calculation`
@@ -214,7 +212,7 @@ Do not present AI recommendations as factual financial advice. Label them clearl
 
 The upgraded repository should let a reviewer verify:
 
-1. two organizations have isolated fleets and calculations;
+1. two fleets have isolated vehicles and calculations;
 2. calculation results are reproducible from immutable snapshots;
 3. every calculation records its formula and assumption version;
 4. users have role-based permissions;
@@ -231,4 +229,4 @@ Current project match for the vacancy: **7.5/10**
 
 Projected match after implementation: **9/10**
 
-The highest-value improvements are completing the PostgreSQL domain model, adding organization tenancy, calculation provenance, Temporal-based report workflows, security/audit controls, CI, observability, and deployment packaging.
+The highest-value improvements are completing the PostgreSQL domain model, adding fleet tenancy, calculation provenance, Temporal-based report workflows, security/audit controls, CI, observability, and deployment packaging.

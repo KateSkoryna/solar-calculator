@@ -26,15 +26,14 @@ The project should remain a fleet solar-analysis product. Do not attach unrelate
 ### Objectives
 
 - move from authentication-only persistence to a real fleet-analysis domain;
-- introduce organization tenancy;
+- introduce fleet tenancy;
 - make calculations reproducible and queryable.
 
 ### Work items
 
 1. Extend the Prisma schema with:
-   - `Organization`
-   - `OrganizationMembership`
    - `Fleet`
+   - `FleetMembership`
    - `Vehicle`
    - `LocationProfile`
    - `Calculation`
@@ -44,7 +43,7 @@ The project should remain a fleet solar-analysis product. Do not attach unrelate
    - `ReportJob`
    - `AuditEvent`
    - `FeatureFlag`
-2. Add `organizationId` to every domain entity.
+2. Add `fleetId` to every domain entity.
 3. Add role values:
    - `OWNER`
    - `FLEET_MANAGER`
@@ -58,16 +57,15 @@ The project should remain a fleet solar-analysis product. Do not attach unrelate
    - solar-yield assumptions;
    - currency conversion source.
 6. Add database constraints and indexes.
-7. Add seed data for two organizations, multiple users, fleets, vehicles, and calculations.
+7. Add seed data for two fleets, multiple users, vehicles, and calculations.
 8. Add migration tests against an empty PostgreSQL database.
 
 ### Suggested entity relationships
 
 ```text
-Organization
-  ├── OrganizationMembership
-  ├── Fleet
-  │    └── Vehicle
+Fleet
+  ├── FleetMembership
+  ├── Vehicle
   ├── Calculation
   │    ├── CalculationInputSnapshot
   │    ├── CalculationResult
@@ -79,12 +77,12 @@ Organization
 
 ### Required tests
 
-- a user sees only organizations where they have membership;
-- organization-scoped unique constraints behave correctly;
+- a user sees only fleets where they have membership;
+- fleet-scoped unique constraints behave correctly;
 - calculation snapshots cannot be silently overwritten;
 - deleting a vehicle does not destroy historical calculation evidence;
 - migrations apply and rollback safely in a test environment;
-- two organizations can use the same vehicle label without conflict.
+- two fleets can use the same vehicle label without conflict.
 
 ### Definition of done
 
@@ -105,20 +103,20 @@ Organization
 
 ### Work items
 
-1. Add organization-aware authorization helpers for server actions and route handlers.
+1. Add fleet-aware authorization helpers for server actions and route handlers.
 2. Define explicit permissions, for example:
-   - owner: manage organization and memberships;
-   - fleet manager: manage fleets and vehicles;
+   - owner: manage fleet and memberships;
+   - fleet manager: manage vehicles;
    - analyst: create and compare calculations;
    - viewer: read approved results and reports.
 3. Add append-only audit events for:
-   - organization and membership changes;
-   - fleet and vehicle changes;
+   - fleet and membership changes;
+   - vehicle changes;
    - calculation creation and recalculation;
    - report generation and download;
    - permission failures;
    - feature-flag changes.
-4. Add an organization audit page with filters.
+4. Add a fleet audit page with filters.
 5. Add a calculation provenance panel showing:
    - input snapshot date;
    - formula version;
@@ -134,8 +132,8 @@ Organization
 ### Required tests
 
 - viewers cannot create or delete calculations;
-- analysts cannot manage organization memberships;
-- users cannot access another organization's report by guessing an ID;
+- analysts cannot manage fleet memberships;
+- users cannot access another fleet's report by guessing an ID;
 - audit events are created for successful and rejected operations;
 - historical results remain linked to the original assumptions;
 - log output excludes passwords, tokens, reset tokens, and session values.
@@ -148,7 +146,7 @@ Create:
 - `docs/threat-model.md`
 - `docs/privacy-and-pii.md`
 - `docs/calculation-provenance.md`
-- `docs/adr/0001-organization-tenancy.md`
+- `docs/adr/0001-fleet-tenancy.md`
 - `docs/adr/0002-calculation-versioning.md`
 
 ### Definition of done
@@ -197,7 +195,7 @@ CANCELLED
 
 1. Add Temporal server and worker to local Docker Compose.
 2. Create workflow and activity packages.
-3. Use deterministic workflow IDs, such as `report/{organizationId}/{reportJobId}`.
+3. Use deterministic workflow IDs, such as `report/{fleetId}/{reportJobId}`.
 4. Add retry policies with bounded attempts.
 5. Add cancellation support.
 6. Add Server-Sent Events for job progress.
@@ -222,7 +220,7 @@ If the optional AI helper is implemented:
 - duplicate report requests do not create duplicate workflows;
 - workflow retries transient failures;
 - cancellation updates UI and database state;
-- users cannot subscribe to another organization's report events;
+- users cannot subscribe to another fleet's report events;
 - invalid AI output is rejected safely;
 - completed reports reference the exact input snapshot and versions used;
 - SSE reconnect restores missed progress events.
@@ -245,7 +243,7 @@ A demo can generate a report, show real-time progress, survive a simulated trans
 
 Implement PostgreSQL search and filters for:
 
-- organization fleets;
+- fleet name;
 - vehicles;
 - calculation IDs;
 - location names;
@@ -322,11 +320,11 @@ Add `.github/workflows/ci.yml` with:
 
 At minimum:
 
-- user signs in and selects an organization;
+- user signs in and selects a fleet;
 - fleet manager creates a vehicle;
 - analyst creates a calculation;
 - viewer opens an approved report;
-- unauthorized cross-organization access is rejected;
+- unauthorized cross-fleet access is rejected;
 - report workflow completes and progress is visible.
 
 ### Containerization
@@ -396,7 +394,7 @@ Include Mermaid diagrams for:
 
 - system context;
 - container architecture;
-- organization authorization;
+- fleet authorization;
 - calculation lifecycle;
 - report workflow;
 - deployment topology.
@@ -445,7 +443,7 @@ deploy/
 ## Portfolio evidence checklist
 
 - [ ] PostgreSQL domain migrations
-- [ ] organization tenancy
+- [ ] fleet tenancy
 - [ ] role-based authorization and tests
 - [ ] immutable calculation snapshots
 - [ ] assumption and formula versioning
@@ -481,4 +479,4 @@ Total: approximately 17-26 focused development days.
 
 ## Final acceptance test
 
-The project is ready when a reviewer can create two organizations, verify isolation, add fleet data, run and reproduce a calculation, inspect provenance, start a report workflow, observe live progress, download the report, inspect the audit record, and understand the deployment and handoff path from the documentation.
+The project is ready when a reviewer can create two fleets, verify isolation, add vehicle data, run and reproduce a calculation, inspect provenance, start a report workflow, observe live progress, download the report, inspect the audit record, and understand the deployment and handoff path from the documentation.
