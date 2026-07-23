@@ -1,12 +1,10 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 export default function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
-  const t = useTranslations("theme");
 
   return (
     <button

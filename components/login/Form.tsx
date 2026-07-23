@@ -51,7 +51,7 @@ export default function Form() {
 
       router.push("/user");
       router.refresh();
-    } catch (err) {
+    } catch {
       setError("Something went wrong. Please try again.");
       setIsLoading(false);
     }
