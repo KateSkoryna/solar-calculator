@@ -47,6 +47,18 @@ enum SolarPanelPlacement {
   ALL_OVER
 }
 
+enum ReportJobStatus {
+  QUEUED
+  VALIDATING
+  CALCULATING
+  RENDERING_CHARTS
+  GENERATING_REPORT
+  GENERATING_RECOMMENDATIONS
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
 model User {
   id               String    @id @default(cuid())
   email            String    @unique
@@ -62,6 +74,8 @@ model User {
   accounts     Account[]
   memberships  FleetMembership[]
   calculations Calculation[]
+  reportJobs   ReportJob[]
+  auditEvents  AuditEvent[]
 }
 
 model Fleet {
@@ -73,6 +87,9 @@ model Fleet {
   memberships  FleetMembership[]
   vehicles     Vehicle[]
   calculations Calculation[]
+  reportJobs   ReportJob[]
+  auditEvents  AuditEvent[]
+  featureFlags FeatureFlag[]
 }
 
 model FleetMembership {
@@ -147,6 +164,7 @@ model CalculationScenario {
   calculation   Calculation               @relation(fields: [calculationId], references: [id], onDelete: Cascade)
   inputSnapshot CalculationInputSnapshot?
   result        CalculationResult?
+  reportJobs    ReportJob[]
 }
 
 model CalculationInputSnapshot {
@@ -173,6 +191,58 @@ model CalculationResult {
   computedAt            DateTime @default(now())
 
   scenario CalculationScenario @relation(fields: [calculationScenarioId], references: [id], onDelete: Cascade)
+}
+
+model ReportJob {
+  id                    String          @id @default(cuid())
+  fleetId               String
+  calculationScenarioId String
+  requestedByUserId     String
+  status                ReportJobStatus @default(QUEUED)
+  idempotencyKey        String          @unique
+  temporalWorkflowId    String          @unique
+  fileUrl               String?
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+
+  fleet               Fleet               @relation(fields: [fleetId], references: [id], onDelete: Restrict)
+  calculationScenario CalculationScenario @relation(fields: [calculationScenarioId], references: [id], onDelete: Restrict)
+  requestedByUser     User                @relation(fields: [requestedByUserId], references: [id], onDelete: Restrict)
+
+  @@index([fleetId, status])
+  @@index([calculationScenarioId])
+  @@index([requestedByUserId])
+}
+
+model AuditEvent {
+  id          String   @id @default(cuid())
+  fleetId     String?
+  actorUserId String?
+  action      String
+  entityType  String
+  entityId    String
+  metadata    Json
+  createdAt   DateTime @default(now())
+
+  fleet     Fleet? @relation(fields: [fleetId], references: [id], onDelete: Restrict)
+  actorUser User?  @relation(fields: [actorUserId], references: [id], onDelete: Restrict)
+
+  @@index([fleetId, createdAt])
+  @@index([entityType, entityId])
+  @@index([actorUserId])
+}
+
+model FeatureFlag {
+  id        String   @id @default(cuid())
+  fleetId   String?
+  key       String
+  enabled   Boolean
+  payload   Json?
+  updatedAt DateTime @updatedAt
+
+  fleet Fleet? @relation(fields: [fleetId], references: [id], onDelete: Restrict)
+
+  @@unique([fleetId, key])
 }
 
 model Account {
