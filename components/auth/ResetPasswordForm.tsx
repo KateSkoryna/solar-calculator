@@ -63,7 +63,7 @@ export default function ResetPasswordForm() {
       }
 
       router.push("/login?reset=success");
-    } catch (err) {
+    } catch {
       setError("Something went wrong. Please try again.");
       setIsLoading(false);
     }

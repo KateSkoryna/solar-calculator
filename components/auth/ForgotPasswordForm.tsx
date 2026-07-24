@@ -47,7 +47,7 @@ export default function ForgotPasswordForm() {
         "If an account exists with this email, you will receive a password reset link shortly.",
       );
       setIsLoading(false);
-    } catch (err) {
+    } catch {
       setError("Something went wrong. Please try again.");
       setIsLoading(false);
     }
@@ -59,7 +59,7 @@ export default function ForgotPasswordForm() {
         Forgot Password
       </h3>
       <p className="text-sm text-[var(--text-body)] text-center mb-6">
-        Enter your email address and we'll send you a link to reset your
+        Enter your email address and we&apos;ll send you a link to reset your
         password.
       </p>
 
