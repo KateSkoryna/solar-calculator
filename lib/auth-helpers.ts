@@ -21,7 +21,7 @@ export async function verifyCredentials(credentials: Record<string, unknown>) {
   if (!user) return null;
   if (!user.password) return null;
 
-  const passwordsMatch = bcrypt.compare(password, user.password);
+  const passwordsMatch = await bcrypt.compare(password, user.password);
 
   if (!passwordsMatch) return null;
 
