@@ -79,6 +79,7 @@ export default function VehicleDetailsStep() {
           { value: EngineType.DIESEL, label: t("diesel") },
           { value: EngineType.PETROL, label: t("petrol") },
           { value: EngineType.ELECTRIC, label: t("electric") },
+          { value: EngineType.HYBRID, label: t("hybrid") },
         ]}
       />
 

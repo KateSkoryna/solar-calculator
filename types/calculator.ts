@@ -11,6 +11,7 @@ export const EngineType = {
   DIESEL: "diesel",
   PETROL: "petrol",
   ELECTRIC: "electric",
+  HYBRID: "hybrid",
 } as const;
 
 export type EngineType = (typeof EngineType)[keyof typeof EngineType];
@@ -33,16 +34,6 @@ export const SolarPanelPlacement = {
 
 export type SolarPanelPlacement =
   (typeof SolarPanelPlacement)[keyof typeof SolarPanelPlacement];
-
-export const ParkingLocation = {
-  OUTDOOR: "outdoor",
-  COVERED: "covered",
-  INDOOR: "indoor",
-  MIXED: "mixed",
-} as const;
-
-export type ParkingLocation =
-  (typeof ParkingLocation)[keyof typeof ParkingLocation];
 
 export const InstallationType = {
   ROOF: "roof",

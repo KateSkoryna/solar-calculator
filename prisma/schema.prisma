@@ -26,6 +26,27 @@ enum VehicleType {
   BUS
 }
 
+enum EngineType {
+  DIESEL
+  PETROL
+  ELECTRIC
+  HYBRID
+}
+
+enum ParkingType {
+  DEPOT
+  STREET
+  CUSTOMER_SITE
+  MIXED
+}
+
+enum SolarPanelPlacement {
+  ROOF
+  SIDES
+  BACK
+  ALL_OVER
+}
+
 model User {
   id               String    @id @default(cuid())
   email            String    @unique
@@ -49,6 +70,7 @@ model Fleet {
   createdAt DateTime    @default(now())
 
   memberships FleetMembership[]
+  vehicles    Vehicle[]
 }
 
 model FleetMembership {
@@ -63,6 +85,33 @@ model FleetMembership {
 
   @@unique([fleetId, userId])
   @@index([userId])
+}
+
+model Vehicle {
+  id                           String              @id @default(cuid())
+  fleetId                      String
+  manufacturer                 String
+  model                        String
+  vehicleType                  VehicleType
+  engineType                   EngineType
+  parkingType                  ParkingType
+  quantity                     Int
+  averageDailyDistanceKm       Float
+  energyConsumptionKwhPer100km Float
+  solarPanelCapacityKw         Float
+  solarPanelPlacement          SolarPanelPlacement
+  payloadReserveKg             Float
+  maxRoofLoadKg                Float
+  operatingMonthsPerYear       Int
+  winterUsage                  Boolean
+  city                         String
+  country                      String
+  deletedAt                    DateTime?
+  createdAt                    DateTime            @default(now())
+
+  fleet Fleet @relation(fields: [fleetId], references: [id], onDelete: Restrict)
+
+  @@index([fleetId, deletedAt])
 }
 
 model Account {

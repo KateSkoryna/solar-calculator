@@ -11,7 +11,6 @@ import {
   EngineType,
   ParkingType,
   SolarPanelPlacement,
-  ParkingLocation,
 } from "@/types/calculator";
 
 const formSchema = z.object({
@@ -39,6 +38,7 @@ const formSchema = z.object({
     EngineType.DIESEL,
     EngineType.PETROL,
     EngineType.ELECTRIC,
+    EngineType.HYBRID,
   ]),
   parkingType: z.enum([
     ParkingType.DEPOT,
@@ -55,18 +55,6 @@ const formSchema = z.object({
     SolarPanelPlacement.SIDES,
     SolarPanelPlacement.BACK,
     SolarPanelPlacement.ALL_OVER,
-  ]),
-  daytimeParking: z.enum([
-    ParkingLocation.OUTDOOR,
-    ParkingLocation.COVERED,
-    ParkingLocation.INDOOR,
-    ParkingLocation.MIXED,
-  ]),
-  nighttimeParking: z.enum([
-    ParkingLocation.OUTDOOR,
-    ParkingLocation.COVERED,
-    ParkingLocation.INDOOR,
-    ParkingLocation.MIXED,
   ]),
   additionalNotes: z.string().optional(),
 });
