@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import Input from "@/components/form/Input";
 import Dropdown from "@/components/form/Dropdown";
-import { SolarPanelPlacement, ParkingLocation } from "@/types/calculator";
+import { SolarPanelPlacement } from "@/types/calculator";
 
 export default function LocationSetupStep() {
   const t = useTranslations("calculator");
@@ -47,30 +47,6 @@ export default function LocationSetupStep() {
             value: SolarPanelPlacement.ALL_OVER,
             label: t("allOverPlacement"),
           },
-        ]}
-      />
-
-      <Dropdown
-        name="daytimeParking"
-        label={t("daytimeParking")}
-        placeholder={t("selectParkingLocation")}
-        options={[
-          { value: ParkingLocation.OUTDOOR, label: t("outdoor") },
-          { value: ParkingLocation.COVERED, label: t("covered") },
-          { value: ParkingLocation.INDOOR, label: t("indoor") },
-          { value: ParkingLocation.MIXED, label: t("mixedLocation") },
-        ]}
-      />
-
-      <Dropdown
-        name="nighttimeParking"
-        label={t("nighttimeParking")}
-        placeholder={t("selectParkingLocation")}
-        options={[
-          { value: ParkingLocation.OUTDOOR, label: t("outdoor") },
-          { value: ParkingLocation.COVERED, label: t("covered") },
-          { value: ParkingLocation.INDOOR, label: t("indoor") },
-          { value: ParkingLocation.MIXED, label: t("mixedLocation") },
         ]}
       />
     </div>

@@ -57,7 +57,7 @@ erDiagram
         string manufacturer
         string model
         enum vehicleType "van | truck | trailer | bus"
-        enum engineType "diesel | petrol | electric"
+        enum engineType "diesel | petrol | electric | hybrid"
         enum parkingType "depot | street | customer_site | mixed"
         int quantity
         float averageDailyDistanceKm
@@ -70,8 +70,6 @@ erDiagram
         boolean winterUsage
         string city
         string country
-        enum daytimeParking "outdoor | covered | indoor | mixed"
-        enum nighttimeParking "outdoor | covered | indoor | mixed"
         datetime deletedAt "soft delete"
         datetime createdAt
     }
