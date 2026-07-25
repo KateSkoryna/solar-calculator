@@ -80,6 +80,14 @@ Steps are meant to be done in order within a milestone. Milestones can be reorde
 - **Goal**: Tests proving: unique constraints are fleet-scoped, deleting a vehicle preserves historical calculations (soft delete or restrict), migrations apply cleanly to an empty DB.
 - **Visible result**: `npm test` shows a new `prisma.schema.test.ts` (or similar) suite passing in CI-equivalent conditions.
 
+### Step 1.9 — Provision the production database and environment
+
+- **Purpose**: Local dev and CI both use disposable/throwaway Postgres instances with hardcoded dev credentials; production needs a real, persistent database with real credentials that are never committed to the repo.
+- **Technology**: A hosted Postgres provider (Vercel Postgres, Neon, Supabase, etc.), Vercel environment variables
+- **Main concepts to learn**: environment-specific configuration, secrets management, the difference between `migrate dev` (local, generates new migrations) and `migrate deploy` (prod, only applies existing ones)
+- **Goal**: A provisioned production Postgres instance; `DATABASE_URL` set as a Vercel environment variable (never in a committed file); a successful deploy that runs `prisma migrate deploy` against it via the existing `vercel-build` script.
+- **Visible result**: A production deployment succeeds and the app can read/write against the real database, with local dev's `dev_user`/`dev_password` never touching it.
+
 ---
 
 ## Milestone 2: Secure Access Control, Auditability, and Provenance

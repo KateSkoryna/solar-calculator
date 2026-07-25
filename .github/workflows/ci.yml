@@ -28,6 +28,22 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: dev_user
+          POSTGRES_PASSWORD: dev_password
+          POSTGRES_DB: dev_database
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://dev_user:dev_password@localhost:5432/dev_database?schema=public
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -36,3 +52,4 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+      - run: npm run test:db
