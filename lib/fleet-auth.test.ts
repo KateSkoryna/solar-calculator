@@ -1,16 +1,21 @@
 import { Session } from "next-auth";
 import { ForbiddenError, requireFleetRole } from "@/lib/fleet-auth";
 import { prisma } from "@/lib/prisma";
+import { AuditAction } from "@/lib/audit";
 
 jest.mock("@/lib/prisma", () => ({
   prisma: {
     fleetMembership: {
       findUnique: jest.fn(),
     },
+    auditEvent: {
+      create: jest.fn(),
+    },
   },
 }));
 
 const mockedFindUnique = prisma.fleetMembership.findUnique as jest.Mock;
+const mockedAuditEventCreate = prisma.auditEvent.create as jest.Mock;
 
 function sessionFor(userId: string): Session {
   return {
@@ -32,6 +37,8 @@ function membershipFor(role: string) {
 describe("requireFleetRole", () => {
   beforeEach(() => {
     mockedFindUnique.mockReset();
+    mockedAuditEventCreate.mockReset();
+    mockedAuditEventCreate.mockResolvedValue(undefined);
   });
 
   it("throws ForbiddenError when there is no session", async () => {
@@ -40,6 +47,25 @@ describe("requireFleetRole", () => {
     );
 
     expect(mockedFindUnique).not.toHaveBeenCalled();
+    expect(mockedAuditEventCreate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          fleetId: "fleet-1",
+          actorUserId: null,
+          action: AuditAction.ACCESS_DENIED,
+        }),
+      }),
+    );
+  });
+
+  it("still throws ForbiddenError when the audit write itself fails", async () => {
+    mockedAuditEventCreate.mockRejectedValue(
+      new Error("foreign key constraint violated"),
+    );
+
+    await expect(requireFleetRole(null, "fleet-1", ["OWNER"])).rejects.toThrow(
+      ForbiddenError,
+    );
   });
 
   it("throws a ForbiddenError carrying a 403 status code", async () => {
@@ -64,6 +90,16 @@ describe("requireFleetRole", () => {
     await expect(
       requireFleetRole(sessionFor("user-1"), "fleet-1", ["OWNER", "MANAGER"]),
     ).rejects.toThrow(ForbiddenError);
+
+    expect(mockedAuditEventCreate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          fleetId: "fleet-1",
+          actorUserId: "user-1",
+          action: AuditAction.ACCESS_DENIED,
+        }),
+      }),
+    );
   });
 
   it("returns the membership when the role is allowed", async () => {
@@ -73,6 +109,8 @@ describe("requireFleetRole", () => {
     await expect(
       requireFleetRole(sessionFor("user-1"), "fleet-1", ["OWNER", "MANAGER"]),
     ).resolves.toEqual(membership);
+
+    expect(mockedAuditEventCreate).not.toHaveBeenCalled();
   });
 
   it("scopes the membership lookup to the given fleet and the session user", async () => {
