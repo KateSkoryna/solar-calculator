@@ -5,6 +5,7 @@ import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { SessionProvider } from "@/components/providers/SessionProvider";
+import { QueryProvider } from "@/components/providers/QueryProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import "../globals.css";
@@ -69,18 +70,20 @@ export default async function LocaleLayout({
         className={`${lexend.variable} ${inter.variable} flex min-h-dvh flex-col`}
       >
         <SessionProvider>
-          <ThemeProvider
-            attribute="data-theme"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange={false}
-          >
-            <NextIntlClientProvider messages={messages}>
-              <Header />
-              <main className="flex-1">{children}</main>
-              <Footer />
-            </NextIntlClientProvider>
-          </ThemeProvider>
+          <QueryProvider>
+            <ThemeProvider
+              attribute="data-theme"
+              defaultTheme="light"
+              enableSystem
+              disableTransitionOnChange={false}
+            >
+              <NextIntlClientProvider messages={messages}>
+                <Header />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </NextIntlClientProvider>
+            </ThemeProvider>
+          </QueryProvider>
         </SessionProvider>
       </body>
     </html>

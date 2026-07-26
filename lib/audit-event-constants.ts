@@ -1,0 +1,1 @@
+export const DEFAULT_AUDIT_EVENT_PAGE_SIZE = 20;
