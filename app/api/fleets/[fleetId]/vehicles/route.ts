@@ -8,6 +8,7 @@ import {
 } from "@/lib/fleet-auth";
 import { toErrorResponse } from "@/lib/api-errors";
 import { vehicleInputSchema } from "@/lib/vehicle-schema";
+import { recordAuditEvent, AuditAction, AuditEntityType } from "@/lib/audit";
 
 export async function GET(
   request: Request,
@@ -36,13 +37,30 @@ export async function POST(
   try {
     const { fleetId } = await params;
     const session = await auth();
-    await requireFleetRole(session, fleetId, FLEET_EDITOR_ROLES);
+    const membership = await requireFleetRole(
+      session,
+      fleetId,
+      FLEET_EDITOR_ROLES,
+    );
 
     const body = await request.json();
     const data = vehicleInputSchema.parse(body);
 
-    const vehicle = await prisma.vehicle.create({
-      data: { ...data, fleetId },
+    const vehicle = await prisma.$transaction(async (tx) => {
+      const created = await tx.vehicle.create({
+        data: { ...data, fleetId },
+      });
+
+      await recordAuditEvent(tx, {
+        fleetId,
+        actorUserId: membership.userId,
+        action: AuditAction.VEHICLE_CREATED,
+        entityType: AuditEntityType.VEHICLE,
+        entityId: created.id,
+        metadata: { manufacturer: created.manufacturer, model: created.model },
+      });
+
+      return created;
     });
 
     return NextResponse.json({ vehicle }, { status: 201 });

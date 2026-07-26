@@ -9,6 +9,7 @@ import {
 import { toErrorResponse } from "@/lib/api-errors";
 import { calculationInputSchema } from "@/lib/calculation-schema";
 import { findActiveVehicle } from "@/lib/vehicle-repo";
+import { recordAuditEvent, AuditAction, AuditEntityType } from "@/lib/audit";
 
 export async function GET(
   request: Request,
@@ -52,13 +53,26 @@ export async function POST(
       return NextResponse.json({ error: "Vehicle not found" }, { status: 404 });
     }
 
-    const calculation = await prisma.calculation.create({
-      data: {
+    const calculation = await prisma.$transaction(async (tx) => {
+      const created = await tx.calculation.create({
+        data: {
+          fleetId,
+          vehicleId: data.vehicleId,
+          notes: data.notes,
+          requestedByUserId: membership.userId,
+        },
+      });
+
+      await recordAuditEvent(tx, {
         fleetId,
-        vehicleId: data.vehicleId,
-        notes: data.notes,
-        requestedByUserId: membership.userId,
-      },
+        actorUserId: membership.userId,
+        action: AuditAction.CALCULATION_CREATED,
+        entityType: AuditEntityType.CALCULATION,
+        entityId: created.id,
+        metadata: { vehicleId: created.vehicleId },
+      });
+
+      return created;
     });
 
     return NextResponse.json({ calculation }, { status: 201 });

@@ -10,6 +10,7 @@ import {
 import { toErrorResponse } from "@/lib/api-errors";
 import { vehicleUpdateSchema } from "@/lib/vehicle-schema";
 import { findActiveVehicle } from "@/lib/vehicle-repo";
+import { recordAuditEvent, AuditAction, AuditEntityType } from "@/lib/audit";
 
 export async function GET(
   request: Request,
@@ -39,14 +40,31 @@ export async function PATCH(
   try {
     const { fleetId, vehicleId } = await params;
     const session = await auth();
-    await requireFleetRole(session, fleetId, FLEET_EDITOR_ROLES);
+    const membership = await requireFleetRole(
+      session,
+      fleetId,
+      FLEET_EDITOR_ROLES,
+    );
 
     const body = await request.json();
     const data = vehicleUpdateSchema.parse(body);
 
-    const vehicle = await prisma.vehicle.update({
-      where: { id_fleetId: { id: vehicleId, fleetId }, deletedAt: null },
-      data,
+    const vehicle = await prisma.$transaction(async (tx) => {
+      const updated = await tx.vehicle.update({
+        where: { id_fleetId: { id: vehicleId, fleetId }, deletedAt: null },
+        data,
+      });
+
+      await recordAuditEvent(tx, {
+        fleetId,
+        actorUserId: membership.userId,
+        action: AuditAction.VEHICLE_UPDATED,
+        entityType: AuditEntityType.VEHICLE,
+        entityId: updated.id,
+        metadata: { updatedFields: data },
+      });
+
+      return updated;
     });
 
     return NextResponse.json({ vehicle });
@@ -62,11 +80,26 @@ export async function DELETE(
   try {
     const { fleetId, vehicleId } = await params;
     const session = await auth();
-    await requireFleetRole(session, fleetId, FLEET_OWNER_ONLY);
+    const membership = await requireFleetRole(
+      session,
+      fleetId,
+      FLEET_OWNER_ONLY,
+    );
 
-    await prisma.vehicle.update({
-      where: { id_fleetId: { id: vehicleId, fleetId }, deletedAt: null },
-      data: { deletedAt: new Date() },
+    await prisma.$transaction(async (tx) => {
+      const deleted = await tx.vehicle.update({
+        where: { id_fleetId: { id: vehicleId, fleetId }, deletedAt: null },
+        data: { deletedAt: new Date() },
+      });
+
+      await recordAuditEvent(tx, {
+        fleetId,
+        actorUserId: membership.userId,
+        action: AuditAction.VEHICLE_DELETED,
+        entityType: AuditEntityType.VEHICLE,
+        entityId: deleted.id,
+        metadata: {},
+      });
     });
 
     return NextResponse.json({ success: true });
