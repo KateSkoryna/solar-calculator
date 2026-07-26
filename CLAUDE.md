@@ -18,6 +18,13 @@
   - `PascalCase` for classes and components
   - `UPPER_SNAKE_CASE` for constants
 
+### Single Source of Truth (DRY)
+
+- If the same literal value, role list, or type shows up in more than one place, extract it into a single named constant/type and import it everywhere instead of repeating it
+- Example: fleet role checks use `ANY_FLEET_ROLE`, `FLEET_EDITOR_ROLES`, and `FLEET_OWNER_ONLY` from `lib/fleet-auth.ts` rather than inline arrays like `["OWNER", "MANAGER"]` scattered across route files
+- When the underlying value can change (e.g. an enum in `prisma/schema.prisma`), derive the constant from that source (e.g. `Object.values(Role)`) instead of hand-typing the list, so a rename or addition only needs to happen in one place
+- Before adding a new literal, grep for it first — if it already exists elsewhere, reuse or extract rather than duplicate
+
 ### Code Clarity
 
 - Write code that reads like plain English
