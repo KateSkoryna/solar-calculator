@@ -1,5 +1,5 @@
 import { Session } from "next-auth";
-import { Role } from "@/app/generated/prisma/client";
+import { Role } from "@/app/generated/prisma/enums";
 import { prisma } from "@/lib/prisma";
 
 export class ForbiddenError extends Error {
@@ -10,6 +10,10 @@ export class ForbiddenError extends Error {
     this.name = "ForbiddenError";
   }
 }
+
+export const ANY_FLEET_ROLE: Role[] = Object.values(Role);
+export const FLEET_EDITOR_ROLES: Role[] = [Role.OWNER, Role.MANAGER];
+export const FLEET_OWNER_ONLY: Role[] = [Role.OWNER];
 
 export async function requireFleetRole(
   session: Session | null,
