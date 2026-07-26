@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { DEFAULT_AUDIT_EVENT_PAGE_SIZE } from "@/lib/audit-event-constants";
 
-interface Actor {
+interface User {
   id: string;
   email: string;
 }
@@ -27,7 +27,7 @@ interface AuditEventsResponse {
 
 interface AuditLogViewProps {
   fleetId: string;
-  actors: Actor[];
+  users: User[];
   entityTypes: string[];
 }
 
@@ -41,7 +41,7 @@ function toEndOfLocalDayISOString(dateString: string) {
 
 export default function AuditLogView({
   fleetId,
-  actors,
+  users,
   entityTypes,
 }: AuditLogViewProps) {
   const [actorUserId, setActorUserId] = useState("");
@@ -97,17 +97,17 @@ export default function AuditLogView({
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-4">
         <div>
           <label className="mb-2 block text-sm font-medium text-[var(--text-body)]">
-            Actor
+            User
           </label>
           <select
             value={actorUserId}
             onChange={(e) => applyFilter(setActorUserId, e.target.value)}
             className="w-full rounded-md bg-[var(--input)] p-3 text-[var(--text-body)] focus:ring-2 focus:ring-[var(--accent)] focus:outline-none"
           >
-            <option value="">All actors</option>
-            {actors.map((actor) => (
-              <option key={actor.id} value={actor.id}>
-                {actor.email}
+            <option value="">All users</option>
+            {users.map((user) => (
+              <option key={user.id} value={user.id}>
+                {user.email}
               </option>
             ))}
           </select>
@@ -174,7 +174,7 @@ export default function AuditLogView({
               <thead>
                 <tr className="border-b border-[var(--border)]">
                   <th className="py-2 pr-4">Timestamp</th>
-                  <th className="py-2 pr-4">Actor</th>
+                  <th className="py-2 pr-4">User</th>
                   <th className="py-2 pr-4">Action</th>
                   <th className="py-2 pr-4">Entity</th>
                 </tr>

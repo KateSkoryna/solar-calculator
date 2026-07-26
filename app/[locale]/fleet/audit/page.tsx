@@ -66,7 +66,7 @@ export default async function AuditLogPage({
       <PageTitle>Audit Log</PageTitle>
       <AuditLogView
         fleetId={fleetId}
-        actors={fleetMembers.map((membership) => ({
+        users={fleetMembers.map((membership) => ({
           id: membership.user.id,
           email: membership.user.email,
         }))}
