@@ -16,6 +16,26 @@ export const ANY_FLEET_ROLE: Role[] = Object.values(Role);
 export const FLEET_EDITOR_ROLES: Role[] = [Role.OWNER, Role.MANAGER];
 export const FLEET_OWNER_ONLY: Role[] = [Role.OWNER];
 
+export const ADMIN_FLEET_ID = process.env.ADMIN_FLEET_ID ?? "fleet_admin";
+
+interface FleetAccess {
+  id: string;
+  fleetId: string;
+  userId: string;
+  role: Role;
+  createdAt: Date;
+}
+
+function superAdminAccess(fleetId: string, userId: string): FleetAccess {
+  return {
+    id: `superadmin:${userId}`,
+    fleetId,
+    userId,
+    role: Role.OWNER,
+    createdAt: new Date(),
+  };
+}
+
 type AccessDeniedReason = "NO_SESSION" | "NO_MEMBERSHIP" | "ROLE_NOT_ALLOWED";
 
 async function recordAccessDenied(
@@ -43,12 +63,16 @@ export async function requireFleetRole(
   session: Session | null,
   fleetId: string,
   allowedRoles: Role[],
-) {
+): Promise<FleetAccess> {
   const userId = session?.user?.id ?? null;
 
   if (!userId) {
     await recordAccessDenied(fleetId, null, "NO_SESSION", allowedRoles, null);
     throw new ForbiddenError("You must be signed in to perform this action");
+  }
+
+  if (session?.user?.isSuperAdmin && fleetId !== ADMIN_FLEET_ID) {
+    return superAdminAccess(fleetId, userId);
   }
 
   const membership = await prisma.fleetMembership.findUnique({
