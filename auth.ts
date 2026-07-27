@@ -5,6 +5,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { PrismaClient } from "@/app/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { verifyCredentials } from "@/lib/auth-helpers";
+import { ADMIN_FLEET_ID } from "@/lib/fleet-auth";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma as unknown as PrismaClient),
@@ -34,12 +35,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        const adminMembership = await prisma.fleetMembership.findUnique({
+          where: {
+            fleetId_userId: { fleetId: ADMIN_FLEET_ID, userId: user.id },
+          },
+        });
+        token.isSuperAdmin = adminMembership !== null;
       }
       return token;
     },
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.id as string;
+        session.user.isSuperAdmin = token.isSuperAdmin as boolean;
       }
       return session;
     },

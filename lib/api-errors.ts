@@ -11,6 +11,15 @@ function isPrismaRecordNotFoundError(error: unknown): boolean {
   );
 }
 
+function isPrismaUniqueConstraintError(error: unknown): boolean {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "code" in error &&
+    error.code === "P2002"
+  );
+}
+
 export function toErrorResponse(error: unknown) {
   if (error instanceof ForbiddenError) {
     return NextResponse.json(
@@ -32,6 +41,10 @@ export function toErrorResponse(error: unknown) {
 
   if (isPrismaRecordNotFoundError(error)) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
+  if (isPrismaUniqueConstraintError(error)) {
+    return NextResponse.json({ error: "Already exists" }, { status: 409 });
   }
 
   console.error(error);

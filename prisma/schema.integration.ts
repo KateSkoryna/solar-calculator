@@ -173,10 +173,10 @@ describe("fleet-scoped unique constraints", () => {
       });
       assert.equal(memberships.length, 2);
     } finally {
+      await prisma.user.deleteMany({ where: { id: user.id } });
       await prisma.fleet.deleteMany({
         where: { id: { in: [fleetOne.id, fleetTwo.id] } },
       });
-      await prisma.user.deleteMany({ where: { id: user.id } });
     }
   });
 
@@ -199,8 +199,8 @@ describe("fleet-scoped unique constraints", () => {
         }),
       );
     } finally {
-      await prisma.fleet.deleteMany({ where: { id: fleet.id } });
       await prisma.user.deleteMany({ where: { id: user.id } });
+      await prisma.fleet.deleteMany({ where: { id: fleet.id } });
     }
   });
 });
