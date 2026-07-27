@@ -99,7 +99,7 @@ model FleetMembership {
   role      Role
   createdAt DateTime @default(now())
 
-  fleet Fleet @relation(fields: [fleetId], references: [id], onDelete: Cascade)
+  fleet Fleet @relation(fields: [fleetId], references: [id], onDelete: Restrict)
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([fleetId, userId])
