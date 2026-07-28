@@ -11,6 +11,7 @@ async function seedBerlinDeliveryFleet() {
     create: {
       id: "fleet_berlin_delivery",
       name: "Berlin Delivery Fleet",
+      slug: "berlin",
       type: "VAN",
     },
   });
@@ -20,7 +21,7 @@ async function seedBerlinDeliveryFleet() {
     update: {},
     create: {
       id: "user_alice",
-      email: "alice@example.com",
+      email: "k.skoryna@gmail.com",
       name: "Alice Owner",
       password: SEED_PASSWORD_HASH,
     },
@@ -146,6 +147,7 @@ async function seedLyonLogisticsFleet() {
     create: {
       id: "fleet_lyon_logistics",
       name: "Lyon Logistics Fleet",
+      slug: "lyon",
       type: "TRUCK",
     },
   });
