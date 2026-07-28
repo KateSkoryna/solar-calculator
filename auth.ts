@@ -9,6 +9,7 @@ import { ADMIN_FLEET_ID } from "@/lib/fleet-auth";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma as unknown as PrismaClient),
+  useSecureCookies: process.env.VERCEL === "1",
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
