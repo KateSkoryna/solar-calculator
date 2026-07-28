@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useQuery } from "@tanstack/react-query";
 import { DEFAULT_AUDIT_EVENT_PAGE_SIZE } from "@/lib/audit-event-constants";
 
@@ -44,6 +45,10 @@ export default function AuditLogView({
   users,
   entityTypes,
 }: AuditLogViewProps) {
+  const t = useTranslations("audit");
+  const tCalculator = useTranslations("calculator");
+  const tAuth = useTranslations("auth");
+
   const [actorUserId, setActorUserId] = useState("");
   const [entityType, setEntityType] = useState("");
   const [from, setFrom] = useState("");
@@ -76,7 +81,7 @@ export default function AuditLogView({
 
       if (!response.ok) {
         const body = await response.json().catch(() => null);
-        throw new Error(body?.error ?? "Failed to load audit events");
+        throw new Error(body?.error ?? t("loadError"));
       }
 
       return response.json();
@@ -97,14 +102,14 @@ export default function AuditLogView({
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-4">
         <div>
           <label className="mb-2 block text-sm font-medium text-[var(--text-body)]">
-            User
+            {t("user")}
           </label>
           <select
             value={actorUserId}
             onChange={(e) => applyFilter(setActorUserId, e.target.value)}
             className="w-full rounded-md bg-[var(--input)] p-3 text-[var(--text-body)] focus:ring-2 focus:ring-[var(--accent)] focus:outline-none"
           >
-            <option value="">All users</option>
+            <option value="">{t("allUsers")}</option>
             {users.map((user) => (
               <option key={user.id} value={user.id}>
                 {user.email}
@@ -115,14 +120,14 @@ export default function AuditLogView({
 
         <div>
           <label className="mb-2 block text-sm font-medium text-[var(--text-body)]">
-            Entity type
+            {t("entityType")}
           </label>
           <select
             value={entityType}
             onChange={(e) => applyFilter(setEntityType, e.target.value)}
             className="w-full rounded-md bg-[var(--input)] p-3 text-[var(--text-body)] focus:ring-2 focus:ring-[var(--accent)] focus:outline-none"
           >
-            <option value="">All types</option>
+            <option value="">{t("allTypes")}</option>
             {entityTypes.map((type) => (
               <option key={type} value={type}>
                 {type}
@@ -133,7 +138,7 @@ export default function AuditLogView({
 
         <div>
           <label className="mb-2 block text-sm font-medium text-[var(--text-body)]">
-            From
+            {t("from")}
           </label>
           <input
             type="date"
@@ -145,7 +150,7 @@ export default function AuditLogView({
 
         <div>
           <label className="mb-2 block text-sm font-medium text-[var(--text-body)]">
-            To
+            {t("to")}
           </label>
           <input
             type="date"
@@ -157,13 +162,13 @@ export default function AuditLogView({
       </div>
 
       {isLoading && (
-        <p className="text-center text-[var(--text-body)]">Loading...</p>
+        <p className="text-center text-[var(--text-body)]">
+          {tAuth("loading")}
+        </p>
       )}
       {isError && (
         <p className="text-center text-red-500">
-          {error instanceof Error
-            ? error.message
-            : "Failed to load audit events."}
+          {error instanceof Error ? error.message : t("loadError")}
         </p>
       )}
 
@@ -173,10 +178,10 @@ export default function AuditLogView({
             <table className="w-full text-left text-sm text-[var(--text-body)]">
               <thead>
                 <tr className="border-b border-[var(--border)]">
-                  <th className="py-2 pr-4">Timestamp</th>
-                  <th className="py-2 pr-4">User</th>
-                  <th className="py-2 pr-4">Action</th>
-                  <th className="py-2 pr-4">Entity</th>
+                  <th className="py-2 pr-4">{t("timestamp")}</th>
+                  <th className="py-2 pr-4">{t("user")}</th>
+                  <th className="py-2 pr-4">{t("action")}</th>
+                  <th className="py-2 pr-4">{t("entity")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -200,7 +205,7 @@ export default function AuditLogView({
                 {data.events.length === 0 && (
                   <tr>
                     <td colSpan={4} className="py-4 text-center">
-                      No audit events match these filters.
+                      {t("noResults")}
                     </td>
                   </tr>
                 )}
@@ -215,10 +220,10 @@ export default function AuditLogView({
               disabled={page <= 1}
               className="rounded-md border border-[var(--border)] bg-[var(--card)] px-4 py-2 text-[var(--text-body)] disabled:opacity-40"
             >
-              Previous
+              {tCalculator("previous")}
             </button>
             <span className="text-sm text-[var(--text-body)]">
-              Page {data.page} of {totalPages}
+              {t("pageOf", { page: data.page, totalPages })}
             </span>
             <button
               type="button"
@@ -226,7 +231,7 @@ export default function AuditLogView({
               disabled={page >= totalPages}
               className="rounded-md border border-[var(--border)] bg-[var(--card)] px-4 py-2 text-[var(--text-body)] disabled:opacity-40"
             >
-              Next
+              {tCalculator("next")}
             </button>
           </div>
         </>

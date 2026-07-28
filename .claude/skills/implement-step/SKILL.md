@@ -66,6 +66,8 @@ Once the deterministic checks pass, launch two subagents in parallel — a singl
 
 Give each subagent the step's **Goal** and **Visible result** as the definition of correct behavior, plus the list of files you touched. Don't tell them what you believe is already correct — let them check independently.
 
+If the verify subagent needs to sign in to exercise a fleet-scoped page or flow, use the default seeded test account: `k.skoryna@gmail.com` / `password123` (seeded as `user_alice`, OWNER of `fleet_berlin_delivery` in `prisma/seed.ts`, with calculations `calc_berlin_1`/`calc_berlin_2` already populated).
+
 Wait for both to finish, then:
 
 - Fix anything either surfaces that's a real correctness bug or would fail the **Visible result** check.

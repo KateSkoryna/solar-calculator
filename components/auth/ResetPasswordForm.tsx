@@ -1,31 +1,50 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-const resetPasswordSchema = z
-  .object({
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
+type ResetPasswordFormData = z.infer<
+  ReturnType<typeof buildResetPasswordSchema>
+>;
 
-type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
+function buildResetPasswordSchema(
+  passwordMinLength: string,
+  passwordsDontMatch: string,
+) {
+  return z
+    .object({
+      password: z.string().min(8, passwordMinLength),
+      confirmPassword: z.string(),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: passwordsDontMatch,
+      path: ["confirmPassword"],
+    });
+}
 
 export default function ResetPasswordForm() {
+  const t = useTranslations("resetPassword");
+  const tAuth = useTranslations("auth");
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const resetPasswordSchema = useMemo(
+    () =>
+      buildResetPasswordSchema(
+        tAuth("passwordMinLength"),
+        tAuth("passwordsDontMatch"),
+      ),
+    [tAuth],
+  );
 
   const {
     register,
@@ -37,7 +56,7 @@ export default function ResetPasswordForm() {
 
   const onSubmit = async (data: ResetPasswordFormData) => {
     if (!token) {
-      setError("Invalid reset link");
+      setError(t("invalidResetLink"));
       return;
     }
 
@@ -57,14 +76,14 @@ export default function ResetPasswordForm() {
       const result = await response.json();
 
       if (!response.ok) {
-        setError(result.error || "Failed to reset password");
+        setError(result.error || t("resetFailed"));
         setIsLoading(false);
         return;
       }
 
       router.push("/login?reset=success");
     } catch {
-      setError("Something went wrong. Please try again.");
+      setError(tAuth("genericError"));
       setIsLoading(false);
     }
   };
@@ -73,16 +92,16 @@ export default function ResetPasswordForm() {
     return (
       <div className="bg-[var(--form-bg)] p-8 rounded-lg shadow-md">
         <h3 className="!text-[var(--accent)] text-center mb-4">
-          Invalid Reset Link
+          {t("invalidResetLinkTitle")}
         </h3>
         <p className="text-sm text-[var(--text-body)] text-center mb-6">
-          This password reset link is invalid or has expired.
+          {t("invalidResetLinkMessage")}
         </p>
         <Link
           href="/forgot-password"
           className="block w-full bg-[var(--accent)] text-white text-center p-3 rounded-md font-medium hover:opacity-90 transition-opacity"
         >
-          Request New Link
+          {t("requestNewLink")}
         </Link>
       </div>
     );
@@ -90,9 +109,9 @@ export default function ResetPasswordForm() {
 
   return (
     <div className="bg-[var(--form-bg)] p-8 rounded-lg shadow-md">
-      <h3 className="!text-[var(--accent)] text-center mb-2">Reset Password</h3>
+      <h3 className="!text-[var(--accent)] text-center mb-2">{t("title")}</h3>
       <p className="text-sm text-[var(--text-body)] text-center mb-6">
-        Enter your new password below.
+        {t("subtitle")}
       </p>
 
       {error && (
@@ -104,13 +123,13 @@ export default function ResetPasswordForm() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div>
           <label className="block text-sm font-medium text-[var(--text-body)] mb-2">
-            New Password
+            {t("newPassword")}
           </label>
           <input
             {...register("password")}
             type="password"
             className="w-full p-3 border border-[var(--border)] rounded-md bg-[var(--input)] text-[var(--text-body)]"
-            placeholder="At least 8 characters"
+            placeholder={tAuth("passwordHint")}
             disabled={isLoading}
           />
           {errors.password && (
@@ -122,13 +141,13 @@ export default function ResetPasswordForm() {
 
         <div>
           <label className="block text-sm font-medium text-[var(--text-body)] mb-2">
-            Confirm New Password
+            {t("confirmNewPassword")}
           </label>
           <input
             {...register("confirmPassword")}
             type="password"
             className="w-full p-3 border border-[var(--border)] rounded-md bg-[var(--input)] text-[var(--text-body)]"
-            placeholder="Re-enter your password"
+            placeholder={tAuth("confirmPasswordPlaceholder")}
             disabled={isLoading}
           />
           {errors.confirmPassword && (
@@ -143,7 +162,7 @@ export default function ResetPasswordForm() {
           disabled={isLoading}
           className="w-full bg-[var(--accent)] text-white p-3 rounded-md font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? "Resetting..." : "Reset Password"}
+          {isLoading ? t("resetting") : t("submitButton")}
         </button>
       </form>
 
@@ -152,7 +171,7 @@ export default function ResetPasswordForm() {
           href="/login"
           className="text-sm text-[var(--accent)] hover:underline"
         >
-          Back to Login
+          {tAuth("backToLogin")}
         </Link>
       </div>
     </div>

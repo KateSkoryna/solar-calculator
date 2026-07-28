@@ -5,24 +5,49 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import GoogleSignInButton from "@/components/auth/GoogleSignInButton";
 
-const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  rememberMe: z.boolean().optional(),
-});
+type LoginFormData = z.infer<ReturnType<typeof buildLoginSchema>>;
 
-type LoginFormData = z.infer<typeof loginSchema>;
+function buildLoginSchema(
+  invalidEmail: string,
+  passwordMinLengthError: string,
+) {
+  return z.object({
+    email: z.string().email(invalidEmail),
+    password: z.string().min(6, passwordMinLengthError),
+    rememberMe: z.boolean().optional(),
+  });
+}
 
 export default function Form() {
   const t = useTranslations("login");
+  const tAuth = useTranslations("auth");
   const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+
+  const authErrorMessages: Record<string, string> = useMemo(
+    () => ({
+      OAuthAccountNotLinked: tAuth("oauthAccountNotLinked"),
+      CredentialsSignin: tAuth("invalidCredentials"),
+    }),
+    [tAuth],
+  );
+
+  const [error, setError] = useState<string | null>(() => {
+    const code = searchParams.get("error");
+    if (!code) return null;
+    return authErrorMessages[code] ?? tAuth("genericError");
+  });
   const [isLoading, setIsLoading] = useState(false);
+
+  const loginSchema = useMemo(
+    () => buildLoginSchema(tAuth("invalidEmail"), t("passwordMinLengthError")),
+    [t, tAuth],
+  );
 
   const {
     register,
@@ -44,7 +69,7 @@ export default function Form() {
       });
 
       if (result?.error) {
-        setError("Invalid email or password");
+        setError(tAuth("invalidCredentials"));
         setIsLoading(false);
         return;
       }
@@ -52,7 +77,7 @@ export default function Form() {
       router.push("/user");
       router.refresh();
     } catch {
-      setError("Something went wrong. Please try again.");
+      setError(tAuth("genericError"));
       setIsLoading(false);
     }
   };
@@ -75,7 +100,7 @@ export default function Form() {
         </div>
         <div className="relative flex justify-center text-sm">
           <span className="px-2 bg-[var(--form-bg)] text-[var(--text-body)]">
-            Or continue with email
+            {t("orContinueWithEmail")}
           </span>
         </div>
       </div>
@@ -140,7 +165,7 @@ export default function Form() {
           disabled={isLoading}
           className="w-full bg-[var(--accent)] text-white p-3 rounded-md font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? "Loading..." : t("loginButton")}
+          {isLoading ? tAuth("loading") : t("loginButton")}
         </button>
       </form>
 

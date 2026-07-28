@@ -31,7 +31,9 @@
       "card3Item1": "Logistics & delivery",
       "card3Item2": "Public transportation",
       "card3Item3": "Refrigerated transport",
-      "card3Item4": "Mobile workshops"
+      "card3Item4": "Mobile workshops",
+      "previousCard": "Previous card",
+      "nextCard": "Next card"
     }
   },
   "calculator": {
@@ -87,7 +89,16 @@
     "next": "Next",
     "calculate": "Calculate",
     "results": "Results",
-    "resultsPlaceholder": "Enter your vehicle details above to see the results."
+    "resultsPlaceholder": "Enter your vehicle details above to see the results.",
+    "roofArea": "Roof Area (m²)",
+    "areaPlaceholder": "e.g., 20",
+    "budget": "Budget (optional)",
+    "budgetPlaceholder": "e.g., 5000",
+    "installationType": "Installation Type",
+    "selectInstallationType": "Select installation type",
+    "roofMounted": "Roof Mounted",
+    "groundMounted": "Ground Mounted",
+    "portable": "Portable"
   },
   "login": {
     "title": "Login to Your Account",
@@ -99,11 +110,16 @@
     "forgotPassword": "Forgot password?",
     "loginButton": "Login",
     "noAccount": "Don't have an account?",
-    "signUp": "Sign up"
+    "signUp": "Sign up",
+    "passwordMinLengthError": "Password must be at least 6 characters",
+    "orContinueWithEmail": "Or continue with email"
   },
   "theme": {
     "light": "Light Mode",
-    "dark": "Dark Mode"
+    "dark": "Dark Mode",
+    "toggleAriaLabel": "Toggle theme",
+    "sunIconAlt": "Sun icon",
+    "moonIconAlt": "Moon icon"
   },
   "language": {
     "en": "English",
@@ -128,5 +144,110 @@
     "description": "Calculate your solar panel ROI, energy savings, and CO₂ reduction for commercial vehicle fleets.",
     "followUs": "Follow us",
     "copyright": "© {currentYear} Solar Calculator. All rights reserved."
+  },
+  "calculation": {
+    "notFoundTitle": "Calculation",
+    "notFound": "This calculation does not exist.",
+    "noResultYet": "This calculation has no result yet.",
+    "paybackPeriod": "Payback period",
+    "paybackPeriodTooltip": "How long it takes for the money you save on fuel and electricity to cover the cost of installing the solar panels.",
+    "paybackUnit": "mo",
+    "solarYield": "Solar yield",
+    "solarYieldTooltip": "How much electricity the solar panels are expected to generate.",
+    "co2Saved": "CO2 saved",
+    "co2SavedTooltip": "How much pollution is avoided by using solar power instead of the grid or fuel.",
+    "netSavings": "Net savings",
+    "netSavingsTooltip": "The overall money saved, after accounting for the cost of the panels.",
+    "provenanceTitle": "How this was calculated",
+    "requestedBy": "Requested by",
+    "requestedByTooltip": "Who asked for this calculation to be run.",
+    "calculatedOn": "Calculated on",
+    "calculatedOnTooltip": "The exact date and time these results were produced.",
+    "formulaVersion": "Formula version",
+    "formulaVersionTooltip": "Which version of our calculation method produced this result, in case the method improves over time.",
+    "assumptionSet": "Assumption set",
+    "assumptionSetTooltip": "The bundle of default assumptions (typical costs, panel wear over time, etc.) used in this calculation.",
+    "inputSnapshotCaptured": "Input snapshot captured",
+    "inputSnapshotCapturedTooltip": "The vehicle details used at the time, frozen in place, so later edits to the vehicle won't change this report.",
+    "energyPriceAssumptions": "Energy price assumptions",
+    "energyPriceAssumptionsTooltip": "The electricity and fuel prices assumed for this calculation.",
+    "emissionsFactorAssumptions": "Emissions factor assumptions",
+    "emissionsFactorAssumptionsTooltip": "The pollution-per-kWh figures used to estimate CO2 saved.",
+    "solarYieldAssumptions": "Solar yield assumptions",
+    "solarYieldAssumptionsTooltip": "The solar panel performance data used to estimate power generated.",
+    "currencyConversionSource": "Currency conversion source",
+    "currencyConversionSourceTooltip": "Where the exchange rate came from, if the numbers needed converting to a different currency."
+  },
+  "auth": {
+    "genericError": "Something went wrong. Please try again.",
+    "invalidEmail": "Invalid email address",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "passwordsDontMatch": "Passwords don't match",
+    "backToLogin": "Back to Login",
+    "passwordHint": "At least 8 characters",
+    "confirmPasswordPlaceholder": "Re-enter your password",
+    "signingIn": "Signing in...",
+    "continueWithGoogle": "Continue with Google",
+    "loading": "Loading...",
+    "invalidCredentials": "Invalid email or password",
+    "oauthAccountNotLinked": "This email is already registered with a password. Sign in with your password, or use a different Google account."
+  },
+  "register": {
+    "title": "Create Account",
+    "orContinueWithEmail": "Or register with email",
+    "nameOptional": "Name (Optional)",
+    "namePlaceholder": "John Doe",
+    "nameMinLength": "Name must be at least 2 characters",
+    "confirmPassword": "Confirm Password",
+    "creatingAccount": "Creating Account...",
+    "signUpButton": "Sign Up",
+    "alreadyHaveAccount": "Already have an account?",
+    "loginLink": "Login",
+    "registrationFailed": "Registration failed"
+  },
+  "forgotPassword": {
+    "title": "Forgot Password",
+    "subtitle": "Enter your email address and we'll send you a link to reset your password.",
+    "successMessage": "If an account exists with this email, you will receive a password reset link shortly.",
+    "sending": "Sending...",
+    "sendResetLink": "Send Reset Link"
+  },
+  "resetPassword": {
+    "invalidResetLink": "Invalid reset link",
+    "resetFailed": "Failed to reset password",
+    "invalidResetLinkTitle": "Invalid Reset Link",
+    "invalidResetLinkMessage": "This password reset link is invalid or has expired.",
+    "requestNewLink": "Request New Link",
+    "title": "Reset Password",
+    "subtitle": "Enter your new password below.",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "resetting": "Resetting...",
+    "submitButton": "Reset Password"
+  },
+  "user": {
+    "welcome": "Welcome, {name}!",
+    "emailLabel": "Email:",
+    "userIdLabel": "User ID:",
+    "protectedNotice": "Logged in successfully! This page is protected."
+  },
+  "audit": {
+    "title": "Audit Log",
+    "notFound": "This fleet does not exist.",
+    "user": "User",
+    "entityType": "Entity type",
+    "from": "From",
+    "to": "To",
+    "allUsers": "All users",
+    "allTypes": "All types",
+    "loadError": "Failed to load audit events.",
+    "timestamp": "Timestamp",
+    "action": "Action",
+    "entity": "Entity",
+    "noResults": "No audit events match these filters.",
+    "pageOf": "Page {page} of {totalPages}"
+  },
+  "common": {
+    "moreInfo": "More information"
   }
 }

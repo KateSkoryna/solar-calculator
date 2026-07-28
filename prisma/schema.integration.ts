@@ -77,7 +77,11 @@ async function seedVehicleWithCalculation(fixtureLabel: string) {
     data: { email: `vehicle-owner-${fixtureLabel}@example.com` },
   });
   const fleet = await prisma.fleet.create({
-    data: { name: `Delivery Fleet ${fixtureLabel}`, type: "VAN" },
+    data: {
+      name: `Delivery Fleet ${fixtureLabel}`,
+      slug: `delivery-fleet-${fixtureLabel}`,
+      type: "VAN",
+    },
   });
   const vehicle = await prisma.vehicle.create({
     data: {
@@ -154,10 +158,10 @@ describe("fleet-scoped unique constraints", () => {
       data: { email: "shared-user@example.com" },
     });
     const fleetOne = await prisma.fleet.create({
-      data: { name: "Fleet One", type: "VAN" },
+      data: { name: "Fleet One", slug: "fleet-one", type: "VAN" },
     });
     const fleetTwo = await prisma.fleet.create({
-      data: { name: "Fleet Two", type: "TRUCK" },
+      data: { name: "Fleet Two", slug: "fleet-two", type: "TRUCK" },
     });
 
     try {
@@ -185,7 +189,7 @@ describe("fleet-scoped unique constraints", () => {
       data: { email: "duplicate-user@example.com" },
     });
     const fleet = await prisma.fleet.create({
-      data: { name: "Solo Fleet", type: "VAN" },
+      data: { name: "Solo Fleet", slug: "solo-fleet", type: "VAN" },
     });
 
     try {

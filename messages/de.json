@@ -31,7 +31,9 @@
       "card3Item1": "Logistik & Lieferung",
       "card3Item2": "Öffentlicher Nahverkehr",
       "card3Item3": "Kühltransport",
-      "card3Item4": "Mobile Werkstätten"
+      "card3Item4": "Mobile Werkstätten",
+      "previousCard": "Vorherige Karte",
+      "nextCard": "Nächste Karte"
     }
   },
   "calculator": {
@@ -87,7 +89,16 @@
     "next": "Weiter",
     "calculate": "Berechnen",
     "results": "Ergebnisse",
-    "resultsPlaceholder": "Gib oben Deine Fahrzeugdaten ein, um die Ergebnisse zu sehen."
+    "resultsPlaceholder": "Gib oben Deine Fahrzeugdaten ein, um die Ergebnisse zu sehen.",
+    "roofArea": "Dachfläche (m²)",
+    "areaPlaceholder": "z. B. 20",
+    "budget": "Budget (optional)",
+    "budgetPlaceholder": "z. B. 5000",
+    "installationType": "Installationsart",
+    "selectInstallationType": "Installationsart auswählen",
+    "roofMounted": "Auf dem Dach montiert",
+    "groundMounted": "Bodenmontiert",
+    "portable": "Tragbar"
   },
   "login": {
     "title": "Bei Deinem Konto anmelden",
@@ -99,11 +110,16 @@
     "forgotPassword": "Passwort vergessen?",
     "loginButton": "Anmelden",
     "noAccount": "Noch kein Konto?",
-    "signUp": "Registrieren"
+    "signUp": "Registrieren",
+    "passwordMinLengthError": "Das Passwort muss mindestens 6 Zeichen lang sein",
+    "orContinueWithEmail": "Oder mit E-Mail fortfahren"
   },
   "theme": {
     "light": "Heller Modus",
-    "dark": "Dunkler Modus"
+    "dark": "Dunkler Modus",
+    "toggleAriaLabel": "Design umschalten",
+    "sunIconAlt": "Sonnensymbol",
+    "moonIconAlt": "Mondsymbol"
   },
   "language": {
     "en": "Englisch",
@@ -128,5 +144,110 @@
     "description": "Berechnen Sie ROI, Energieeinsparungen und CO₂-Reduktion Ihrer Solarpanels für Nutzfahrzeugflotten.",
     "followUs": "Folge uns",
     "copyright": "© {currentYear} Solarrechner. Alle Rechte vorbehalten."
+  },
+  "calculation": {
+    "notFoundTitle": "Berechnung",
+    "notFound": "Diese Berechnung existiert nicht.",
+    "noResultYet": "Für diese Berechnung liegt noch kein Ergebnis vor.",
+    "paybackPeriod": "Amortisationszeit",
+    "paybackPeriodTooltip": "Wie lange es dauert, bis die Einsparungen bei Kraftstoff und Strom die Kosten für die Installation der Solarpanels decken.",
+    "paybackUnit": "Mon.",
+    "solarYield": "Solarertrag",
+    "solarYieldTooltip": "Wie viel Strom die Solarpanels voraussichtlich erzeugen werden.",
+    "co2Saved": "CO2 eingespart",
+    "co2SavedTooltip": "Wie viel Umweltverschmutzung vermieden wird, indem Solarstrom anstelle von Netzstrom oder Kraftstoff genutzt wird.",
+    "netSavings": "Nettoersparnis",
+    "netSavingsTooltip": "Die Gesamtersparnis, nach Abzug der Kosten für die Panels.",
+    "provenanceTitle": "So wurde dies berechnet",
+    "requestedBy": "Angefordert von",
+    "requestedByTooltip": "Wer diese Berechnung angefordert hat.",
+    "calculatedOn": "Berechnet am",
+    "calculatedOnTooltip": "Der genaue Zeitpunkt, zu dem diese Ergebnisse erstellt wurden.",
+    "formulaVersion": "Formelversion",
+    "formulaVersionTooltip": "Welche Version unserer Berechnungsmethode dieses Ergebnis erzeugt hat, falls sich die Methode später ändert.",
+    "assumptionSet": "Annahmenset",
+    "assumptionSetTooltip": "Das Bündel an Standardannahmen (typische Kosten, Abnutzung der Panels über Zeit usw.), das in dieser Berechnung verwendet wurde.",
+    "inputSnapshotCaptured": "Eingabedaten erfasst am",
+    "inputSnapshotCapturedTooltip": "Die zum jeweiligen Zeitpunkt verwendeten Fahrzeugdetails, fest gespeichert – spätere Änderungen am Fahrzeug ändern diesen Bericht nicht.",
+    "energyPriceAssumptions": "Energiepreisannahmen",
+    "energyPriceAssumptionsTooltip": "Die für diese Berechnung angenommenen Strom- und Kraftstoffpreise.",
+    "emissionsFactorAssumptions": "Emissionsfaktor-Annahmen",
+    "emissionsFactorAssumptionsTooltip": "Die verwendeten Werte für Schadstoffe pro kWh, um die CO2-Einsparung zu schätzen.",
+    "solarYieldAssumptions": "Solarertrags-Annahmen",
+    "solarYieldAssumptionsTooltip": "Die verwendeten Leistungsdaten der Solarpanels zur Schätzung der erzeugten Energie.",
+    "currencyConversionSource": "Quelle der Währungsumrechnung",
+    "currencyConversionSourceTooltip": "Woher der Wechselkurs stammt, falls die Zahlen in eine andere Währung umgerechnet werden mussten."
+  },
+  "auth": {
+    "genericError": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+    "invalidEmail": "Ungültige E-Mail-Adresse",
+    "passwordMinLength": "Das Passwort muss mindestens 8 Zeichen lang sein",
+    "passwordsDontMatch": "Die Passwörter stimmen nicht überein",
+    "backToLogin": "Zurück zur Anmeldung",
+    "passwordHint": "Mindestens 8 Zeichen",
+    "confirmPasswordPlaceholder": "Passwort erneut eingeben",
+    "signingIn": "Anmeldung läuft...",
+    "continueWithGoogle": "Mit Google fortfahren",
+    "loading": "Wird geladen...",
+    "invalidCredentials": "Ungültige E-Mail-Adresse oder Passwort",
+    "oauthAccountNotLinked": "Diese E-Mail-Adresse ist bereits mit einem Passwort registriert. Melden Sie sich mit Ihrem Passwort an oder verwenden Sie ein anderes Google-Konto."
+  },
+  "register": {
+    "title": "Konto erstellen",
+    "orContinueWithEmail": "Oder mit E-Mail registrieren",
+    "nameOptional": "Name (Optional)",
+    "namePlaceholder": "Max Mustermann",
+    "nameMinLength": "Der Name muss mindestens 2 Zeichen lang sein",
+    "confirmPassword": "Passwort bestätigen",
+    "creatingAccount": "Konto wird erstellt...",
+    "signUpButton": "Registrieren",
+    "alreadyHaveAccount": "Sie haben bereits ein Konto?",
+    "loginLink": "Anmelden",
+    "registrationFailed": "Registrierung fehlgeschlagen"
+  },
+  "forgotPassword": {
+    "title": "Passwort vergessen",
+    "subtitle": "Geben Sie Ihre E-Mail-Adresse ein und wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts.",
+    "successMessage": "Falls ein Konto mit dieser E-Mail-Adresse existiert, erhalten Sie in Kürze einen Link zum Zurücksetzen des Passworts.",
+    "sending": "Wird gesendet...",
+    "sendResetLink": "Link zum Zurücksetzen senden"
+  },
+  "resetPassword": {
+    "invalidResetLink": "Ungültiger Reset-Link",
+    "resetFailed": "Passwort konnte nicht zurückgesetzt werden",
+    "invalidResetLinkTitle": "Ungültiger Reset-Link",
+    "invalidResetLinkMessage": "Dieser Link zum Zurücksetzen des Passworts ist ungültig oder abgelaufen.",
+    "requestNewLink": "Neuen Link anfordern",
+    "title": "Passwort zurücksetzen",
+    "subtitle": "Geben Sie unten Ihr neues Passwort ein.",
+    "newPassword": "Neues Passwort",
+    "confirmNewPassword": "Neues Passwort bestätigen",
+    "resetting": "Wird zurückgesetzt...",
+    "submitButton": "Passwort zurücksetzen"
+  },
+  "user": {
+    "welcome": "Willkommen, {name}!",
+    "emailLabel": "E-Mail:",
+    "userIdLabel": "Benutzer-ID:",
+    "protectedNotice": "Erfolgreich angemeldet! Diese Seite ist geschützt."
+  },
+  "audit": {
+    "title": "Audit-Protokoll",
+    "notFound": "Diese Flotte existiert nicht.",
+    "user": "Benutzer",
+    "entityType": "Entitätstyp",
+    "from": "Von",
+    "to": "Bis",
+    "allUsers": "Alle Benutzer",
+    "allTypes": "Alle Typen",
+    "loadError": "Audit-Ereignisse konnten nicht geladen werden.",
+    "timestamp": "Zeitstempel",
+    "action": "Aktion",
+    "entity": "Entität",
+    "noResults": "Keine Audit-Ereignisse entsprechen diesen Filtern.",
+    "pageOf": "Seite {page} von {totalPages}"
+  },
+  "common": {
+    "moreInfo": "Weitere Informationen"
   }
 }

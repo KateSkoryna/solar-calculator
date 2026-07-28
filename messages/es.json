@@ -31,7 +31,9 @@
       "card3Item1": "Logística y entrega",
       "card3Item2": "Transporte público",
       "card3Item3": "Transporte refrigerado",
-      "card3Item4": "Talleres móviles"
+      "card3Item4": "Talleres móviles",
+      "previousCard": "Tarjeta anterior",
+      "nextCard": "Tarjeta siguiente"
     }
   },
   "calculator": {
@@ -87,7 +89,16 @@
     "next": "Siguiente",
     "calculate": "Calcular",
     "results": "Resultados",
-    "resultsPlaceholder": "Ingresa los detalles de tu vehículo arriba para ver los resultados."
+    "resultsPlaceholder": "Ingresa los detalles de tu vehículo arriba para ver los resultados.",
+    "roofArea": "Superficie del techo (m²)",
+    "areaPlaceholder": "p. ej., 20",
+    "budget": "Presupuesto (opcional)",
+    "budgetPlaceholder": "p. ej., 5000",
+    "installationType": "Tipo de instalación",
+    "selectInstallationType": "Selecciona el tipo de instalación",
+    "roofMounted": "Montado en el techo",
+    "groundMounted": "Montado en el suelo",
+    "portable": "Portátil"
   },
   "login": {
     "title": "Inicia Sesión en tu Cuenta",
@@ -99,11 +110,16 @@
     "forgotPassword": "¿Olvidaste tu contraseña?",
     "loginButton": "Iniciar Sesión",
     "noAccount": "¿No tienes una cuenta?",
-    "signUp": "Regístrate"
+    "signUp": "Regístrate",
+    "passwordMinLengthError": "La contraseña debe tener al menos 6 caracteres",
+    "orContinueWithEmail": "O continúa con correo electrónico"
   },
   "theme": {
     "light": "Modo Claro",
-    "dark": "Modo Oscuro"
+    "dark": "Modo Oscuro",
+    "toggleAriaLabel": "Cambiar tema",
+    "sunIconAlt": "Icono de sol",
+    "moonIconAlt": "Icono de luna"
   },
   "language": {
     "en": "Inglés",
@@ -128,5 +144,110 @@
     "description": "Calcula el ROI, el ahorro energético y la reducción de CO₂ de tus paneles solares para flotas de vehículos comerciales.",
     "followUs": "Síguenos",
     "copyright": "© {currentYear} Calculadora Solar. Todos los derechos reservados."
+  },
+  "calculation": {
+    "notFoundTitle": "Cálculo",
+    "notFound": "Este cálculo no existe.",
+    "noResultYet": "Este cálculo aún no tiene resultado.",
+    "paybackPeriod": "Período de amortización",
+    "paybackPeriodTooltip": "Cuánto tiempo se tarda en que el dinero ahorrado en combustible y electricidad cubra el costo de instalar los paneles solares.",
+    "paybackUnit": "meses",
+    "solarYield": "Rendimiento solar",
+    "solarYieldTooltip": "Cuánta electricidad se espera que generen los paneles solares.",
+    "co2Saved": "CO2 ahorrado",
+    "co2SavedTooltip": "Cuánta contaminación se evita al usar energía solar en lugar de la red eléctrica o combustible.",
+    "netSavings": "Ahorro neto",
+    "netSavingsTooltip": "El ahorro total, después de contar el costo de los paneles.",
+    "provenanceTitle": "Cómo se calculó esto",
+    "requestedBy": "Solicitado por",
+    "requestedByTooltip": "Quién solicitó que se realizara este cálculo.",
+    "calculatedOn": "Calculado el",
+    "calculatedOnTooltip": "La fecha y hora exactas en que se produjeron estos resultados.",
+    "formulaVersion": "Versión de la fórmula",
+    "formulaVersionTooltip": "Qué versión de nuestro método de cálculo produjo este resultado, en caso de que el método mejore con el tiempo.",
+    "assumptionSet": "Conjunto de supuestos",
+    "assumptionSetTooltip": "El conjunto de supuestos predeterminados (costos típicos, desgaste de los paneles con el tiempo, etc.) utilizados en este cálculo.",
+    "inputSnapshotCaptured": "Datos de entrada capturados el",
+    "inputSnapshotCapturedTooltip": "Los detalles del vehículo utilizados en ese momento, congelados en el tiempo, para que ediciones posteriores al vehículo no cambien este informe.",
+    "energyPriceAssumptions": "Supuestos de precio de la energía",
+    "energyPriceAssumptionsTooltip": "Los precios de electricidad y combustible asumidos para este cálculo.",
+    "emissionsFactorAssumptions": "Supuestos del factor de emisiones",
+    "emissionsFactorAssumptionsTooltip": "Las cifras de contaminación por kWh utilizadas para estimar el CO2 ahorrado.",
+    "solarYieldAssumptions": "Supuestos de rendimiento solar",
+    "solarYieldAssumptionsTooltip": "Los datos de rendimiento de los paneles solares utilizados para estimar la energía generada.",
+    "currencyConversionSource": "Fuente de conversión de moneda",
+    "currencyConversionSourceTooltip": "De dónde provino el tipo de cambio, si las cifras necesitaban convertirse a otra moneda."
+  },
+  "auth": {
+    "genericError": "Algo salió mal. Por favor, inténtalo de nuevo.",
+    "invalidEmail": "Dirección de correo electrónico no válida",
+    "passwordMinLength": "La contraseña debe tener al menos 8 caracteres",
+    "passwordsDontMatch": "Las contraseñas no coinciden",
+    "backToLogin": "Volver a iniciar sesión",
+    "passwordHint": "Al menos 8 caracteres",
+    "confirmPasswordPlaceholder": "Vuelve a introducir tu contraseña",
+    "signingIn": "Iniciando sesión...",
+    "continueWithGoogle": "Continuar con Google",
+    "loading": "Cargando...",
+    "invalidCredentials": "Correo electrónico o contraseña no válidos",
+    "oauthAccountNotLinked": "Este correo electrónico ya está registrado con una contraseña. Inicia sesión con tu contraseña o usa una cuenta de Google diferente."
+  },
+  "register": {
+    "title": "Crear cuenta",
+    "orContinueWithEmail": "O regístrate con correo electrónico",
+    "nameOptional": "Nombre (opcional)",
+    "namePlaceholder": "Juan Pérez",
+    "nameMinLength": "El nombre debe tener al menos 2 caracteres",
+    "confirmPassword": "Confirmar contraseña",
+    "creatingAccount": "Creando cuenta...",
+    "signUpButton": "Registrarse",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "loginLink": "Iniciar sesión",
+    "registrationFailed": "Error en el registro"
+  },
+  "forgotPassword": {
+    "title": "Olvidé mi contraseña",
+    "subtitle": "Introduce tu dirección de correo electrónico y te enviaremos un enlace para restablecer tu contraseña.",
+    "successMessage": "Si existe una cuenta con este correo electrónico, recibirás en breve un enlace para restablecer la contraseña.",
+    "sending": "Enviando...",
+    "sendResetLink": "Enviar enlace de restablecimiento"
+  },
+  "resetPassword": {
+    "invalidResetLink": "Enlace de restablecimiento no válido",
+    "resetFailed": "No se pudo restablecer la contraseña",
+    "invalidResetLinkTitle": "Enlace de restablecimiento no válido",
+    "invalidResetLinkMessage": "Este enlace para restablecer la contraseña no es válido o ha caducado.",
+    "requestNewLink": "Solicitar nuevo enlace",
+    "title": "Restablecer contraseña",
+    "subtitle": "Introduce tu nueva contraseña a continuación.",
+    "newPassword": "Nueva contraseña",
+    "confirmNewPassword": "Confirmar nueva contraseña",
+    "resetting": "Restableciendo...",
+    "submitButton": "Restablecer contraseña"
+  },
+  "user": {
+    "welcome": "¡Bienvenido, {name}!",
+    "emailLabel": "Correo electrónico:",
+    "userIdLabel": "ID de usuario:",
+    "protectedNotice": "¡Sesión iniciada correctamente! Esta página está protegida."
+  },
+  "audit": {
+    "title": "Registro de auditoría",
+    "notFound": "Esta flota no existe.",
+    "user": "Usuario",
+    "entityType": "Tipo de entidad",
+    "from": "Desde",
+    "to": "Hasta",
+    "allUsers": "Todos los usuarios",
+    "allTypes": "Todos los tipos",
+    "loadError": "No se pudieron cargar los eventos de auditoría.",
+    "timestamp": "Marca de tiempo",
+    "action": "Acción",
+    "entity": "Entidad",
+    "noResults": "Ningún evento de auditoría coincide con estos filtros.",
+    "pageOf": "Página {page} de {totalPages}"
+  },
+  "common": {
+    "moreInfo": "Más información"
   }
 }
