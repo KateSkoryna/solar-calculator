@@ -1,32 +1,54 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import GoogleSignInButton from "@/components/auth/GoogleSignInButton";
 
-const registerSchema = z
-  .object({
-    name: z.string().min(2, "Name must be at least 2 characters").optional(),
-    email: z.string().email("Invalid email address"),
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
+type RegisterFormData = z.infer<ReturnType<typeof buildRegisterSchema>>;
 
-type RegisterFormData = z.infer<typeof registerSchema>;
+function buildRegisterSchema(
+  nameMinLength: string,
+  invalidEmail: string,
+  passwordMinLength: string,
+  passwordsDontMatch: string,
+) {
+  return z
+    .object({
+      name: z.string().min(2, nameMinLength).optional(),
+      email: z.string().email(invalidEmail),
+      password: z.string().min(8, passwordMinLength),
+      confirmPassword: z.string(),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: passwordsDontMatch,
+      path: ["confirmPassword"],
+    });
+}
 
 export default function RegisterForm() {
+  const t = useTranslations("register");
+  const tAuth = useTranslations("auth");
+  const tLogin = useTranslations("login");
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const registerSchema = useMemo(
+    () =>
+      buildRegisterSchema(
+        t("nameMinLength"),
+        tAuth("invalidEmail"),
+        tAuth("passwordMinLength"),
+        tAuth("passwordsDontMatch"),
+      ),
+    [t, tAuth],
+  );
 
   const {
     register,
@@ -56,7 +78,7 @@ export default function RegisterForm() {
       const result = await response.json();
 
       if (!response.ok) {
-        setError(result.error || "Registration failed");
+        setError(result.error || t("registrationFailed"));
         setIsLoading(false);
         return;
       }
@@ -75,14 +97,14 @@ export default function RegisterForm() {
       router.push("/user");
       router.refresh();
     } catch {
-      setError("Something went wrong. Please try again.");
+      setError(tAuth("genericError"));
       setIsLoading(false);
     }
   };
 
   return (
     <div className="bg-[var(--form-bg)] p-8 rounded-lg shadow-md">
-      <h3 className="!text-[var(--accent)] text-center mb-6">Create Account</h3>
+      <h3 className="!text-[var(--accent)] text-center mb-6">{t("title")}</h3>
 
       {error && (
         <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
@@ -98,7 +120,7 @@ export default function RegisterForm() {
         </div>
         <div className="relative flex justify-center text-sm">
           <span className="px-2 bg-[var(--form-bg)] text-[var(--text-body)]">
-            Or register with email
+            {t("orContinueWithEmail")}
           </span>
         </div>
       </div>
@@ -106,13 +128,13 @@ export default function RegisterForm() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div>
           <label className="block text-sm font-medium text-[var(--text-body)] mb-2">
-            Name (Optional)
+            {t("nameOptional")}
           </label>
           <input
             {...register("name")}
             type="text"
             className="w-full p-3 border border-[var(--border)] rounded-md bg-[var(--input)] text-[var(--text-body)]"
-            placeholder="John Doe"
+            placeholder={t("namePlaceholder")}
             disabled={isLoading}
           />
           {errors.name && (
@@ -122,13 +144,13 @@ export default function RegisterForm() {
 
         <div>
           <label className="block text-sm font-medium text-[var(--text-body)] mb-2">
-            Email Address
+            {tLogin("email")}
           </label>
           <input
             {...register("email")}
             type="email"
             className="w-full p-3 border border-[var(--border)] rounded-md bg-[var(--input)] text-[var(--text-body)]"
-            placeholder="Enter your email"
+            placeholder={tLogin("emailPlaceholder")}
             disabled={isLoading}
           />
           {errors.email && (
@@ -138,13 +160,13 @@ export default function RegisterForm() {
 
         <div>
           <label className="block text-sm font-medium text-[var(--text-body)] mb-2">
-            Password
+            {tLogin("password")}
           </label>
           <input
             {...register("password")}
             type="password"
             className="w-full p-3 border border-[var(--border)] rounded-md bg-[var(--input)] text-[var(--text-body)]"
-            placeholder="At least 8 characters"
+            placeholder={tAuth("passwordHint")}
             disabled={isLoading}
           />
           {errors.password && (
@@ -156,13 +178,13 @@ export default function RegisterForm() {
 
         <div>
           <label className="block text-sm font-medium text-[var(--text-body)] mb-2">
-            Confirm Password
+            {t("confirmPassword")}
           </label>
           <input
             {...register("confirmPassword")}
             type="password"
             className="w-full p-3 border border-[var(--border)] rounded-md bg-[var(--input)] text-[var(--text-body)]"
-            placeholder="Re-enter your password"
+            placeholder={tAuth("confirmPasswordPlaceholder")}
             disabled={isLoading}
           />
           {errors.confirmPassword && (
@@ -177,15 +199,15 @@ export default function RegisterForm() {
           disabled={isLoading}
           className="w-full bg-[var(--accent)] text-white p-3 rounded-md font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? "Creating Account..." : "Sign Up"}
+          {isLoading ? t("creatingAccount") : t("signUpButton")}
         </button>
       </form>
 
       <div className="mt-6 text-center">
         <p className="text-sm text-[var(--text-body)]">
-          Already have an account?{" "}
+          {t("alreadyHaveAccount")}{" "}
           <Link href="/login" className="text-[var(--accent)] hover:underline">
-            Login
+            {t("loginLink")}
           </Link>
         </p>
       </div>

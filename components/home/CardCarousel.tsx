@@ -96,7 +96,7 @@ export default function CardCarousel() {
         <button
           onClick={handlePrevious}
           className="flex-shrink-0 w-12 h-12 rounded-full bg-[var(--accent)] text-white flex items-center justify-center hover:opacity-90 transition-opacity z-10"
-          aria-label="Previous card"
+          aria-label={t("previousCard")}
         >
           <IoIosArrowBack className="w-6 h-6" />
         </button>
@@ -137,7 +137,7 @@ export default function CardCarousel() {
         <button
           onClick={handleNext}
           className="flex-shrink-0 w-12 h-12 rounded-full bg-[var(--accent)] text-white flex items-center justify-center hover:opacity-90 transition-opacity z-10"
-          aria-label="Next card"
+          aria-label={t("nextCard")}
         >
           <IoIosArrowForward className="w-6 h-6" />
         </button>

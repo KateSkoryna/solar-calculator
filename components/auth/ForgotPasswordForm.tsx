@@ -1,21 +1,35 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 
-const forgotPasswordSchema = z.object({
-  email: z.string().email("Invalid email address"),
-});
+type ForgotPasswordFormData = z.infer<
+  ReturnType<typeof buildForgotPasswordSchema>
+>;
 
-type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
+function buildForgotPasswordSchema(invalidEmail: string) {
+  return z.object({
+    email: z.string().email(invalidEmail),
+  });
+}
 
 export default function ForgotPasswordForm() {
+  const t = useTranslations("forgotPassword");
+  const tAuth = useTranslations("auth");
+  const tLogin = useTranslations("login");
+
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const forgotPasswordSchema = useMemo(
+    () => buildForgotPasswordSchema(tAuth("invalidEmail")),
+    [tAuth],
+  );
 
   const {
     register,
@@ -38,29 +52,24 @@ export default function ForgotPasswordForm() {
       });
 
       if (!response.ok) {
-        setError("Something went wrong. Please try again.");
+        setError(tAuth("genericError"));
         setIsLoading(false);
         return;
       }
 
-      setMessage(
-        "If an account exists with this email, you will receive a password reset link shortly.",
-      );
+      setMessage(t("successMessage"));
       setIsLoading(false);
     } catch {
-      setError("Something went wrong. Please try again.");
+      setError(tAuth("genericError"));
       setIsLoading(false);
     }
   };
 
   return (
     <div className="bg-[var(--form-bg)] p-8 rounded-lg shadow-md">
-      <h3 className="!text-[var(--accent)] text-center mb-2">
-        Forgot Password
-      </h3>
+      <h3 className="!text-[var(--accent)] text-center mb-2">{t("title")}</h3>
       <p className="text-sm text-[var(--text-body)] text-center mb-6">
-        Enter your email address and we&apos;ll send you a link to reset your
-        password.
+        {t("subtitle")}
       </p>
 
       {error && (
@@ -78,13 +87,13 @@ export default function ForgotPasswordForm() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div>
           <label className="block text-sm font-medium text-[var(--text-body)] mb-2">
-            Email Address
+            {tLogin("email")}
           </label>
           <input
             {...register("email")}
             type="email"
             className="w-full p-3 border border-[var(--border)] rounded-md bg-[var(--input)] text-[var(--text-body)]"
-            placeholder="Enter your email"
+            placeholder={tLogin("emailPlaceholder")}
             disabled={isLoading}
           />
           {errors.email && (
@@ -97,7 +106,7 @@ export default function ForgotPasswordForm() {
           disabled={isLoading}
           className="w-full bg-[var(--accent)] text-white p-3 rounded-md font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? "Sending..." : "Send Reset Link"}
+          {isLoading ? t("sending") : t("sendResetLink")}
         </button>
       </form>
 
@@ -106,7 +115,7 @@ export default function ForgotPasswordForm() {
           href="/login"
           className="text-sm text-[var(--accent)] hover:underline"
         >
-          Back to Login
+          {tAuth("backToLogin")}
         </Link>
       </div>
     </div>
