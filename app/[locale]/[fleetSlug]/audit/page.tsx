@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import {
@@ -6,15 +7,25 @@ import {
   FLEET_EDITOR_ROLES,
   ForbiddenError,
 } from "@/lib/fleet-auth";
+import { findFleetBySlug } from "@/lib/fleet-repo";
 import { AuditEntityType } from "@/lib/audit";
 import Section from "@/components/layout/Section";
 import PageTitle from "@/components/common/PageTitle";
 import AuditLogView from "@/components/audit/AuditLogView";
 
+function NotFoundMessage({ title, text }: { title: string; text: string }) {
+  return (
+    <Section>
+      <PageTitle>{title}</PageTitle>
+      <p className="text-center text-[var(--text-body)]">{text}</p>
+    </Section>
+  );
+}
+
 export default async function AuditLogPage({
-  searchParams,
+  params,
 }: {
-  searchParams: Promise<{ fleetId?: string }>;
+  params: Promise<{ fleetSlug: string }>;
 }) {
   const session = await auth();
 
@@ -22,50 +33,34 @@ export default async function AuditLogPage({
     redirect("/login");
   }
 
-  const memberships = await prisma.fleetMembership.findMany({
-    where: { userId: session.user.id },
-    orderBy: { createdAt: "asc" },
-  });
+  const t = await getTranslations("audit");
+  const { fleetSlug } = await params;
+  const fleet = await findFleetBySlug(fleetSlug);
 
-  if (memberships.length === 0) {
-    return (
-      <Section>
-        <PageTitle>Audit Log</PageTitle>
-        <p className="text-center text-[var(--text-body)]">
-          You are not a member of any fleet yet.
-        </p>
-      </Section>
-    );
+  if (!fleet) {
+    return <NotFoundMessage title={t("title")} text={t("notFound")} />;
   }
 
-  const { fleetId: requestedFleetId } = await searchParams;
-  const fleetId = requestedFleetId || memberships[0].fleetId;
-
   try {
-    await requireFleetRole(session, fleetId, FLEET_EDITOR_ROLES);
+    await requireFleetRole(session, fleet.id, FLEET_EDITOR_ROLES);
   } catch (error) {
     if (error instanceof ForbiddenError) {
-      return (
-        <Section>
-          <PageTitle>Audit Log</PageTitle>
-          <p className="text-center text-red-500">{error.message}</p>
-        </Section>
-      );
+      return <NotFoundMessage title={t("title")} text={t("notFound")} />;
     }
     throw error;
   }
 
   const fleetMembers = await prisma.fleetMembership.findMany({
-    where: { fleetId },
+    where: { fleetId: fleet.id },
     select: { user: { select: { id: true, email: true } } },
     orderBy: { createdAt: "asc" },
   });
 
   return (
     <Section>
-      <PageTitle>Audit Log</PageTitle>
+      <PageTitle>{t("title")}</PageTitle>
       <AuditLogView
-        fleetId={fleetId}
+        fleetId={fleet.id}
         users={fleetMembers.map((membership) => ({
           id: membership.user.id,
           email: membership.user.email,
