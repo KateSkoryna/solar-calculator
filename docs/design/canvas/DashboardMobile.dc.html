@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fleet dashboard, mobile</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;font-family:'Instrument Sans',system-ui,sans-serif;color:#16231B;background:#F6F4EE}
+a{color:inherit}
+.pulse{animation:pulse 1.6s ease-in-out infinite;@media (prefers-reduced-motion:reduce){animation:none}}
+.fill{animation:fill 1.2s cubic-bezier(.2,.7,.2,1) both;@media (prefers-reduced-motion:reduce){animation:none}}
+@keyframes pulse{50%{opacity:.35}}
+@keyframes fill{from{width:0}}
+</style>
+</helmet>
+<div style="width: 390px; height: 1440px; box-sizing: border-box; background: #F6F4EE; display: flex; flex-direction: column">
+
+<header style="height: 64px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; justify-content: space-between">
+<button type="button" style="display: flex; align-items: center; gap: 6px; height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid #DEE3DA; background: #FFFFFF; font: 600 15px 'Instrument Sans', sans-serif; color: #16231B">Nordwind Logistics
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></button>
+<span style="width: 40px; height: 40px; border-radius: 999px; background: #B6F065; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600">AW</span>
+</header>
+
+<main style="padding: 8px 16px 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; font-weight: 600; color: #4F5F55">24 vehicles · Sample data</span>
+<h1 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 30px; font-weight: 800; letter-spacing: -0.02em">Your fleet at a glance</h1>
+</div>
+
+<div style="background: #16231B; border-radius: 22px; padding: 20px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 14px; font-weight: 600; color: #C9D4CC">Could save per year</span>
+<span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 40px; font-weight: 800; color: #B6F065">€11,300</span>
+<span style="font-size: 13px; color: #C9D4CC">if all calculated groups get panels</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<div style="background: #FFFFFF; border: 1px solid #DEE3DA; border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; font-weight: 600; color: #4F5F55">Avg. payback</span>
+<span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 26px; font-weight: 800">4.8 yrs</span>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #DEE3DA; border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; font-weight: 600; color: #4F5F55">CO₂ / year</span>
+<span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 26px; font-weight: 800">16.4 t</span>
+</div>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #DEE3DA; border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; font-size: 14px"><span style="font-weight: 600">Making PDF · Scania R450</span><span style="color: #4F5F55">~30 s</span></div>
+<div style="height: 8px; border-radius: 999px; background: #E3E7DF; overflow: hidden"><div class="fill" style="width: 64%; height: 100%; border-radius: 999px; background: #7FB33A"></div></div>
+<span style="font-size: 13px; color: #4F5F55">Drawing charts… step 4 of 6</span>
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px">
+<h2 style="margin: 0; font-size: 19px; font-weight: 600">Vehicle groups</h2>
+<a href="Mobile.dc.html" style="height: 44px; padding: 0 16px; border-radius: 999px; background: #B6F065; color: #16231B; display: inline-flex; align-items: center; gap: 6px; text-decoration: none; font-weight: 600; font-size: 14px">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Add</a>
+</div>
+<sc-for list="{{groups}}" as="group" hint-placeholder-count="4">
+<a href="ResultsMobile.dc.html" style="background: #FFFFFF; border: 1px solid #DEE3DA; border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: #16231B">
+<span style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px">
+<span style="display: flex; flex-direction: column; gap: 3px">
+<span style="font-size: 16px; font-weight: 600">{{group.name}}</span>
+<span style="font-size: 14px; color: #4F5F55">{{group.type}} · {{group.count}} · {{group.city}}</span>
+</span>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4F5F55" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px"><path d="M9 6l6 6-6 6"></path></svg>
+</span>
+<span style="display: flex; justify-content: space-between; align-items: center">
+<span style="{{group.statusStyle}}"><span class="{{group.dotClass}}" style="{{group.dotStyle}}"></span>{{group.status}}</span>
+<span style="font-size: 14px"><span style="color: #4F5F55">Pays off in </span><span style="font-weight: 600">{{group.payback}}</span></span>
+</span>
+</a>
+</sc-for>
+</main>
+
+<nav aria-label="Main" style="margin-top: auto; height: 76px; box-sizing: border-box; padding: 8px 8px 12px; border-top: 1px solid #DEE3DA; background: #FFFFFF; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
+<sc-for list="{{tabs}}" as="tab" hint-placeholder-count="4">
+<a href="{{tab.href}}" style="{{tab.style}}">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{tab.icon}}"></path></svg>
+<span style="font-size: 12px; font-weight: 600">{{tab.label}}</span>
+</a>
+</sc-for>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1440}}'>
+class Component extends DCLogic {
+renderVals() {
+const tab = (label, icon, href, active) => ({ label, icon, href, style: 'display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; border-radius: 12px; color: ' + (active ? '#16231B' : '#5A6A60') + (active ? '; background: #E9F5D6' : '') });
+const tabs = [
+tab('Overview', 'M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z', 'DashboardMobile.dc.html', true),
+tab('Vehicles', 'M2 16V8h11l4 3h4v5H2z', '#', false),
+tab('Results', 'M5 3h14v18H5zM9 7h6M9 11h6M9 15h3', '#', false),
+tab('Team', 'M9 4.5a3.5 3.5 0 1 1 0 7a3.5 3.5 0 1 1 0-7M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7', 'TeamMobile.dc.html', false)
+];
+const pill = (bg, fg) => 'display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; font-size: 13px; font-weight: 600; background: ' + bg + '; color: ' + fg;
+const groups = [
+{ name: 'Mercedes Sprinter', type: 'Van', count: 10, city: 'Berlin', payback: '4 yrs 4 mo', state: 'done' },
+{ name: 'Scania R450', type: 'Truck', count: 6, city: 'Hamburg', payback: '5 yrs 1 mo', state: 'report' },
+{ name: 'Solaris Urbino 12', type: 'Bus', count: 4, city: 'Leipzig', payback: '5 yrs 0 mo', state: 'done' },
+{ name: 'Krone Cool Liner', type: 'Trailer', count: 4, city: 'Berlin', payback: '—', state: 'todo' }
+].map((r) => {
+const waiting = r.state === 'todo';
+const bg = waiting ? '#FBEFD6' : '#E9F5D6';
+const fg = waiting ? '#7A4F0B' : '#2F5A1E';
+return { ...r, status: r.state === 'done' ? 'Calculated' : r.state === 'report' ? 'Making PDF…' : 'Needs calculation', statusStyle: pill(bg, fg), dotStyle: 'width: 8px; height: 8px; border-radius: 999px; background: ' + fg, dotClass: r.state === 'report' ? 'pulse' : '' };
+});
+return { tabs, groups };
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daylight design previews</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+:root{--ground:#F6F4EE;--surface:#FFFFFF;--ink:#16231B;--muted:#4F5F55;--line:#DEE3DA;--lime:#B6F065}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:'Instrument Sans',system-ui,sans-serif}
+main{max-width:1280px;margin:0 auto;padding:48px 24px 80px;@media (max-width:600px){padding:32px 16px 56px}}
+h1{margin:0 0 8px;font-family:'Bricolage Grotesque',sans-serif;font-size:44px;font-weight:800;letter-spacing:-.02em;@media (max-width:600px){font-size:32px}}
+h2{margin:48px 0 16px;font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:700}
+p{margin:0;color:var(--muted);line-height:1.55;max-width:720px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .2s ease,box-shadow .2s ease;&:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgb(22 35 27 / .10)}&:focus-visible{outline:2px solid var(--ink);outline-offset:2px}}
+.thumb{position:relative;height:300px;overflow:hidden;background:var(--ground);border-bottom:1px solid var(--line)}
+.thumb iframe{position:absolute;top:0;left:50%;border:0;pointer-events:none;transform-origin:top center}
+.meta{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;font-size:15px;font-weight:600}
+.size{font-size:13px;font-weight:500;color:var(--muted);white-space:nowrap}
+code{font-size:.9em;background:#EEF1EA;padding:2px 6px;border-radius:6px}
+</style>
+</head>
+<body>
+<main>
+<h1>Daylight — design previews</h1>
+<p>Static snapshots of every screen on the design canvas. Click a card to open the screen at full size. Interactive states (calculator steps, tabs, filters) show their default state here. The spec is <code>docs/design-guidelines.md</code>; all names and numbers are sample data.</p>
+
+<h2>Public · desktop</h2>
+<div class="grid">
+<a class="card" href="Main.html"><div class="thumb"><iframe src="Main.html" title="Home preview" width="1440" height="1560" loading="lazy" tabindex="-1" style="transform:translateX(-50%) scale(.22)"></iframe></div><div class="meta">Home<span class="size">1440</span></div></a>
+<a class="card" href="Calculator.html"><div class="thumb"><iframe src="Calculator.html" title="Calculator preview" width="1440" height="960" loading="lazy" tabindex="-1" style="transform:translateX(-50%) scale(.22)"></iframe></div><div class="meta">Calculator<span class="size">1440</span></div></a>
+<a class="card" href="Results.html"><div class="thumb"><iframe src="Results.html" title="Results preview" width="1440" height="1300" loading="lazy" tabindex="-1" style="transform:translateX(-50%) scale(.22)"></iframe></div><div class="meta">Results<span class="size">1440</span></div></a>
+<a class="card" href="Login.html"><div class="thumb"><iframe src="Login.html" title="Log in preview" width="1440" height="900" loading="lazy" tabindex="-1" style="transform:translateX(-50%) scale(.22)"></iframe></div><div class="meta">Log in / Create account<span class="size">1440</span></div></a>
+</div>
+
+<h2>Signed-in workspace · desktop</h2>
+<div class="grid">
+<a class="card" href="Dashboard.html"><div class="thumb"><iframe src="Dashboard.html" title="Fleet dashboard preview" width="1440" height="1000" loading="lazy" tabindex="-1" style="transform:translateX(-50%) scale(.22)"></iframe></div><div class="meta">Fleet dashboard<span class="size">1440</span></div></a>
+<a class="card" href="Audit.html"><div class="thumb"><iframe src="Audit.html" title="Team and activity preview" width="1440" height="1000" loading="lazy" tabindex="-1" style="transform:translateX(-50%) scale(.22)"></iframe></div><div class="meta">Team &amp; activity<span class="size">1440</span></div></a>
+<a class="card" href="DashboardDark.html"><div class="thumb"><iframe src="DashboardDark.html" title="Fleet dashboard dark preview" width="1440" height="1000" loading="lazy" tabindex="-1" style="transform:translateX(-50%) scale(.22)"></iframe></div><div class="meta">Fleet dashboard · dark<span class="size">1440</span></div></a>
+<a class="card" href="AuditDark.html"><div class="thumb"><iframe src="AuditDark.html" title="Team and activity dark preview" width="1440" height="1000" loading="lazy" tabindex="-1" style="transform:translateX(-50%) scale(.22)"></iframe></div><div class="meta">Team &amp; activity · dark<span class="size">1440</span></div></a>
+</div>
+
+<h2>Tablet · 834 px</h2>
+<div class="grid">
+<a class="card" href="HomeTablet.html"><div class="thumb"><iframe src="HomeTablet.html" title="Home tablet preview" width="834" height="1900" loading="lazy" tabindex="-1" style="transform:translateX(-50%) scale(.36)"></iframe></div><div class="meta">Home<span class="size">834</span></div></a>
+<a class="card" href="CalculatorTablet.html"><div class="thumb"><iframe src="CalculatorTablet.html" title="Calculator tablet preview" width="834" height="1194" loading="lazy" tabindex="-1" style="transform:translateX(-50%) scale(.36)"></iframe></div><div class="meta">Calculator<span class="size">834</span></div></a>
+<a class="card" href="ResultsTablet.html"><div class="thumb"><iframe src="ResultsTablet.html" title="Results tablet preview" width="834" height="1720" loading="lazy" tabindex="-1" style="transform:translateX(-50%) scale(.36)"></iframe></div><div class="meta">Results<span class="size">834</span></div></a>
+<a class="card" href="LoginTablet.html"><div class="thumb"><iframe src="LoginTablet.html" title="Log in tablet preview" width="834" height="1194" loading="lazy" tabindex="-1" style="transform:translateX(-50%) scale(.36)"></iframe></div><div class="meta">Log in<span class="size">834</span></div></a>
+<a class="card" href="DashboardTablet.html"><div class="thumb"><iframe src="DashboardTablet.html" title="Fleet dashboard tablet preview" width="834" height="1360" loading="lazy" tabindex="-1" style="transform:translateX(-50%) scale(.36)"></iframe></div><div class="meta">Fleet dashboard<span class="size">834</span></div></a>
+<a class="card" href="TeamTablet.html"><div class="thumb"><iframe src="TeamTablet.html" title="Team and activity tablet preview" width="834" height="1480" loading="lazy" tabindex="-1" style="transform:translateX(-50%) scale(.36)"></iframe></div><div class="meta">Team &amp; activity<span class="size">834</span></div></a>
+</div>
+
+<h2>Mobile · 390 px</h2>
+<div class="grid">
+<a class="card" href="HomeMobile.html"><div class="thumb"><iframe src="HomeMobile.html" title="Home mobile preview" width="390" height="2060" loading="lazy" tabindex="-1" style="transform:translateX(-50%) scale(.7)"></iframe></div><div class="meta">Home<span class="size">390</span></div></a>
+<a class="card" href="Mobile.html"><div class="thumb"><iframe src="Mobile.html" title="Calculator mobile preview" width="390" height="844" loading="lazy" tabindex="-1" style="transform:translateX(-50%) scale(.7)"></iframe></div><div class="meta">Calculator<span class="size">390</span></div></a>
+<a class="card" href="ResultsMobile.html"><div class="thumb"><iframe src="ResultsMobile.html" title="Results mobile preview" width="390" height="1960" loading="lazy" tabindex="-1" style="transform:translateX(-50%) scale(.7)"></iframe></div><div class="meta">Results<span class="size">390</span></div></a>
+<a class="card" href="LoginMobile.html"><div class="thumb"><iframe src="LoginMobile.html" title="Log in mobile preview" width="390" height="844" loading="lazy" tabindex="-1" style="transform:translateX(-50%) scale(.7)"></iframe></div><div class="meta">Log in<span class="size">390</span></div></a>
+<a class="card" href="DashboardMobile.html"><div class="thumb"><iframe src="DashboardMobile.html" title="Fleet dashboard mobile preview" width="390" height="1440" loading="lazy" tabindex="-1" style="transform:translateX(-50%) scale(.7)"></iframe></div><div class="meta">Fleet dashboard<span class="size">390</span></div></a>
+<a class="card" href="TeamMobile.html"><div class="thumb"><iframe src="TeamMobile.html" title="Team and activity mobile preview" width="390" height="1240" loading="lazy" tabindex="-1" style="transform:translateX(-50%) scale(.7)"></iframe></div><div class="meta">Team &amp; activity<span class="size">390</span></div></a>
+</div>
+</main>
+</body>
+</html>

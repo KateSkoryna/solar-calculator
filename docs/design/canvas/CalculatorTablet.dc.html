@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Calculator, tablet</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;font-family:'Instrument Sans',system-ui,sans-serif;color:#16231B;background:#F6F4EE}
+a{color:#1F3A2B}a:hover{color:#0F1F16}
+.choice{transition:border-color .15s ease,transform .15s ease;cursor:pointer;&:hover{transform:translateY(-2px)}}
+</style>
+</helmet>
+<div style="width: 834px; height: 1194px; box-sizing: border-box; background: #F6F4EE; display: flex; flex-direction: column">
+
+<header style="height: 72px; box-sizing: border-box; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #DEE3DA">
+<a href="HomeTablet.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #16231B; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 19px">
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1F3A2B" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5" fill="#B6F065"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+Solar Calculator
+</a>
+<span style="font-size: 14px; color: #4A5A50">Answers saved automatically</span>
+</header>
+
+<nav aria-label="Steps" style="padding: 24px 40px 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{steps}}" as="step" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="{{step.barStyle}}"></div>
+<span style="{{step.labelStyle}}">{{step.number}} · {{step.label}}</span>
+</div>
+</sc-for>
+</nav>
+
+<main style="padding: 40px; display: flex; flex-direction: column; gap: 28px; flex-grow: 1">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 40px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1">What kind of vehicles do you have?</h1>
+<p style="margin: 0; font-size: 18px; color: #4A5A50">Pick the one that fits most of your fleet.</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<sc-for list="{{vehicles}}" as="vehicle" hint-placeholder-count="4">
+<button type="button" class="choice" aria-pressed="{{vehicle.pressed}}" style="{{vehicle.cardStyle}}">
+<span style="width: 64px; height: 64px; flex-shrink: 0; border-radius: 18px; background: #F6F4EE; display: flex; align-items: center; justify-content: center">
+<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1F3A2B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="{{vehicle.iconPath}}"></path><circle cx="6.5" cy="17.5" r="1.8"></circle><circle cx="17.5" cy="17.5" r="1.8"></circle></svg>
+</span>
+<span style="display: flex; flex-direction: column; gap: 4px; text-align: left">
+<span style="font-size: 19px; font-weight: 600; color: #16231B">{{vehicle.label}}</span>
+<span style="font-size: 14px; color: #5A6A60">{{vehicle.example}}</span>
+</span>
+</button>
+</sc-for>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px">
+<label for="tab-count" style="font-size: 18px; font-weight: 600">How many?</label>
+<div style="display: flex; align-items: center; gap: 12px">
+<button type="button" aria-label="Fewer vehicles" style="width: 56px; height: 56px; border-radius: 16px; border: 1px solid #C9D2C6; background: #FFFFFF; font-size: 24px; color: #16231B">−</button>
+<input id="tab-count" type="text" inputmode="numeric" value="10" style="width: 120px; height: 56px; box-sizing: border-box; border-radius: 16px; border: 1px solid #C9D2C6; background: #FFFFFF; text-align: center; font: 600 22px 'Instrument Sans', sans-serif; color: #16231B">
+<button type="button" aria-label="More vehicles" style="width: 56px; height: 56px; border-radius: 16px; border: 1px solid #C9D2C6; background: #FFFFFF; font-size: 24px; color: #16231B">+</button>
+</div>
+</div>
+
+<details style="margin-top: auto; background: #EEF1EA; border-radius: 20px; padding: 18px 22px">
+<summary style="cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 16px; font-weight: 600">
+<span>Your answers · 10 × Van</span>
+<span style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #2F5A1E">Accuracy: Rough
+<span style="width: 80px; height: 8px; border-radius: 999px; background: #D5DCCF; overflow: hidden; display: inline-block"><span style="display: block; width: 25%; height: 100%; background: #7FB33A"></span></span></span>
+</summary>
+<p style="margin: 12px 0 0; font-size: 15px; color: #4A5A50">Each answer makes your result more precise.</p>
+</details>
+</main>
+
+<footer style="padding: 20px 40px; border-top: 1px solid #DEE3DA; display: flex; justify-content: space-between; align-items: center">
+<button type="button" style="height: 56px; padding: 0 28px; border-radius: 999px; border: 1px solid #C9D2C6; background: transparent; font: 600 16px 'Instrument Sans', sans-serif; color: #16231B">Back</button>
+<button type="button" style="height: 56px; padding: 0 40px; border-radius: 999px; border: 0; background: #B6F065; color: #16231B; font: 600 17px 'Instrument Sans', sans-serif">Continue</button>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":834,"height":1194}}'>
+class Component extends DCLogic {
+renderVals() {
+const current = 1;
+const steps = ['Vehicles', 'Driving', 'Location', 'Panels'].map((label, i) => ({
+label,
+number: i + 1,
+barStyle: 'height: 6px; border-radius: 999px; background: ' + (i + 1 <= current ? '#16231B' : '#E3E7DF'),
+labelStyle: 'font-size: 14px; color: ' + (i + 1 === current ? '#16231B' : '#5A6A60') + '; font-weight: ' + (i + 1 === current ? '600' : '500')
+}));
+const base = 'border-radius: 20px; padding: 20px; display: flex; align-items: center; gap: 16px; font: inherit; ';
+const vehicles = [
+{ id: 'van', label: 'Van', example: 'Sprinter, Transit', iconPath: 'M2 16V8h11l4 3h4v5H2z' },
+{ id: 'truck', label: 'Truck', example: 'Actros, FH16', iconPath: 'M2 16V6h12v10M14 10h4l3 3v3h-7' },
+{ id: 'bus', label: 'Bus', example: 'Citaro, Urbino', iconPath: 'M2 16V6h19v10H2zM2 11h19' },
+{ id: 'trailer', label: 'Trailer', example: 'Box, reefer', iconPath: 'M2 16V7h17v9H2zM19 13h3' }
+].map((v) => ({ ...v, pressed: String(v.id === 'van'), cardStyle: base + (v.id === 'van' ? 'border: 2px solid #16231B; background: #FFFFFF; box-shadow: 0 0 0 4px #E9F5D6;' : 'border: 2px solid #DEE3DA; background: #FFFFFF;') }));
+return { steps, vehicles };
+}
+}
+</script>
+</body>
+</html>

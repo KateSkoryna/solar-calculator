@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Results, mobile</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;font-family:'Instrument Sans',system-ui,sans-serif;color:#16231B;background:#F6F4EE}
+a{color:#1F3A2B}a:hover{color:#0F1F16}
+.grow{transform-origin:bottom;animation:grow .8s cubic-bezier(.2,.7,.2,1) both;@media (prefers-reduced-motion:reduce){animation:none}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+</style>
+</helmet>
+<div style="width: 390px; height: 1960px; box-sizing: border-box; background: #F6F4EE; display: flex; flex-direction: column">
+
+<header style="height: 60px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; justify-content: space-between">
+<a href="Mobile.dc.html" aria-label="Change answers" style="width: 44px; height: 44px; border-radius: 999px; border: 1px solid #DEE3DA; background: #FFFFFF; display: flex; align-items: center; justify-content: center">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16231B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>
+</a>
+<span style="font-size: 15px; font-weight: 600">Your result</span>
+<button type="button" aria-label="Share" style="width: 44px; height: 44px; border-radius: 999px; border: 1px solid #DEE3DA; background: #FFFFFF; display: flex; align-items: center; justify-content: center">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16231B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 8l5-5 5 5M5 14v6h14v-6"></path></svg>
+</button>
+</header>
+
+<section style="padding: 20px 16px 24px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 14px; color: #4A5A50">
+<span>10 vans · Berlin · Roof</span>
+<span style="font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: #EEF1EA">Sample figures</span>
+</div>
+<h1 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 36px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1">Yes — pays for itself in about <span style="background: #B6F065; padding: 0 8px; border-radius: 10px">4 yrs 4 mo</span>.</h1>
+<p style="margin: 0; font-size: 17px; color: #4A5A50; line-height: 1.5">After that, you keep around €4,200 a year that would otherwise go on fuel.</p>
+</section>
+
+<section style="padding: 0 16px; display: flex; flex-direction: column; gap: 12px">
+<sc-for list="{{tiles}}" as="tile" hint-placeholder-count="4">
+<div style="{{tile.boxStyle}}">
+<span style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+<span style="{{tile.labelStyle}}">{{tile.label}}</span>
+<span style="{{tile.noteStyle}}">{{tile.note}}</span>
+</span>
+<span style="{{tile.valueStyle}}">{{tile.value}}</span>
+</div>
+</sc-for>
+</section>
+
+<section style="margin: 24px 16px 0; background: #FFFFFF; border: 1px solid #DEE3DA; border-radius: 22px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 22px; font-weight: 700">When do you get your money back?</h2>
+<p style="margin: 0; font-size: 14px; color: #4A5A50">Once savings pass the dashed line, the panels are paid off.</p>
+<div style="position: relative; height: 200px; display: flex; align-items: flex-end; gap: 6px; border-bottom: 1px solid #C9D2C6">
+<div style="position: absolute; left: 0; right: 0; bottom: 86px; border-top: 2px dashed #16231B"></div>
+<div style="position: absolute; left: 0; bottom: 92px; font-size: 12px; font-weight: 600; background: #FFFFFF; padding-right: 6px">Cost €18k</div>
+<sc-for list="{{bars}}" as="bar" hint-placeholder-count="10">
+<div class="grow" style="{{bar.style}}"></div>
+</sc-for>
+</div>
+<div style="display: flex; justify-content: space-between; font-size: 12px; color: #5A6A60"><span>Year 1</span><span>Year 5</span><span>Year 10</span></div>
+<div style="display: flex; gap: 16px; font-size: 13px; color: #4A5A50">
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 12px; height: 12px; border-radius: 3px; background: #D5DCCF"></span>Paying off</span>
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 12px; height: 12px; border-radius: 3px; background: #7FB33A"></span>Pure profit</span>
+</div>
+</section>
+
+<section style="margin: 16px 16px 0">
+<details style="background: #FFFFFF; border: 1px solid #DEE3DA; border-radius: 18px; padding: 18px 20px">
+<summary style="cursor: pointer; font-size: 16px; font-weight: 600">How we calculated this</summary>
+<p style="margin: 10px 0 0; font-size: 14px; line-height: 1.6; color: #4A5A50">Based on Berlin's sunshine, today's diesel price and typical panel wear. Calculated 29 Sep 2026 · method v2.1.</p>
+</details>
+</section>
+
+<footer style="margin-top: auto; padding: 16px; border-top: 1px solid #DEE3DA; background: #F6F4EE; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<a href="LoginMobile.dc.html" style="height: 54px; border-radius: 999px; border: 1px solid #C9D2C6; display: flex; align-items: center; justify-content: center; text-decoration: none; font-weight: 600; font-size: 16px">Save</a>
+<button type="button" style="height: 54px; border-radius: 999px; border: 0; background: #16231B; color: #F6F4EE; font: 600 16px 'Instrument Sans', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M6 10l6 6 6-6M4 20h16"></path></svg>PDF</button>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1960}}'>
+class Component extends DCLogic {
+renderVals() {
+const light = { box: 'background: #FFFFFF; border: 1px solid #DEE3DA;', label: '#4A5A50', value: '#16231B', note: '#5A6A60' };
+const dark = { box: 'background: #16231B;', label: '#C9D4CC', value: '#B6F065', note: '#C9D4CC' };
+const tiles = [
+{ label: 'Saved each year', value: '€4,200', note: 'Less fuel burned', theme: light },
+{ label: 'One-time cost', value: '€18,000', note: 'Panels + installation', theme: light },
+{ label: 'CO₂ avoided / year', value: '6.1 t', note: 'About 300 trees', theme: light },
+{ label: 'Gain over 10 years', value: '€24,000', note: 'After paying off', theme: dark }
+].map((x) => ({
+...x,
+boxStyle: x.theme.box + ' border-radius: 18px; padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px',
+labelStyle: 'font-size: 15px; font-weight: 600; color: ' + x.theme.label,
+valueStyle: 'font-family: \'Bricolage Grotesque\', sans-serif; font-size: 30px; font-weight: 800; letter-spacing: -0.02em; white-space: nowrap; color: ' + x.theme.value,
+noteStyle: 'font-size: 13px; color: ' + x.theme.note
+}));
+const bars = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((year) => ({
+style: 'flex-grow: 1; flex-basis: 0; border-radius: 5px 5px 0 0; height: ' + (year * 20) + 'px; background: ' + (year <= 4 ? '#D5DCCF' : '#7FB33A') + '; animation-delay: ' + (year * 0.05) + 's'
+}));
+return { tiles, bars };
+}
+}
+</script>
+</body>
+</html>

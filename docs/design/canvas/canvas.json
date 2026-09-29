@@ -1,0 +1,217 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Audit.dc.html": {
+      "h": 1000,
+      "is_interactive": true,
+      "title": "Team & activity (clickable filters)",
+      "w": 1440,
+      "x": 3040,
+      "y": 1940
+    },
+    "AuditDark.dc.html": {
+      "h": 1000,
+      "is_interactive": true,
+      "title": "Team & activity · dark",
+      "w": 1440,
+      "x": 3040,
+      "y": 3180
+    },
+    "Calculator.dc.html": {
+      "h": 960,
+      "is_interactive": true,
+      "title": "Calculator (clickable)",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "CalculatorTablet.dc.html": {
+      "h": 1194,
+      "title": "Calculator · tablet",
+      "w": 834,
+      "x": 914,
+      "y": 4700
+    },
+    "Dashboard.dc.html": {
+      "h": 1000,
+      "title": "Fleet dashboard",
+      "w": 1440,
+      "x": 1520,
+      "y": 1940
+    },
+    "DashboardDark.dc.html": {
+      "h": 1000,
+      "title": "Fleet dashboard · dark",
+      "w": 1440,
+      "x": 1520,
+      "y": 3180
+    },
+    "DashboardMobile.dc.html": {
+      "h": 1440,
+      "title": "Fleet dashboard · mobile",
+      "w": 390,
+      "x": 1880,
+      "y": 7120
+    },
+    "DashboardTablet.dc.html": {
+      "h": 1360,
+      "title": "Fleet dashboard · tablet",
+      "w": 834,
+      "x": 3656,
+      "y": 4700
+    },
+    "HomeMobile.dc.html": {
+      "h": 2060,
+      "title": "Home · mobile",
+      "w": 390,
+      "x": 0,
+      "y": 7120
+    },
+    "HomeTablet.dc.html": {
+      "h": 1900,
+      "title": "Home · tablet",
+      "w": 834,
+      "x": 0,
+      "y": 4700
+    },
+    "Login.dc.html": {
+      "h": 900,
+      "is_interactive": true,
+      "title": "Log in / Create account (clickable)",
+      "w": 1440,
+      "x": 0,
+      "y": 1940
+    },
+    "LoginMobile.dc.html": {
+      "h": 844,
+      "title": "Log in · mobile",
+      "w": 390,
+      "x": 1410,
+      "y": 7120
+    },
+    "LoginTablet.dc.html": {
+      "h": 1194,
+      "title": "Log in · tablet",
+      "w": 834,
+      "x": 2742,
+      "y": 4700
+    },
+    "Main.dc.html": {
+      "h": 1560,
+      "title": "Home",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Mobile.dc.html": {
+      "h": 844,
+      "title": "Calculator · mobile",
+      "w": 390,
+      "x": 470,
+      "y": 7120
+    },
+    "Results.dc.html": {
+      "h": 1300,
+      "title": "Results",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "ResultsMobile.dc.html": {
+      "h": 1960,
+      "title": "Results · mobile",
+      "w": 390,
+      "x": 940,
+      "y": 7120
+    },
+    "ResultsTablet.dc.html": {
+      "h": 1720,
+      "title": "Results · tablet",
+      "w": 834,
+      "x": 1828,
+      "y": 4700
+    },
+    "TeamMobile.dc.html": {
+      "h": 1240,
+      "is_interactive": true,
+      "title": "Team & activity · mobile (clickable tabs)",
+      "w": 390,
+      "x": 2350,
+      "y": 7120
+    },
+    "TeamTablet.dc.html": {
+      "h": 1480,
+      "title": "Team & activity · tablet",
+      "w": 834,
+      "x": 4570,
+      "y": 4700
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-09-29T10:00:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "launch": {
+    "view": "canvas"
+  },
+  "notes": {
+    "heading": {
+      "kind": "title1",
+      "maxW": 4950,
+      "text": "Solar Calculator — Direction A: Daylight",
+      "w": 240,
+      "x": 0,
+      "y": -260
+    },
+    "mobile": {
+      "kind": "title1",
+      "maxW": 2740,
+      "text": "Mobile · 390 px",
+      "w": 240,
+      "x": 0,
+      "y": 6860
+    },
+    "tablet": {
+      "kind": "title1",
+      "maxW": 5404,
+      "text": "Tablet · 834 px",
+      "w": 240,
+      "x": 0,
+      "y": 4440
+    },
+    "workspace": {
+      "kind": "title1",
+      "maxW": 4480,
+      "text": "Signed-in workspace",
+      "w": 240,
+      "x": 0,
+      "y": 1680
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "Calculator.dc.html",
+    "Results.dc.html",
+    "Login.dc.html",
+    "Dashboard.dc.html",
+    "Audit.dc.html",
+    "DashboardDark.dc.html",
+    "AuditDark.dc.html",
+    "HomeTablet.dc.html",
+    "CalculatorTablet.dc.html",
+    "ResultsTablet.dc.html",
+    "LoginTablet.dc.html",
+    "DashboardTablet.dc.html",
+    "TeamTablet.dc.html",
+    "HomeMobile.dc.html",
+    "Mobile.dc.html",
+    "ResultsMobile.dc.html",
+    "LoginMobile.dc.html",
+    "DashboardMobile.dc.html",
+    "TeamMobile.dc.html"
+  ],
+  "pages": [],
+  "title": "Solar Calculator Redesign"
+}

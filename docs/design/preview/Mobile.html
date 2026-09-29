@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=390"><title>Calculator · mobile · Daylight design</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;font-family:'Instrument Sans',system-ui,sans-serif;color:#16231B;background:#F6F4EE}
+a{color:#1F3A2B}a:hover{color:#0F1F16}
+</style>
+</head><body>
+
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F6F4EE; display: flex; flex-direction: column">
+<header style="height: 60px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; justify-content: space-between">
+<button type="button" aria-label="Back" style="width: 44px; height: 44px; border-radius: 999px; border: 1px solid #DEE3DA; background: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer">
+<svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#16231B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>
+</button>
+<span style="font-size: 14px; font-weight: 600; color: #2F5A1E">Step 1 of 4</span>
+<span style="width: 44px"></span>
+</header>
+<div style="padding: 0 16px"><div style="height: 6px; border-radius: 999px; background: #E3E7DF; overflow: hidden"><div style="width: 25%; height: 100%; background: #16231B; border-radius: 999px"></div></div></div>
+
+<main style="padding: 28px 16px 16px; display: flex; flex-direction: column; gap: 20px; flex-grow: 1">
+<h1 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 32px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1">What kind of vehicles do you have?</h1>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<button type="button" aria-pressed="true" style="border-radius: 20px; padding: 18px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; border: 2px solid #16231B; background: #FFFFFF; box-shadow: 0 0 0 4px #E9F5D6; font: inherit; text-align: left">
+<svg width="36" height="36" viewbox="0 0 24 24" fill="none" stroke="#1F3A2B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16V8h11l4 3h4v5H2z"></path><circle cx="6.5" cy="17.5" r="1.8"></circle><circle cx="17.5" cy="17.5" r="1.8"></circle></svg>
+<span style="font-size: 17px; font-weight: 600; color: #16231B">Van</span>
+</button>
+<button type="button" aria-pressed="false" style="border-radius: 20px; padding: 18px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; border: 2px solid #DEE3DA; background: #FFFFFF; font: inherit; text-align: left">
+<svg width="36" height="36" viewbox="0 0 24 24" fill="none" stroke="#1F3A2B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16V6h12v10M14 10h4l3 3v3h-7"></path><circle cx="6.5" cy="17.5" r="1.8"></circle><circle cx="17.5" cy="17.5" r="1.8"></circle></svg>
+<span style="font-size: 17px; font-weight: 600; color: #16231B">Truck</span>
+</button>
+<button type="button" aria-pressed="false" style="border-radius: 20px; padding: 18px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; border: 2px solid #DEE3DA; background: #FFFFFF; font: inherit; text-align: left">
+<svg width="36" height="36" viewbox="0 0 24 24" fill="none" stroke="#1F3A2B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16V6h19v10H2zM2 11h19"></path><circle cx="6.5" cy="17.5" r="1.8"></circle><circle cx="17.5" cy="17.5" r="1.8"></circle></svg>
+<span style="font-size: 17px; font-weight: 600; color: #16231B">Bus</span>
+</button>
+<button type="button" aria-pressed="false" style="border-radius: 20px; padding: 18px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; border: 2px solid #DEE3DA; background: #FFFFFF; font: inherit; text-align: left">
+<svg width="36" height="36" viewbox="0 0 24 24" fill="none" stroke="#1F3A2B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16V7h17v9H2zM19 13h3"></path><circle cx="6.5" cy="17.5" r="1.8"></circle><circle cx="17.5" cy="17.5" r="1.8"></circle></svg>
+<span style="font-size: 17px; font-weight: 600; color: #16231B">Trailer</span>
+</button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<label for="m-count" style="font-size: 17px; font-weight: 600">How many?</label>
+<div style="display: flex; align-items: center; gap: 10px">
+<button type="button" aria-label="Fewer vehicles" style="width: 52px; height: 52px; border-radius: 16px; border: 1px solid #C9D2C6; background: #FFFFFF; font-size: 24px; color: #16231B">−</button>
+<input id="m-count" type="text" inputmode="numeric" value="10" style="flex-grow: 1; height: 52px; box-sizing: border-box; border-radius: 16px; border: 1px solid #C9D2C6; background: #FFFFFF; text-align: center; font: 600 22px 'Instrument Sans', sans-serif; color: #16231B">
+<button type="button" aria-label="More vehicles" style="width: 52px; height: 52px; border-radius: 16px; border: 1px solid #C9D2C6; background: #FFFFFF; font-size: 24px; color: #16231B">+</button>
+</div>
+</div>
+</main>
+
+<footer style="padding: 16px; border-top: 1px solid #DEE3DA; background: #F6F4EE; display: flex; flex-direction: column; gap: 10px">
+<button type="button" style="height: 56px; border-radius: 999px; border: 0; background: #B6F065; color: #16231B; font: 600 17px 'Instrument Sans', sans-serif">Continue</button>
+<span style="text-align: center; font-size: 13px; color: #5A6A60">Your answers are saved automatically</span>
+</footer>
+</div>
+</body></html>
