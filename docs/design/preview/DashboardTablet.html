@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=834"><title>Fleet dashboard · tablet · Daylight design</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;font-family:'Instrument Sans',system-ui,sans-serif;color:#16231B;background:#F6F4EE}
+a{color:inherit}
+.pulse{animation:pulse 1.6s ease-in-out infinite;@media (prefers-reduced-motion:reduce){animation:none}}
+.fill{animation:fill 1.2s cubic-bezier(.2,.7,.2,1) both;@media (prefers-reduced-motion:reduce){animation:none}}
+@keyframes pulse{50%{opacity:.35}}
+@keyframes fill{from{width:0}}
+</style>
+</head><body>
+
+<div style="width: 834px; height: 1360px; box-sizing: border-box; display: grid; grid-template-columns: 88px minmax(0, 1fr); background: #F6F4EE">
+
+<aside style="border-right: 1px solid #DEE3DA; background: #F1EEE6; padding: 20px 8px; display: flex; flex-direction: column; align-items: center; gap: 20px">
+<a href="HomeTablet.html" aria-label="Solar Calculator home" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center">
+<svg width="30" height="30" viewbox="0 0 24 24" fill="none" stroke="#1F3A2B" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5" fill="#B6F065"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+</a>
+<nav style="display: flex; flex-direction: column; gap: 6px; width: 100%">
+
+<a href="DashboardTablet.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 4px; border-radius: 14px; text-decoration: none; min-height: 56px; box-sizing: border-box; background: #16231B; color: #F6F4EE;">
+<svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z"></path></svg>
+<span style="font-size: 12px; font-weight: 600">Overview</span>
+</a>
+
+<a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 4px; border-radius: 14px; text-decoration: none; min-height: 56px; box-sizing: border-box; color: #16231B;">
+<svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16V8h11l4 3h4v5H2z"></path></svg>
+<span style="font-size: 12px; font-weight: 600">Vehicles</span>
+</a>
+
+<a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 4px; border-radius: 14px; text-decoration: none; min-height: 56px; box-sizing: border-box; color: #16231B;">
+<svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14v18H5zM9 7h6M9 11h6M9 15h3"></path></svg>
+<span style="font-size: 12px; font-weight: 600">Results</span>
+</a>
+
+<a href="TeamTablet.html" style="display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 4px; border-radius: 14px; text-decoration: none; min-height: 56px; box-sizing: border-box; color: #16231B;">
+<svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4.5a3.5 3.5 0 1 1 0 7a3.5 3.5 0 1 1 0-7M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7"></path></svg>
+<span style="font-size: 12px; font-weight: 600">Team</span>
+</a>
+
+</nav>
+<span style="margin-top: auto; width: 40px; height: 40px; border-radius: 999px; background: #B6F065; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600">AW</span>
+</aside>
+
+<main style="padding: 32px; display: flex; flex-direction: column; gap: 24px; min-width: 0">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<button type="button" style="align-self: flex-start; display: flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid #DEE3DA; background: #FFFFFF; font: 600 14px 'Instrument Sans', sans-serif; color: #16231B">Nordwind Logistics
+<svg width="14" height="14" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></button>
+<h1 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 34px; font-weight: 800; letter-spacing: -0.02em">Your fleet at a glance</h1>
+</div>
+<a href="CalculatorTablet.html" style="height: 48px; padding: 0 20px; border-radius: 999px; background: #B6F065; color: #16231B; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 600; font-size: 15px; flex-shrink: 0">
+<svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Add vehicles</a>
+</div>
+<span style="font-size: 13px; font-weight: 600; color: #4F5F55; margin-top: -12px">Sample data</span>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px">
+<div style="background: #16231B; border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 14px; font-weight: 600; color: #C9D4CC">Could save per year</span>
+<span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 34px; font-weight: 800; color: #B6F065">€11,300</span>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #DEE3DA; border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 14px; font-weight: 600; color: #4F5F55">Average payback</span>
+<span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 34px; font-weight: 800">4.8 years</span>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #DEE3DA; border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 14px; font-weight: 600; color: #4F5F55">CO₂ avoided per year</span>
+<span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 34px; font-weight: 800">16.4 t</span>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #DEE3DA; border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-size: 14px; font-weight: 600; color: #4F5F55">Not calculated yet</span>
+<span style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 34px; font-weight: 800">1 group</span>
+</div>
+</div>
+
+<section style="background: #FFFFFF; border: 1px solid #DEE3DA; border-radius: 22px; overflow: hidden">
+<div style="padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #DEE3DA">
+<h2 style="margin: 0; font-size: 18px; font-weight: 600">Vehicle groups</h2>
+<button type="button" aria-label="Search vehicles" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #DEE3DA; background: #F6F4EE; display: flex; align-items: center; justify-content: center">
+<svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="#16231B" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+</button>
+</div>
+
+<a href="ResultsTablet.html" style="display: flex; align-items: center; gap: 16px; padding: 16px 22px; text-decoration: none; color: #16231B; border-bottom: 1px solid #DEE3DA">
+<span style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1; min-width: 0">
+<span style="font-size: 16px; font-weight: 600">Mercedes Sprinter</span>
+<span style="font-size: 14px; color: #4F5F55">Van · 10 · Berlin</span>
+</span>
+<span style="display: flex; flex-direction: column; gap: 3px; align-items: flex-end; width: 110px">
+<span style="font-size: 12px; color: #4F5F55">Pays off in</span>
+<span style="font-size: 15px; font-weight: 600">4 yrs 4 mo</span>
+</span>
+<span style="display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; font-size: 13px; font-weight: 600; white-space: nowrap; width: 150px; box-sizing: border-box; justify-content: center; background: #E9F5D6; color: #2F5A1E"><span class="" style="width: 8px; height: 8px; border-radius: 999px; background: #2F5A1E"></span>Calculated</span>
+</a>
+
+<a href="ResultsTablet.html" style="display: flex; align-items: center; gap: 16px; padding: 16px 22px; text-decoration: none; color: #16231B; border-bottom: 1px solid #DEE3DA">
+<span style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1; min-width: 0">
+<span style="font-size: 16px; font-weight: 600">Scania R450</span>
+<span style="font-size: 14px; color: #4F5F55">Truck · 6 · Hamburg</span>
+</span>
+<span style="display: flex; flex-direction: column; gap: 3px; align-items: flex-end; width: 110px">
+<span style="font-size: 12px; color: #4F5F55">Pays off in</span>
+<span style="font-size: 15px; font-weight: 600">5 yrs 1 mo</span>
+</span>
+<span style="display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; font-size: 13px; font-weight: 600; white-space: nowrap; width: 150px; box-sizing: border-box; justify-content: center; background: #E9F5D6; color: #2F5A1E"><span class="pulse" style="width: 8px; height: 8px; border-radius: 999px; background: #2F5A1E"></span>Making PDF…</span>
+</a>
+
+<a href="ResultsTablet.html" style="display: flex; align-items: center; gap: 16px; padding: 16px 22px; text-decoration: none; color: #16231B; border-bottom: 1px solid #DEE3DA">
+<span style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1; min-width: 0">
+<span style="font-size: 16px; font-weight: 600">Solaris Urbino 12</span>
+<span style="font-size: 14px; color: #4F5F55">Bus · 4 · Leipzig</span>
+</span>
+<span style="display: flex; flex-direction: column; gap: 3px; align-items: flex-end; width: 110px">
+<span style="font-size: 12px; color: #4F5F55">Pays off in</span>
+<span style="font-size: 15px; font-weight: 600">5 yrs 0 mo</span>
+</span>
+<span style="display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; font-size: 13px; font-weight: 600; white-space: nowrap; width: 150px; box-sizing: border-box; justify-content: center; background: #E9F5D6; color: #2F5A1E"><span class="" style="width: 8px; height: 8px; border-radius: 999px; background: #2F5A1E"></span>Calculated</span>
+</a>
+
+<a href="ResultsTablet.html" style="display: flex; align-items: center; gap: 16px; padding: 16px 22px; text-decoration: none; color: #16231B; border-bottom: 1px solid #DEE3DA">
+<span style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1; min-width: 0">
+<span style="font-size: 16px; font-weight: 600">Krone Cool Liner</span>
+<span style="font-size: 14px; color: #4F5F55">Trailer · 4 · Berlin</span>
+</span>
+<span style="display: flex; flex-direction: column; gap: 3px; align-items: flex-end; width: 110px">
+<span style="font-size: 12px; color: #4F5F55">Pays off in</span>
+<span style="font-size: 15px; font-weight: 600">—</span>
+</span>
+<span style="display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; font-size: 13px; font-weight: 600; white-space: nowrap; width: 150px; box-sizing: border-box; justify-content: center; background: #FBEFD6; color: #7A4F0B"><span class="" style="width: 8px; height: 8px; border-radius: 999px; background: #7A4F0B"></span>Needs calculation</span>
+</a>
+
+</section>
+
+<section style="background: #FFFFFF; border: 1px solid #DEE3DA; border-radius: 22px; padding: 20px 22px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><h2 style="margin: 0; font-size: 17px; font-weight: 600">PDF report in progress</h2><span style="font-size: 13px; color: #4F5F55">Scania R450 · 6 trucks</span></div>
+<div style="height: 10px; border-radius: 999px; background: #E3E7DF; overflow: hidden"><div class="fill" style="width: 64%; height: 100%; border-radius: 999px; background: #7FB33A"></div></div>
+<div style="display: flex; justify-content: space-between; font-size: 14px; color: #4F5F55"><span>Drawing charts… step 4 of 6</span><span>About 30 seconds left</span></div>
+</section>
+</main>
+</div>
+</body></html>

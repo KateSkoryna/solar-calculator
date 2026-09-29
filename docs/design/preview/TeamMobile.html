@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=390"><title>Team &amp; activity · mobile (clickable tabs) · Daylight design</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;font-family:'Instrument Sans',system-ui,sans-serif;color:#16231B;background:#F6F4EE}
+a{color:inherit}
+.swap{animation:swap .3s cubic-bezier(.2,.7,.2,1) both;@media (prefers-reduced-motion:reduce){animation:none}}
+@keyframes swap{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+</style>
+</head><body>
+
+<div style="width: 390px; height: 1240px; box-sizing: border-box; background: #F6F4EE; display: flex; flex-direction: column">
+
+<header style="padding: 16px 16px 0; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; color: #4F5F55">Nordwind Logistics · <span style="font-weight: 600">Sample data</span></span>
+<h1 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 30px; font-weight: 800; letter-spacing: -0.02em">Team &amp; activity</h1>
+</div>
+<div role="tablist" aria-label="Section" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 4px; border-radius: 999px; background: #E9ECE4">
+<button type="button" role="tab" aria-selected="true" style="height: 44px; border-radius: 999px; border: 0; font: 600 15px 'Instrument Sans', sans-serif; cursor: pointer; background: #FFFFFF; color: #16231B; box-shadow: 0 1px 3px rgba(22,35,27,.12);">Activity</button>
+<button type="button" role="tab" aria-selected="false" style="height: 44px; border-radius: 999px; border: 0; font: 600 15px 'Instrument Sans', sans-serif; cursor: pointer; background: transparent; color: #4F5F55;">Team · 4</button>
+</div>
+</header>
+
+<main style="padding: 16px; display: flex; flex-direction: column; gap: 10px">
+
+<div class="swap" style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; gap: 8px; overflow: hidden">
+<button type="button" aria-pressed="true" style="height: 40px; padding: 0 14px; flex-shrink: 0; border-radius: 999px; border: 1px solid #16231B; background: #16231B; color: #F6F4EE; font: 600 14px 'Instrument Sans', sans-serif">Everything</button>
+<button type="button" aria-pressed="false" style="height: 40px; padding: 0 14px; flex-shrink: 0; border-radius: 999px; border: 1px solid #DEE3DA; background: #FFFFFF; color: #16231B; font: 600 14px 'Instrument Sans', sans-serif">Vehicles</button>
+<button type="button" aria-pressed="false" style="height: 40px; padding: 0 14px; flex-shrink: 0; border-radius: 999px; border: 1px solid #DEE3DA; background: #FFFFFF; color: #16231B; font: 600 14px 'Instrument Sans', sans-serif">Calculations</button>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #DEE3DA; border-radius: 16px; padding: 14px; display: flex; gap: 12px; align-items: flex-start">
+<span style="width: 32px; height: 32px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #F6F4EE">
+<svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#16231B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14v18H5zM9 7h6M9 11h6M9 15h3"></path></svg>
+</span>
+<span style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 15px; line-height: 1.45"><span style="font-weight: 600">Jonas</span> recalculated Mercedes Sprinter ×10 — payback now 4 yrs 4 mo (was 4 yrs 7 mo)</span>
+<span style="font-size: 13px; color: #4F5F55">Today, 09:42</span>
+</span>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #DEE3DA; border-radius: 16px; padding: 14px; display: flex; gap: 12px; align-items: flex-start">
+<span style="width: 32px; height: 32px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #F6F4EE">
+<svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#16231B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16V8h11l4 3h4v5H2z"></path></svg>
+</span>
+<span style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 15px; line-height: 1.45"><span style="font-weight: 600">Anna</span> added Solaris Urbino 12 ×4 in Leipzig</span>
+<span style="font-size: 13px; color: #4F5F55">Yesterday, 16:10</span>
+</span>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #DEE3DA; border-radius: 16px; padding: 14px; display: flex; gap: 12px; align-items: flex-start">
+<span style="width: 32px; height: 32px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #F6F4EE">
+<svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#16231B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4.5a3.5 3.5 0 1 1 0 7a3.5 3.5 0 1 1 0-7M2.5 20a6.5 6.5 0 0 1 13 0"></path></svg>
+</span>
+<span style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 15px; line-height: 1.45"><span style="font-weight: 600">Anna</span> changed Tom from Manager to Viewer</span>
+<span style="font-size: 13px; color: #4F5F55">Yesterday, 11:03</span>
+</span>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #DEE3DA; border-radius: 16px; padding: 14px; display: flex; gap: 12px; align-items: flex-start">
+<span style="width: 32px; height: 32px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #F6F4EE">
+<svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#16231B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16V8h11l4 3h4v5H2z"></path></svg>
+</span>
+<span style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 15px; line-height: 1.45"><span style="font-weight: 600">Mira</span> changed daily distance for Scania R450 from 180 km to 220 km</span>
+<span style="font-size: 13px; color: #4F5F55">27 Sep, 14:55</span>
+</span>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #DEE3DA; border-radius: 16px; padding: 14px; display: flex; gap: 12px; align-items: flex-start">
+<span style="width: 32px; height: 32px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #F6F4EE">
+<svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="#16231B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14v18H5zM9 7h6M9 11h6M9 15h3"></path></svg>
+</span>
+<span style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 15px; line-height: 1.45"><span style="font-weight: 600">Mira</span> ran a new calculation for Scania R450 ×6</span>
+<span style="font-size: 13px; color: #4F5F55">27 Sep, 14:58</span>
+</span>
+</div>
+
+<button type="button" style="height: 48px; border-radius: 999px; border: 1px solid #C9D2C6; background: transparent; font: 600 15px 'Instrument Sans', sans-serif; color: #16231B">Show older</button>
+</div>
+
+
+
+</main>
+
+<nav aria-label="Main" style="margin-top: auto; height: 76px; box-sizing: border-box; padding: 8px 8px 12px; border-top: 1px solid #DEE3DA; background: #FFFFFF; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
+
+<a href="DashboardMobile.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; border-radius: 12px; color: #5A6A60">
+<svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z"></path></svg>
+<span style="font-size: 12px; font-weight: 600">Overview</span>
+</a>
+
+<a href="#" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; border-radius: 12px; color: #5A6A60">
+<svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16V8h11l4 3h4v5H2z"></path></svg>
+<span style="font-size: 12px; font-weight: 600">Vehicles</span>
+</a>
+
+<a href="#" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; border-radius: 12px; color: #5A6A60">
+<svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14v18H5zM9 7h6M9 11h6M9 15h3"></path></svg>
+<span style="font-size: 12px; font-weight: 600">Results</span>
+</a>
+
+<a href="TeamMobile.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-decoration: none; border-radius: 12px; color: #16231B; background: #E9F5D6">
+<svg width="22" height="22" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4.5a3.5 3.5 0 1 1 0 7a3.5 3.5 0 1 1 0-7M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7"></path></svg>
+<span style="font-size: 12px; font-weight: 600">Team</span>
+</a>
+
+</nav>
+</div>
+</body></html>
