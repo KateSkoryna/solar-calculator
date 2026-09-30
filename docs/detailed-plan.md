@@ -131,7 +131,7 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 |------|-------|--------|-------|
 | 1.1 | PII inventory and log redaction | DONE | |
 | 1.2 | Authorization and audit API tests | DONE | |
-| 1.3 | Passwordless sign-in with email links (Gmail SMTP) | TODO | Owner creates a Gmail app password |
+| 1.3 | Passwordless sign-in with email links (Gmail SMTP) | DONE | |
 | 1.4 | Security model, threat model and ADRs | TODO | |
 | 2.1 | Research assumption set v1 | TODO | Owner reviews every value |
 | 2.2 | Pure calculation engine | TODO | |
