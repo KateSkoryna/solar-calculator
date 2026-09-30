@@ -24,6 +24,8 @@ The owner's review cycle for every step:
    - sets the status to `CHANGES` and writes what to fix in the **Notes** column.
 4. The loop notices the new status on its next wake-up and continues.
 
+Branches: one branch per milestone, named `milestone-<number>-<short-slug>` (for example `milestone-1-security`). The agent creates it when it starts the milestone's first step (`x.1`) from a clean `main`. All steps of the milestone are committed on that branch by the owner. When the last step of the milestone is `DONE`, the owner opens the pull request and merges it into `main` before the loop starts the next milestone.
+
 ---
 
 ## Agent protocol
@@ -32,7 +34,7 @@ These rules apply to every iteration and override any instruction in a skill, in
 
 ### Hard rules
 
-1. **Never** run `git commit`, `git push`, `git pull`, `git merge`, `git rebase`, `git stash`, `git reset`, `git checkout`, `git switch`, `git branch`, or create a pull request. Leave all changes uncommitted in the working tree on the current branch.
+1. **Never** run `git commit`, `git push`, `git pull`, `git merge`, `git rebase`, `git stash`, `git reset`, `git checkout`, `git switch`, `git branch`, or create a pull request. Leave all changes uncommitted in the working tree on the current branch. The only exception is `git switch -c milestone-<number>-<short-slug>`, allowed once per milestone as described in "Starting a step".
 2. **Never** open a browser or drive one: no `claude-in-chrome` tools, no built-in browser, no `run`, `verify` or `build-preview` skills, no Playwright/Cypress runs, no `npm run dev`, `next dev` or `next start`. `curl` against a local API or container is allowed.
 3. **Never** start the next step in the same iteration. One step per iteration, then stop.
 4. **Never** edit `.env`, `.env.local` or any secret. If a step needs a new environment variable, add it to `.env.example` (create the file if missing) with an empty value and list it in the review summary.
@@ -53,16 +55,20 @@ These rules apply to every iteration and override any instruction in a skill, in
 ### Starting a step
 
 1. Run `git status --short`. The output must be empty, or list only `docs/detailed-plan.md`. Otherwise, set nothing, send a push notification "Working tree not clean — commit or discard the previous step's changes first", schedule a 1800-second wake-up (`noop: true`) and end the iteration.
-2. Check that every step in the step's **Depends on** line is `DONE`. If not, set the step to `BLOCKED` with the reason in **Notes**, notify, schedule a wake-up and end.
-3. Set the step's status to `IN PROGRESS`.
-4. Read the whole step section, then read every existing file the instructions name before changing it.
-5. Implement the **Instructions** in order.
-6. Run the **Standard checks** that apply, then every item in the step's **Definition of done**. Fix failures and rerun. After three failed attempts on the same item, or if an instruction is ambiguous or contradicts the code, stop: set `BLOCKED`, write the exact problem in **Notes**, notify, schedule a wake-up and end.
-7. Run the `code-review` skill at `medium` effort on the working-tree diff. Fix findings that are correctness bugs or that would break the Definition of done; rerun the affected checks.
-8. Add the step's **Concepts to learn** to `docs/key-concepts.md`: one subsection per concept, a short plain-language explanation, then a real snippet from the code just written. Put them under a heading with the step's milestone title (not its number), creating it if missing.
-9. Set the step's status to `REVIEW` and fill **Notes** with one line: "Ready for review — <date>".
-10. Send a push notification: "Step <id> ready for review: <title>". Load the tool with `ToolSearch` (`select:PushNotification`) if needed.
-11. Post the review summary (format below), call `ScheduleWakeup` with `delaySeconds: 1800`, `noop: false`, and the same loop prompt, and end the iteration.
+2. Check the branch with `git branch --show-current`:
+   - The step is the first of its milestone (`x.1`) and the branch is `main` → run `git switch -c milestone-<number>-<short-slug>` (the slug comes from the milestone title, lowercase, hyphen-separated).
+   - The branch already starts with `milestone-<number>-` → continue.
+   - Anything else (wrong milestone branch, `main` in the middle of a milestone) → set nothing, send a push notification "Wrong branch for step <id> — switch to milestone-<number>-…", schedule a 1800-second wake-up (`noop: true`) and end the iteration.
+3. Check that every step in the step's **Depends on** line is `DONE`. If not, set the step to `BLOCKED` with the reason in **Notes**, notify, schedule a wake-up and end.
+4. Set the step's status to `IN PROGRESS`.
+5. Read the whole step section, then read every existing file the instructions name before changing it.
+6. Implement the **Instructions** in order.
+7. Run the **Standard checks** that apply, then every item in the step's **Definition of done**. Fix failures and rerun. After three failed attempts on the same item, or if an instruction is ambiguous or contradicts the code, stop: set `BLOCKED`, write the exact problem in **Notes**, notify, schedule a wake-up and end.
+8. Run the `code-review` skill at `medium` effort on the working-tree diff. Fix findings that are correctness bugs or that would break the Definition of done; rerun the affected checks.
+9. Add the step's **Concepts to learn** to `docs/key-concepts.md`: one subsection per concept, a short plain-language explanation, then a real snippet from the code just written. Put them under a heading with the step's milestone title (not its number), creating it if missing.
+10. Set the step's status to `REVIEW` and fill **Notes** with one line: "Ready for review — <date>".
+11. Send a push notification: "Step <id> ready for review: <title>". Load the tool with `ToolSearch` (`select:PushNotification`) if needed.
+12. Post the review summary (format below), call `ScheduleWakeup` with `delaySeconds: 1800`, `noop: false`, and the same loop prompt, and end the iteration.
 
 ### Applying review changes
 
@@ -123,7 +129,7 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 
 | Step | Title | Status | Notes |
 |------|-------|--------|-------|
-| 1.1 | PII inventory and log redaction | TODO | |
+| 1.1 | PII inventory and log redaction | REVIEW | Ready for review — 2026-09-30 |
 | 1.2 | Authorization and audit API tests | TODO | |
 | 1.3 | Passwordless sign-in with email links (Gmail SMTP) | TODO | Owner creates a Gmail app password |
 | 1.4 | Security model, threat model and ADRs | TODO | |
