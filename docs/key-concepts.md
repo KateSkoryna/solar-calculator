@@ -803,6 +803,31 @@ export interface EmailSender {
 const activeEmailSender: EmailSender = smtpSender;
 ```
 
+## Security model and threat model
+
+### STRIDE threat modelling
+
+A checklist of six attack types: Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege. For each, write the example, the mitigation, the file and the risk that remains.
+
+```md
+| **E**levation of privilege | Viewer creates a vehicle | Role check, tested | `lib/fleet-auth.ts` | Stale `isSuperAdmin` flag |
+```
+
+### Token storage: HttpOnly cookie vs. localStorage
+
+A script can read `localStorage`, so one XSS bug leaks the token. An `HttpOnly` cookie is invisible to scripts but is sent automatically, so it needs CSRF protection. This app uses the cookie.
+
+```ts
+session: {
+  strategy: "jwt",
+  maxAge: 30 * 24 * 60 * 60,
+},
+```
+
+### Same-origin requests and CORS
+
+Browsers only let a page read responses from its own origin unless the server sends CORS headers. Pages and API live in one Next.js app, so no CORS headers are needed.
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit

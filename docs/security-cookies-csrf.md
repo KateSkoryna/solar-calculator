@@ -44,8 +44,7 @@ Auth.js's built-in double-submit cookie check (`csrfToken` cookie compared
 against a token in the request body), unchanged by this step other than now
 being transmitted with the hardened cookie settings above.
 
-**Custom mutating routes** (`/api/auth/register`, `/api/auth/forgot-password`,
-`/api/auth/reset-password`, and every fleet-scoped `POST`/`PATCH`/`DELETE`
+**Custom mutating routes** (every fleet-scoped `POST`/`PATCH`/`DELETE`
 route under `/api/fleets/[fleetId]/...`): none of these implement an
 Auth.js-style CSRF token. Every one of them shares the first property below;
 the routes that accept a body also get the second:
@@ -56,15 +55,15 @@ the routes that accept a body also get the second:
    origin). A cross-site script cannot ride the victim's session. This alone
    covers the `DELETE` routes (`members/[userId]`, `vehicles/[vehicleId]`),
    which take no request body.
-2. Routes that take a body (`register`, `forgot-password`, `reset-password`,
-   the `POST`/`PATCH` routes) parse it with `request.json()`. An HTML
+2. Routes that take a body (the `POST`/`PATCH` routes) parse it with `request.json()`. An HTML
    `<form>` cannot produce a `Content-Type: application/json` request, so a
    classic form-based CSRF submission fails to parse before it reaches any
    authorization or business logic.
 
-`register` and `forgot-password` are pre-session (no cookie to steal in the
-first place); their abuse surface is unauthenticated spam/enumeration, which
-is covered by the rate limiting added in step 2.6, not CSRF.
+The email sign-in request (`POST /api/auth/signin/nodemailer`) is an Auth.js
+route, so it uses the double-submit token above. It is pre-session (no cookie
+to steal in the first place); its abuse surface is spam and enumeration, which
+is covered by rate limiting, not CSRF.
 
 ## Session fixation
 
