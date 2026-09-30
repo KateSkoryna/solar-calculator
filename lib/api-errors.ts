@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { ForbiddenError } from "@/lib/fleet-auth";
+import { logger } from "@/lib/logger";
 
 function isPrismaRecordNotFoundError(error: unknown): boolean {
   return (
@@ -47,6 +48,6 @@ export function toErrorResponse(error: unknown) {
     return NextResponse.json({ error: "Already exists" }, { status: 409 });
   }
 
-  console.error(error);
+  logger.error("unhandled_api_error", { error });
   return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
 }

@@ -1,8 +1,4 @@
-import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
-
-const SEED_USER_PASSWORD = process.env.SEED_USER_PASSWORD ?? "password123";
-const SEED_PASSWORD_HASH = bcrypt.hashSync(SEED_USER_PASSWORD, 12);
 
 async function seedBerlinDeliveryFleet() {
   const fleet = await prisma.fleet.upsert({
@@ -23,7 +19,6 @@ async function seedBerlinDeliveryFleet() {
       id: "user_alice",
       email: "k.skoryna@gmail.com",
       name: "Alice Owner",
-      password: SEED_PASSWORD_HASH,
     },
   });
 
@@ -34,7 +29,6 @@ async function seedBerlinDeliveryFleet() {
       id: "user_bob",
       email: "bob@example.com",
       name: "Bob Manager",
-      password: SEED_PASSWORD_HASH,
     },
   });
 
@@ -45,7 +39,6 @@ async function seedBerlinDeliveryFleet() {
       id: "user_carol",
       email: "carol@example.com",
       name: "Carol Viewer",
-      password: SEED_PASSWORD_HASH,
     },
   });
 
@@ -159,7 +152,6 @@ async function seedLyonLogisticsFleet() {
       id: "user_dave",
       email: "dave@example.com",
       name: "Dave Owner",
-      password: SEED_PASSWORD_HASH,
     },
   });
 
@@ -170,7 +162,6 @@ async function seedLyonLogisticsFleet() {
       id: "user_bob",
       email: "bob@example.com",
       name: "Bob Manager",
-      password: SEED_PASSWORD_HASH,
     },
   });
 

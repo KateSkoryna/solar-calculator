@@ -1,64 +1,21 @@
 import "dotenv/config";
 import assert from "node:assert/strict";
-import { execSync } from "node:child_process";
 import { after, before, describe, it } from "node:test";
-import { Client } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@/app/generated/prisma/client";
-
-const sourceUrl = new URL(process.env.DATABASE_URL as string);
-const testDatabaseName = `${sourceUrl.pathname.slice(1)}_test`;
-
-const adminUrl = new URL(sourceUrl);
-adminUrl.pathname = "/postgres";
-
-const testUrl = new URL(sourceUrl);
-testUrl.pathname = `/${testDatabaseName}`;
+import {
+  createFreshTestDatabase,
+  dropTestDatabase,
+  getTestDatabaseUrl,
+} from "@/test-support/test-database";
 
 let prisma: PrismaClient;
-
-async function withAdminConnection<T>(run: (admin: Client) => Promise<T>) {
-  const admin = new Client({ connectionString: adminUrl.toString() });
-  await admin.connect();
-  try {
-    return await run(admin);
-  } finally {
-    await admin.end();
-  }
-}
-
-async function terminateActiveConnectionsToTestDatabase(admin: Client) {
-  await admin.query(
-    `SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = $1 AND pid <> pg_backend_pid()`,
-    [testDatabaseName],
-  );
-}
-
-async function createFreshTestDatabase() {
-  await withAdminConnection(async (admin) => {
-    await terminateActiveConnectionsToTestDatabase(admin);
-    await admin.query(`DROP DATABASE IF EXISTS "${testDatabaseName}"`);
-    await admin.query(`CREATE DATABASE "${testDatabaseName}"`);
-  });
-}
-
-async function dropTestDatabase() {
-  await withAdminConnection(async (admin) => {
-    await terminateActiveConnectionsToTestDatabase(admin);
-    await admin.query(`DROP DATABASE IF EXISTS "${testDatabaseName}"`);
-  });
-}
 
 before(
   async () => {
     await createFreshTestDatabase();
 
-    execSync("npx prisma migrate deploy", {
-      env: { ...process.env, DATABASE_URL: testUrl.toString() },
-      stdio: "pipe",
-    });
-
-    const adapter = new PrismaPg({ connectionString: testUrl.toString() });
+    const adapter = new PrismaPg({ connectionString: getTestDatabaseUrl() });
     prisma = new PrismaClient({ adapter });
   },
   { timeout: 30000 },

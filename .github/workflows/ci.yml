@@ -52,4 +52,5 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+      - run: npm run test:api
       - run: npm run test:db

@@ -1,94 +1,33 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { signIn } from "next-auth/react";
-import { useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import GoogleSignInButton from "@/components/auth/GoogleSignInButton";
+import EmailSignInForm from "@/components/auth/EmailSignInForm";
 
-type LoginFormData = z.infer<ReturnType<typeof buildLoginSchema>>;
-
-function buildLoginSchema(
-  invalidEmail: string,
-  passwordMinLengthError: string,
-) {
-  return z.object({
-    email: z.string().email(invalidEmail),
-    password: z.string().min(6, passwordMinLengthError),
-    rememberMe: z.boolean().optional(),
-  });
-}
+const AUTH_ERROR_MESSAGE_KEYS = new Map([
+  ["OAuthAccountNotLinked", "oauthAccountNotLinked"],
+  ["Verification", "linkExpiredOrUsed"],
+  ["EmailSignin", "emailSignInFailed"],
+]);
 
 export default function Form() {
   const t = useTranslations("login");
   const tAuth = useTranslations("auth");
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const errorCode = useSearchParams().get("error");
 
-  const authErrorMessages: Record<string, string> = useMemo(
-    () => ({
-      OAuthAccountNotLinked: tAuth("oauthAccountNotLinked"),
-      CredentialsSignin: tAuth("invalidCredentials"),
-    }),
-    [tAuth],
-  );
-
-  const [error, setError] = useState<string | null>(() => {
-    const code = searchParams.get("error");
-    if (!code) return null;
-    return authErrorMessages[code] ?? tAuth("genericError");
-  });
-  const [isLoading, setIsLoading] = useState(false);
-
-  const loginSchema = useMemo(
-    () => buildLoginSchema(tAuth("invalidEmail"), t("passwordMinLengthError")),
-    [t, tAuth],
-  );
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
-  });
-
-  const onSubmit = async (data: LoginFormData) => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const result = await signIn("credentials", {
-        email: data.email,
-        password: data.password,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        setError(tAuth("invalidCredentials"));
-        setIsLoading(false);
-        return;
-      }
-
-      router.push("/user");
-      router.refresh();
-    } catch {
-      setError(tAuth("genericError"));
-      setIsLoading(false);
-    }
-  };
+  const errorMessage = errorCode
+    ? tAuth(AUTH_ERROR_MESSAGE_KEYS.get(errorCode) ?? "genericError")
+    : null;
 
   return (
     <div className="bg-[var(--form-bg)] p-8 rounded-lg shadow-md">
       <h3 className="!text-[var(--accent)] text-center mb-6">{t("title")}</h3>
 
-      {error && (
+      {errorMessage && (
         <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-          {error}
+          {errorMessage}
         </div>
       )}
 
@@ -105,69 +44,7 @@ export default function Form() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div>
-          <label className="block text-sm font-medium text-[var(--text-body)] mb-2">
-            {t("email")}
-          </label>
-          <input
-            {...register("email")}
-            type="email"
-            className="w-full p-3 border border-[var(--border)] rounded-md bg-[var(--input)] text-[var(--text-body)]"
-            placeholder={t("emailPlaceholder")}
-            disabled={isLoading}
-          />
-          {errors.email && (
-            <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-          )}
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-[var(--text-body)] mb-2">
-            {t("password")}
-          </label>
-          <input
-            {...register("password")}
-            type="password"
-            className="w-full p-3 border border-[var(--border)] rounded-md bg-[var(--input)] text-[var(--text-body)]"
-            placeholder={t("passwordPlaceholder")}
-            disabled={isLoading}
-          />
-          {errors.password && (
-            <p className="mt-1 text-sm text-red-600">
-              {errors.password.message}
-            </p>
-          )}
-        </div>
-
-        <div className="flex items-center justify-between">
-          <label className="flex items-center">
-            <input
-              {...register("rememberMe")}
-              type="checkbox"
-              className="mr-2"
-              disabled={isLoading}
-            />
-            <span className="text-sm text-[var(--text-body)]">
-              {t("rememberMe")}
-            </span>
-          </label>
-          <Link
-            href="/forgot-password"
-            className="text-sm text-[var(--accent)] hover:underline"
-          >
-            {t("forgotPassword")}
-          </Link>
-        </div>
-
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="w-full bg-[var(--accent)] text-white p-3 rounded-md font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isLoading ? tAuth("loading") : t("loginButton")}
-        </button>
-      </form>
+      <EmailSignInForm />
 
       <div className="mt-6 text-center">
         <p className="text-sm text-[var(--text-body)]">

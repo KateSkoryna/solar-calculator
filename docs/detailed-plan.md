@@ -24,6 +24,8 @@ The owner's review cycle for every step:
    - sets the status to `CHANGES` and writes what to fix in the **Notes** column.
 4. The loop notices the new status on its next wake-up and continues.
 
+Branches: one branch per milestone, named `milestone-<number>-<short-slug>` (for example `milestone-1-security`). The agent creates it when it starts the milestone's first step (`x.1`) from a clean `main`. All steps of the milestone are committed on that branch by the owner. When the last step of the milestone is `DONE`, the owner opens the pull request and merges it into `main` before the loop starts the next milestone.
+
 ---
 
 ## Agent protocol
@@ -32,7 +34,7 @@ These rules apply to every iteration and override any instruction in a skill, in
 
 ### Hard rules
 
-1. **Never** run `git commit`, `git push`, `git pull`, `git merge`, `git rebase`, `git stash`, `git reset`, `git checkout`, `git switch`, `git branch`, or create a pull request. Leave all changes uncommitted in the working tree on the current branch.
+1. **Never** run `git commit`, `git push`, `git pull`, `git merge`, `git rebase`, `git stash`, `git reset`, `git checkout`, `git switch`, `git branch`, or create a pull request. Leave all changes uncommitted in the working tree on the current branch. The only exception is `git switch -c milestone-<number>-<short-slug>`, allowed once per milestone as described in "Starting a step".
 2. **Never** open a browser or drive one: no `claude-in-chrome` tools, no built-in browser, no `run`, `verify` or `build-preview` skills, no Playwright/Cypress runs, no `npm run dev`, `next dev` or `next start`. `curl` against a local API or container is allowed.
 3. **Never** start the next step in the same iteration. One step per iteration, then stop.
 4. **Never** edit `.env`, `.env.local` or any secret. If a step needs a new environment variable, add it to `.env.example` (create the file if missing) with an empty value and list it in the review summary.
@@ -53,16 +55,20 @@ These rules apply to every iteration and override any instruction in a skill, in
 ### Starting a step
 
 1. Run `git status --short`. The output must be empty, or list only `docs/detailed-plan.md`. Otherwise, set nothing, send a push notification "Working tree not clean — commit or discard the previous step's changes first", schedule a 1800-second wake-up (`noop: true`) and end the iteration.
-2. Check that every step in the step's **Depends on** line is `DONE`. If not, set the step to `BLOCKED` with the reason in **Notes**, notify, schedule a wake-up and end.
-3. Set the step's status to `IN PROGRESS`.
-4. Read the whole step section, then read every existing file the instructions name before changing it.
-5. Implement the **Instructions** in order.
-6. Run the **Standard checks** that apply, then every item in the step's **Definition of done**. Fix failures and rerun. After three failed attempts on the same item, or if an instruction is ambiguous or contradicts the code, stop: set `BLOCKED`, write the exact problem in **Notes**, notify, schedule a wake-up and end.
-7. Run the `code-review` skill at `medium` effort on the working-tree diff. Fix findings that are correctness bugs or that would break the Definition of done; rerun the affected checks.
-8. Add the step's **Concepts to learn** to `docs/key-concepts.md`: one subsection per concept, a short plain-language explanation, then a real snippet from the code just written. Put them under a heading with the step's milestone title (not its number), creating it if missing.
-9. Set the step's status to `REVIEW` and fill **Notes** with one line: "Ready for review — <date>".
-10. Send a push notification: "Step <id> ready for review: <title>". Load the tool with `ToolSearch` (`select:PushNotification`) if needed.
-11. Post the review summary (format below), call `ScheduleWakeup` with `delaySeconds: 1800`, `noop: false`, and the same loop prompt, and end the iteration.
+2. Check the branch with `git branch --show-current`:
+   - The step is the first of its milestone (`x.1`) and the branch is `main` → run `git switch -c milestone-<number>-<short-slug>` (the slug comes from the milestone title, lowercase, hyphen-separated).
+   - The branch already starts with `milestone-<number>-` → continue.
+   - Anything else (wrong milestone branch, `main` in the middle of a milestone) → set nothing, send a push notification "Wrong branch for step <id> — switch to milestone-<number>-…", schedule a 1800-second wake-up (`noop: true`) and end the iteration.
+3. Check that every step in the step's **Depends on** line is `DONE`. If not, set the step to `BLOCKED` with the reason in **Notes**, notify, schedule a wake-up and end.
+4. Set the step's status to `IN PROGRESS`.
+5. Read the whole step section, then read every existing file the instructions name before changing it.
+6. Implement the **Instructions** in order.
+7. Run the **Standard checks** that apply, then every item in the step's **Definition of done**. Fix failures and rerun. After three failed attempts on the same item, or if an instruction is ambiguous or contradicts the code, stop: set `BLOCKED`, write the exact problem in **Notes**, notify, schedule a wake-up and end.
+8. Run the `code-review` skill at `medium` effort on the working-tree diff. Fix findings that are correctness bugs or that would break the Definition of done; rerun the affected checks.
+9. Add the step's **Concepts to learn** to `docs/key-concepts.md`: one subsection per concept, a short plain-language explanation, then a real snippet from the code just written. Put them under a heading with the step's milestone title (not its number), creating it if missing.
+10. Set the step's status to `REVIEW` and fill **Notes** with one line: "Ready for review — <date>".
+11. Send a push notification: "Step <id> ready for review: <title>". Load the tool with `ToolSearch` (`select:PushNotification`) if needed.
+12. Post the review summary (format below), call `ScheduleWakeup` with `delaySeconds: 1800`, `noop: false`, and the same loop prompt, and end the iteration.
 
 ### Applying review changes
 
@@ -123,10 +129,10 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 
 | Step | Title | Status | Notes |
 |------|-------|--------|-------|
-| 1.1 | PII inventory and log redaction | TODO | |
-| 1.2 | Authorization and audit API tests | TODO | |
-| 1.3 | Passwordless sign-in with email links (Gmail SMTP) | TODO | Owner creates a Gmail app password |
-| 1.4 | Security model, threat model and ADRs | TODO | |
+| 1.1 | PII inventory and log redaction | DONE | |
+| 1.2 | Authorization and audit API tests | DONE | |
+| 1.3 | Passwordless sign-in with email links (Gmail SMTP) | DONE | |
+| 1.4 | Security model and threat model | DONE | |
 | 2.1 | Research assumption set v1 | TODO | Owner reviews every value |
 | 2.2 | Pure calculation engine | TODO | |
 | 2.3 | Store scenarios and the full result shape | TODO | |
@@ -180,6 +186,7 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 | 7.4 | Kubernetes manifests | TODO | |
 | 7.5 | End-to-end tests | TODO | Owner runs them |
 | 7.6 | Handoff documentation | TODO | |
+| 7.7 | Preview deployment smoke test | TODO | Owner sets a Vercel bypass secret in GitHub |
 
 ---
 
@@ -281,19 +288,18 @@ These are settled. Steps rely on them; do not revisit them without the owner.
 - **Owner actions:** turn on 2-Step Verification for the Gmail account, create an app password at myaccount.google.com/apppasswords, and set `EMAIL_SERVER_HOST=smtp.gmail.com`, `EMAIL_SERVER_PORT=465`, `EMAIL_SERVER_USER=<gmail address>`, `EMAIL_SERVER_PASSWORD=<app password>` and `EMAIL_FROM="Solar Calculator <gmail address>"` in `.env.local` and Vercel. The Resend key is no longer used. Google OAuth settings stay unchanged.
 - **Owner review (browser):** on `/en/login` request a link for an address that is not yours and one that is; both arrive (check spam once); sign in with it; Google sign-in still works; an old or reused link shows the friendly error; `/en/forgot-password` returns 404.
 
-### Step 1.4 — Security model, threat model and ADRs
+### Step 1.4 — Security model and threat model
 
 - **Depends on:** 1.3
 - **Purpose:** Document the security decisions that are actually implemented, for reviewers and future contributors.
-- **Concepts to learn:** Architecture Decision Records, STRIDE threat modelling, token storage trade-offs (HttpOnly cookie vs. localStorage), same-origin requests and CORS
+- **Concepts to learn:** STRIDE threat modelling, token storage trade-offs (HttpOnly cookie vs. localStorage), same-origin requests and CORS
 - **Instructions:**
   1. Create `docs/security-model.md`: authentication (Auth.js, JWT strategy, Google and email-link providers, no passwords, the email sender), tenancy (fleet as tenant boundary, `requireFleetRole`), roles and what each can do (derive from `lib/fleet-auth.ts` and the routes), audit logging, rate limiting (`proxy.ts`), PII handling (link to `privacy-and-pii.md`), cookies and CSRF (link to the existing `security-cookies-csrf.md`, do not duplicate it).
   2. Create `docs/threat-model.md` with a STRIDE table: threat, example in this app, mitigation, file that implements it, residual risk.
-  3. Create `docs/adr/0001-fleet-tenancy.md` and `docs/adr/0002-calculation-versioning.md` with sections Status, Context, Decision, Consequences.
-  4. Describe only what exists in the code today. Planned work goes into a "Not yet implemented" list at the end of each document.
+  3. Describe only what exists in the code today. Planned work goes into a "Not yet implemented" list at the end of each document.
 - **Definition of done:**
-  1. The four files exist, and each ADR contains the four section headings.
-  2. Every file path written in backticks in the four documents exists in the repo (check with a script and list the result in the summary).
+  1. Both files exist.
+  2. Every file path written in backticks in the two documents exists in the repo (check with a script and list the result in the summary).
   3. `docs/threat-model.md` has at least one row for each STRIDE letter.
   4. Standard checks S3, S10 pass.
 
@@ -378,7 +384,7 @@ These are settled. Steps rely on them; do not revisit them without the owner.
   4. Update every usage of `calculation.scenario` (the results page, the calculation GET route, `prisma/seed.ts`, `prisma/schema.integration.ts`) to use `scenarios` and pick `REALISTIC` where one scenario is shown.
   5. Rewrite the calculation part of `prisma/seed.ts` to call `calculate()` with `ASSUMPTION_SET_V1` and store all three scenarios. Remove every hard-coded result number.
   6. Add a test that `Object.values(ScenarioKind)` equals `SCENARIO_KINDS` from the engine (same for cargo and cooling types, if the engine defines them).
-  7. Update `docs/data-model.md` (the Mermaid diagram) and `docs/adr/0002-calculation-versioning.md` to describe three scenarios per calculation.
+  7. Update `docs/data-model.md` (the Mermaid diagram) and `docs/security-model.md` to describe three scenarios per calculation.
 - **Definition of done:**
   1. Standard check S5 passes, and `npx prisma migrate reset --force` followed by `npx prisma db seed` exits 0 against local Docker Postgres.
   2. A new case in `prisma/schema.integration.ts` proves that inserting two scenarios of the same kind for one calculation fails, and three different kinds succeed.
@@ -1195,7 +1201,7 @@ Also a Python deep dive: every step's concepts go into `docs/key-concepts.md` wi
 - **Purpose:** Another engineer can pick up the project without tribal knowledge.
 - **Concepts to learn:** writing for an unfamiliar reader, documenting known limitations honestly, C4-style diagrams
 - **Instructions:**
-  1. Create `docs/architecture.md` (system context, containers, authorization, calculation lifecycle, report workflow, telemetry flow, deployment — Mermaid diagrams), `docs/api-contracts.md`, `docs/deployment-runbook.md`, `docs/operational-runbook.md`, `docs/demo-script.md`, `docs/known-limitations.md` (including local-disk report storage), `docs/decision-log.md` (links to the ADRs and to the decisions section of this plan).
+  1. Create `docs/architecture.md` (system context, containers, authorization, calculation lifecycle, report workflow, telemetry flow, deployment — Mermaid diagrams), `docs/api-contracts.md`, `docs/deployment-runbook.md`, `docs/operational-runbook.md`, `docs/demo-script.md`, `docs/known-limitations.md` (including local-disk report storage), `docs/decision-log.md` (links to the key decisions in `README.md` and to the decisions section of this plan).
   2. Update `README.md` so it separates implemented features from the roadmap.
   3. Create `scripts/check-docs.mjs` (`npm run docs:check`) that fails on broken relative links and on backticked file paths that do not exist.
 - **Definition of done:**
@@ -1203,3 +1209,21 @@ Also a Python deep dive: every step's concepts go into `docs/key-concepts.md` wi
   2. Every Mermaid block is inside a fenced `mermaid` code block (grep count equals the number of diagrams listed).
   3. Standard checks S3, S10 pass.
 - **Owner actions:** follow `deployment-runbook.md` once from a clean clone.
+
+### Step 7.7 — Preview deployment smoke test
+
+- **Depends on:** 7.1
+- **Purpose:** Catch differences between local and production that only appear over real HTTPS on Vercel: `Secure` and `__Host-` cookies, redirects, proxy headers and serverless behaviour.
+- **Concepts to learn:** smoke tests vs end-to-end tests, environment parity, deployment status events, Vercel deployment protection bypass
+- **Instructions:**
+  1. Create `scripts/smoke-test.mjs` (`npm run smoke -- <base-url>`) that uses `fetch` (no browser) and checks, with each check named after its rule: the base URL is `https`; `GET /en` returns 200; `GET /en/user` without a session redirects to `/en/login`; `GET /api/fleets/any-id/vehicles` without a session returns 403; `GET /api/auth/csrf` sets a `__Host-authjs.csrf-token` cookie with `Secure`, `HttpOnly`, `SameSite=Lax` and `Path=/`; a request to a `http://` URL is redirected to `https://`. The script exits non-zero and prints every failed check. When the `VERCEL_AUTOMATION_BYPASS_SECRET` environment variable is set, it sends it as the `x-vercel-protection-bypass` header.
+  2. Move the check definitions into `scripts/smoke-checks.ts` so they can be unit-tested; add `scripts/smoke-checks.test.ts` with mocked `fetch` responses proving one passing and one failing case per check.
+  3. Add a `preview-smoke` job to `.github/workflows/ci.yml` that runs on the `deployment_status` event when `github.event.deployment_status.state == 'success'` and the environment is a Vercel preview, using `github.event.deployment_status.environment_url` as the base URL and `secrets.VERCEL_AUTOMATION_BYPASS_SECRET`.
+  4. **Do not run the script against any URL** and do not start a server. Verify with the unit test and `npx tsc --noEmit`.
+  5. Add a "Preview smoke test" section to `docs/security-cookies-csrf.md` describing what the script proves and what it does not (logged-in flows).
+- **Definition of done:**
+  1. `scripts/smoke-checks.test.ts` passes with at least 6 checks covered, each with a passing and a failing case.
+  2. `.github/workflows/ci.yml` contains the `preview-smoke` job and `deployment_status`.
+  3. `package.json` has the `smoke` script.
+  4. Standard checks S1–S3, S8–S10 pass.
+- **Owner actions:** in Vercel enable Protection Bypass for Automation and copy the secret; add it to the GitHub repository secrets as `VERCEL_AUTOMATION_BYPASS_SECRET`; open a pull request and confirm `preview-smoke` is green.

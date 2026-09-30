@@ -1,6 +1,6 @@
-import { auth } from "@/auth";
+import { auth, signOut } from "@/auth";
 import { redirect } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 export default async function UserPage() {
   const session = await auth();
@@ -9,9 +9,10 @@ export default async function UserPage() {
     redirect("/login");
   }
 
-  const [t, tMenu] = await Promise.all([
+  const [t, tMenu, locale] = await Promise.all([
     getTranslations("user"),
     getTranslations("clientmenu"),
+    getLocale(),
   ]);
 
   return (
@@ -45,7 +46,12 @@ export default async function UserPage() {
           <p className="text-sm text-[var(--text-body)] mb-4">
             {t("protectedNotice")}
           </p>
-          <form action="/api/auth/signout" method="POST">
+          <form
+            action={async () => {
+              "use server";
+              await signOut({ redirectTo: `/${locale}` });
+            }}
+          >
             <button
               type="submit"
               className="w-full bg-red-500 text-white p-3 rounded-md font-medium hover:opacity-90 transition-opacity"

@@ -1,10 +1,12 @@
 import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
+import Nodemailer from "next-auth/providers/nodemailer";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import type { PrismaClient } from "@/app/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
-import { verifyCredentials } from "@/lib/auth-helpers";
+import { getSmtpServerConfig } from "@/lib/email/smtp-settings";
+import { sendSignInLink } from "@/lib/email/send-sign-in-link";
+import { SIGN_IN_LINK_MAX_AGE_SECONDS } from "@/lib/sign-in-link-limits";
 import { ADMIN_FLEET_ID } from "@/lib/fleet-auth";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -16,20 +18,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   pages: {
     signIn: "/login",
+    verifyRequest: "/check-email",
+    error: "/login",
   },
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
-    Credentials({
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        return await verifyCredentials(credentials);
-      },
+    Nodemailer({
+      server: getSmtpServerConfig(),
+      from: process.env.EMAIL_FROM,
+      maxAge: SIGN_IN_LINK_MAX_AGE_SECONDS,
+      sendVerificationRequest: sendSignInLink,
     }),
   ],
   callbacks: {

@@ -73,7 +73,7 @@ database level, not silently at 2am in production.
 ### `@@id`, `@@unique`, and composite indexes
 
 - `@id` / `@@id` marks the primary key.
-- `@@unique([a, b])` says "no two rows can share this *combination*" — not
+- `@@unique([a, b])` says "no two rows can share this _combination_" — not
   each field alone.
 
 ```prisma
@@ -199,7 +199,7 @@ model AuditEvent {
 }
 ```
 
-An append-only log is trustworthy specifically *because* nothing can rewrite
+An append-only log is trustworthy specifically _because_ nothing can rewrite
 history — see [structured event payloads](#append-only-log-patterns--structured-event-payloads) below for how it's written.
 
 ### Migration generation vs. `db push`
@@ -226,7 +226,7 @@ prisma/migrations/
 ```
 
 Prisma migrations are **forward-only** — there's no built-in "undo." To roll
-back a bad change, you write a *new* migration that reverses it (e.g. drop
+back a bad change, you write a _new_ migration that reverses it (e.g. drop
 the column you just added), rather than editing or deleting an old migration
 folder that may already be applied elsewhere.
 
@@ -278,8 +278,12 @@ Integration tests need a clean slate each run, and must clean up after
 themselves so they don't pollute your real dev database:
 
 ```ts
-async function createFreshTestDatabase() { /* ... */ }
-async function dropTestDatabase() { /* ... */ }
+async function createFreshTestDatabase() {
+  /* ... */
+}
+async function dropTestDatabase() {
+  /* ... */
+}
 ```
 
 Pattern: `before` → create a fresh `_test` database and migrate it → run
@@ -364,8 +368,8 @@ fleets the user belongs to.
 in the UI) — enforce the same rule again at the API layer, since a UI check
 is trivially bypassed with `curl`.
 
-**Fail-closed** means the default outcome on doubt/error is *deny*, not
-*allow*. `requireFleetRole` fail-closes twice over: no session → denied, no
+**Fail-closed** means the default outcome on doubt/error is _deny_, not
+_allow_. `requireFleetRole` fail-closes twice over: no session → denied, no
 membership row → denied. There's no code path where an exception or missing
 data quietly falls through to "allowed."
 
@@ -384,7 +388,14 @@ context as structured JSON rather than a free-text string:
 ```ts
 export function recordAuditEvent(
   client: Prisma.TransactionClient,
-  { fleetId, actorUserId, action, entityType, entityId, metadata = {} }: RecordAuditEventInput,
+  {
+    fleetId,
+    actorUserId,
+    action,
+    entityType,
+    entityId,
+    metadata = {},
+  }: RecordAuditEventInput,
 ) {
   return client.auditEvent.create({
     data: { fleetId, actorUserId, action, entityType, entityId, metadata },
@@ -393,7 +404,7 @@ export function recordAuditEvent(
 ```
 
 `metadata` being JSON (not a string) means a reviewer or future query can
-filter/inspect *what* changed, not just parse a sentence.
+filter/inspect _what_ changed, not just parse a sentence.
 
 ### Correlating events to actors and requests
 
@@ -403,10 +414,10 @@ IDs rather than a description:
 ```ts
 await recordAuditEvent(prisma, {
   fleetId,
-  actorUserId,                    // who
+  actorUserId, // who
   action: AuditAction.ACCESS_DENIED, // what
   entityType: AuditEntityType.FLEET, // to which kind of thing
-  entityId: fleetId,                 // to which specific thing
+  entityId: fleetId, // to which specific thing
   metadata: { reason, allowedRoles, actualRole },
 });
 ```
@@ -474,7 +485,10 @@ A **fixed-window** limiter counts requests in a time bucket and resets it
 when the window expires:
 
 ```ts
-export function checkRateLimit(key: string, { windowMs, maxRequests }: RateLimitConfig): boolean {
+export function checkRateLimit(
+  key: string,
+  { windowMs, maxRequests }: RateLimitConfig,
+): boolean {
   const bucket = buckets.get(key);
   if (!bucket || Date.now() >= bucket.resetAt) {
     buckets.set(key, { count: 1, resetAt: Date.now() + windowMs });
@@ -500,7 +514,10 @@ requests:
 ```ts
 const rateLimitedRoute = findRateLimitedRoute(pathname, request.method);
 if (rateLimitedRoute) {
-  const allowed = checkRateLimit(`${rateLimitedRoute.name}:${getClientIp(request)}`, SENSITIVE_ENDPOINT_RATE_LIMIT);
+  const allowed = checkRateLimit(
+    `${rateLimitedRoute.name}:${getClientIp(request)}`,
+    SENSITIVE_ENDPOINT_RATE_LIMIT,
+  );
   if (!allowed) {
     return NextResponse.json({ error: "Too many requests" }, { status: 429 });
   }
@@ -532,7 +549,7 @@ so it's consistent everywhere instead of set field-by-field.
 CSRF tricks a logged-in user's browser into submitting a request they didn't
 intend (e.g. a hidden form on an attacker's site that POSTs to your
 `/logout`). Auth.js defends its own routes with a **double-submit cookie**:
-it sets a `csrfToken` cookie, and requires the *same* token to also be
+it sets a `csrfToken` cookie, and requires the _same_ token to also be
 present in the request body. A cross-site attacker can trigger the request
 but can't read the cookie to copy its value into the body, so the two won't
 match.
@@ -545,7 +562,7 @@ valid session to CSRF against.
 ### Session fixation
 
 Session fixation is an attack where an attacker gets a victim to use a
-*known* session identifier (e.g. via a crafted link), then reuses that same
+_known_ session identifier (e.g. via a crafted link), then reuses that same
 identifier after the victim logs in — hijacking their now-authenticated
 session. It's mitigated by never reusing a pre-login token as the
 post-login one. This project uses JWT-strategy sessions:
@@ -563,8 +580,8 @@ anonymous session identifier for an attacker to fixate on and later inherit.
 
 ### Token storage tradeoffs: `HttpOnly` cookie vs. localStorage
 
-"JWT" is just the *format* of the token (a signed blob of data); it says
-nothing about *where* the browser keeps it. That's a separate choice, and it
+"JWT" is just the _format_ of the token (a signed blob of data); it says
+nothing about _where_ the browser keeps it. That's a separate choice, and it
 changes which attack the token is exposed to:
 
 - **`HttpOnly` cookie** (what this project uses): JavaScript can't read it —
@@ -574,7 +591,7 @@ changes which attack the token is exposed to:
   which is the CSRF risk `SameSite` defends against.
 - **`localStorage`**: your own JS has to manually attach it to each request
   (`Authorization: Bearer <token>`), so nothing gets sent automatically to
-  other sites — no CSRF exposure. Trade-off: *any* script running on the
+  other sites — no CSRF exposure. Trade-off: _any_ script running on the
   page, including an attacker's via XSS, can do
   `localStorage.getItem("token")` and exfiltrate it. Once stolen this way,
   the attacker can reuse it from anywhere, indefinitely — worse than a
@@ -624,7 +641,194 @@ request, and two things change:
 This project doesn't have that problem today — one app, one origin — but
 it's the concept to reach for if the architecture ever splits.
 
+## PII inventory and log redaction
+
+### PII classification
+
+Every stored field falls into one of three buckets: personal data (email, name, IP address), secrets (password hash, tokens, session cookie) and non-personal data (ids, timestamps). Each bucket gets different handling, so the first step is writing down which is which. `docs/privacy-and-pii.md` does that for every column:
+
+```md
+| `User.resetToken` | `User.resetToken` | Secret | Nobody in the app; database admins | One hour (`resetTokenExpiry`), cleared after use | No, redacted |
+```
+
+### Log redaction
+
+Redaction removes sensitive values before a log line is written, so no code path can leak them by accident. It works by key name and by pattern:
+
+```ts
+export function redactPii(value: unknown): unknown {
+  if (typeof value === "string") {
+    return redactString(value);
+  }
+  if (value instanceof Error) {
+    return { name: value.name, message: redactString(value.message) };
+  }
+```
+
+### Why secrets in logs are a vulnerability
+
+Logs are copied to dashboards, vendors and laptops, and far more people can read them than can read the database. The old forgot-password route logged the full reset link. Anyone with log access could have taken over an account. Now only the event name is logged, and the link appears in a debug line that runs in development only:
+
+```ts
+logger.info("password_reset_requested");
+if (process.env.NODE_ENV === "development") {
+  logger.debug("password_reset_link_created", { resetUrl });
+}
+```
+
+### Data retention basics
+
+Keep personal data only as long as it has a purpose, and write the limit down. Reset tokens live one hour and are cleared after use. Rate-limiter IP addresses exist only in memory for one window and never reach the database. Both facts are recorded in the retention column of the PII table.
+
+## Authorization and audit API tests
+
+### Negative-path testing
+
+A security test proves what is refused, not only what works. Each test is named after the rule it locks in and asserts the rejection:
+
+```ts
+it("a viewer cannot create a vehicle", async () => {
+  signInAs(fixtures.viewerA);
+
+  const response = await createVehicle(
+    jsonRequest("POST", validVehicleInput),
+    routeParams({ fleetId: fixtures.fleetA.id }),
+  );
+
+  expect(response.status).toBe(403);
+});
+```
+
+### Test fixtures for multiple roles
+
+Fixtures build the same small world before every test: two fleets, one user per role in fleet A, an owner in fleet B and one vehicle each. Tests pick who they act as, so a rule is checked from every side:
+
+```ts
+const ownerA = await createMember(fleetA.id, Role.OWNER, "owner-a");
+const managerA = await createMember(fleetA.id, Role.MANAGER, "manager-a");
+const viewerA = await createMember(fleetA.id, Role.VIEWER, "viewer-a");
+const ownerB = await createMember(fleetB.id, Role.OWNER, "owner-b");
+```
+
+### Testing route handlers without a running server
+
+A Next.js route handler is a plain function from `Request` to `Response`. Tests call it directly, so nothing needs to listen on a port. The session lookup `auth()` is replaced by a mock that returns the chosen user or `null`:
+
+```ts
+jest.mock("@/auth", () => ({ auth: jest.fn() }));
+
+function signInAs(user: { id: string } | null) {
+  mockedAuth.mockResolvedValue(
+    user ? { user: { id: user.id }, expires: futureIsoDate } : null,
+  );
+}
+```
+
+### Disposable test databases
+
+Tests run against a database that is created and migrated before the run and dropped after it, so they never touch development data. One helper serves both the Jest API suite and the migration suite:
+
+```ts
+export async function createFreshTestDatabase() {
+  await withAdminConnection(async (admin) => {
+    await terminateActiveConnectionsToTestDatabase(admin);
+    await admin.query(`DROP DATABASE IF EXISTS "${testDatabaseName}"`);
+    await admin.query(`CREATE DATABASE "${testDatabaseName}"`);
+  });
+  execSync("npx prisma migrate deploy", {
+    env: { ...process.env, DATABASE_URL: testDatabaseUrl },
+  });
+}
+```
+
+## Passwordless sign-in with email links (Gmail SMTP)
+
+### Passwordless (magic-link) authentication
+
+Instead of a password, the user proves they control an email address by opening a link sent to it. No password is stored, so there is nothing to leak, reset or brute-force. Auth.js does the flow when the Nodemailer provider is registered:
+
+```ts
+Nodemailer({
+  server: getSmtpServerConfig(),
+  from: process.env.EMAIL_FROM,
+  maxAge: SIGN_IN_LINK_MAX_AGE_SECONDS,
+  sendVerificationRequest: sendSignInLink,
+}),
+```
+
+### Verification tokens: single use, expiry, hashed storage
+
+The link carries a random token. Auth.js stores only a hash of it in the `VerificationToken` table, deletes the row when the link is used, and refuses it after `expires`. A stolen database therefore contains no usable links:
+
+```ts
+export const SIGN_IN_LINK_MAX_AGE_SECONDS = 900;
+```
+
+### SMTP and app passwords
+
+SMTP is the protocol mail programs use to hand a message to a mail server. Gmail does not accept your normal password for this. You turn on 2-Step Verification and create a separate app password that can only send mail and can be revoked on its own:
+
+```ts
+auth: {
+  user: process.env.EMAIL_SERVER_USER ?? "",
+  pass: process.env.EMAIL_SERVER_PASSWORD ?? "",
+},
+```
+
+### Email deliverability (SPF, DKIM, DMARC)
+
+Receiving servers check that a message really comes from the domain in its `From` address. SPF lists the servers allowed to send for a domain, DKIM signs each message, and DMARC says what to do when checks fail. A message sent through the owner's Gmail account is signed and authorised by Google for `gmail.com`, so it passes without owning a domain. The trade-off is a daily limit of about 500 messages and a sender name that is a personal address.
+
+### Preventing account enumeration and email bombing
+
+The response must not reveal whether an address has an account, and one address must not be flooded with mail. The per-address limit silently skips the send, so the page looks the same, and the daily cap protects the Gmail quota. Addresses are hashed before they become rate-limit keys:
+
+```ts
+const addressKey = `sign-in-email:address:${hashEmailAddress(emailAddress)}`;
+
+if (!checkRateLimit(addressKey, PER_ADDRESS_RATE_LIMIT)) {
+  return SignInLinkDecision.ADDRESS_LIMIT_REACHED;
+}
+```
+
+### Hiding a vendor behind an interface
+
+Only one file talks to Nodemailer. The rest of the app calls `sendEmail`, so moving to Resend or SendGrid later means adding one sender file and changing one line:
+
+```ts
+export interface EmailSender {
+  send(message: EmailMessage): Promise<void>;
+}
+
+const activeEmailSender: EmailSender = smtpSender;
+```
+
+## Security model and threat model
+
+### STRIDE threat modelling
+
+A checklist of six attack types: Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege. For each, write the example, the mitigation, the file and the risk that remains.
+
+```md
+| **E**levation of privilege | Viewer creates a vehicle | Role check, tested | `lib/fleet-auth.ts` | Stale `isSuperAdmin` flag |
+```
+
+### Token storage: HttpOnly cookie vs. localStorage
+
+A script can read `localStorage`, so one XSS bug leaks the token. An `HttpOnly` cookie is invisible to scripts but is sent automatically, so it needs CSRF protection. This app uses the cookie.
+
+```ts
+session: {
+  strategy: "jwt",
+  maxAge: 30 * 24 * 60 * 60,
+},
+```
+
+### Same-origin requests and CORS
+
+Browsers only let a page read responses from its own origin unless the server sends CORS headers. Pages and API live in one Next.js app, so no CORS headers are needed.
+
 ---
 
-*Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit
-tests), 2.10 (security/ADR docs) — see [`detailed-plan.md`](./detailed-plan.md).*
+_Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit
+tests), 2.10 (security/ADR docs) — see [`detailed-plan.md`](./detailed-plan.md)._

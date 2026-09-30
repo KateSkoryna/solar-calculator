@@ -146,8 +146,6 @@ Create:
 - `docs/threat-model.md`
 - `docs/privacy-and-pii.md`
 - `docs/calculation-provenance.md`
-- `docs/adr/0001-fleet-tenancy.md`
-- `docs/adr/0002-calculation-versioning.md`
 
 ### Definition of done
 
@@ -427,7 +425,6 @@ prisma/
   migrations/
 worker/
 docs/
-  adr/
   architecture.md
   security-model.md
   calculation-provenance.md

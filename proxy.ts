@@ -19,14 +19,11 @@ interface RateLimitedRoute {
 }
 
 const RATE_LIMITED_ROUTES: RateLimitedRoute[] = [
-  { name: "login", method: "POST", path: "/api/auth/callback/credentials" },
-  { name: "register", method: "POST", path: "/api/auth/register" },
   {
-    name: "forgot-password",
+    name: "email-sign-in",
     method: "POST",
-    path: "/api/auth/forgot-password",
+    path: "/api/auth/signin/nodemailer",
   },
-  { name: "reset-password", method: "POST", path: "/api/auth/reset-password" },
   {
     name: "calculation-create",
     method: "POST",
@@ -51,6 +48,11 @@ function findRateLimitedRoute(pathname: string, method: string) {
   return routeMatchers.find(
     (route) => route.method === method && route.pathRegex.test(pathname),
   );
+}
+
+function getLocaleFromPathname(pathname: string) {
+  const firstSegment = pathname.split("/")[1];
+  return locales.find((locale) => locale === firstSegment) ?? defaultLocale;
 }
 
 function getClientIp(request: NextRequest) {
@@ -89,14 +91,14 @@ export default function middleware(request: NextRequest) {
   const isProtectedRoute = pathname.endsWith("/user");
 
   if (isProtectedRoute && !isLoggedIn) {
-    const locale = pathname.split("/")[1];
+    const locale = getLocaleFromPathname(pathname);
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = `/${locale}/login`;
     return NextResponse.redirect(redirectUrl);
   }
 
   if (isAuthRoute && isLoggedIn) {
-    const locale = pathname.split("/")[1];
+    const locale = getLocaleFromPathname(pathname);
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = `/${locale}/user`;
     return NextResponse.redirect(redirectUrl);
@@ -110,10 +112,7 @@ export default function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/((?!api|_next|_vercel|.*\\..*).*)",
-    "/api/auth/callback/credentials",
-    "/api/auth/register",
-    "/api/auth/forgot-password",
-    "/api/auth/reset-password",
+    "/api/auth/signin/nodemailer",
     "/api/fleets/:fleetId/calculations",
   ],
 };

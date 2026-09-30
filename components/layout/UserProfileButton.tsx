@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { CgProfile } from "react-icons/cg";
 import { IoMdLogOut } from "react-icons/io";
 import { FaUserCircle } from "react-icons/fa";
@@ -11,10 +11,11 @@ import { FaUserCircle } from "react-icons/fa";
 export default function UserProfileButton() {
   const router = useRouter();
   const t = useTranslations("clientmenu");
+  const locale = useLocale();
   const [isDropdownOpen, setisDropdownOpen] = useState(false);
 
   const userSignOut = async () => {
-    await signOut({ callbackUrl: "/" });
+    await signOut({ callbackUrl: `/${locale}` });
   };
 
   const navigateToAccount = () => {

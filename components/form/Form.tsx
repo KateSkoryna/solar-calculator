@@ -90,9 +90,7 @@ export default function Form({ steps }: FormProps) {
 
   const { handleSubmit } = methods;
 
-  const onSubmit = (data: FormData) => {
-    console.log("Form submitted:", data);
-  };
+  const onSubmit = () => {};
 
   return (
     <FormProvider {...methods}>
