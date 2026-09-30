@@ -64,20 +64,18 @@ function co2AvoidedKgPerVehicle(
   outcomes: SavingsOutcome[],
   context: SavingsContext,
 ): number {
-  const { fuelCo2 } = context.assumptionSet;
+  const { assumptionSet, input, scenario } = context;
+  const { fuelCo2 } = assumptionSet;
   const gridFactor = scenarioValue(
-    context.assumptionSet.countries[context.input.countryCode]
-      .gridCo2FactorKgPerKwh,
-    context.scenario,
+    assumptionSet.countries[input.countryCode].gridCo2FactorKgPerKwh,
+    scenario,
   );
 
   return outcomes.reduce(
     (sum, outcome) =>
       sum +
-      outcome.dieselLitres *
-        scenarioValue(fuelCo2.dieselKgPerLitre, context.scenario) +
-      outcome.petrolLitres *
-        scenarioValue(fuelCo2.petrolKgPerLitre, context.scenario) +
+      outcome.dieselLitres * scenarioValue(fuelCo2.dieselKgPerLitre, scenario) +
+      outcome.petrolLitres * scenarioValue(fuelCo2.petrolKgPerLitre, scenario) +
       outcome.gridKwh * gridFactor,
     0,
   );
