@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { ForbiddenError } from "@/lib/fleet-auth";
+import { UnsupportedVehicleCountryError } from "@/lib/calculation-service";
 import { logger } from "@/lib/logger";
 
 function isPrismaRecordNotFoundError(error: unknown): boolean {
@@ -34,6 +35,10 @@ export function toErrorResponse(error: unknown) {
       { error: "Invalid input", details: error.flatten() },
       { status: 400 },
     );
+  }
+
+  if (error instanceof UnsupportedVehicleCountryError) {
+    return NextResponse.json({ error: error.message }, { status: 422 });
   }
 
   if (error instanceof SyntaxError) {
