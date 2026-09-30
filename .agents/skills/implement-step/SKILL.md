@@ -33,7 +33,7 @@ Args: `<plan-document> <step-number>`. If the document is given as a bare filena
 ### Implement the step
 
 - Implement exactly what the step's **Goal** describes — nothing from later steps in the same milestone, even if related.
-- Follow this repo's `CLAUDE.md` conventions (no code comments, Tailwind utility classes not inline styles, nested media queries, descriptive naming).
+- Follow this repo's `AGENTS.md` conventions (no code comments, Tailwind utility classes not inline styles, nested media queries, descriptive naming).
 - Touch whatever's actually needed for this step: schema, migrations, code, config, or docs — match what the step calls for.
 
 ### Do not commit
