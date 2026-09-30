@@ -6,15 +6,18 @@ Built with Next.js 16, React 19, and TypeScript. The full implementation plan, i
 
 ## Status
 
-The project is being built milestone by milestone against the plan in `docs/detailed-plan.md`:
+The project is built milestone by milestone against [`docs/detailed-plan.md`](docs/detailed-plan.md):
 
-- ✅ **Milestone 1 — PostgreSQL domain model**: schema for fleets, memberships, vehicles, calculations, report jobs, audit events, and feature flags; migrations; seed script; schema-level integration tests.
-- 🚧 **Milestone 2 — Access control, auditability, provenance**: fleet-scoped authorization (`requireFleetRole`) and the vehicle/calculation API routes are in place; audit logging, rate limiting, session hardening, and the security write-up are still to come.
-- ⬜ **Milestone 3 — Temporal report workflow**: report generation as an async job with real-time progress — not started.
-- ⬜ **Milestone 4 — Search, visual quality, product validation**: not started.
-- ⬜ **Milestone 5 — CI, observability, Kubernetes, handoff**: not started.
+- ✅ **Foundation**: PostgreSQL domain model, migrations, seed script, fleet-scoped authorization, vehicle, calculation, member and audit-log API routes, audit logging, rate limiting.
+- 🚧 **Milestone 1 — Secure access control, auditability, provenance**: log redaction and PII inventory ✅, authorization and audit API tests ✅, passwordless sign-in (Google or email link) ✅, security model and threat model 🔍 in review.
+- ⬜ **Milestone 2 — Calculation engine and assumptions**
+- ⬜ **Milestone 3 — Daylight UI redesign**
+- ⬜ **Milestone 4 — Temporal report workflow and real-time progress**
+- ⬜ **Milestone 5 — Python telemetry service and live data**
+- ⬜ **Milestone 6 — Search, visual quality, product validation**
+- ⬜ **Milestone 7 — CI, observability, Kubernetes, handoff**
 
-The calculator's multi-step form UI (vehicle type → vehicle details → location setup → user prompt) exists on the frontend but is not yet wired to the backend domain model or a calculation engine — see [Known gaps](#known-gaps).
+The calculator's multi-step form UI exists on the frontend but is not yet wired to the backend domain model or a calculation engine — see [Known gaps](#known-gaps).
 
 ## Tech Stack
 
@@ -34,8 +37,8 @@ The calculator's multi-step form UI (vehicle type → vehicle details → locati
 | **PostgreSQL**                           | Relational database — local dev via Docker Compose, production hosted on **Neon** |
 | **Prisma 7** (`prisma-client` generator) | Type-safe ORM, migrations                                                         |
 | **@prisma/adapter-pg**                   | Driver adapter (`pg`) for the Prisma query engine                                 |
-| **NextAuth.js v5 (Auth.js)**             | Sessions (JWT strategy), Google OAuth + credentials                               |
-| **bcryptjs**                             | Password hashing                                                                  |
+| **NextAuth.js v5 (Auth.js)**             | Sessions (JWT strategy), Google OAuth + email sign-in links                       |
+| **nodemailer**                           | Sends sign-in links through Gmail SMTP (behind `lib/email/send-email.ts`)         |
 | **zod**                                  | Request/form validation                                                           |
 
 ### Forms & i18n
@@ -55,7 +58,7 @@ The calculator's multi-step form UI (vehicle type → vehicle details → locati
 
 | Technology                            | Purpose                                                                               |
 | ------------------------------------- | ------------------------------------------------------------------------------------- |
-| **Jest** + **@testing-library/react** | Colocated unit/component tests (jsdom)                                                |
+| **Jest** + **@testing-library/react** | Unit/component tests (jsdom) and API route tests against a disposable Postgres (node) |
 | **tsx** + Node's built-in test runner | Schema-level integration tests against real Postgres (`prisma/schema.integration.ts`) |
 | **ESLint**, **Prettier**              | Linting and formatting                                                                |
 | **Docker Compose**                    | Local PostgreSQL for development                                                      |
@@ -84,10 +87,17 @@ The calculator's multi-step form UI (vehicle type → vehicle details → locati
    ```env
    DATABASE_URL="postgresql://dev_user:dev_password@localhost:5432/dev_database"
    NEXTAUTH_SECRET="..."
-   NEXTAUTH_URL="http://localhost:3000"
+   NEXTAUTH_URL="http://localhost:3002"
    GOOGLE_CLIENT_ID="..."
    GOOGLE_CLIENT_SECRET="..."
+   EMAIL_SERVER_HOST="smtp.gmail.com"
+   EMAIL_SERVER_PORT="465"
+   EMAIL_SERVER_USER="<gmail address>"
+   EMAIL_SERVER_PASSWORD="<gmail app password>"
+   EMAIL_FROM="Solar Calculator <gmail address>"
    ```
+
+   The email variables are listed in `.env.example`. Without `EMAIL_SERVER_PASSWORD` in development, sign-in links are printed in the terminal instead of being emailed. Add `http://localhost:3002/api/auth/callback/google` as an authorised redirect URI in your Google OAuth client.
 
    `GEMINI_API_KEY` and `MAPBOX_API` are also read from the environment but reserved for future milestones — nothing in the codebase uses them yet.
 
@@ -104,7 +114,7 @@ The calculator's multi-step form UI (vehicle type → vehicle details → locati
    npm run db:seed
    ```
 
-5. Open [http://localhost:3000](http://localhost:3000)
+5. Open [http://localhost:3002](http://localhost:3002)
 
 ### Production Database
 
@@ -112,12 +122,13 @@ Production uses [Neon](https://neon.tech) for hosted Postgres. `DATABASE_URL` is
 
 ### Available Scripts
 
-- `npm run dev` — start Postgres (Docker) + Next.js dev server
+- `npm run dev` — start Postgres (Docker) + Next.js dev server on port 3002
 - `npm run build` — `prisma generate` + production build
 - `npm start` — start the production server
 - `npm run lint` / `npm run lint:fix` — ESLint
 - `npm run format` — Prettier, write mode
-- `npm test` / `npm run test:watch` / `npm run test:coverage` — Jest
+- `npm test` / `npm run test:watch` / `npm run test:coverage` — Jest unit tests
+- `npm run test:api` — API route tests against a throwaway `_test` database (needs local Postgres)
 - `npm run test:db` — schema-level integration tests against real Postgres (`prisma/schema.integration.ts`)
 - `npm run db:migrate` — `prisma migrate dev`
 - `npm run db:studio` — Prisma Studio
@@ -134,25 +145,25 @@ solar-calculator/
 │   │   ├── calculator/page.tsx      # Multi-step calculator UI
 │   │   ├── login/page.tsx
 │   │   ├── register/page.tsx
-│   │   ├── forgot-password/page.tsx
-│   │   ├── reset-password/page.tsx
+│   │   ├── check-email/page.tsx     # "Check your email" after requesting a link
 │   │   └── user/page.tsx            # Signed-in user page
 │   ├── api/
 │   │   ├── auth/
-│   │   │   ├── [...nextauth]/route.ts
-│   │   │   ├── register/route.ts
-│   │   │   ├── forgot-password/route.ts
-│   │   │   └── reset-password/route.ts
+│   │   │   └── [...nextauth]/route.ts
 │   │   └── fleets/[fleetId]/
 │   │       ├── vehicles/route.ts               # GET (list), POST (create)
 │   │       ├── vehicles/[vehicleId]/route.ts   # GET, PATCH, DELETE (soft)
 │   │       ├── calculations/route.ts           # GET (list), POST (create)
-│   │       └── calculations/[calculationId]/route.ts  # GET
+│   │       ├── calculations/[calculationId]/route.ts  # GET
+│   │       ├── members/route.ts                # GET, POST
+│   │       ├── members/[userId]/route.ts       # PATCH, DELETE
+│   │       ├── audit-events/route.ts           # GET
+│   │       └── __tests__/authorization.api.test.ts  # Role and tenancy tests
 │   ├── generated/prisma/            # Prisma client output (gitignored)
 │   ├── globals.css
 │   └── page.test.tsx
 ├── components/
-│   ├── auth/                        # Login/register/reset-password forms
+│   ├── auth/                        # Google button and email sign-in form
 │   ├── calculator/
 │   │   ├── MultiStepForm.tsx
 │   │   └── steps/                   # VehicleTypeStep, VehicleDetailsStep, LocationSetupStep, UserPromptStep
@@ -163,7 +174,11 @@ solar-calculator/
 │   └── providers/                   # SessionProvider, ThemeProvider
 ├── lib/
 │   ├── prisma.ts                    # PrismaClient singleton (pg driver adapter)
-│   ├── auth-helpers.ts              # Credentials-provider password verification
+│   ├── logger.ts, redact-pii.ts     # JSON logger with PII redaction
+│   ├── audit.ts                     # recordAuditEvent() and action constants
+│   ├── rate-limit.ts                # In-memory rate limiter
+│   ├── sign-in-link-limits.ts       # Per-address and daily email link limits
+│   ├── email/                       # sendEmail() interface, SMTP sender, sign-in email
 │   ├── fleet-auth.ts                # requireFleetRole() + role constants
 │   ├── fleet-auth.test.ts
 │   ├── api-errors.ts                # Shared error → HTTP response mapping for route handlers
@@ -175,14 +190,15 @@ solar-calculator/
 │   ├── migrations/
 │   ├── seed.ts                      # Seeds two example fleets with users in different roles
 │   └── schema.integration.ts        # Real-Postgres schema tests (node:test)
+├── test-support/                    # Test database lifecycle and fixtures for API tests
 ├── types/
 │   ├── auth.ts                      # NextAuth session/user type augmentation
 │   └── calculator.ts                # Frontend enums for the calculator form
 ├── messages/                        # i18n translations: en.json, de.json, es.json
-├── docs/detailed-plan.md            # Living, milestone-by-milestone implementation plan
+├── docs/                            # Plan, security model, threat model, PII inventory, key concepts
 ├── auth.ts                          # NextAuth config (providers, callbacks, JWT session)
 ├── i18n.ts                          # next-intl config
-├── proxy.ts                          # next-intl routing middleware (Next.js 16 naming)
+├── proxy.ts                          # Locale routing, rate limiting, session redirects (Next.js 16 naming)
 └── docker-compose.yml                # Local PostgreSQL
 ```
 
@@ -196,6 +212,14 @@ Access is fleet-scoped role-based access control:
 - Vehicle and calculation lookups by ID are always scoped to the fleet in the URL (`{ id, fleetId }`), so guessing another fleet's record ID returns 404, not another fleet's data.
 - `lib/api-errors.ts`'s `toErrorResponse()` is the single place every route handler's `catch` block delegates to, turning `ForbiddenError`, Zod validation errors, malformed JSON, and "record not found" Prisma errors into the right HTTP status code.
 
+## Key Decisions
+
+- **The fleet is the tenant.** Every record belongs to a fleet and every route checks the caller's role in that fleet first. One person can work for several companies with a different role in each. The check lives in application code, not in PostgreSQL row-level security.
+- **Calculations record what produced them.** Each result stores the formula version, the assumption versions and a frozen copy of the inputs, and is never edited. A number can be explained later, even after prices or formulas change.
+- **No passwords.** Users sign in with Google or a one-time email link, so there is nothing to leak or reset.
+
+Details: [`docs/security-model.md`](docs/security-model.md) and [`docs/threat-model.md`](docs/threat-model.md).
+
 ## Database Schema
 
 Defined in `prisma/schema.prisma`, generated via Prisma 7's `prisma-client` generator into `app/generated/prisma` (gitignored).
@@ -208,9 +232,9 @@ Defined in `prisma/schema.prisma`, generated via Prisma 7's `prisma-client` gene
 
 - `Vehicle` — fleet-scoped vehicle specs (manufacturer, model, `VehicleType`, `EngineType`, `ParkingType`, distance/consumption, solar panel capacity and placement, payload/roof-load limits, operating months, winter usage, location); soft-deleted via `deletedAt`.
 - `Calculation` — a request to evaluate a specific vehicle, linked to the fleet, vehicle, and requesting user.
-- `CalculationScenario`, `CalculationInputSnapshot`, `CalculationResult` — versioned inputs/outputs for a calculation (the actual computation engine is not yet implemented — Milestone 3).
-- `ReportJob` — async report generation job state (`ReportJobStatus`), designed for the Temporal-based workflow in Milestone 3.
-- `AuditEvent` — append-only action log (fleet/actor/action/entity), not yet written to by any route (Step 2.3).
+- `CalculationScenario`, `CalculationInputSnapshot`, `CalculationResult` — versioned inputs/outputs for a calculation (the calculation engine is not yet implemented — Milestone 2).
+- `ReportJob` — async report generation job state (`ReportJobStatus`), designed for the Temporal-based workflow in Milestone 4.
+- `AuditEvent` — append-only action log (fleet/actor/action/entity), written by every change and every refused request.
 - `FeatureFlag` — per-fleet or global boolean/JSON flags.
 
 ## API Routes
@@ -227,12 +251,18 @@ All routes under `/api/fleets/[fleetId]/...` require an authenticated session wi
 | `/api/fleets/[fleetId]/calculations`                 | GET    | any member     | Lists calculations in the fleet                     |
 | `/api/fleets/[fleetId]/calculations`                 | POST   | OWNER, MANAGER | 404 if the referenced vehicle isn't in this fleet   |
 | `/api/fleets/[fleetId]/calculations/[calculationId]` | GET    | any member     | 404 if the calculation belongs to a different fleet |
+| `/api/fleets/[fleetId]/members`                      | GET    | any member     | Lists members                                       |
+| `/api/fleets/[fleetId]/members`                      | POST   | OWNER          | Adds an existing user by email                      |
+| `/api/fleets/[fleetId]/members/[userId]`             | PATCH  | OWNER          | Changes a role                                      |
+| `/api/fleets/[fleetId]/members/[userId]`             | DELETE | OWNER          | Removes a member                                    |
+| `/api/fleets/[fleetId]/audit-events`                 | GET    | OWNER, MANAGER | Filterable, paginated audit log                     |
 
-Auth routes (`/api/auth/*`) handle NextAuth sign-in/out, registration, and password reset.
+Auth routes (`/api/auth/*`) are handled by Auth.js: Google sign-in, email sign-in links and sign-out. There are no passwords and no registration route.
 
 ## Testing
 
-- **Unit/component tests** — colocated `*.test.ts(x)` files, run by Jest under jsdom (e.g. `lib/fleet-auth.test.ts`, `app/page.test.tsx`).
+- **Unit/component tests** — colocated `*.test.ts(x)` files, run by Jest under jsdom (`npm test`).
+- **API tests** — `*.api.test.ts` files call the route handlers directly against a disposable Postgres database (`npm run test:api`).
 - **Schema integration tests** — `prisma/schema.integration.ts`, run with `npm run test:db` against a real local Postgres instance (constraints, cascades, uniqueness).
 
 ## Internationalization
@@ -242,7 +272,8 @@ Locales: English (`en`), German (`de`), Spanish (`es`) — see `messages/*.json`
 ## Known Gaps
 
 - The calculator form UI (`components/calculator/`) is not yet connected to the `Vehicle`/`Calculation` API routes or a real calculation engine.
-- No audit logging, rate limiting, or CSRF/session hardening yet (Milestone 2, Steps 2.3–2.7).
-- No report generation, dashboard, results pages, or AI-assisted recommendations exist yet (Milestone 3+).
+- Session revocation, a last-owner guard and sign-in audit events are not implemented (see [`docs/security-model.md`](docs/security-model.md)).
+- Rate-limit counters live in server memory, so they are per instance on Vercel.
+- No report generation, dashboard, results pages, or AI-assisted recommendations exist yet (Milestones 3+).
 
 See [`docs/detailed-plan.md`](docs/detailed-plan.md) for the authoritative, up-to-date plan.
