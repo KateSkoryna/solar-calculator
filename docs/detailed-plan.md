@@ -130,7 +130,7 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 | Step | Title | Status | Notes |
 |------|-------|--------|-------|
 | 1.1 | PII inventory and log redaction | DONE | |
-| 1.2 | Authorization and audit API tests | TODO | |
+| 1.2 | Authorization and audit API tests | DONE | |
 | 1.3 | Passwordless sign-in with email links (Gmail SMTP) | TODO | Owner creates a Gmail app password |
 | 1.4 | Security model, threat model and ADRs | TODO | |
 | 2.1 | Research assumption set v1 | TODO | Owner reviews every value |
@@ -186,6 +186,7 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 | 7.4 | Kubernetes manifests | TODO | |
 | 7.5 | End-to-end tests | TODO | Owner runs them |
 | 7.6 | Handoff documentation | TODO | |
+| 7.7 | Preview deployment smoke test | TODO | Owner sets a Vercel bypass secret in GitHub |
 
 ---
 
@@ -1209,3 +1210,21 @@ Also a Python deep dive: every step's concepts go into `docs/key-concepts.md` wi
   2. Every Mermaid block is inside a fenced `mermaid` code block (grep count equals the number of diagrams listed).
   3. Standard checks S3, S10 pass.
 - **Owner actions:** follow `deployment-runbook.md` once from a clean clone.
+
+### Step 7.7 — Preview deployment smoke test
+
+- **Depends on:** 7.1
+- **Purpose:** Catch differences between local and production that only appear over real HTTPS on Vercel: `Secure` and `__Host-` cookies, redirects, proxy headers and serverless behaviour.
+- **Concepts to learn:** smoke tests vs end-to-end tests, environment parity, deployment status events, Vercel deployment protection bypass
+- **Instructions:**
+  1. Create `scripts/smoke-test.mjs` (`npm run smoke -- <base-url>`) that uses `fetch` (no browser) and checks, with each check named after its rule: the base URL is `https`; `GET /en` returns 200; `GET /en/user` without a session redirects to `/en/login`; `GET /api/fleets/any-id/vehicles` without a session returns 403; `GET /api/auth/csrf` sets a `__Host-authjs.csrf-token` cookie with `Secure`, `HttpOnly`, `SameSite=Lax` and `Path=/`; a request to a `http://` URL is redirected to `https://`. The script exits non-zero and prints every failed check. When the `VERCEL_AUTOMATION_BYPASS_SECRET` environment variable is set, it sends it as the `x-vercel-protection-bypass` header.
+  2. Move the check definitions into `scripts/smoke-checks.ts` so they can be unit-tested; add `scripts/smoke-checks.test.ts` with mocked `fetch` responses proving one passing and one failing case per check.
+  3. Add a `preview-smoke` job to `.github/workflows/ci.yml` that runs on the `deployment_status` event when `github.event.deployment_status.state == 'success'` and the environment is a Vercel preview, using `github.event.deployment_status.environment_url` as the base URL and `secrets.VERCEL_AUTOMATION_BYPASS_SECRET`.
+  4. **Do not run the script against any URL** and do not start a server. Verify with the unit test and `npx tsc --noEmit`.
+  5. Add a "Preview smoke test" section to `docs/security-cookies-csrf.md` describing what the script proves and what it does not (logged-in flows).
+- **Definition of done:**
+  1. `scripts/smoke-checks.test.ts` passes with at least 6 checks covered, each with a passing and a failing case.
+  2. `.github/workflows/ci.yml` contains the `preview-smoke` job and `deployment_status`.
+  3. `package.json` has the `smoke` script.
+  4. Standard checks S1–S3, S8–S10 pass.
+- **Owner actions:** in Vercel enable Protection Bypass for Automation and copy the secret; add it to the GitHub repository secrets as `VERCEL_AUTOMATION_BYPASS_SECRET`; open a pull request and confirm `preview-smoke` is green.
