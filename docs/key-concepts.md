@@ -875,6 +875,55 @@ if (assumption.favourableDirection === "higher") {
 }
 ```
 
+### Pure functions and determinism
+
+A pure function gives the same output for the same input and touches nothing outside itself: no database, no clock, no random numbers. That is why the engine can run in the browser for anonymous users and on the server for fleets and always agree:
+
+```ts
+export function calculate(
+  input: CalculationInput,
+  assumptionSet: AssumptionSet,
+): CalculationOutput {
+```
+
+### Money in integer cents
+
+Adding decimal euros in floating point drifts (0.1 + 0.2 is not 0.3). The engine rounds to whole cents at the edges and adds integers, so the parts always sum exactly to the total:
+
+```ts
+export function toCents(euros: number): number {
+  return Math.round(euros * CENTS_PER_EURO);
+}
+```
+
+### Allocating a limited resource between consumers
+
+Solar energy is limited and must not be counted twice. Demands are served in a fixed priority order and each takes only what is left:
+
+```ts
+const cooling = takeFrom(producedKwh, demands.coolingKwh);
+const idling = takeFrom(cooling.remaining, demands.idlingKwh);
+const auxiliary = takeFrom(idling.remaining, demands.auxiliaryKwh);
+```
+
+### Property-based invariants
+
+Instead of only checking single examples, generate many inputs and assert rules that must always hold, such as "energy allocated never exceeds energy produced" or "pessimistic payback is never shorter than optimistic":
+
+```ts
+expect(paybackOrInfinity(PESSIMISTIC)).toBeGreaterThanOrEqual(
+  paybackOrInfinity(REALISTIC),
+);
+```
+
+### Formula versioning
+
+When the formula changes, old results must still be explainable. The engine carries its own version next to the assumption set version, and both are stored with every result:
+
+```ts
+export const FORMULA_VERSION = "1.0.0";
+```
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit

@@ -134,7 +134,7 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 | 1.3 | Passwordless sign-in with email links (Gmail SMTP) | DONE | |
 | 1.4 | Security model and threat model | DONE | |
 | 2.1 | Research assumption set v1 | DONE | |
-| 2.2 | Pure calculation engine | TODO | |
+| 2.2 | Pure calculation engine | REVIEW | Ready for review — 2026-09-30. Owner judges the golden results |
 | 2.3 | Store scenarios and the full result shape | TODO | |
 | 2.4 | Run the engine on fleet calculations | TODO | |
 | 2.5 | Create a fleet on sign-up | TODO | |
