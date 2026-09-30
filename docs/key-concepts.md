@@ -624,6 +624,45 @@ request, and two things change:
 This project doesn't have that problem today — one app, one origin — but
 it's the concept to reach for if the architecture ever splits.
 
+## PII inventory and log redaction
+
+### PII classification
+
+Every stored field falls into one of three buckets: personal data (email, name, IP address), secrets (password hash, tokens, session cookie) and non-personal data (ids, timestamps). Each bucket gets different handling, so the first step is writing down which is which. `docs/privacy-and-pii.md` does that for every column:
+
+```md
+| `User.resetToken` | `User.resetToken` | Secret | Nobody in the app; database admins | One hour (`resetTokenExpiry`), cleared after use | No, redacted |
+```
+
+### Log redaction
+
+Redaction removes sensitive values before a log line is written, so no code path can leak them by accident. It works by key name and by pattern:
+
+```ts
+export function redactPii(value: unknown): unknown {
+  if (typeof value === "string") {
+    return redactString(value);
+  }
+  if (value instanceof Error) {
+    return { name: value.name, message: redactString(value.message) };
+  }
+```
+
+### Why secrets in logs are a vulnerability
+
+Logs are copied to dashboards, vendors and laptops, and far more people can read them than can read the database. The old forgot-password route logged the full reset link. Anyone with log access could have taken over an account. Now only the event name is logged, and the link appears in a debug line that runs in development only:
+
+```ts
+logger.info("password_reset_requested");
+if (process.env.NODE_ENV === "development") {
+  logger.debug("password_reset_link_created", { resetUrl });
+}
+```
+
+### Data retention basics
+
+Keep personal data only as long as it has a purpose, and write the limit down. Reset tokens live one hour and are cleared after use. Rate-limiter IP addresses exist only in memory for one window and never reach the database. Both facts are recorded in the retention column of the PII table.
+
 ---
 
 *Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit
