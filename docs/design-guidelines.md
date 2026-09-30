@@ -573,7 +573,7 @@ Each screen lists route, purpose, content order per breakpoint, states and inter
 - Your name and Company are asked once, on the onboarding screen after the first sign-in (2 columns desktop/tablet, stacked mobile), which creates the fleet.
 - Errors: inline under the email field; an expired or used link shows a form-level message above the button ("This link has expired or was already used. Send a new one."). The message never reveals whether an account exists.
 
-**Decided:** no passwords (Google or email link via Resend; step 1.3).
+**Decided:** no passwords (Google or an email link sent from Gmail; step 1.3).
 
 ### 8.5 Fleet dashboard — `/[locale]/[fleetSlug]` (new route) [Fleet dashboard, · dark, · tablet, · mobile]
 
