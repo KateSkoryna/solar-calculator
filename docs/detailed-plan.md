@@ -125,7 +125,7 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 |------|-------|--------|-------|
 | 1.1 | PII inventory and log redaction | TODO | |
 | 1.2 | Authorization and audit API tests | TODO | |
-| 1.3 | Passwordless sign-in with email links (Resend) | TODO | Owner creates a Resend account |
+| 1.3 | Passwordless sign-in with email links (Gmail SMTP) | TODO | Owner creates a Gmail app password |
 | 1.4 | Security model, threat model and ADRs | TODO | |
 | 2.1 | Research assumption set v1 | TODO | Owner reviews every value |
 | 2.2 | Pure calculation engine | TODO | |
@@ -198,7 +198,7 @@ These are settled. Steps rely on them; do not revisit them without the owner.
 - **Ageing and subsidies:** panel output and battery capacity degrade over time (including battery replacement cost and the life-extension effect of solar charging). Subsidies are included per country; users can enter their own amount.
 - **Savings model:** the engine sums every savings type that applies to a vehicle and never decides in advance that solar is not worth it. The types are: cooling-unit fuel (chilled/frozen transport; diesel, engine-driven and electric cooling units), less idling (cab climate while parked), fewer battery breakdowns (its own labelled line; spoiled-cargo risk is described in words, not priced), alternator fuel (diesel and petrol) and direct charging (electric and hybrid). Results show the breakdown.
 - **Public results:** the calculator's answers are encoded in the results URL (`/[locale]/results?answers=…`), so a Share link works without storing anything. The in-progress form is kept in `sessionStorage`.
-- **Authentication:** Auth.js stays. Users sign in with Google or a one-time email link sent through Resend. Email sending sits behind `lib/email/send-email.ts`, so SendGrid can replace Resend by changing one file. There are no passwords.
+- **Authentication:** Auth.js stays. Users sign in with Google or a one-time email link. There is no own domain, so links are sent from the owner's Gmail account over SMTP (Auth.js Nodemailer provider, about 500 emails a day). Email sending sits behind `lib/email/send-email.ts`, so a provider such as Resend or SendGrid can replace Gmail by changing one file once a domain exists. There are no passwords.
 - **Onboarding:** a new user (Google or email link) lands on an onboarding page that asks for their name and company; this creates their fleet with them as `OWNER`.
 - **PDF reports:** only for saved fleet calculations (Milestone 4). The public results page has Share and Save, not Download PDF.
 - **Telemetry data:** a simulator feeds the demo fleet; real users import a trip-log CSV. No proprietary or employer data is used anywhere.
@@ -256,29 +256,30 @@ These are settled. Steps rely on them; do not revisit them without the owner.
   4. `.github/workflows/ci.yml` contains `npm run test:api`.
   5. Standard checks S1–S3, S8–S10 pass.
 
-### Step 1.3 — Passwordless sign-in with email links (Resend)
+### Step 1.3 — Passwordless sign-in with email links (Gmail SMTP)
 
 - **Depends on:** 1.2
-- **Purpose:** Stored passwords are the biggest authentication risk and support cost. Users sign in with Google or a one-time link sent by email. Auth.js stays, and users stay in the app's own database.
-- **Concepts to learn:** passwordless (magic-link) authentication, verification tokens (single use, expiry, hashed storage), transactional email providers and sender domains (SPF/DKIM), preventing account enumeration and email bombing, hiding a vendor behind an interface
+- **Purpose:** Stored passwords are the biggest authentication risk and support cost. Users sign in with Google or a one-time link sent by email. Auth.js stays, and users stay in the app's own database. There is no own domain, so links are sent through the owner's Gmail account over SMTP, which delivers to any address.
+- **Concepts to learn:** passwordless (magic-link) authentication, verification tokens (single use, expiry, hashed storage), SMTP and app passwords, email deliverability (SPF/DKIM/DMARC and why a personal Gmail sender works without a domain), preventing account enumeration and email bombing, hiding a vendor behind an interface
 - **Instructions:**
-  1. Create `lib/email/send-email.ts` exporting an `EmailSender` interface and `sendEmail({ to, subject, html, text })`, and `lib/email/resend-sender.ts` that calls the Resend REST API with `fetch` (`https://api.resend.com/emails`, key `AUTH_RESEND_KEY`, sender `EMAIL_FROM`). No other file talks to Resend, so switching to SendGrid means adding `lib/email/sendgrid-sender.ts` and changing one export.
-  2. When `AUTH_RESEND_KEY` is empty and `NODE_ENV === "development"`, `sendEmail` logs the sign-in URL with `logger.debug` instead of sending, so local development works without an account. In production a missing key throws.
-  3. In `auth.ts` add the Auth.js Resend provider (`next-auth/providers/resend`) with a custom `sendVerificationRequest` that uses `sendEmail` and `lib/email/sign-in-email.ts` (HTML and plain text, translated en/de/es with next-intl `createTranslator`; locale from the first path segment of the callback URL, fallback `en`). Link lifetime is the constant `SIGN_IN_LINK_MAX_AGE_SECONDS` = 900.
-  4. Remove password login: the password Credentials provider, password verification in `lib/auth-helpers.ts`, `app/api/auth/register`, `app/api/auth/forgot-password`, `app/api/auth/reset-password`, the forgot/reset password pages and components, and the `bcryptjs` dependency. A migration drops `User.password`, `User.resetToken` and `User.resetTokenExpiry`. Update `prisma/seed.ts` and remove the deleted routes from `RATE_LIMITED_ROUTES`.
-  5. Login and register pages get an email field with "Email me a sign-in link" plus the Google button (minimal UI; restyled in 3.10). Set `pages.verifyRequest` to `/[locale]/check-email` (minimal page) and send link errors (expired or already used) back to the login page with a plain-language message.
-  6. Add `POST /api/auth/signin/resend` to `RATE_LIMITED_ROUTES`, and limit links per email address to 3 per 15 minutes inside `sendVerificationRequest` (keyed by a hash of the address, never the address itself).
-  7. The response is identical whether or not the email already has an account.
-  8. Update `docs/privacy-and-pii.md`: remove the password and reset-token rows; add rows for verification tokens and for Resend as a processor of email addresses.
-  9. Add `AUTH_RESEND_KEY=` and `EMAIL_FROM=` to `.env.example`.
+  1. Add the `nodemailer` dependency (and `@types/nodemailer` as a dev dependency).
+  2. Create `lib/email/send-email.ts` exporting an `EmailSender` interface and `sendEmail({ to, subject, html, text })`, and `lib/email/smtp-sender.ts` that sends through Nodemailer using `EMAIL_SERVER_HOST`, `EMAIL_SERVER_PORT`, `EMAIL_SERVER_USER`, `EMAIL_SERVER_PASSWORD` and `EMAIL_FROM`. No other file uses Nodemailer, so a transactional provider (Resend, SendGrid) can replace it later by adding one sender file and changing one export.
+  3. When `EMAIL_SERVER_PASSWORD` is empty and `NODE_ENV === "development"`, `sendEmail` logs the sign-in URL with `logger.debug` instead of sending, so local development works without credentials. In production missing SMTP settings throw.
+  4. In `auth.ts` add the Auth.js Nodemailer provider (`next-auth/providers/nodemailer`) with `server` built from the same environment variables and a custom `sendVerificationRequest` that uses `sendEmail` and `lib/email/sign-in-email.ts` (HTML and plain text, translated en/de/es with next-intl `createTranslator`; locale from the first path segment of the callback URL, fallback `en`). Link lifetime is the constant `SIGN_IN_LINK_MAX_AGE_SECONDS` = 900.
+  5. Remove password login: the password Credentials provider, password verification in `lib/auth-helpers.ts`, `app/api/auth/register`, `app/api/auth/forgot-password`, `app/api/auth/reset-password`, the forgot/reset password pages and components, and the `bcryptjs` dependency. A migration drops `User.password`, `User.resetToken` and `User.resetTokenExpiry`. Update `prisma/seed.ts` and remove the deleted routes from `RATE_LIMITED_ROUTES`.
+  6. Login and register pages get an email field with "Email me a sign-in link" plus the Google button (minimal UI; restyled in 3.10). Set `pages.verifyRequest` to `/[locale]/check-email` (minimal page) and send link errors (expired or already used) back to the login page with a plain-language message.
+  7. Add `POST /api/auth/signin/nodemailer` to `RATE_LIMITED_ROUTES`, and limit links per email address to 3 per 15 minutes inside `sendVerificationRequest` (keyed by a hash of the address, never the address itself). Gmail allows about 500 messages a day, so also cap total links at `DAILY_SIGN_IN_EMAIL_LIMIT` = 400 per day and show a plain-language "try again later or use Google" message when it is reached.
+  8. The response is identical whether or not the email already has an account.
+  9. Update `docs/privacy-and-pii.md`: remove the password and reset-token rows; add rows for verification tokens and for Gmail as the processor that sends email addresses.
+  10. Add `EMAIL_SERVER_HOST=smtp.gmail.com`, `EMAIL_SERVER_PORT=465`, `EMAIL_SERVER_USER=`, `EMAIL_SERVER_PASSWORD=` and `EMAIL_FROM=` to `.env.example`.
 - **Definition of done:**
   1. `grep -rn "bcrypt\|resetToken\|forgot-password\|reset-password" app components lib auth.ts proxy.ts prisma/schema.prisma prisma/seed.ts package.json` prints nothing.
-  2. `grep -rln "api.resend.com" app components lib auth.ts` lists only `lib/email/resend-sender.ts`.
-  3. Tests: `sendEmail` posts the expected JSON with the bearer key to Resend (mocked `fetch`); in development without a key it logs the URL and makes no network call; `sign-in-email` contains the link and a German subject for locale `de`; the fourth link request for the same email within 15 minutes is refused; the auth configuration contains the Google and Resend providers and no password provider.
+  2. `grep -rln "from \"nodemailer\"" app components lib auth.ts` lists only `lib/email/smtp-sender.ts`.
+  3. Tests: `sendEmail` passes the expected message (from, to, subject, html, text) to a mocked Nodemailer transport; in development without a password it logs the URL and creates no transport; `sign-in-email` contains the link and a German subject for locale `de`; the fourth link request for the same email within 15 minutes is refused; the daily cap refuses request 401; the auth configuration contains the Google and Nodemailer providers and no password provider.
   4. Standard check S5 passes (the migration drops the three columns), and `npm run test:api` passes.
   5. Standard checks S1–S6, S8–S10 pass.
-- **Owner actions:** create a Resend account; verify your sending domain (or use `onboarding@resend.dev`, which only delivers to your own address); set `AUTH_RESEND_KEY` and `EMAIL_FROM` in `.env.local` and Vercel. Google OAuth settings stay unchanged.
-- **Owner review (browser):** on `/en/login` request a link (without a key, copy it from the dev server log) and sign in; Google sign-in still works; an old or reused link shows the friendly error; `/en/forgot-password` returns 404.
+- **Owner actions:** turn on 2-Step Verification for the Gmail account, create an app password at myaccount.google.com/apppasswords, and set `EMAIL_SERVER_HOST=smtp.gmail.com`, `EMAIL_SERVER_PORT=465`, `EMAIL_SERVER_USER=<gmail address>`, `EMAIL_SERVER_PASSWORD=<app password>` and `EMAIL_FROM="Solar Calculator <gmail address>"` in `.env.local` and Vercel. The Resend key is no longer used. Google OAuth settings stay unchanged.
+- **Owner review (browser):** on `/en/login` request a link for an address that is not yours and one that is; both arrive (check spam once); sign in with it; Google sign-in still works; an old or reused link shows the friendly error; `/en/forgot-password` returns 404.
 
 ### Step 1.4 — Security model, threat model and ADRs
 
