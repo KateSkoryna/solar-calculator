@@ -955,6 +955,45 @@ The database enum, the engine list and the API schema all name the same values. 
 expect([...SCENARIO_KINDS].sort()).toEqual(Object.values(ScenarioKind).sort());
 ```
 
+### Server-side recomputation as a trust boundary
+
+A client can send any JSON, so it is never trusted to supply results. The route accepts only a vehicle id and notes, and the server recomputes everything from the stored vehicle. Unknown fields are stripped:
+
+```ts
+export const calculationInputSchema = z
+  .object({
+    vehicleId: z.string().min(1),
+    notes: z.string().min(1).optional(),
+  })
+  .strip();
+```
+
+### Immutable input snapshots
+
+Prices and assumptions change, so each scenario stores the exact resolved input and where each value came from. Reopening an old calculation then shows what was actually computed:
+
+```ts
+vehicleSpec: {
+  input: scenarioResult.resolvedInput,
+  inputSources: output.inputSources,
+},
+```
+
+### Atomic multi-row writes
+
+A calculation is one calculation, three scenarios, three snapshots, three results and an audit event. They are written inside one transaction, so a failure anywhere leaves nothing behind:
+
+```ts
+const calculation = await prisma.$transaction((tx) =>
+  createCalculationForVehicle(tx, {
+    fleetId,
+    vehicle,
+    requestedByUserId,
+    notes,
+  }),
+);
+```
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit

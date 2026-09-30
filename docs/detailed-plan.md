@@ -108,18 +108,18 @@ Post this in the session, not in a file:
 
 Run every check that applies to what the step touched. Each must pass.
 
-| ID | Applies when | Command | Pass condition |
-|----|--------------|---------|----------------|
-| S1 | Any `.ts`/`.tsx` changed | `npx tsc --noEmit` | Exit code 0 |
-| S2 | Any `.ts`/`.tsx`/`.mjs` changed | `npm run lint` | Exit code 0, zero errors |
-| S3 | Always | `npm test` | Exit code 0 |
-| S4 | `app/`, `components/`, `lib/`, `messages/`, `i18n.ts` or `next.config.ts` changed | `npm run build` | Exit code 0 |
-| S5 | `prisma/schema.prisma` or `prisma/migrations/` changed | `npx prisma validate`, then `npx prisma migrate dev` against local Docker Postgres, then `npm run test:db` | All exit 0; the new migration folder exists |
-| S6 | Any API route or `lib/` server code changed (after step 1.2 exists) | `npm run test:api` | Exit code 0 |
-| S7 | Anything under `services/telemetry/` changed | `cd services/telemetry && uv run ruff check . && uv run ruff format --check . && uv run mypy . && uv run pytest` | Exit code 0 |
-| S8 | Always | `git diff -U0 \| grep -E '^\+\s*(//\|/\*\|#[^!])'` plus the same `grep -nE '^\s*(//\|/\*\|#[^!])'` over every new untracked source file | No output (no new comments) |
-| S9 | Always | `git diff -U0 \| grep 'style={{'` | No output, or every match is listed under "Decisions" with the dynamic value it needs |
-| S10 | Always | `git status --short` | Only files the step needs; no `.env*` changes except `.env.example` |
+| ID  | Applies when                                                                      | Command                                                                                                                                 | Pass condition                                                                        |
+| --- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| S1  | Any `.ts`/`.tsx` changed                                                          | `npx tsc --noEmit`                                                                                                                      | Exit code 0                                                                           |
+| S2  | Any `.ts`/`.tsx`/`.mjs` changed                                                   | `npm run lint`                                                                                                                          | Exit code 0, zero errors                                                              |
+| S3  | Always                                                                            | `npm test`                                                                                                                              | Exit code 0                                                                           |
+| S4  | `app/`, `components/`, `lib/`, `messages/`, `i18n.ts` or `next.config.ts` changed | `npm run build`                                                                                                                         | Exit code 0                                                                           |
+| S5  | `prisma/schema.prisma` or `prisma/migrations/` changed                            | `npx prisma validate`, then `npx prisma migrate dev` against local Docker Postgres, then `npm run test:db`                              | All exit 0; the new migration folder exists                                           |
+| S6  | Any API route or `lib/` server code changed (after step 1.2 exists)               | `npm run test:api`                                                                                                                      | Exit code 0                                                                           |
+| S7  | Anything under `services/telemetry/` changed                                      | `cd services/telemetry && uv run ruff check . && uv run ruff format --check . && uv run mypy . && uv run pytest`                        | Exit code 0                                                                           |
+| S8  | Always                                                                            | `git diff -U0 \| grep -E '^\+\s*(//\|/\*\|#[^!])'` plus the same `grep -nE '^\s*(//\|/\*\|#[^!])'` over every new untracked source file | No output (no new comments)                                                           |
+| S9  | Always                                                                            | `git diff -U0 \| grep 'style={{'`                                                                                                       | No output, or every match is listed under "Decisions" with the dynamic value it needs |
+| S10 | Always                                                                            | `git status --short`                                                                                                                    | Only files the step needs; no `.env*` changes except `.env.example`                   |
 
 ---
 
@@ -127,66 +127,66 @@ Run every check that applies to what the step touched. Each must pass.
 
 Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · `DONE`. Rows are in execution order. Only the owner sets `DONE` or `CHANGES`.
 
-| Step | Title | Status | Notes |
-|------|-------|--------|-------|
-| 1.1 | PII inventory and log redaction | DONE | |
-| 1.2 | Authorization and audit API tests | DONE | |
-| 1.3 | Passwordless sign-in with email links (Gmail SMTP) | DONE | |
-| 1.4 | Security model and threat model | DONE | |
-| 2.1 | Research assumption set v1 | DONE | |
-| 2.2 | Pure calculation engine | DONE | |
-| 2.3 | Store scenarios and the full result shape | REVIEW | Ready for review — 2026-09-30. Owner checks the migration and the seed results |
-| 2.4 | Run the engine on fleet calculations | TODO | |
-| 2.5 | Create a fleet on sign-up | TODO | |
-| 2.6 | Save a quick check to a fleet | TODO | |
-| 3.1 | Design tokens, fonts and motion | TODO | |
-| 3.2 | Core components and test utilities | TODO | |
-| 3.3 | Public header, mobile menu and footer | TODO | |
-| 3.4 | Home page | TODO | |
-| 3.5 | Calculator input components | TODO | |
-| 3.6 | City search API | TODO | |
-| 3.7 | Four-step calculator flow | TODO | |
-| 3.8 | Public results page | TODO | |
-| 3.9 | Fleet results page | TODO | |
-| 3.10 | Auth screens | TODO | |
-| 3.11 | Workspace shell | TODO | |
-| 3.12 | Team & activity page | TODO | |
-| 3.13 | Fleet dashboard | TODO | |
-| 3.14 | Vehicles and calculations pages | TODO | |
-| 3.15 | Read-only demo fleet | TODO | |
-| 3.16 | Accessibility, copy and cleanup pass | TODO | |
-| 4.1 | Temporal in Docker Compose and a worker | TODO | |
-| 4.2 | Report job state machine | TODO | |
-| 4.3 | Report request API | TODO | |
-| 4.4 | Report workflow and PDF generation | TODO | |
-| 4.5 | AI recommendation activity | TODO | Owner must choose the LLM provider first |
-| 4.6 | Fleet event stream (SSE) | TODO | |
-| 4.7 | Report UI and history | TODO | |
-| 4.8 | Workflow and concurrency tests | TODO | |
-| 5.1 | Scaffold the Python service | TODO | |
-| 5.2 | OpenAPI → TypeScript types pipeline | TODO | |
-| 5.3 | Service-to-service authentication | TODO | |
-| 5.4 | Telemetry tables and Python data access | TODO | |
-| 5.5 | Solar yield with pvlib | TODO | |
-| 5.6 | Telemetry simulator | TODO | |
-| 5.7 | Rollups and measured profiles with pandas | TODO | |
-| 5.8 | Trip-log CSV import API | TODO | |
-| 5.9 | Measured data and the recalculation workflow | TODO | |
-| 5.10 | Live UI and import screen | TODO | |
-| 5.11 | Python CI and coverage | TODO | |
-| 5.12 | Deployment configuration for the worker host | TODO | Owner must choose Railway or Fly.io first |
-| 6.1 | PostgreSQL full-text search | TODO | |
-| 6.2 | Search UI | TODO | |
-| 6.3 | Table view for every chart | TODO | |
-| 6.4 | Scenario explanations and PDF export tests | TODO | |
-| 6.5 | Prototype validation brief | TODO | Owner runs the sessions |
-| 7.1 | CI pipeline completion | TODO | |
-| 7.2 | Structured logging, health checks and metrics | TODO | |
-| 7.3 | Production Dockerfiles | TODO | |
-| 7.4 | Kubernetes manifests | TODO | |
-| 7.5 | End-to-end tests | TODO | Owner runs them |
-| 7.6 | Handoff documentation | TODO | |
-| 7.7 | Preview deployment smoke test | TODO | Owner sets a Vercel bypass secret in GitHub |
+| Step | Title                                              | Status | Notes                                       |
+| ---- | -------------------------------------------------- | ------ | ------------------------------------------- |
+| 1.1  | PII inventory and log redaction                    | DONE   |                                             |
+| 1.2  | Authorization and audit API tests                  | DONE   |                                             |
+| 1.3  | Passwordless sign-in with email links (Gmail SMTP) | DONE   |                                             |
+| 1.4  | Security model and threat model                    | DONE   |                                             |
+| 2.1  | Research assumption set v1                         | DONE   |                                             |
+| 2.2  | Pure calculation engine                            | DONE   |                                             |
+| 2.3  | Store scenarios and the full result shape          | DONE   |                                             |
+| 2.4  | Run the engine on fleet calculations               | REVIEW | Ready for review — 2026-09-30               |
+| 2.5  | Create a fleet on sign-up                          | TODO   |                                             |
+| 2.6  | Save a quick check to a fleet                      | TODO   |                                             |
+| 3.1  | Design tokens, fonts and motion                    | TODO   |                                             |
+| 3.2  | Core components and test utilities                 | TODO   |                                             |
+| 3.3  | Public header, mobile menu and footer              | TODO   |                                             |
+| 3.4  | Home page                                          | TODO   |                                             |
+| 3.5  | Calculator input components                        | TODO   |                                             |
+| 3.6  | City search API                                    | TODO   |                                             |
+| 3.7  | Four-step calculator flow                          | TODO   |                                             |
+| 3.8  | Public results page                                | TODO   |                                             |
+| 3.9  | Fleet results page                                 | TODO   |                                             |
+| 3.10 | Auth screens                                       | TODO   |                                             |
+| 3.11 | Workspace shell                                    | TODO   |                                             |
+| 3.12 | Team & activity page                               | TODO   |                                             |
+| 3.13 | Fleet dashboard                                    | TODO   |                                             |
+| 3.14 | Vehicles and calculations pages                    | TODO   |                                             |
+| 3.15 | Read-only demo fleet                               | TODO   |                                             |
+| 3.16 | Accessibility, copy and cleanup pass               | TODO   |                                             |
+| 4.1  | Temporal in Docker Compose and a worker            | TODO   |                                             |
+| 4.2  | Report job state machine                           | TODO   |                                             |
+| 4.3  | Report request API                                 | TODO   |                                             |
+| 4.4  | Report workflow and PDF generation                 | TODO   |                                             |
+| 4.5  | AI recommendation activity                         | TODO   | Owner must choose the LLM provider first    |
+| 4.6  | Fleet event stream (SSE)                           | TODO   |                                             |
+| 4.7  | Report UI and history                              | TODO   |                                             |
+| 4.8  | Workflow and concurrency tests                     | TODO   |                                             |
+| 5.1  | Scaffold the Python service                        | TODO   |                                             |
+| 5.2  | OpenAPI → TypeScript types pipeline                | TODO   |                                             |
+| 5.3  | Service-to-service authentication                  | TODO   |                                             |
+| 5.4  | Telemetry tables and Python data access            | TODO   |                                             |
+| 5.5  | Solar yield with pvlib                             | TODO   |                                             |
+| 5.6  | Telemetry simulator                                | TODO   |                                             |
+| 5.7  | Rollups and measured profiles with pandas          | TODO   |                                             |
+| 5.8  | Trip-log CSV import API                            | TODO   |                                             |
+| 5.9  | Measured data and the recalculation workflow       | TODO   |                                             |
+| 5.10 | Live UI and import screen                          | TODO   |                                             |
+| 5.11 | Python CI and coverage                             | TODO   |                                             |
+| 5.12 | Deployment configuration for the worker host       | TODO   | Owner must choose Railway or Fly.io first   |
+| 6.1  | PostgreSQL full-text search                        | TODO   |                                             |
+| 6.2  | Search UI                                          | TODO   |                                             |
+| 6.3  | Table view for every chart                         | TODO   |                                             |
+| 6.4  | Scenario explanations and PDF export tests         | TODO   |                                             |
+| 6.5  | Prototype validation brief                         | TODO   | Owner runs the sessions                     |
+| 7.1  | CI pipeline completion                             | TODO   |                                             |
+| 7.2  | Structured logging, health checks and metrics      | TODO   |                                             |
+| 7.3  | Production Dockerfiles                             | TODO   |                                             |
+| 7.4  | Kubernetes manifests                               | TODO   |                                             |
+| 7.5  | End-to-end tests                                   | TODO   | Owner runs them                             |
+| 7.6  | Handoff documentation                              | TODO   |                                             |
+| 7.7  | Preview deployment smoke test                      | TODO   | Owner sets a Vercel bypass secret in GitHub |
 
 ---
 
@@ -422,7 +422,7 @@ These are settled. Steps rely on them; do not revisit them without the owner.
   5. Add `app/[locale]/workspace/page.tsx` (server): no session → redirect to login; no fleets → redirect to `/[locale]/onboarding`; otherwise redirect to the first fleet's slug. Make it the default callback URL after every sign-in (Google and email link).
   6. Add `app/[locale]/onboarding/page.tsx` with "Your name" and "Company" fields that call `POST /api/fleets`, then go to `/[locale]/workspace` (minimal UI; restyled in 3.10).
 - **Definition of done:**
-  1. `lib/fleet-slug.test.ts` passes for: "Müller Kühltransporte GmbH" → `mueller-kuehltransporte-gmbh`; "  ACME  " → `acme`; a 100-character name → ≤ 48 chars; a reserved name such as "Calculator" never produces `calculator`.
+  1. `lib/fleet-slug.test.ts` passes for: "Müller Kühltransporte GmbH" → `mueller-kuehltransporte-gmbh`; " ACME " → `acme`; a 100-character name → ≤ 48 chars; a reserved name such as "Calculator" never produces `calculator`.
   2. A test reads the folders under `app/[locale]/` and asserts every static folder name is in `RESERVED_FLEET_SLUGS`.
   3. API tests prove: `POST /api/fleets` creates the fleet, the `OWNER` membership and a `FLEET_CREATED` event and sets the user's name, in one transaction; two users creating "Nordwind" get slugs `nordwind` and `nordwind-2`; a missing or 1-character company returns 400; `GET /api/fleets` returns only the caller's fleets; `POST /api/fleets` without a session is rejected.
   4. Standard checks S1–S6, S8–S10 pass.
