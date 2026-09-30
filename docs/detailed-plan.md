@@ -133,7 +133,7 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 | 1.2 | Authorization and audit API tests | DONE | |
 | 1.3 | Passwordless sign-in with email links (Gmail SMTP) | DONE | |
 | 1.4 | Security model and threat model | DONE | |
-| 2.1 | Research assumption set v1 | TODO | Owner reviews every value |
+| 2.1 | Research assumption set v1 | DONE | |
 | 2.2 | Pure calculation engine | TODO | |
 | 2.3 | Store scenarios and the full result shape | TODO | |
 | 2.4 | Run the engine on fleet calculations | TODO | |
