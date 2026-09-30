@@ -828,6 +828,53 @@ session: {
 
 Browsers only let a page read responses from its own origin unless the server sends CORS headers. Pages and API live in one Next.js app, so no CORS headers are needed.
 
+## Calculation Engine and Assumptions
+
+### Assumption management
+
+Every hidden number the calculator needs (fuel price, panel losses, battery life) lives in one typed object instead of being scattered through the code. Each one has a unit, a source and the date it was read, so a reviewer can check it:
+
+```ts
+idling: {
+  fuelPerIdleHour: assumption({
+    range: [2.27, 3.03, 5.68],
+    unit: "L/h",
+    direction: "higher",
+    source: SOURCES.afdcIdling,
+  }),
+```
+
+### Source citation
+
+A number without a source is an opinion. Where no public source exists, the value is marked `ASSUMPTION` with the reasoning in a note, so it is easy to find the ones that need an owner's review:
+
+```ts
+export const ASSUMED: AssumptionSource = {
+  sourceUrl: "",
+  sourceTitle: ASSUMPTION_SOURCE_TITLE,
+};
+```
+
+### Versioning data that changes results
+
+Prices and factors change, but an old calculation must stay explainable. The whole set carries a version, and a calculation will later store which version it used:
+
+```ts
+export const ASSUMPTION_SET_V1 = {
+  version: "2026.1",
+```
+
+### Pessimistic, realistic and optimistic ranges
+
+A single number hides uncertainty. Each assumption has three values, and `favourableDirection` says which direction helps solar, so "pessimistic" always means the unfavourable end. A test checks the order for every value:
+
+```ts
+if (assumption.favourableDirection === "higher") {
+  expect(pessimistic).toBeLessThanOrEqual(realistic);
+  expect(realistic).toBeLessThanOrEqual(optimistic);
+}
+```
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit
