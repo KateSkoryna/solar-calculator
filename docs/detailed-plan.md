@@ -129,7 +129,7 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 
 | Step | Title | Status | Notes |
 |------|-------|--------|-------|
-| 1.1 | PII inventory and log redaction | REVIEW | Ready for review — 2026-09-30 |
+| 1.1 | PII inventory and log redaction | DONE | |
 | 1.2 | Authorization and audit API tests | TODO | |
 | 1.3 | Passwordless sign-in with email links (Gmail SMTP) | TODO | Owner creates a Gmail app password |
 | 1.4 | Security model, threat model and ADRs | TODO | |
