@@ -924,6 +924,37 @@ When the formula changes, old results must still be explainable. The engine carr
 export const FORMULA_VERSION = "1.0.0";
 ```
 
+### Additive migrations on existing data
+
+A migration that adds a `NOT NULL` column fails when the table already has rows. The fix is to add the column with a default, let the rows take it, then drop the default. Old scenarios became `REALISTIC` this way:
+
+```sql
+ALTER TABLE "CalculationScenario" ADD COLUMN "kind" "ScenarioKind" NOT NULL DEFAULT 'REALISTIC';
+ALTER TABLE "CalculationScenario" ALTER COLUMN "kind" DROP DEFAULT;
+```
+
+### One-to-one to one-to-many
+
+Removing `@unique` from `calculationId` lets a calculation own many scenarios. A composite `@@unique([calculationId, kind])` keeps it to one per kind, so the database itself refuses a duplicate.
+
+### `Decimal` for money
+
+`Float` cannot hold 0.1 exactly, and money is compared and summed. The engine works in integer cents, and the database stores `Decimal(12, 2)`. The seed converts once at the boundary:
+
+```ts
+function centsToAmount(cents: number) {
+  return (cents / CENTS_PER_EURO).toFixed(2);
+}
+```
+
+### Enums that must agree across layers
+
+The database enum, the engine list and the API schema all name the same values. Prisma is the source; the API schema derives from it with `Object.values`, and a test fails if the engine's list drifts:
+
+```ts
+expect([...SCENARIO_KINDS].sort()).toEqual(Object.values(ScenarioKind).sort());
+```
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit

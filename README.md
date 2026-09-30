@@ -232,7 +232,7 @@ Defined in `prisma/schema.prisma`, generated via Prisma 7's `prisma-client` gene
 
 - `Vehicle` — fleet-scoped vehicle specs (manufacturer, model, `VehicleType`, `EngineType`, `ParkingType`, distance/consumption, solar panel capacity and placement, payload/roof-load limits, operating months, winter usage, location); soft-deleted via `deletedAt`.
 - `Calculation` — a request to evaluate a specific vehicle, linked to the fleet, vehicle, and requesting user.
-- `CalculationScenario`, `CalculationInputSnapshot`, `CalculationResult` — versioned inputs/outputs for a calculation (the calculation engine is not yet implemented — Milestone 2).
+- `CalculationScenario`, `CalculationInputSnapshot`, `CalculationResult` — three scenarios (pessimistic, realistic, optimistic) per calculation, each with frozen inputs and a full result (payback, savings by type, 10-year series). The pure engine is in `lib/calculation-engine`.
 - `ReportJob` — async report generation job state (`ReportJobStatus`), designed for the Temporal-based workflow in Milestone 4.
 - `AuditEvent` — append-only action log (fleet/actor/action/entity), written by every change and every refused request.
 - `FeatureFlag` — per-fleet or global boolean/JSON flags.

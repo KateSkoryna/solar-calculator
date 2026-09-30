@@ -25,7 +25,7 @@ erDiagram
     USER ||--o{ REPORT_JOB : "requested by"
     USER ||--o{ AUDIT_EVENT : "acted as"
 
-    CALCULATION ||--|| CALCULATION_SCENARIO : "has one scenario"
+    CALCULATION ||--|{ CALCULATION_SCENARIO : "has three scenarios"
     CALCULATION_SCENARIO ||--|| CALCULATION_INPUT_SNAPSHOT : "frozen inputs"
     CALCULATION_SCENARIO ||--|| CALCULATION_RESULT : "computed output"
     CALCULATION_SCENARIO ||--o{ REPORT_JOB : "exported as"
@@ -70,6 +70,11 @@ erDiagram
         boolean winterUsage
         string city
         string country
+        enum cargoType "regular | chilled | passengers"
+        enum coolingUnitType "diesel | engine_driven | electric, nullable"
+        float idleHoursPerDay
+        float latitude "nullable"
+        float longitude "nullable"
         datetime deletedAt "soft delete"
         datetime createdAt
     }
@@ -85,7 +90,8 @@ erDiagram
 
     CALCULATION_SCENARIO {
         string id PK
-        string calculationId FK UK "1-1, one scenario per calculation for now"
+        string calculationId FK UK "unique with kind"
+        enum kind "pessimistic | realistic | optimistic, unique with calculationId"
         string label
         string formulaVersion
         string assumptionSetVersion
@@ -106,10 +112,15 @@ erDiagram
     CALCULATION_RESULT {
         string id PK
         string calculationScenarioId FK UK "1-1"
-        float paybackPeriodMonths
+        float paybackPeriodMonths "null when beyond 25 years"
         float totalSolarYieldKwh
         float co2SavedKg
-        decimal netSavingsAmount
+        decimal netSavingsAmount "10-year net gain"
+        decimal annualSavingsAmount
+        decimal oneTimeCostAmount "after subsidy"
+        decimal subsidyAmount
+        json savingsBreakdown "cents per saving type"
+        json cumulativeSavingsSeries "11 points, years 0 to 10"
         string currency
         datetime computedAt
     }
@@ -155,8 +166,8 @@ erDiagram
 - **`Fleet.type` reuses the same enum as `Vehicle.vehicleType`** (`van | truck | trailer | bus`) rather than defining a second category system — a fleet's type is just what kind of vehicles it predominantly runs.
 - **No separate `LocationProfile` entity.** The product has no "manage my sites" feature and no need to run a calculation against a different site than the vehicle's own — city, country, and parking fields live directly on `Vehicle`. A shared, reusable site record would be solving a problem the app doesn't have yet.
 - **`Vehicle` rows are a spec + quantity, not one row per physical vehicle.** This matches the current calculator form (`numberOfVehicles` field) and avoids inventing per-VIN tracking the product doesn't need yet.
-- **`Calculation` is the durable request; `CalculationScenario` is its one computed run.** One scenario per calculation for now — no re-run versioning or supersession yet. That's deferred until the product actually needs to compare multiple assumption sets (Milestone 4).
-- **`CalculationInputSnapshot` and `CalculationResult` are 1-1 with `CalculationScenario`, never updated.** This is what makes a displayed ROI number reproducible: the exact inputs (including the vehicle's location fields at the time) and the exact output are frozen together at compute time (Step 2.5's provenance panel reads directly from this pair).
+- **`Calculation` is the durable request; `CalculationScenario` is one computed run of it.** Each calculation has three scenarios (pessimistic, realistic, optimistic), unique per `(calculationId, kind)`. No re-run versioning or supersession yet.
+- **`CalculationInputSnapshot` and `CalculationResult` are 1-1 with each `CalculationScenario`, never updated.** This is what makes a displayed ROI number reproducible: the exact inputs (including the vehicle's location fields at the time) and the exact output are frozen together at compute time (Step 2.5's provenance panel reads directly from this pair).
 - **`ReportJob` points at a `CalculationScenario`, not a `Calculation`.** A report is a rendering of one specific computed result, so it needs the immutable scenario, not the mutable parent request.
 - **`AuditEvent` uses a polymorphic `entityType`/`entityId` pair instead of per-entity foreign keys.** It needs to reference memberships, vehicles, calculations, report jobs, and feature flags alike; a hard FK per entity type would require a nullable column per type. `fleetId` and `actorUserId` are nullable to cover platform-level and system-initiated events (e.g. a failed login before any fleet context exists).
 - **`FeatureFlag.fleetId` is nullable.** A null-fleet row is a platform-wide default; a fleet-scoped row overrides it. `@@unique([fleetId, key])` (added in Step 1.2+) enforces one value per flag per fleet.
