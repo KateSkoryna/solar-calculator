@@ -1,6 +1,7 @@
 import { Session } from "next-auth";
 import { Role } from "@/app/generated/prisma/enums";
 import { prisma } from "@/lib/prisma";
+import { logger } from "@/lib/logger";
 import { recordAuditEvent, AuditAction, AuditEntityType } from "@/lib/audit";
 
 export class ForbiddenError extends Error {
@@ -55,7 +56,7 @@ async function recordAccessDenied(
       metadata: { reason, allowedRoles, actualRole },
     });
   } catch (error) {
-    console.error("Failed to record ACCESS_DENIED audit event", error);
+    logger.error("access_denied_audit_failed", { error });
   }
 }
 

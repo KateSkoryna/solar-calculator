@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { logger } from "@/lib/logger";
 
 const registerSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -57,7 +58,7 @@ export async function POST(request: Request) {
       { status: 201 },
     );
   } catch (error) {
-    console.error("Registration error:", error);
+    logger.error("registration_failed", { error });
     return NextResponse.json(
       { error: "Something went wrong" },
       { status: 500 },
