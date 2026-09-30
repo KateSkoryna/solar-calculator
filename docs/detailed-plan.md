@@ -132,7 +132,7 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 | 1.1 | PII inventory and log redaction | DONE | |
 | 1.2 | Authorization and audit API tests | DONE | |
 | 1.3 | Passwordless sign-in with email links (Gmail SMTP) | DONE | |
-| 1.4 | Security model, threat model and ADRs | TODO | |
+| 1.4 | Security model and threat model | DONE | |
 | 2.1 | Research assumption set v1 | TODO | Owner reviews every value |
 | 2.2 | Pure calculation engine | TODO | |
 | 2.3 | Store scenarios and the full result shape | TODO | |
@@ -288,19 +288,18 @@ These are settled. Steps rely on them; do not revisit them without the owner.
 - **Owner actions:** turn on 2-Step Verification for the Gmail account, create an app password at myaccount.google.com/apppasswords, and set `EMAIL_SERVER_HOST=smtp.gmail.com`, `EMAIL_SERVER_PORT=465`, `EMAIL_SERVER_USER=<gmail address>`, `EMAIL_SERVER_PASSWORD=<app password>` and `EMAIL_FROM="Solar Calculator <gmail address>"` in `.env.local` and Vercel. The Resend key is no longer used. Google OAuth settings stay unchanged.
 - **Owner review (browser):** on `/en/login` request a link for an address that is not yours and one that is; both arrive (check spam once); sign in with it; Google sign-in still works; an old or reused link shows the friendly error; `/en/forgot-password` returns 404.
 
-### Step 1.4 — Security model, threat model and ADRs
+### Step 1.4 — Security model and threat model
 
 - **Depends on:** 1.3
 - **Purpose:** Document the security decisions that are actually implemented, for reviewers and future contributors.
-- **Concepts to learn:** Architecture Decision Records, STRIDE threat modelling, token storage trade-offs (HttpOnly cookie vs. localStorage), same-origin requests and CORS
+- **Concepts to learn:** STRIDE threat modelling, token storage trade-offs (HttpOnly cookie vs. localStorage), same-origin requests and CORS
 - **Instructions:**
   1. Create `docs/security-model.md`: authentication (Auth.js, JWT strategy, Google and email-link providers, no passwords, the email sender), tenancy (fleet as tenant boundary, `requireFleetRole`), roles and what each can do (derive from `lib/fleet-auth.ts` and the routes), audit logging, rate limiting (`proxy.ts`), PII handling (link to `privacy-and-pii.md`), cookies and CSRF (link to the existing `security-cookies-csrf.md`, do not duplicate it).
   2. Create `docs/threat-model.md` with a STRIDE table: threat, example in this app, mitigation, file that implements it, residual risk.
-  3. Create `docs/adr/0001-fleet-tenancy.md` and `docs/adr/0002-calculation-versioning.md` with sections Status, Context, Decision, Consequences.
-  4. Describe only what exists in the code today. Planned work goes into a "Not yet implemented" list at the end of each document.
+  3. Describe only what exists in the code today. Planned work goes into a "Not yet implemented" list at the end of each document.
 - **Definition of done:**
-  1. The four files exist, and each ADR contains the four section headings.
-  2. Every file path written in backticks in the four documents exists in the repo (check with a script and list the result in the summary).
+  1. Both files exist.
+  2. Every file path written in backticks in the two documents exists in the repo (check with a script and list the result in the summary).
   3. `docs/threat-model.md` has at least one row for each STRIDE letter.
   4. Standard checks S3, S10 pass.
 
@@ -385,7 +384,7 @@ These are settled. Steps rely on them; do not revisit them without the owner.
   4. Update every usage of `calculation.scenario` (the results page, the calculation GET route, `prisma/seed.ts`, `prisma/schema.integration.ts`) to use `scenarios` and pick `REALISTIC` where one scenario is shown.
   5. Rewrite the calculation part of `prisma/seed.ts` to call `calculate()` with `ASSUMPTION_SET_V1` and store all three scenarios. Remove every hard-coded result number.
   6. Add a test that `Object.values(ScenarioKind)` equals `SCENARIO_KINDS` from the engine (same for cargo and cooling types, if the engine defines them).
-  7. Update `docs/data-model.md` (the Mermaid diagram) and `docs/adr/0002-calculation-versioning.md` to describe three scenarios per calculation.
+  7. Update `docs/data-model.md` (the Mermaid diagram) and `docs/security-model.md` to describe three scenarios per calculation.
 - **Definition of done:**
   1. Standard check S5 passes, and `npx prisma migrate reset --force` followed by `npx prisma db seed` exits 0 against local Docker Postgres.
   2. A new case in `prisma/schema.integration.ts` proves that inserting two scenarios of the same kind for one calculation fails, and three different kinds succeed.
@@ -1202,7 +1201,7 @@ Also a Python deep dive: every step's concepts go into `docs/key-concepts.md` wi
 - **Purpose:** Another engineer can pick up the project without tribal knowledge.
 - **Concepts to learn:** writing for an unfamiliar reader, documenting known limitations honestly, C4-style diagrams
 - **Instructions:**
-  1. Create `docs/architecture.md` (system context, containers, authorization, calculation lifecycle, report workflow, telemetry flow, deployment — Mermaid diagrams), `docs/api-contracts.md`, `docs/deployment-runbook.md`, `docs/operational-runbook.md`, `docs/demo-script.md`, `docs/known-limitations.md` (including local-disk report storage), `docs/decision-log.md` (links to the ADRs and to the decisions section of this plan).
+  1. Create `docs/architecture.md` (system context, containers, authorization, calculation lifecycle, report workflow, telemetry flow, deployment — Mermaid diagrams), `docs/api-contracts.md`, `docs/deployment-runbook.md`, `docs/operational-runbook.md`, `docs/demo-script.md`, `docs/known-limitations.md` (including local-disk report storage), `docs/decision-log.md` (links to the key decisions in `README.md` and to the decisions section of this plan).
   2. Update `README.md` so it separates implemented features from the roadmap.
   3. Create `scripts/check-docs.mjs` (`npm run docs:check`) that fails on broken relative links and on backticked file paths that do not exist.
 - **Definition of done:**
