@@ -663,6 +663,65 @@ if (process.env.NODE_ENV === "development") {
 
 Keep personal data only as long as it has a purpose, and write the limit down. Reset tokens live one hour and are cleared after use. Rate-limiter IP addresses exist only in memory for one window and never reach the database. Both facts are recorded in the retention column of the PII table.
 
+## Authorization and audit API tests
+
+### Negative-path testing
+
+A security test proves what is refused, not only what works. Each test is named after the rule it locks in and asserts the rejection:
+
+```ts
+it("a viewer cannot create a vehicle", async () => {
+  signInAs(fixtures.viewerA);
+
+  const response = await createVehicle(
+    jsonRequest("POST", validVehicleInput),
+    routeParams({ fleetId: fixtures.fleetA.id }),
+  );
+
+  expect(response.status).toBe(403);
+});
+```
+
+### Test fixtures for multiple roles
+
+Fixtures build the same small world before every test: two fleets, one user per role in fleet A, an owner in fleet B and one vehicle each. Tests pick who they act as, so a rule is checked from every side:
+
+```ts
+const ownerA = await createMember(fleetA.id, Role.OWNER, "owner-a");
+const managerA = await createMember(fleetA.id, Role.MANAGER, "manager-a");
+const viewerA = await createMember(fleetA.id, Role.VIEWER, "viewer-a");
+const ownerB = await createMember(fleetB.id, Role.OWNER, "owner-b");
+```
+
+### Testing route handlers without a running server
+
+A Next.js route handler is a plain function from `Request` to `Response`. Tests call it directly, so nothing needs to listen on a port. The session lookup `auth()` is replaced by a mock that returns the chosen user or `null`:
+
+```ts
+jest.mock("@/auth", () => ({ auth: jest.fn() }));
+
+function signInAs(user: { id: string } | null) {
+  mockedAuth.mockResolvedValue(
+    user ? { user: { id: user.id }, expires: futureIsoDate } : null,
+  );
+}
+```
+
+### Disposable test databases
+
+Tests run against a database that is created and migrated before the run and dropped after it, so they never touch development data. One helper serves both the Jest API suite and the migration suite:
+
+```ts
+export async function createFreshTestDatabase() {
+  await withAdminConnection(async (admin) => {
+    await terminateActiveConnectionsToTestDatabase(admin);
+    await admin.query(`DROP DATABASE IF EXISTS "${testDatabaseName}"`);
+    await admin.query(`CREATE DATABASE "${testDatabaseName}"`);
+  });
+  execSync("npx prisma migrate deploy", { env: { ...process.env, DATABASE_URL: testDatabaseUrl } });
+}
+```
+
 ---
 
 *Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit
