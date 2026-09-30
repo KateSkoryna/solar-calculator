@@ -13,9 +13,10 @@
     "start": "next start",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
+    "test": "jest --selectProjects unit",
+    "test:api": "jest --selectProjects api --runInBand",
+    "test:watch": "jest --watch --selectProjects unit",
+    "test:coverage": "jest --coverage --selectProjects unit",
     "test:db": "tsx --test --test-concurrency=1 prisma/schema.integration.ts",
     "format": "prettier --write ."
   },
