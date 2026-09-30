@@ -828,6 +828,133 @@ session: {
 
 Browsers only let a page read responses from its own origin unless the server sends CORS headers. Pages and API live in one Next.js app, so no CORS headers are needed.
 
+## Calculation Engine and Assumptions
+
+### Assumption management
+
+Every hidden number the calculator needs (fuel price, panel losses, battery life) lives in one typed object instead of being scattered through the code. Each one has a unit, a source and the date it was read, so a reviewer can check it:
+
+```ts
+idling: {
+  fuelPerIdleHour: assumption({
+    range: [2.27, 3.03, 5.68],
+    unit: "L/h",
+    direction: "higher",
+    source: SOURCES.afdcIdling,
+  }),
+```
+
+### Source citation
+
+A number without a source is an opinion. Where no public source exists, the value is marked `ASSUMPTION` with the reasoning in a note, so it is easy to find the ones that need an owner's review:
+
+```ts
+export const ASSUMED: AssumptionSource = {
+  sourceUrl: "",
+  sourceTitle: ASSUMPTION_SOURCE_TITLE,
+};
+```
+
+### Versioning data that changes results
+
+Prices and factors change, but an old calculation must stay explainable. The whole set carries a version, and a calculation will later store which version it used:
+
+```ts
+export const ASSUMPTION_SET_V1 = {
+  version: "2026.1",
+```
+
+### Pessimistic, realistic and optimistic ranges
+
+A single number hides uncertainty. Each assumption has three values, and `favourableDirection` says which direction helps solar, so "pessimistic" always means the unfavourable end. A test checks the order for every value:
+
+```ts
+if (assumption.favourableDirection === "higher") {
+  expect(pessimistic).toBeLessThanOrEqual(realistic);
+  expect(realistic).toBeLessThanOrEqual(optimistic);
+}
+```
+
+### Pure functions and determinism
+
+A pure function gives the same output for the same input and touches nothing outside itself: no database, no clock, no random numbers. That is why the engine can run in the browser for anonymous users and on the server for fleets and always agree:
+
+```ts
+export function calculate(
+  input: CalculationInput,
+  assumptionSet: AssumptionSet,
+): CalculationOutput {
+```
+
+### Money in integer cents
+
+Adding decimal euros in floating point drifts (0.1 + 0.2 is not 0.3). The engine rounds to whole cents at the edges and adds integers, so the parts always sum exactly to the total:
+
+```ts
+export function toCents(euros: number): number {
+  return Math.round(euros * CENTS_PER_EURO);
+}
+```
+
+### Allocating a limited resource between consumers
+
+Solar energy is limited and must not be counted twice. Demands are served in a fixed priority order and each takes only what is left:
+
+```ts
+const cooling = takeFrom(producedKwh, demands.coolingKwh);
+const idling = takeFrom(cooling.remaining, demands.idlingKwh);
+const auxiliary = takeFrom(idling.remaining, demands.auxiliaryKwh);
+```
+
+### Property-based invariants
+
+Instead of only checking single examples, generate many inputs and assert rules that must always hold, such as "energy allocated never exceeds energy produced" or "pessimistic payback is never shorter than optimistic":
+
+```ts
+expect(paybackOrInfinity(PESSIMISTIC)).toBeGreaterThanOrEqual(
+  paybackOrInfinity(REALISTIC),
+);
+```
+
+### Formula versioning
+
+When the formula changes, old results must still be explainable. The engine carries its own version next to the assumption set version, and both are stored with every result:
+
+```ts
+export const FORMULA_VERSION = "1.0.0";
+```
+
+### Additive migrations on existing data
+
+A migration that adds a `NOT NULL` column fails when the table already has rows. The fix is to add the column with a default, let the rows take it, then drop the default. Old scenarios became `REALISTIC` this way:
+
+```sql
+ALTER TABLE "CalculationScenario" ADD COLUMN "kind" "ScenarioKind" NOT NULL DEFAULT 'REALISTIC';
+ALTER TABLE "CalculationScenario" ALTER COLUMN "kind" DROP DEFAULT;
+```
+
+### One-to-one to one-to-many
+
+Removing `@unique` from `calculationId` lets a calculation own many scenarios. A composite `@@unique([calculationId, kind])` keeps it to one per kind, so the database itself refuses a duplicate.
+
+### `Decimal` for money
+
+`Float` cannot hold 0.1 exactly, and money is compared and summed. The engine works in integer cents, and the database stores `Decimal(12, 2)`. The seed converts once at the boundary:
+
+```ts
+function centsToAmount(cents: number) {
+  return (cents / CENTS_PER_EURO).toFixed(2);
+}
+```
+
+### Enums that must agree across layers
+
+The database enum, the engine list and the API schema all name the same values. Prisma is the source; the API schema derives from it with `Object.values`, and a test fails if the engine's list drifts:
+
+```ts
+expect([...SCENARIO_KINDS].sort()).toEqual(Object.values(ScenarioKind).sort());
+```
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit

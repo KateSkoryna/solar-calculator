@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { auth } from "@/auth";
+import { ScenarioKind } from "@/app/generated/prisma/enums";
 import { prisma } from "@/lib/prisma";
 import {
   requireFleetRole,
@@ -12,6 +13,8 @@ import Section from "@/components/layout/Section";
 import PageTitle from "@/components/common/PageTitle";
 import StatTile from "@/components/calculation/StatTile";
 import ProvenancePanel from "@/components/calculation/ProvenancePanel";
+
+const DISPLAYED_SCENARIO_KIND = ScenarioKind.REALISTIC;
 
 function NotFoundMessage({ title, text }: { title: string; text: string }) {
   return (
@@ -58,7 +61,8 @@ export default async function CalculationResultPage({
       createdAt: true,
       vehicle: { select: { manufacturer: true, model: true } },
       requestedByUser: { select: { name: true, email: true } },
-      scenario: {
+      scenarios: {
+        where: { kind: DISPLAYED_SCENARIO_KIND },
         select: {
           formulaVersion: true,
           assumptionSetVersion: true,
@@ -90,7 +94,7 @@ export default async function CalculationResultPage({
     return <NotFoundMessage title={t("notFoundTitle")} text={t("notFound")} />;
   }
 
-  const { scenario } = calculation;
+  const [scenario] = calculation.scenarios;
 
   if (!scenario || !scenario.inputSnapshot || !scenario.result) {
     return (
@@ -109,7 +113,11 @@ export default async function CalculationResultPage({
       <div className="mx-auto mb-10 grid w-full max-w-4xl grid-cols-2 gap-6 sm:grid-cols-4">
         <StatTile
           label={t("paybackPeriod")}
-          value={`${result.paybackPeriodMonths.toFixed(1)} ${t("paybackUnit")}`}
+          value={
+            result.paybackPeriodMonths === null
+              ? t("noPayback")
+              : `${result.paybackPeriodMonths.toFixed(1)} ${t("paybackUnit")}`
+          }
           tooltip={t("paybackPeriodTooltip")}
         />
         <StatTile

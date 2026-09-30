@@ -144,6 +144,7 @@
     "paybackPeriod": "Amortisationszeit",
     "paybackPeriodTooltip": "Wie lange es dauert, bis die Einsparungen bei Kraftstoff und Strom die Kosten für die Installation der Solarpanels decken.",
     "paybackUnit": "Mon.",
+    "noPayback": "Keine Amortisation in 25 Jahren",
     "solarYield": "Solarertrag",
     "solarYieldTooltip": "Wie viel Strom die Solarpanels voraussichtlich erzeugen werden.",
     "co2Saved": "CO2 eingespart",

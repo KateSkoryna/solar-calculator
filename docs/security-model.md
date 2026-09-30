@@ -22,6 +22,10 @@ What is enforced today. Related: [`privacy-and-pii.md`](./privacy-and-pii.md), [
 
 The rules are tested in `app/api/fleets/__tests__/authorization.api.test.ts`.
 
+## Calculations
+
+A calculation has three scenarios (pessimistic, realistic, optimistic), each with its own frozen inputs and result. They are reached only through the calculation, so the fleet check on the calculation covers all three.
+
 ## Audit log
 
 `recordAuditEvent` in `lib/audit.ts` writes an event for every change, in the same transaction, and for every refused request (`ACCESS_DENIED`). Rows are never updated by the app.

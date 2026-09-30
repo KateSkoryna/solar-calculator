@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { after, before, describe, it } from "node:test";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@/app/generated/prisma/client";
+import { ScenarioKind } from "@/app/generated/prisma/enums";
 import {
   createFreshTestDatabase,
   dropTestDatabase,
@@ -197,6 +198,55 @@ describe("vehicle deletion preserves calculation history", () => {
         where: { id: fixture.vehicle.id },
       });
       assert.notEqual(softDeletedVehicle?.deletedAt, null);
+    } finally {
+      await deleteVehicleFixture(fixture);
+    }
+  });
+});
+
+describe("scenarios per calculation", () => {
+  function scenarioData(calculationId: string, kind: ScenarioKind) {
+    return {
+      calculationId,
+      kind,
+      label: kind,
+      formulaVersion: "1.0.0",
+      assumptionSetVersion: "2026.1",
+    };
+  }
+
+  it("rejects two scenarios of the same kind for one calculation", async () => {
+    const fixture = await seedVehicleWithCalculation("duplicate-scenario");
+
+    try {
+      await prisma.calculationScenario.create({
+        data: scenarioData(fixture.calculation.id, ScenarioKind.REALISTIC),
+      });
+
+      await assert.rejects(() =>
+        prisma.calculationScenario.create({
+          data: scenarioData(fixture.calculation.id, ScenarioKind.REALISTIC),
+        }),
+      );
+    } finally {
+      await deleteVehicleFixture(fixture);
+    }
+  });
+
+  it("accepts one scenario of each kind for one calculation", async () => {
+    const fixture = await seedVehicleWithCalculation("three-scenarios");
+
+    try {
+      for (const kind of Object.values(ScenarioKind)) {
+        await prisma.calculationScenario.create({
+          data: scenarioData(fixture.calculation.id, kind),
+        });
+      }
+
+      const scenarios = await prisma.calculationScenario.findMany({
+        where: { calculationId: fixture.calculation.id },
+      });
+      assert.equal(scenarios.length, Object.values(ScenarioKind).length);
     } finally {
       await deleteVehicleFixture(fixture);
     }
