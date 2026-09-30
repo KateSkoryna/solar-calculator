@@ -2,7 +2,6 @@ export const PII_KEYS = [
   "email",
   "password",
   "token",
-  "resetToken",
   "access_token",
   "refresh_token",
   "id_token",

@@ -102,16 +102,8 @@
   },
   "login": {
     "title": "Inicia Sesión en tu Cuenta",
-    "email": "Correo Electrónico",
-    "emailPlaceholder": "Ingresa tu correo electrónico",
-    "password": "Contraseña",
-    "passwordPlaceholder": "Ingresa tu contraseña",
-    "rememberMe": "Recordarme",
-    "forgotPassword": "¿Olvidaste tu contraseña?",
-    "loginButton": "Iniciar Sesión",
     "noAccount": "¿No tienes una cuenta?",
     "signUp": "Regístrate",
-    "passwordMinLengthError": "La contraseña debe tener al menos 6 caracteres",
     "orContinueWithEmail": "O continúa con correo electrónico"
   },
   "theme": {
@@ -181,49 +173,19 @@
   "auth": {
     "genericError": "Algo salió mal. Por favor, inténtalo de nuevo.",
     "invalidEmail": "Dirección de correo electrónico no válida",
-    "passwordMinLength": "La contraseña debe tener al menos 8 caracteres",
-    "passwordsDontMatch": "Las contraseñas no coinciden",
     "backToLogin": "Volver a iniciar sesión",
-    "passwordHint": "Al menos 8 caracteres",
-    "confirmPasswordPlaceholder": "Vuelve a introducir tu contraseña",
     "signingIn": "Iniciando sesión...",
     "continueWithGoogle": "Continuar con Google",
     "loading": "Cargando...",
-    "invalidCredentials": "Correo electrónico o contraseña no válidos",
-    "oauthAccountNotLinked": "Este correo electrónico ya está registrado con una contraseña. Inicia sesión con tu contraseña o usa una cuenta de Google diferente."
+    "oauthAccountNotLinked": "Esta dirección de correo ya está registrada con otro método de acceso. Usa el enlace de acceso enviado a esa dirección.",
+    "emailSignInFailed": "No hemos podido enviar el enlace de acceso ahora mismo. Inténtalo de nuevo más tarde o continúa con Google.",
+    "linkExpiredOrUsed": "Este enlace de acceso ha caducado o ya se ha usado. Solicita uno nuevo más abajo."
   },
   "register": {
     "title": "Crear cuenta",
     "orContinueWithEmail": "O regístrate con correo electrónico",
-    "nameOptional": "Nombre (opcional)",
-    "namePlaceholder": "Juan Pérez",
-    "nameMinLength": "El nombre debe tener al menos 2 caracteres",
-    "confirmPassword": "Confirmar contraseña",
-    "creatingAccount": "Creando cuenta...",
-    "signUpButton": "Registrarse",
     "alreadyHaveAccount": "¿Ya tienes una cuenta?",
-    "loginLink": "Iniciar sesión",
-    "registrationFailed": "Error en el registro"
-  },
-  "forgotPassword": {
-    "title": "Olvidé mi contraseña",
-    "subtitle": "Introduce tu dirección de correo electrónico y te enviaremos un enlace para restablecer tu contraseña.",
-    "successMessage": "Si existe una cuenta con este correo electrónico, recibirás en breve un enlace para restablecer la contraseña.",
-    "sending": "Enviando...",
-    "sendResetLink": "Enviar enlace de restablecimiento"
-  },
-  "resetPassword": {
-    "invalidResetLink": "Enlace de restablecimiento no válido",
-    "resetFailed": "No se pudo restablecer la contraseña",
-    "invalidResetLinkTitle": "Enlace de restablecimiento no válido",
-    "invalidResetLinkMessage": "Este enlace para restablecer la contraseña no es válido o ha caducado.",
-    "requestNewLink": "Solicitar nuevo enlace",
-    "title": "Restablecer contraseña",
-    "subtitle": "Introduce tu nueva contraseña a continuación.",
-    "newPassword": "Nueva contraseña",
-    "confirmNewPassword": "Confirmar nueva contraseña",
-    "resetting": "Restableciendo...",
-    "submitButton": "Restablecer contraseña"
+    "loginLink": "Iniciar sesión"
   },
   "user": {
     "welcome": "¡Bienvenido, {name}!",
@@ -249,5 +211,23 @@
   },
   "common": {
     "moreInfo": "Más información"
+  },
+  "emailSignIn": {
+    "email": "Correo electrónico",
+    "emailPlaceholder": "Introduce tu correo electrónico",
+    "submitButton": "Enviarme un enlace de acceso"
+  },
+  "checkEmail": {
+    "title": "Revisa tu correo",
+    "message": "Si la dirección es válida, te hemos enviado un enlace de acceso. Solo funciona una vez y caduca en 15 minutos. Mira también en la carpeta de spam.",
+    "backToLogin": "Volver al inicio de sesión"
+  },
+  "signInEmail": {
+    "subject": "Tu enlace de acceso a Solar Calculator",
+    "intro": "Usa el siguiente enlace para acceder a Solar Calculator.",
+    "button": "Acceder",
+    "expiry": "Este enlace solo funciona una vez y caduca en {minutes} minutos.",
+    "ignore": "Si no has solicitado este correo, puedes ignorarlo.",
+    "fallback": "Si el botón no funciona, copia este enlace en tu navegador:"
   }
 }

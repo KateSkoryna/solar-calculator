@@ -31,12 +31,18 @@ const apiProjectConfig = {
   setupFiles: ["<rootDir>/test-support/api-test-environment.ts"],
 };
 
-async function buildApiProject() {
-  const resolvedConfig = await createJestConfig(apiProjectConfig)();
+const ES_MODULE_PACKAGES_TO_TRANSFORM = [
+  "@prisma/client/runtime",
+  "next-intl",
+  "use-intl",
+];
+
+async function buildProject(projectConfig) {
+  const resolvedConfig = await createJestConfig(projectConfig)();
   return {
     ...resolvedConfig,
     transformIgnorePatterns: [
-      "/node_modules/(?!@prisma/client/runtime/)",
+      `/node_modules/(?!(${ES_MODULE_PACKAGES_TO_TRANSFORM.join("|")})/)`,
       "^.+\\.module\\.(css|sass|scss)$",
     ],
   };
@@ -45,8 +51,8 @@ async function buildApiProject() {
 async function buildJestConfig() {
   return {
     projects: [
-      await createJestConfig(unitProjectConfig)(),
-      await buildApiProject(),
+      await buildProject(unitProjectConfig),
+      await buildProject(apiProjectConfig),
     ],
     collectCoverageFrom: [
       "app/**/*.{js,jsx,ts,tsx}",
