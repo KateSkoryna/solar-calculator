@@ -144,6 +144,7 @@
     "paybackPeriod": "Período de amortización",
     "paybackPeriodTooltip": "Cuánto tiempo se tarda en que el dinero ahorrado en combustible y electricidad cubra el costo de instalar los paneles solares.",
     "paybackUnit": "meses",
+    "noPayback": "Sin retorno en 25 años",
     "solarYield": "Rendimiento solar",
     "solarYieldTooltip": "Cuánta electricidad se espera que generen los paneles solares.",
     "co2Saved": "CO2 ahorrado",

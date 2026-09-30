@@ -144,6 +144,7 @@
     "paybackPeriod": "Payback period",
     "paybackPeriodTooltip": "How long it takes for the money you save on fuel and electricity to cover the cost of installing the solar panels.",
     "paybackUnit": "mo",
+    "noPayback": "No payback within 25 years",
     "solarYield": "Solar yield",
     "solarYieldTooltip": "How much electricity the solar panels are expected to generate.",
     "co2Saved": "CO2 saved",

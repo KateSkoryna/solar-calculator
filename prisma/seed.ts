@@ -1,4 +1,58 @@
+import type { Vehicle } from "@/app/generated/prisma/client";
+import type { EuCountryCode } from "@/lib/assumptions/eu-countries";
+import { ASSUMPTION_SET_V1 } from "@/lib/assumptions/v1";
+import { CENTS_PER_EURO } from "@/lib/calculation-engine/constants";
+import {
+  calculate,
+  SCENARIO_KINDS,
+  type CalculationInput,
+} from "@/lib/calculation-engine";
 import { prisma } from "@/lib/prisma";
+
+const COUNTRY_CODE_BY_NAME: Record<string, EuCountryCode> = {
+  Germany: "DE",
+  France: "FR",
+};
+
+const BERLIN_COORDINATES = { latitude: 52.52, longitude: 13.405 };
+const LYON_COORDINATES = { latitude: 45.764, longitude: 4.8357 };
+
+function centsToAmount(cents: number) {
+  return (cents / CENTS_PER_EURO).toFixed(2);
+}
+
+function toCalculationInput(vehicle: Vehicle): CalculationInput {
+  const countryCode = COUNTRY_CODE_BY_NAME[vehicle.country];
+  if (!countryCode || vehicle.latitude === null || vehicle.longitude === null) {
+    throw new Error(
+      `Seed vehicle ${vehicle.id} needs a known country and coordinates`,
+    );
+  }
+
+  return {
+    manufacturer: vehicle.manufacturer,
+    model: vehicle.model,
+    city: vehicle.city,
+    vehicleType: vehicle.vehicleType,
+    engineType: vehicle.engineType,
+    parkingType: vehicle.parkingType,
+    solarPanelPlacement: vehicle.solarPanelPlacement,
+    cargoType: vehicle.cargoType,
+    quantity: vehicle.quantity,
+    averageDailyDistanceKm: vehicle.averageDailyDistanceKm,
+    operatingMonthsPerYear: vehicle.operatingMonthsPerYear,
+    winterUsage: vehicle.winterUsage,
+    countryCode,
+    latitude: vehicle.latitude,
+    longitude: vehicle.longitude,
+    energyConsumptionKwhPer100km: vehicle.energyConsumptionKwhPer100km,
+    solarPanelCapacityKw: vehicle.solarPanelCapacityKw,
+    payloadReserveKg: vehicle.payloadReserveKg,
+    maxRoofLoadKg: vehicle.maxRoofLoadKg,
+    coolingUnitType: vehicle.coolingUnitType ?? undefined,
+    idleHoursPerDay: vehicle.idleHoursPerDay,
+  };
+}
 
 async function seedBerlinDeliveryFleet() {
   const fleet = await prisma.fleet.upsert({
@@ -62,7 +116,7 @@ async function seedBerlinDeliveryFleet() {
 
   const vanOne = await prisma.vehicle.upsert({
     where: { id: "vehicle_berlin_van_1" },
-    update: {},
+    update: BERLIN_COORDINATES,
     create: {
       id: "vehicle_berlin_van_1",
       fleetId: fleet.id,
@@ -82,12 +136,13 @@ async function seedBerlinDeliveryFleet() {
       winterUsage: true,
       city: "Berlin",
       country: "Germany",
+      ...BERLIN_COORDINATES,
     },
   });
 
   const vanTwo = await prisma.vehicle.upsert({
     where: { id: "vehicle_berlin_van_2" },
-    update: {},
+    update: BERLIN_COORDINATES,
     create: {
       id: "vehicle_berlin_van_2",
       fleetId: fleet.id,
@@ -107,6 +162,7 @@ async function seedBerlinDeliveryFleet() {
       winterUsage: true,
       city: "Berlin",
       country: "Germany",
+      ...BERLIN_COORDINATES,
     },
   });
 
@@ -115,10 +171,6 @@ async function seedBerlinDeliveryFleet() {
     fleetId: fleet.id,
     vehicle: vanOne,
     requestedByUserId: alice.id,
-    paybackPeriodMonths: 34.5,
-    totalSolarYieldKwh: 5400,
-    co2SavedKg: 2100,
-    netSavingsAmount: "8200.50",
   });
 
   await seedCalculation({
@@ -126,10 +178,6 @@ async function seedBerlinDeliveryFleet() {
     fleetId: fleet.id,
     vehicle: vanTwo,
     requestedByUserId: bob.id,
-    paybackPeriodMonths: 41.2,
-    totalSolarYieldKwh: 3900,
-    co2SavedKg: 1500,
-    netSavingsAmount: "5600.00",
   });
 }
 
@@ -179,7 +227,7 @@ async function seedLyonLogisticsFleet() {
 
   const truckOne = await prisma.vehicle.upsert({
     where: { id: "vehicle_lyon_truck_1" },
-    update: {},
+    update: LYON_COORDINATES,
     create: {
       id: "vehicle_lyon_truck_1",
       fleetId: fleet.id,
@@ -199,12 +247,13 @@ async function seedLyonLogisticsFleet() {
       winterUsage: false,
       city: "Lyon",
       country: "France",
+      ...LYON_COORDINATES,
     },
   });
 
   const truckTwo = await prisma.vehicle.upsert({
     where: { id: "vehicle_lyon_truck_2" },
-    update: {},
+    update: LYON_COORDINATES,
     create: {
       id: "vehicle_lyon_truck_2",
       fleetId: fleet.id,
@@ -224,6 +273,7 @@ async function seedLyonLogisticsFleet() {
       winterUsage: true,
       city: "Lyon",
       country: "France",
+      ...LYON_COORDINATES,
     },
   });
 
@@ -232,10 +282,6 @@ async function seedLyonLogisticsFleet() {
     fleetId: fleet.id,
     vehicle: truckOne,
     requestedByUserId: dave.id,
-    paybackPeriodMonths: 28.7,
-    totalSolarYieldKwh: 12800,
-    co2SavedKg: 6400,
-    netSavingsAmount: "21500.75",
   });
 
   await seedCalculation({
@@ -243,41 +289,14 @@ async function seedLyonLogisticsFleet() {
     fleetId: fleet.id,
     vehicle: truckTwo,
     requestedByUserId: dave.id,
-    paybackPeriodMonths: 33.1,
-    totalSolarYieldKwh: 9100,
-    co2SavedKg: 4200,
-    netSavingsAmount: "14300.20",
   });
 }
-
-type VehicleForSnapshot = {
-  manufacturer: string;
-  model: string;
-  vehicleType: string;
-  engineType: string;
-  parkingType: string;
-  quantity: number;
-  averageDailyDistanceKm: number;
-  energyConsumptionKwhPer100km: number;
-  solarPanelCapacityKw: number;
-  solarPanelPlacement: string;
-  payloadReserveKg: number;
-  maxRoofLoadKg: number;
-  operatingMonthsPerYear: number;
-  winterUsage: boolean;
-  city: string;
-  country: string;
-};
 
 async function seedCalculation(params: {
   id: string;
   fleetId: string;
-  vehicle: VehicleForSnapshot & { id: string };
+  vehicle: Vehicle;
   requestedByUserId: string;
-  paybackPeriodMonths: number;
-  totalSolarYieldKwh: number;
-  co2SavedKg: number;
-  netSavingsAmount: string;
 }) {
   const calculation = await prisma.calculation.upsert({
     where: { id: params.id },
@@ -291,64 +310,68 @@ async function seedCalculation(params: {
     },
   });
 
-  const scenario = await prisma.calculationScenario.upsert({
-    where: { calculationId: calculation.id },
-    update: {},
-    create: {
-      id: `${params.id}_scenario`,
-      calculationId: calculation.id,
-      label: "Base case",
-      formulaVersion: "v1.0.0",
-      assumptionSetVersion: "assumptions-2026-01",
-    },
-  });
+  const input = toCalculationInput(params.vehicle);
+  const output = calculate(input, ASSUMPTION_SET_V1);
 
-  const vehicleSpec: VehicleForSnapshot = {
-    manufacturer: params.vehicle.manufacturer,
-    model: params.vehicle.model,
-    vehicleType: params.vehicle.vehicleType,
-    engineType: params.vehicle.engineType,
-    parkingType: params.vehicle.parkingType,
-    quantity: params.vehicle.quantity,
-    averageDailyDistanceKm: params.vehicle.averageDailyDistanceKm,
-    energyConsumptionKwhPer100km: params.vehicle.energyConsumptionKwhPer100km,
-    solarPanelCapacityKw: params.vehicle.solarPanelCapacityKw,
-    solarPanelPlacement: params.vehicle.solarPanelPlacement,
-    payloadReserveKg: params.vehicle.payloadReserveKg,
-    maxRoofLoadKg: params.vehicle.maxRoofLoadKg,
-    operatingMonthsPerYear: params.vehicle.operatingMonthsPerYear,
-    winterUsage: params.vehicle.winterUsage,
-    city: params.vehicle.city,
-    country: params.vehicle.country,
-  };
+  for (const kind of SCENARIO_KINDS) {
+    const result = output.scenarios[kind];
+    const scenarioId = `${params.id}_${kind.toLowerCase()}`;
 
-  await prisma.calculationInputSnapshot.upsert({
-    where: { calculationScenarioId: scenario.id },
-    update: {},
-    create: {
-      id: `${params.id}_snapshot`,
-      calculationScenarioId: scenario.id,
-      vehicleSpec,
-      energyPriceAssumptionVersion: "energy-price-eu-2026-01",
-      emissionsFactorVersion: "emissions-eu-2026",
-      solarYieldAssumptionVersion: "solar-yield-model-v2",
-      currencyConversionSourceVersion: "ecb-2026-01",
-    },
-  });
+    const scenarioData = {
+      kind,
+      label: kind,
+      formulaVersion: output.formulaVersion,
+      assumptionSetVersion: output.assumptionSetVersion,
+    };
+    const scenario = await prisma.calculationScenario.upsert({
+      where: { calculationId_kind: { calculationId: calculation.id, kind } },
+      update: scenarioData,
+      create: {
+        id: scenarioId,
+        calculationId: calculation.id,
+        ...scenarioData,
+      },
+    });
 
-  await prisma.calculationResult.upsert({
-    where: { calculationScenarioId: scenario.id },
-    update: {},
-    create: {
-      id: `${params.id}_result`,
-      calculationScenarioId: scenario.id,
-      paybackPeriodMonths: params.paybackPeriodMonths,
-      totalSolarYieldKwh: params.totalSolarYieldKwh,
-      co2SavedKg: params.co2SavedKg,
-      netSavingsAmount: params.netSavingsAmount,
+    const snapshotData = {
+      vehicleSpec: { ...input },
+      energyPriceAssumptionVersion: output.assumptionSetVersion,
+      emissionsFactorVersion: output.assumptionSetVersion,
+      solarYieldAssumptionVersion: output.assumptionSetVersion,
+      currencyConversionSourceVersion: output.assumptionSetVersion,
+    };
+    await prisma.calculationInputSnapshot.upsert({
+      where: { calculationScenarioId: scenario.id },
+      update: snapshotData,
+      create: {
+        id: `${scenarioId}_snapshot`,
+        calculationScenarioId: scenario.id,
+        ...snapshotData,
+      },
+    });
+
+    const resultData = {
+      paybackPeriodMonths: result.paybackMonths,
+      totalSolarYieldKwh: result.yearlySolarEnergyKwh,
+      co2SavedKg: result.co2AvoidedKgPerYear,
+      netSavingsAmount: centsToAmount(result.tenYearNetGainCents),
+      annualSavingsAmount: centsToAmount(result.annualSavingsCents),
+      oneTimeCostAmount: centsToAmount(result.oneTimeCostAfterSubsidyCents),
+      subsidyAmount: centsToAmount(result.subsidyCents),
+      savingsBreakdown: result.savingsByTypeCents,
+      cumulativeSavingsSeries: result.cumulativeSavingsSeriesCents,
       currency: "EUR",
-    },
-  });
+    };
+    await prisma.calculationResult.upsert({
+      where: { calculationScenarioId: scenario.id },
+      update: resultData,
+      create: {
+        id: `${scenarioId}_result`,
+        calculationScenarioId: scenario.id,
+        ...resultData,
+      },
+    });
+  }
 }
 
 async function main() {
