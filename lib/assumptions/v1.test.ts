@@ -202,6 +202,19 @@ describe("city yields", () => {
   });
 });
 
+describe("yield locations", () => {
+  it("lists every capital and the five extra cities with valid coordinates", () => {
+    expect(ASSUMPTION_SET_V1.yieldLocations).toHaveLength(
+      EU_COUNTRY_CODES.length + 5,
+    );
+    for (const location of ASSUMPTION_SET_V1.yieldLocations) {
+      expect(EU_COUNTRY_CODES).toContain(location.countryCode);
+      expect(Math.abs(location.latitude)).toBeLessThanOrEqual(90);
+      expect(Math.abs(location.longitude)).toBeLessThanOrEqual(180);
+    }
+  });
+});
+
 describe("EU country data", () => {
   it("lists the 27 member states once each", () => {
     expect(EU_COUNTRY_CODES).toHaveLength(EXPECTED_COUNTRY_COUNT);
@@ -215,6 +228,7 @@ describe("EU country data", () => {
 
       expect(country.capital).not.toBe("");
       expect(isAssumption(country.dieselPricePerLitre)).toBe(true);
+      expect(isAssumption(country.petrolPricePerLitre)).toBe(true);
       expect(isAssumption(country.electricityPricePerKwh)).toBe(true);
       expect(isAssumption(country.gridCo2FactorKgPerKwh)).toBe(true);
       expect(isAssumption(country.capitalYield.flat)).toBe(true);

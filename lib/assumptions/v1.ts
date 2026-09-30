@@ -1,7 +1,12 @@
 import { VehicleType } from "@/app/generated/prisma/enums";
-import { EU_COUNTRY_DATA } from "@/lib/assumptions/eu-countries";
+import {
+  EU_COUNTRY_CODES,
+  EU_COUNTRY_DATA,
+  type EuCountryCode,
+} from "@/lib/assumptions/eu-countries";
 import {
   buildLocationYieldAssumptions,
+  type LocationYieldAssumptions,
   type PvgisLocationYield,
 } from "@/lib/assumptions/pvgis";
 import { ASSUMED, assumption, SOURCES } from "@/lib/assumptions/sources";
@@ -78,6 +83,41 @@ const CITY_YIELDS = {
   keyof typeof CAPITAL_CITY_YIELDS | keyof typeof RAW_CITY_YIELDS,
   ReturnType<typeof buildLocationYieldAssumptions>
 >;
+
+const EXTRA_CITY_COUNTRY = {
+  Hamburg: "DE",
+  Munich: "DE",
+  Lyon: "FR",
+  Seville: "ES",
+  Milan: "IT",
+} satisfies Record<keyof typeof RAW_CITY_YIELDS, EuCountryCode>;
+
+export interface YieldLocation {
+  name: string;
+  countryCode: EuCountryCode;
+  latitude: number;
+  longitude: number;
+  yield: LocationYieldAssumptions;
+}
+
+const CAPITAL_YIELD_LOCATIONS: YieldLocation[] = EU_COUNTRY_CODES.map(
+  (countryCode) => ({
+    name: EU_COUNTRY_DATA[countryCode].capital,
+    countryCode,
+    ...EU_COUNTRY_DATA[countryCode].capitalLocation,
+    yield: EU_COUNTRY_DATA[countryCode].capitalYield,
+  }),
+);
+
+const EXTRA_CITY_YIELD_LOCATIONS: YieldLocation[] = Object.entries(
+  RAW_CITY_YIELDS,
+).map(([name, location]) => ({
+  name,
+  countryCode: EXTRA_CITY_COUNTRY[name as keyof typeof RAW_CITY_YIELDS],
+  latitude: location.latitude,
+  longitude: location.longitude,
+  yield: CITY_YIELDS[name as keyof typeof CITY_YIELDS],
+}));
 
 const TYPICAL_COOLING_UNIT: Record<VehicleType, CoolingUnitType> = {
   VAN: "ENGINE_DRIVEN",
@@ -675,6 +715,7 @@ export const ASSUMPTION_SET_V1 = {
   },
   countries: EU_COUNTRY_DATA,
   cityYields: CITY_YIELDS,
+  yieldLocations: [...CAPITAL_YIELD_LOCATIONS, ...EXTRA_CITY_YIELD_LOCATIONS],
 };
 
 export type AssumptionSet = typeof ASSUMPTION_SET_V1;

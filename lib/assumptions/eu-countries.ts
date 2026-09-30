@@ -45,6 +45,9 @@ interface RawCountryData {
   dieselVatPercent: number;
   dieselPumpPrice: number;
   dieselWeeks: number;
+  petrol: readonly [number, number, number];
+  petrolVatPercent: number;
+  petrolPumpPrice: number;
   electricity: readonly [number, number, number];
   gridCo2: readonly [number, number, number];
   capitalYield: PvgisLocationYield;
@@ -52,7 +55,9 @@ interface RawCountryData {
 
 export interface CountryData {
   capital: string;
+  capitalLocation: { latitude: number; longitude: number };
   dieselPricePerLitre: Assumption;
+  petrolPricePerLitre: Assumption;
   electricityPricePerKwh: Assumption;
   gridCo2FactorKgPerKwh: Assumption;
   capitalYield: { flat: Assumption; vertical: Assumption };
@@ -66,6 +71,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 20,
     dieselPumpPrice: 2.259,
     dieselWeeks: 53,
+    petrol: [1.2108, 1.3823, 1.63],
+    petrolVatPercent: 20,
+    petrolPumpPrice: 1.956,
     electricity: [0.2244, 0.2295, 0.2321],
     gridCo2: [0.1035, 0.1107, 0.1169],
     capitalYield: {
@@ -84,6 +92,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 21,
     dieselPumpPrice: 2.4305,
     dieselWeeks: 53,
+    petrol: [1.1969, 1.4107, 1.6793],
+    petrolVatPercent: 21,
+    petrolPumpPrice: 2.0319,
     electricity: [0.2116, 0.2196, 0.2314],
     gridCo2: [0.127, 0.1371, 0.1498],
     capitalYield: {
@@ -102,6 +113,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 20,
     dieselPumpPrice: 1.9277,
     dieselWeeks: 53,
+    petrol: [0.9932, 1.1477, 1.3957],
+    petrolVatPercent: 20,
+    petrolPumpPrice: 1.6748,
     electricity: [0.1389, 0.1438, 0.1508],
     gridCo2: [0.2756, 0.2976, 0.3383],
     capitalYield: {
@@ -120,6 +134,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 25,
     dieselPumpPrice: 2.0364,
     dieselWeeks: 53,
+    petrol: [1.1008, 1.258, 1.4465],
+    petrolVatPercent: 25,
+    petrolPumpPrice: 1.8082,
     electricity: [0.1785, 0.1896, 0.1969],
     gridCo2: [0.1585, 0.1747, 0.1949],
     capitalYield: {
@@ -138,6 +155,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 19,
     dieselPumpPrice: 2.0229,
     dieselWeeks: 53,
+    petrol: [1.1023, 1.2251, 1.4563],
+    petrolVatPercent: 19,
+    petrolPumpPrice: 1.733,
     electricity: [0.2479, 0.2549, 0.2649],
     gridCo2: [0.489, 0.511, 0.5328],
     capitalYield: {
@@ -156,6 +176,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 21,
     dieselPumpPrice: 2.076,
     dieselWeeks: 53,
+    petrol: [1.1188, 1.298, 1.557],
+    petrolVatPercent: 21,
+    petrolPumpPrice: 1.88,
     electricity: [0.2249, 0.2274, 0.2302],
     gridCo2: [0.4015, 0.4194, 0.4426],
     capitalYield: {
@@ -174,6 +197,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 25,
     dieselPumpPrice: 2.5417,
     dieselWeeks: 53,
+    petrol: [1.4967, 1.7464, 2.1265],
+    petrolVatPercent: 25,
+    petrolPumpPrice: 2.6581,
     electricity: [0.1347, 0.1431, 0.1533],
     gridCo2: [0.1144, 0.1327, 0.152],
     capitalYield: {
@@ -192,6 +218,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 22,
     dieselPumpPrice: 2.239,
     dieselWeeks: 53,
+    petrol: [1.1598, 1.3366, 1.5803],
+    petrolVatPercent: 22,
+    petrolPumpPrice: 1.928,
     electricity: [0.152, 0.1563, 0.1598],
     gridCo2: [0.3191, 0.3527, 0.3955],
     capitalYield: {
@@ -210,6 +239,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 25.5,
     dieselPumpPrice: 2.523,
     dieselWeeks: 53,
+    petrol: [1.2953, 1.5687, 1.8833],
+    petrolVatPercent: 25.5,
+    petrolPumpPrice: 2.3311,
     electricity: [0.0923, 0.0957, 0.1002],
     gridCo2: [0.0575, 0.0684, 0.0812],
     capitalYield: {
@@ -228,6 +260,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 20,
     dieselPumpPrice: 2.3706,
     dieselWeeks: 53,
+    petrol: [1.3599, 1.5793, 1.8493],
+    petrolVatPercent: 20,
+    petrolPumpPrice: 2.2128,
     electricity: [0.1946, 0.2107, 0.2234],
     gridCo2: [0.0405, 0.0451, 0.0533],
     capitalYield: {
@@ -246,6 +281,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 19,
     dieselPumpPrice: 2.437,
     dieselWeeks: 53,
+    petrol: [1.4202, 1.6504, 1.9807],
+    petrolVatPercent: 19,
+    petrolPumpPrice: 2.345,
     electricity: [0.2618, 0.2656, 0.2714],
     gridCo2: [0.3296, 0.343, 0.3629],
     capitalYield: {
@@ -264,6 +302,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 24,
     dieselPumpPrice: 2.216,
     dieselWeeks: 53,
+    petrol: [1.379, 1.5378, 1.7782],
+    petrolVatPercent: 24,
+    petrolPumpPrice: 2.205,
     electricity: [0.2198, 0.2311, 0.2392],
     gridCo2: [0.3151, 0.3244, 0.3364],
     capitalYield: {
@@ -282,6 +323,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 27,
     dieselPumpPrice: 1.9323,
     dieselWeeks: 53,
+    petrol: [1.1196, 1.2327, 1.3794],
+    petrolVatPercent: 27,
+    petrolPumpPrice: 1.7293,
     electricity: [0.2366, 0.2462, 0.2586],
     gridCo2: [0.163, 0.1812, 0.1961],
     capitalYield: {
@@ -300,6 +344,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 23,
     dieselPumpPrice: 2.1229,
     dieselWeeks: 53,
+    petrol: [1.3923, 1.456, 1.6032],
+    petrolVatPercent: 23,
+    petrolPumpPrice: 1.9719,
     electricity: [0.2915, 0.3037, 0.3118],
     gridCo2: [0.2565, 0.27, 0.2824],
     capitalYield: {
@@ -318,6 +365,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 22,
     dieselPumpPrice: 2.3507,
     dieselWeeks: 53,
+    petrol: [1.3329, 1.4815, 1.7674],
+    petrolVatPercent: 22,
+    petrolPumpPrice: 2.1562,
     electricity: [0.2377, 0.2534, 0.2629],
     gridCo2: [0.2814, 0.2965, 0.3232],
     capitalYield: {
@@ -336,6 +386,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 21,
     dieselPumpPrice: 2.1325,
     dieselWeeks: 53,
+    petrol: [1.2359, 1.4055, 1.6841],
+    petrolVatPercent: 21,
+    petrolPumpPrice: 2.0378,
     electricity: [0.1641, 0.1678, 0.174],
     gridCo2: [0.1191, 0.1307, 0.1388],
     capitalYield: {
@@ -354,6 +407,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 21,
     dieselPumpPrice: 2.2529,
     dieselWeeks: 53,
+    petrol: [1.1364, 1.3353, 1.6146],
+    petrolVatPercent: 21,
+    petrolPumpPrice: 1.9537,
     electricity: [0.185, 0.1917, 0.1961],
     gridCo2: [0.1164, 0.1245, 0.1384],
     capitalYield: {
@@ -372,6 +428,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 17,
     dieselPumpPrice: 2.095,
     dieselWeeks: 53,
+    petrol: [1.1897, 1.3812, 1.6137],
+    petrolVatPercent: 17,
+    petrolPumpPrice: 1.888,
     electricity: [0.2051, 0.2211, 0.2456],
     gridCo2: [0.1206, 0.1255, 0.1324],
     capitalYield: {
@@ -390,6 +449,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 18,
     dieselPumpPrice: 1.21,
     dieselWeeks: 53,
+    petrol: [1.1356, 1.1356, 1.1356],
+    petrolVatPercent: 18,
+    petrolPumpPrice: 1.34,
     electricity: [0.1508, 0.151, 0.1512],
     gridCo2: [0.484, 0.4887, 0.4936],
     capitalYield: {
@@ -408,6 +470,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 21,
     dieselPumpPrice: 2.526,
     dieselWeeks: 53,
+    petrol: [1.5545, 1.7981, 2.0379],
+    petrolVatPercent: 21,
+    petrolPumpPrice: 2.4646,
     electricity: [0.2424, 0.2573, 0.2745],
     gridCo2: [0.2507, 0.2575, 0.2682],
     capitalYield: {
@@ -426,6 +491,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 8,
     dieselPumpPrice: 2.0603,
     dieselWeeks: 53,
+    petrol: [1.243, 1.3745, 1.7155],
+    petrolVatPercent: 8,
+    petrolPumpPrice: 1.8527,
     electricity: [0.2599, 0.263, 0.2656],
     gridCo2: [0.5886, 0.6158, 0.6507],
     capitalYield: {
@@ -444,6 +512,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 23,
     dieselPumpPrice: 2.186,
     dieselWeeks: 53,
+    petrol: [1.3423, 1.4948, 1.713],
+    petrolVatPercent: 23,
+    petrolPumpPrice: 2.099,
     electricity: [0.1647, 0.1689, 0.1711],
     gridCo2: [0.1106, 0.1323, 0.1584],
     capitalYield: {
@@ -462,6 +533,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 21,
     dieselPumpPrice: 2.1043,
     dieselWeeks: 53,
+    petrol: [1.177, 1.356, 1.568],
+    petrolVatPercent: 21,
+    petrolPumpPrice: 1.8973,
     electricity: [0.1737, 0.189, 0.2142],
     gridCo2: [0.2432, 0.2484, 0.2513],
     capitalYield: {
@@ -480,6 +554,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 23,
     dieselPumpPrice: 1.978,
     dieselWeeks: 53,
+    petrol: [1.1707, 1.3097, 1.5065],
+    petrolVatPercent: 23,
+    petrolPumpPrice: 1.853,
     electricity: [0.22, 0.2316, 0.2381],
     gridCo2: [0.0948, 0.1022, 0.1151],
     capitalYield: {
@@ -498,6 +575,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 22,
     dieselPumpPrice: 2.011,
     dieselWeeks: 53,
+    petrol: [1.1311, 1.2558, 1.4299],
+    petrolVatPercent: 22,
+    petrolPumpPrice: 1.7445,
     electricity: [0.1576, 0.1702, 0.1921],
     gridCo2: [0.1833, 0.2129, 0.2304],
     capitalYield: {
@@ -516,6 +596,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 21,
     dieselPumpPrice: 1.9344,
     dieselWeeks: 53,
+    petrol: [1.1871, 1.2861, 1.6031],
+    petrolVatPercent: 21,
+    petrolPumpPrice: 1.9397,
     electricity: [0.1618, 0.17, 0.1744],
     gridCo2: [0.1462, 0.1565, 0.1697],
     capitalYield: {
@@ -534,6 +617,9 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
     dieselVatPercent: 25,
     dieselPumpPrice: 2.1352,
     dieselWeeks: 53,
+    petrol: [1.0461, 1.205, 1.4199],
+    petrolVatPercent: 25,
+    petrolPumpPrice: 1.5948,
     electricity: [0.1007, 0.1088, 0.114],
     gridCo2: [0.0349, 0.0362, 0.0384],
     capitalYield: {
@@ -551,12 +637,23 @@ const RAW_COUNTRY_DATA: Record<EuCountryCode, RawCountryData> = {
 function buildCountryData(raw: RawCountryData): CountryData {
   return {
     capital: raw.capital,
+    capitalLocation: {
+      latitude: raw.capitalYield.latitude,
+      longitude: raw.capitalYield.longitude,
+    },
     dieselPricePerLitre: assumption({
       range: raw.diesel,
       unit: "EUR/L",
       direction: "higher",
       source: SOURCES.euOilBulletin,
       note: `Without VAT (${raw.dieselVatPercent}% in the Oil Bulletin); pump price ${raw.dieselPumpPrice} EUR/L on ${OIL_BULLETIN_PERIOD_END}. Lowest, mean and highest of ${raw.dieselWeeks} weeks.`,
+    }),
+    petrolPricePerLitre: assumption({
+      range: raw.petrol,
+      unit: "EUR/L",
+      direction: "higher",
+      source: SOURCES.euOilBulletin,
+      note: `Euro-super 95 without VAT (${raw.petrolVatPercent}% in the Oil Bulletin); pump price ${raw.petrolPumpPrice} EUR/L on ${OIL_BULLETIN_PERIOD_END}. Lowest, mean and highest of ${raw.dieselWeeks} weeks.`,
     }),
     electricityPricePerKwh: assumption({
       range: raw.electricity,
