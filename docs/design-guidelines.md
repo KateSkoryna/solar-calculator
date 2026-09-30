@@ -111,7 +111,7 @@ All colours are CSS custom properties on `:root`, overridden under `:root[data-t
 
 - Lime is **never** used as text or icon colour on light backgrounds (contrast ≈1.5:1 — the current `StatTile` bug). On dark backgrounds lime text is allowed (≥9:1).
 - Text on lime is always `on-lime`.
-- `sun` is decorative only; it never carries meaning alone.
+- `sun` (gold) is decorative only; it never carries meaning alone.
 - Status is never colour-only: pills always include a text label; charts always include a legend.
 - Distinguish chart series by lightness, not hue alone (`chart-payoff` is light, `chart-profit` is mid).
 
@@ -210,11 +210,11 @@ Flat by default: borders (`line`) do the separation. Shadows only for:
 - **Style:** stroke only, 1.5 px (large, ≥32 px) or 2 px (≤24 px), round caps and joins, `currentColor`.
 - **Sizes:** 16 (inline meta), 18–20 (buttons, nav), 22 (tab bar), 36–44 (choice cards).
 - **Never** use emoji as icons. Icon-only buttons MUST have `aria-label`.
-- **Logo:** a sun mark — circle filled `lime`, 8 rays stroked in `ink` (or `ground` on dark panels) — plus "Solar Calculator" in Display 700. Reuse one `Logo` component everywhere.
+- **Logo (placeholder):** a plain circle mark — a `forest` circle with a smaller centred `sun` (gold) circle, no rays — plus "Solar Calculator" in Display 700. On dark panels the outer circle uses `ground` at low opacity so it stays visible. **The owner will replace this mark with a custom image later**, so it lives only in the one `Logo` component (`components/common/Logo.tsx`) and is never redrawn elsewhere. The sun-with-rays mark on the canvas is retired.
 
 ### 4.7 Illustration
 
-Only one illustration: the **sun** (circle `sun`, 8 rays at 55% opacity), partly cropped off the corner of forest-green panels (home hero, login side panel). It rotates slowly (section 6). No stock photos, no 3D renders. The current `forestlight.webp` / `forestdark.webp` / `bus.webp` hero images are retired.
+Only one illustration, a **placeholder**: a plain gold circle (`sun`, no rays, no rotation), partly cropped off the corner of forest-green panels (home hero, login side panel). **The owner will replace it with a custom image later**, so it lives only in `components/common/BrandIllustration.tsx` and every panel uses that component. The rotating sun with rays on the canvas is retired. No stock photos, no 3D renders. The current `forestlight.webp` / `forestdark.webp` / `bus.webp` hero images are retired.
 
 ---
 
@@ -260,10 +260,10 @@ Fixed bottom bars MUST add `padding-bottom: env(safe-area-inset-bottom)` and the
 | `step-in`          | opacity 0→1, translateX 18→0           | 450 ms                                             | Calculator step content on step change                                                                                            |
 | `swap`             | opacity 0→1, translateY 8→0            | 300–350 ms                                         | Tab/segment content change (login tabs, team/activity)                                                                            |
 | `fill`             | width 0→value                          | 500 ms (step progress) / 1200 ms (report progress) | Progress bars                                                                                                                     |
-| `grow`             | scaleY 0→1, origin bottom              | 800 ms, stagger 50 ms per bar                      | Results payback chart bars                                                                                                        |
+| `grow`             | scaleY 0→1, origin bottom              | 800 ms, stagger 50 ms per bar                      | Bar charts (none currently)                                                                                                         |
 | `lift`             | translateY 0→-2/-3 px + `shadow-hover` | 150–200 ms                                         | Choice cards, "How it works" cards, stat tiles (pointer devices only: wrap in `@media (hover: hover)` nested inside the selector) |
 | `pulse`            | opacity 1→0.35→1                       | 1600 ms loop                                       | Status dot of an in-progress job only                                                                                             |
-| `spin`             | rotate 360°                            | 60–80 s loop                                       | Sun illustration only                                                                                                             |
+| `spin`             | rotate 360°                            | 60–80 s loop                                       | Not used while the illustration is a placeholder circle; revisit when the final image arrives                                     |
 | Colour transitions | background/border/colour               | 150–300 ms                                         | Buttons, chips, step dots, theme switch                                                                                           |
 
 **Reduced motion (MUST):** every keyframe animation is disabled under `prefers-reduced-motion: reduce`; bars render at their final size; transitions shorten to 0 ms except colour. Write the media query nested inside each selector per `CLAUDE.md`:
@@ -278,7 +278,7 @@ Fixed bottom bars MUST add `padding-bottom: env(safe-area-inset-bottom)` and the
 }
 ```
 
-**Not allowed:** parallax, scroll-jacking, count-up number tickers, confetti, looping animations other than `pulse` and `spin`, page-transition animations, animating layout properties other than progress-bar width.
+**Not allowed:** parallax, scroll-jacking, count-up number tickers, confetti, looping animations other than `pulse` (and `spin`, currently unused), page-transition animations, animating layout properties other than progress-bar width.
 
 **Implementation:** CSS keyframes in `globals.css` exposed as Tailwind `--animate-*` theme tokens (section 11.2). No animation library (no Framer Motion) is needed.
 
@@ -444,12 +444,12 @@ Button showing "Fleet" overline + fleet name + up/down chevron (desktop sidebar)
 
 New: `components/calculation/PaybackChart.tsx` using **Recharts** (already a dependency).
 
-- Cumulative savings per year for 10 years as bars; a horizontal dashed reference line at the one-time cost labelled "Cost €18k" (value formatted per locale).
-- Bars before break-even: `chart-payoff`; after: `chart-profit`. Bar corner radius 6–8 px top only. No gridlines; x-axis labels "Yr 1, 2 … 10" (mobile: only Year 1 / 5 / 10); no y-axis on mobile.
-- Legend above the chart ("Paying off", "Pure profit"), not inside it.
+- Cumulative savings per year for 10 years as **three lines**: Pessimistic, Realistic, Optimistic (one per `ScenarioKind`); a horizontal dashed reference line at the realistic one-time cost labelled "Cost €18k" (value formatted per locale).
+- Realistic: solid 3 px `ink` line. Pessimistic and optimistic: 2 px `chart-profit` lines, distinguished by line style (pessimistic dotted, optimistic solid) and a light `chart-payoff` band between them, so the series never rely on colour alone. Break-even points are marked with a 6 px dot on each line. No gridlines; x-axis labels "Yr 1, 2 … 10" (mobile: only Year 1 / 5 / 10); no y-axis on mobile.
+- Legend above the chart ("Pessimistic", "Realistic", "Optimistic"), not inside it. The canvas still shows the earlier bar version; this section wins.
 - Heights: 280 desktop / 240 tablet / 200 mobile.
-- Accessibility: wrap in `<figure>` with a `<figcaption>` that states the conclusion in words ("Savings pass the €18,000 cost during year 5"); provide the data as a visually hidden table.
-- Animation: Recharts `isAnimationActive` true with 800 ms, disabled under reduced motion (read `matchMedia` once).
+- Accessibility: wrap in `<figure>` with a `<figcaption>` that states the conclusion in words ("Savings most likely pass the €18,000 cost during year 5 — between year 4 and year 7"); provide all three series as a visually hidden table.
+- Animation: Recharts line draw with `isAnimationActive` true and 800 ms, disabled under reduced motion (read `matchMedia` once).
 
 ### 7.21 Activity item
 
@@ -484,18 +484,18 @@ Each screen lists route, purpose, content order per breakpoint, states and inter
 
 1. Header.
 2. Hero: info badge → h1 "Find out if solar panels pay off for your vans and trucks." (`display-xl`) → lead paragraph (`body-l`, `muted`) → primary `lg` button "Start my estimate →" + "Takes about 2 minutes" (`small`, `muted`).
-3. Example panel: forest panel with rotating sun; white floating card: "Example · 10 delivery vans · Berlin" + Sample badge, "Pays off in [X] years" (`display` 800), 3 mini stats (Saved per year, CO₂ avoided, Fuel saved) on `ground` tiles. Values MUST come from a real pre-computed example calculation or remain placeholders; never invent them.
+3. Example panel: forest panel with the brand illustration (gold circle placeholder, 4.7); white floating card: "Example · 10 delivery vans · Berlin" + Sample badge, "Pays off in [X] years" (`display` 800), 3 mini stats (Saved per year, CO₂ avoided, Fuel saved) on `ground` tiles. Values MUST come from a real pre-computed example calculation or remain placeholders; never invent them.
 4. "How it works": 3 numbered cards (1 Tell us about your vehicles, 2 Say where they operate, 3 Get a clear answer).
 5. "Built for" dark band: Delivery & logistics, Public transport, Refrigerated transport (lime line icons).
 6. Footer: "© {year} Solar Calculator" + "Independent · Estimates, not quotes".
 
 |              | Desktop                                                 | Tablet                                           | Mobile                                                                      |
 | ------------ | ------------------------------------------------------- | ------------------------------------------------ | --------------------------------------------------------------------------- |
-| Hero         | 2 columns: text left, example panel right (520 px tall) | Stacked; example panel 400 px under the text     | Stacked; button full width; panel with 120 px sun area on top; 2 mini stats |
+| Hero         | 2 columns: text left, example panel right (520 px tall) | Stacked; example panel 400 px under the text     | Stacked; button full width; panel with 120 px illustration area on top; 2 mini stats |
 | How it works | 3 columns                                               | 3 horizontal rows (number tile left, text right) | 3 rows, smaller                                                             |
 | Built for    | 4-column band (title + 3 items)                         | Title + 3 columns                                | Title + 3 stacked rows                                                      |
 
-**Motion:** `rise` on badge, h1, paragraph + CTA (stagger 0/120/240 ms), example panel `rise` 120 ms; sun `spin`; card `lift` on hover.
+**Motion:** `rise` on badge, h1, paragraph + CTA (stagger 0/120/240 ms), example panel `rise` 120 ms; card `lift` on hover.
 
 **Remove:** the four glass feature cards (they promise "AI-powered suggestions" and "real-time insights" which don't exist), `CardCarousel`, hero background images.
 
@@ -510,6 +510,13 @@ Each screen lists route, purpose, content order per breakpoint, states and inter
 | 3    | Location / Where they operate   | Where do your vehicles operate?                 | This tells us how much sun they get through the year.            | City input (autocomplete, city + country in one field, e.g. "Berlin, Germany") · Chip group "Where do they park overnight?" (At our depot / On the street / At customer sites / It varies)                                                                                                                               |
 | 4    | Panels / Where they go          | Where would the panels go?                      | More sun means more savings. Not sure? Roof is the usual choice. | Horizontal choice cards with 3-dot sun rating: Roof only (Most common, best value, 3), Roof, sides and back (Most energy, higher cost, 3), Sides (Partial sun during the day, 2), Back (Limited sun, 1) · `<details>` "I know the exact numbers": panel capacity kW, max roof load kg, payload reserve kg, budget, notes |
 
+**Additions not on the canvas (decided after the design):**
+
+- Step 1, below "How many?": chip group "What do they carry?" — Regular goods / Chilled or frozen / Passengers. Choosing "Chilled or frozen" adds "Cooling unit type" (Diesel / Driven by the truck engine / Electric / Not sure) inside step 2's "I know the exact numbers"; "Not sure" uses the typical EU setup for that vehicle type.
+- Step 2, below the distance cards: chip group "Do engines run while parked?" with hint "For example for air conditioning or heating during breaks." — Rarely / Sometimes / Often.
+- The Answers panel adds "Cargo" and "Parked idling" rows.
+- Results: under the stat tiles (desktop) or inside "How we calculated this" (mobile), a "Where the savings come from" list shows each savings type with its yearly amount, e.g. "Cooling unit fuel €2,900 · Fewer battery breakdowns €600 · Less idling €450". Battery breakdowns are always their own line.
+
 **Frame:**
 
 - Top: logo (links home) + "Your answers are saved automatically" (`small`, `muted`). Persist form state to `sessionStorage` so a refresh does not lose answers (wrap in try/catch).
@@ -519,7 +526,7 @@ Each screen lists route, purpose, content order per breakpoint, states and inter
 
 **Behaviour:**
 
-- Defaults are pre-selected (Van, Regional, Depot, Roof) so a user can click Continue four times and still get a result. Each pre-selected default is visibly selected, not hidden.
+- Defaults are pre-selected (Van, Regular goods, Regional, Rarely, Depot, Roof) so a user can click Continue four times and still get a result. Each pre-selected default is visibly selected, not hidden.
 - Step change: `step-in` on the question block; focus moves to the new h1 (`tabIndex={-1}`); the step change is announced.
 - Keyboard: Enter on the last field of a step = Continue.
 - The existing multi-step `Form.tsx` + zod schema stay; the schema MUST make the technical fields optional and fill them from presets (section 12.1) before submission.
@@ -530,15 +537,15 @@ Each screen lists route, purpose, content order per breakpoint, states and inter
 
 **Content order:**
 
-1. Header actions: Change answers (`secondary`, back to calculator with answers kept), Share link (`secondary`), Download PDF (`dark` with download icon). Mobile: back icon button + "Your result" + share icon button in the top bar; Save + PDF in a fixed bottom bar.
+1. Header actions: Change answers (`secondary`, back to calculator with answers kept), Share link (`secondary`), Download PDF (`dark` with download icon; **saved fleet results only** — the public results page has no PDF button). Mobile: back icon button + "Your result" + share icon button in the top bar; Save (public) or PDF (fleet) in a fixed bottom bar.
 2. Context line: "10 vans · Regional driving · Berlin · Roof panels" (+ Sample badge only on demo data).
 3. Verdict headline (`display-l`). Templates (keys in `calculation.*`):
    - Pays off within 10 years: "Yes — solar pays for itself in about **{duration}**." with the duration on a lime highlight (`bg-lime`, `rounded-[14px]`, `px-3`).
    - Pays off after 10 years: "Solar pays off slowly — about **{duration}**."
    - Never pays off within panel lifetime: "Solar is unlikely to pay off for this setup." + suggestion line ("Try roof-only panels or check the exact numbers.").
-     Duration is humanised from `paybackPeriodMonths`: "4 years 4 months", mobile short form "4 yrs 4 mo".
+     Duration is humanised from the realistic scenario's `paybackPeriodMonths`: "4 years 4 months", mobile short form "4 yrs 4 mo". A range line follows the headline: "Between {pessimisticDuration} and {optimisticDuration}, depending on sun and prices." The verdict template is chosen from the realistic scenario.
 4. Lead: "After that, your fleet keeps around {annualSavings} a year that would otherwise go on fuel."
-5. Stat tiles (4): Money saved each year · One-time cost · CO₂ avoided each year (+ equivalent, e.g. trees, only if the engine/assumption set provides the factor) · Total gain over 10 years (`emphasis`).
+5. Stat tiles (4), realistic value with the range in the explanation line ("€3,100–5,000 depending on prices"): Money saved each year · One-time cost after subsidies · CO₂ avoided each year (+ equivalent, e.g. trees, only if the engine/assumption set provides the factor) · Total gain over 10 years (`emphasis`).
 6. Payback chart card (7.20) titled "When do you get your money back?" with subtitle "Your savings add up each year. Once they pass the dashed line, the panels are paid off."
 7. Bottom row: `<details>` "How we calculated this" (plain sentence summary + the existing `ProvenancePanel` fields inside) · lime-soft card "Want to keep this result?" / "Save to my fleet" (`dark`) — logged-out users go to Create account and the result is attached after sign-up.
 
@@ -547,7 +554,7 @@ Each screen lists route, purpose, content order per breakpoint, states and inter
 | Stat tiles | 4 columns | 2 × 2   | 1 column, horizontal tiles             |
 | Bottom row | 2 columns | Stacked | Disclosure only; actions in bottom bar |
 
-**Motion:** `rise` on headline and tiles, `grow` on chart bars, `lift` on tile hover.
+**Motion:** `rise` on headline and tiles, line draw on the payback chart (7.20), `lift` on tile hover.
 
 **Data note:** the stored `CalculationResult` has `paybackPeriodMonths`, `totalSolarYieldKwh`, `co2SavedKg`, `netSavingsAmount`, `currency`. "Money saved each year", "One-time cost" and the per-year chart series are NOT stored today — see 12.2.
 
@@ -555,19 +562,18 @@ Each screen lists route, purpose, content order per breakpoint, states and inter
 
 **Layout:**
 
-- Desktop: 2 equal columns. Left: forest panel, logo, h2 "Keep all your fleet's numbers in one place." (48 px Display 800, `ground`), 3 check-marked benefits (Save and compare calculations · Download PDF reports for your bank · Invite your team), footer "Free · Independent · No sales calls", rotating sun bottom-right. Right: 440 px form column, vertically centred.
+- Desktop: 2 equal columns. Left: forest panel, logo, h2 "Keep all your fleet's numbers in one place." (48 px Display 800, `ground`), 3 check-marked benefits (Save and compare calculations · Download PDF reports for your bank · Invite your team), footer "Free · Independent · No sales calls", brand illustration (gold circle placeholder) bottom-right. Right: 440 px form column, vertically centred.
 - Tablet: forest band on top (340 px) with logo, shorter headline and inline benefits; form (480 px) centred below.
 - Mobile: no forest panel; logo + close (×) button top; form fills the screen; primary action at the bottom.
 
 **Form column:** segmented control (Log in | Create account, as links) → h1 ("Welcome back" / "Create your free account") → Google button (`secondary` style, 54–56 px, Google "G" mark per Google branding rules) → divider "or with email" → fields → primary action.
 
-- Log in fields: Email · Password (+ "Forgot it?" link aligned right of the label, → `/forgot-password`). Action: "Log in" (`dark`, full width).
-- Create account fields: Your name + Company (2 columns desktop/tablet, stacked mobile) · Work email · Password with hint "At least 8 characters". Action: "Create account" (`primary`, full width).
-- "Remember me" checkbox (current login form) MAY stay under the password field as a 24 px checkbox with a 44 px label target.
-- Errors: inline under fields; auth failure shows a form-level message above the button ("That email and password don't match. Try again or reset your password.").
-- Forgot / reset password pages reuse the same shell with a single field.
+- **Passwordless (decided after the design; the canvas still shows password fields):** both tabs have one field, Work email, and one action, "Email me a sign-in link" (`primary`, full width). There is no password, no "Forgot it?" link and no "Remember me".
+- After sending: a "Check your email" screen in the same shell: "We sent a link to {email}. It works for 15 minutes.", "Send it again" (enabled after 60 seconds) and "Use a different email".
+- Your name and Company are asked once, on the onboarding screen after the first sign-in (2 columns desktop/tablet, stacked mobile), which creates the fleet.
+- Errors: inline under the email field; an expired or used link shows a form-level message above the button ("This link has expired or was already used. Send a new one."). The message never reveals whether an account exists.
 
-**Check:** the current password rule is 6 characters (`login.passwordMinLengthError`) while the design says 8. Align the zod schema, messages and hint to one value (recommend 8).
+**Decided:** no passwords (Google or email link via Resend; step 1.3).
 
 ### 8.5 Fleet dashboard — `/[locale]/[fleetSlug]` (new route) [Fleet dashboard, · dark, · tablet, · mobile]
 
@@ -587,7 +593,7 @@ Each screen lists route, purpose, content order per breakpoint, states and inter
 | Groups          | Grid table | Two-line rows | Cards; "Add" button next to the section title |
 | Report progress | Bottom row | Bottom        | Directly under KPIs (compact)                 |
 
-**Rules:** aggregates only include groups with a current result; show "based on {n} calculated groups" under averages. Poll report job status with TanStack Query (`refetchInterval` 2–3 s while status is not COMPLETED/FAILED) — no websockets needed for this milestone.
+**Rules:** aggregates only include groups with a current result; show "based on {n} calculated groups" under averages. Report job status and live telemetry arrive through the fleet Server-Sent Events stream (`detailed-plan.md` step 4.6) and are written into the TanStack Query cache — no polling, no WebSockets.
 
 ### 8.6 Team & activity — `/[locale]/[fleetSlug]/audit` (keep the URL, rename the page) [Team & activity, · dark, · tablet, · mobile]
 
@@ -794,17 +800,19 @@ Remove the global element styles that fight Tailwind (`button { font-weight: 600
 
 ## 12. Data dependencies and open questions
 
-These are gaps between the design and the current backend. Resolve before or during the relevant phase; do not paper over them with invented numbers.
+These are gaps between the design and the current backend. Resolve before or during the relevant phase; do not paper over them with invented numbers. Decisions taken are marked **Decided** and are implemented through the steps named in [`detailed-plan.md`](./detailed-plan.md).
 
-1. **Presets for "simple" inputs (blocks phase 2).** The engine needs numeric inputs the simple flow no longer asks for. A single constant (e.g. `lib/calculator-presets.ts`) must map: distance band → km/day (suggested midpoints 30 / 100 / 250 — **confirm with the product owner**); vehicle type → typical energy use, panel capacity, roof load, payload reserve; defaults operating months 12, winter usage true. Values must be sourced and versioned alongside the assumption set, since they affect results.
-2. **Result fields not stored (blocks full Results screen).** Design needs annual savings, one-time cost and a 10-year cumulative series. `CalculationResult` stores only payback months, total yield, CO₂ and net savings. Either extend the schema/engine or derive the series from stored values, and document the formula.
-3. **Default vehicle count.** Canvas shows 10; current form defaults to 1. Recommend 1 (never assume fleet size) with the stepper making changes easy.
+1. **Presets for "simple" inputs (blocks phase 2).** The engine needs numeric inputs the simple flow no longer asks for. A single versioned assumption set (`lib/assumptions/v1.ts`) must map: distance band → km/day (suggested midpoints 30 / 100 / 250 — **confirm with the product owner**); vehicle type → typical energy use, panel capacity, roof load, payload reserve; defaults operating months 12, winter usage true. Values must be sourced and versioned alongside the assumption set, since they affect results. **Decided:** researched and cited in `docs/assumptions-v1.md`, reviewed by the owner before use (step 2.1).
+2. **Result fields not stored (blocks full Results screen).** Design needs annual savings, one-time cost and a 10-year cumulative series. `CalculationResult` stores only payback months, total yield, CO₂ and net savings. Either extend the schema/engine or derive the series from stored values, and document the formula. **Decided:** a pure TypeScript engine produces them and `CalculationResult` stores them (steps 2.2, 2.3).
+3. **Default vehicle count.** Canvas shows 10; current form defaults to 1. Recommend 1 (never assume fleet size) with the stepper making changes easy. **Decided:** 1.
 4. **Mobile answers review.** Mobile hides the answers panel. If testing shows users lose track, add a "Review answers" link opening a bottom sheet.
-5. **Public results route.** Results currently exist only per fleet (auth required). The public flow needs an unauthenticated result view (client-side calculation or a short-lived anonymous calculation) and a "save to fleet" handoff after sign-up.
-6. **Activity sentences with before/after values.** Requires audit events to store changed fields with old and new values. If not available, use the fallback sentence (8.6).
+5. **Public results route.** Results currently exist only per fleet (auth required). The public flow needs an unauthenticated result view (client-side calculation or a short-lived anonymous calculation) and a "save to fleet" handoff after sign-up. **Decided:** the engine runs in the browser from sessionStorage answers; after sign-up the answers are saved and the server recalculates (steps 2.6, 3.8). Sign-up creates the user's fleet from the Company field (step 2.5).
+6. **Activity sentences with before/after values.** Requires audit events to store changed fields with old and new values. If not available, use the fallback sentence (8.6). **Decided:** `VEHICLE_UPDATED` stores `{ field, from, to }` going forward; older events use the fallback (step 3.12).
 7. **CO₂ equivalents ("≈ 300 trees").** Only show if the assumption set provides a sourced conversion factor.
 8. **Dashboard aggregates.** Define whether "Could save per year" sums latest results per vehicle group and how groups with outdated assumption versions are treated.
-9. **Password minimum.** 6 (current) vs 8 (design). Recommend 8.
+9. **Password minimum.** **Decided:** no passwords at all; sign-in is Google or an email link (steps 1.3, 3.10).
+10. **Savings model.** **Decided:** the engine sums every savings type that applies (cooling-unit fuel, less idling, fewer battery breakdowns, alternator fuel, direct charging) and shows the breakdown; no vehicle type is ruled out in advance (steps 2.1, 2.2).
+11. **Screens not on the canvas.** Vehicles, Calculations, vehicle group detail (estimated vs. measured), CSV import and the live state are built from these guidelines; their layout specs are added to section 8 in steps 3.14 and 5.10.
 
 ---
 
