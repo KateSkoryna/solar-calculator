@@ -4,6 +4,8 @@ import {
   EngineType,
   ParkingType,
   SolarPanelPlacement,
+  CargoType,
+  CoolingUnitType,
 } from "@/app/generated/prisma/enums";
 
 export const vehicleInputSchema = z.object({
@@ -23,6 +25,11 @@ export const vehicleInputSchema = z.object({
   winterUsage: z.boolean(),
   city: z.string().min(1),
   country: z.string().min(1),
+  cargoType: z.enum(Object.values(CargoType)).optional(),
+  coolingUnitType: z.enum(Object.values(CoolingUnitType)).nullable().optional(),
+  idleHoursPerDay: z.number().min(0).max(24).optional(),
+  latitude: z.number().min(-90).max(90).nullable().optional(),
+  longitude: z.number().min(-180).max(180).nullable().optional(),
 });
 
 export const vehicleUpdateSchema = vehicleInputSchema.partial();
