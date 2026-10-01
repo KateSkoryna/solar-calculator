@@ -11,6 +11,7 @@ export type AuditEntityType =
   (typeof AuditEntityType)[keyof typeof AuditEntityType];
 
 export const AuditAction = {
+  FLEET_CREATED: "FLEET_CREATED",
   VEHICLE_CREATED: "VEHICLE_CREATED",
   VEHICLE_UPDATED: "VEHICLE_UPDATED",
   VEHICLE_DELETED: "VEHICLE_DELETED",

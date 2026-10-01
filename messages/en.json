@@ -230,5 +230,13 @@
     "expiry": "This link works once and expires in {minutes} minutes.",
     "ignore": "If you didn't ask for this email, you can ignore it.",
     "fallback": "If the button doesn't work, copy this link into your browser:"
+  },
+  "onboarding": {
+    "title": "Set up your workspace",
+    "userName": "Your name",
+    "companyName": "Company",
+    "submit": "Create workspace",
+    "saving": "Creating…",
+    "error": "We couldn't create your workspace. Check the company name (2–80 characters) and try again."
   }
 }

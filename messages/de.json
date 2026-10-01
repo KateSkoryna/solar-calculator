@@ -230,5 +230,13 @@
     "expiry": "Dieser Link funktioniert nur einmal und läuft in {minutes} Minuten ab.",
     "ignore": "Wenn du diese E-Mail nicht angefordert hast, kannst du sie ignorieren.",
     "fallback": "Falls die Schaltfläche nicht funktioniert, kopiere diesen Link in deinen Browser:"
+  },
+  "onboarding": {
+    "title": "Richte deinen Arbeitsbereich ein",
+    "userName": "Dein Name",
+    "companyName": "Unternehmen",
+    "submit": "Arbeitsbereich erstellen",
+    "saving": "Wird erstellt…",
+    "error": "Wir konnten deinen Arbeitsbereich nicht erstellen. Prüfe den Firmennamen (2–80 Zeichen) und versuche es erneut."
   }
 }

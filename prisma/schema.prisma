@@ -94,11 +94,11 @@ model User {
 }
 
 model Fleet {
-  id        String      @id @default(cuid())
+  id        String       @id @default(cuid())
   name      String
-  slug      String      @unique
-  type      VehicleType
-  createdAt DateTime    @default(now())
+  slug      String       @unique
+  type      VehicleType?
+  createdAt DateTime     @default(now())
 
   memberships  FleetMembership[]
   vehicles     Vehicle[]

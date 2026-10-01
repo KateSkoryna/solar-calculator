@@ -1,6 +1,7 @@
 import createIntlMiddleware from "next-intl/middleware";
 import { locales, defaultLocale } from "./i18n";
 import { NextRequest, NextResponse } from "next/server";
+import { workspacePath } from "@/lib/workspace-path";
 import {
   checkRateLimit,
   SENSITIVE_ENDPOINT_RATE_LIMIT,
@@ -28,6 +29,11 @@ const RATE_LIMITED_ROUTES: RateLimitedRoute[] = [
     name: "calculation-create",
     method: "POST",
     path: "/api/fleets/:fleetId/calculations",
+  },
+  {
+    name: "fleet-create",
+    method: "POST",
+    path: "/api/fleets",
   },
 ];
 
@@ -100,7 +106,7 @@ export default function middleware(request: NextRequest) {
   if (isAuthRoute && isLoggedIn) {
     const locale = getLocaleFromPathname(pathname);
     const redirectUrl = request.nextUrl.clone();
-    redirectUrl.pathname = `/${locale}/user`;
+    redirectUrl.pathname = workspacePath(locale);
     return NextResponse.redirect(redirectUrl);
   }
 
@@ -114,5 +120,6 @@ export const config = {
     "/((?!api|_next|_vercel|.*\\..*).*)",
     "/api/auth/signin/nodemailer",
     "/api/fleets/:fleetId/calculations",
+    "/api/fleets",
   ],
 };
