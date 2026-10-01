@@ -994,6 +994,58 @@ const calculation = await prisma.$transaction((tx) =>
 );
 ```
 
+### Onboarding as a transaction
+
+Creating a workspace touches several tables: the user's name, the fleet, the owner membership and an audit event. If any write fails, none of them should stay. One transaction wraps them all:
+
+```ts
+const fleet = await prisma.$transaction(async (tx) => {
+  if (userName) {
+    await tx.user.updateMany({
+      where: { id: userId, name: null },
+      data: { name: userName },
+    });
+  }
+
+  return createFleetWithOwner(tx, { name: companyName, userId });
+});
+```
+
+### Unique slug generation
+
+A slug is a readable, URL-safe name that must be unique. The service tries the plain slug first, then `-2`, `-3` and so on, shortening the base so the result never exceeds the length limit:
+
+```ts
+for (let number = FIRST_DUPLICATE_SUFFIX_NUMBER; ; number += 1) {
+  const suffix = `-${number}`;
+  const candidate =
+    truncateSlug(baseSlug, MAX_FLEET_SLUG_LENGTH - suffix.length) + suffix;
+  if (await isSlugAvailable(transaction, candidate)) return candidate;
+}
+```
+
+The database unique constraint stays the final guard if two requests pick the same slug at the same moment.
+
+### Reserved route names
+
+`/en/[fleetSlug]` is a dynamic route, so a fleet called "login" would fight with the real `/en/login` page. Fixed page names are never handed out as slugs, and a test reads the folders under `app/[locale]/` so a new page cannot be forgotten:
+
+```ts
+if (RESERVED_FLEET_SLUGS.includes(slug)) return false;
+```
+
+### Post-login routing hubs
+
+Every sign-in method sends the user to one neutral page, `/[locale]/workspace`, which decides where they belong: no session means login, no fleet means onboarding, otherwise their first fleet.
+
+```ts
+if (!firstMembership) {
+  redirect(onboardingPath(locale));
+}
+
+redirect(`/${locale}/${firstMembership.fleet.slug}`);
+```
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit
