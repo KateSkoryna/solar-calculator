@@ -5,6 +5,7 @@ export const AuditEntityType = {
   VEHICLE: "VEHICLE",
   CALCULATION: "CALCULATION",
   MEMBERSHIP: "MEMBERSHIP",
+  INVITATION: "INVITATION",
 } as const;
 
 export type AuditEntityType =
@@ -20,6 +21,9 @@ export const AuditAction = {
   MEMBERSHIP_ADDED: "MEMBERSHIP_ADDED",
   MEMBERSHIP_ROLE_UPDATED: "MEMBERSHIP_ROLE_UPDATED",
   MEMBERSHIP_REMOVED: "MEMBERSHIP_REMOVED",
+  INVITATION_CREATED: "INVITATION_CREATED",
+  INVITATION_CLAIMED: "INVITATION_CLAIMED",
+  INVITATION_CANCELED: "INVITATION_CANCELED",
 } as const;
 
 export type AuditAction = (typeof AuditAction)[keyof typeof AuditAction];

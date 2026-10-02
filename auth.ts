@@ -8,6 +8,7 @@ import { getSmtpServerConfig } from "@/lib/email/smtp-settings";
 import { sendSignInLink } from "@/lib/email/send-sign-in-link";
 import { SIGN_IN_LINK_MAX_AGE_SECONDS } from "@/lib/sign-in-link-limits";
 import { ADMIN_FLEET_ID } from "@/lib/fleet-auth";
+import { handleSignInEvent } from "@/lib/sign-in-event";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma as unknown as PrismaClient),
@@ -33,6 +34,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       sendVerificationRequest: sendSignInLink,
     }),
   ],
+  events: {
+    signIn: handleSignInEvent,
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
