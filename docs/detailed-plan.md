@@ -447,23 +447,6 @@ These are settled. Steps rely on them; do not revisit them without the owner.
   3. `lib/pending-quick-check.test.ts` proves that the functions return null (and do not throw) when `sessionStorage` throws.
   4. Standard checks S1–S6, S8–S10 pass.
 
-### Step 2.7 — Invite members by email before they sign in
-
-- **Depends on:** 2.5
-- **Purpose:** An owner can give a colleague access by typing their email, even if that person has never signed in, as in a company-managed fleet setup. Today `POST /api/fleets/[fleetId]/members` returns 404 for an unknown email.
-- **Concepts to learn:** pending invitations, claiming an invitation on first sign-in, email as an identity key, idempotent membership creation
-- **Instructions:**
-  1. Add a `FleetInvitation` model (`id`, `fleetId`, `email` stored lowercase, `role`, `invitedByUserId`, `createdAt`, `@@unique([fleetId, email])`); migrate. Add `INVITATION_CREATED` and `INVITATION_CLAIMED` to `AuditAction`.
-  2. Create `lib/invitation-service.ts` with `inviteOrAddMember(tx, { fleetId, email, role, actorUserId })`: if a user with that email exists, create the membership as the members route does today; otherwise create (or update the role of) a pending invitation. Use it in `POST /api/fleets/[fleetId]/members` (owner only) and return 201 with `{ member }` or `{ invitation }`.
-  3. In `lib/invitation-service.ts` add `claimPendingInvitations(tx, { userId, email })`: creates a membership for every invitation matching the email, deletes the invitations and writes `INVITATION_CLAIMED` events. Call it from the `signIn` event in `auth.ts` so it runs on both Google and email-link sign-in. Only emails the provider has verified may claim invitations.
-  4. Add `GET` of pending invitations to the members listing so owners can see and cancel them (`DELETE /api/fleets/[fleetId]/invitations/[invitationId]`, owner only).
-- **Definition of done:**
-  1. API tests: inviting an unknown email creates an invitation and no user; inviting an existing user creates a membership directly; a duplicate invite updates the role instead of failing; only an owner can invite; a viewer gets 403.
-  2. A test proves that after the invited email signs in for the first time, the membership exists with the invited role and the invitation is gone; a second user with a different email gets nothing.
-  3. A test proves that an invitation is never claimed for an unverified email.
-  4. Standard checks S1–S6, S8–S10 pass.
-- **Owner review (browser):** as an owner, invite a new email; sign in with that email (email link) → you land directly in the fleet, not on onboarding.
-
 ---
 
 ## Milestone 3: Daylight UI Redesign

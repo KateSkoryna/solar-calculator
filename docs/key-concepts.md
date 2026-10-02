@@ -1046,6 +1046,58 @@ if (!firstMembership) {
 redirect(`/${locale}/${firstMembership.fleet.slug}`);
 ```
 
+### Pending invitations
+
+An owner can type the email of someone who has never signed in. There is no user row to attach a membership to yet, so the system stores a `FleetInvitation` (fleet, lowercase email, role) instead. Inviting the same email again updates the role instead of failing:
+
+```ts
+const invitation = await transaction.fleetInvitation.upsert({
+  where: { fleetId_email: { fleetId, email: normalizedEmail } },
+  create: {
+    fleetId,
+    email: normalizedEmail,
+    role,
+    invitedByUserId: actorUserId,
+  },
+  update: { role, invitedByUserId: actorUserId },
+});
+```
+
+### Claiming an invitation on first sign-in
+
+When someone signs in, the `signIn` event looks for invitations that match their email, turns each into a real membership, deletes it and writes an `INVITATION_CLAIMED` audit event, all in one transaction. Because it runs on every sign-in method, the person lands directly in the fleet instead of on onboarding:
+
+```ts
+const membership = await transaction.fleetMembership.upsert({
+  where: { fleetId_userId: { fleetId: invitation.fleetId, userId } },
+  create: { fleetId: invitation.fleetId, userId, role: invitation.role },
+  update: {},
+});
+await transaction.fleetInvitation.deleteMany({ where: { id: invitation.id } });
+```
+
+### Email as an identity key
+
+The email address is what links an invitation to a person, so whoever controls that email gets the access. That is only safe if the provider proved ownership: an email-link click does, and Google does when `email_verified` is true. Anything else never claims an invitation:
+
+```ts
+if (account?.provider === EMAIL_LINK_PROVIDER_ID) return true;
+if (account?.provider === GOOGLE_PROVIDER_ID) {
+  return profile?.email_verified === true;
+}
+return false;
+```
+
+Emails are also lowercased before they are stored or compared, so `Kim@Example.com` and `kim@example.com` are the same person.
+
+### Idempotent membership creation
+
+Claiming must be safe to repeat, for example if a sign-in event fires twice or the person was added as a member in the meantime. `upsert` with an empty `update` creates the membership once and never overwrites an existing role:
+
+```ts
+update: {},
+```
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit
