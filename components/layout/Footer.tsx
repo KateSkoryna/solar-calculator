@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { FOCUS_RING_CLASSES } from "@/lib/focus-ring";
 import { legalNoticePath, privacyPath } from "@/lib/public-paths";
+import PageContainer from "./PageContainer";
 
 const FOOTER_LINK_CLASSES = `rounded-sm font-normal text-muted underline-offset-4 hover:text-ink hover:underline ${FOCUS_RING_CLASSES}`;
 
@@ -16,7 +17,7 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-line bg-ground">
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-3 px-4 py-6 text-sm text-muted md:flex-row md:items-center md:justify-between md:px-10 lg:px-20">
+      <PageContainer className="flex flex-col gap-3 py-6 text-sm text-muted md:flex-row md:items-center md:justify-between">
         <p>{t("copyright", { currentYear })}</p>
         <nav aria-label={t("legalNavigation")}>
           <ul className="flex list-none flex-wrap gap-x-8 gap-y-2">
@@ -29,7 +30,7 @@ export default function Footer() {
             ))}
           </ul>
         </nav>
-      </div>
+      </PageContainer>
     </footer>
   );
 }
