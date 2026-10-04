@@ -72,4 +72,12 @@ describe("StepIndicator", () => {
     expect(screen.getByRole("button", { name: /Location/ })).toBeDisabled();
     expect(screen.getByRole("button", { name: /Panels/ })).toBeDisabled();
   });
+
+  it("makes no step clickable when there is no select handler", () => {
+    renderWithIntl(
+      <StepIndicator steps={STEPS} currentStepIndex={CURRENT_STEP_INDEX} />,
+    );
+
+    expect(screen.getByRole("button", { name: /Vehicles/ })).toBeDisabled();
+  });
 });

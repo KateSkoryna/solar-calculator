@@ -60,7 +60,7 @@ function StepRail({
             <button
               type="button"
               aria-current={stepState === "current" ? "step" : undefined}
-              disabled={stepState === "upcoming"}
+              disabled={stepState !== "done" || !onStepSelect}
               onClick={() => onStepSelect?.(stepIndex)}
               className={`flex min-h-[52px] w-full items-center justify-start gap-3 rounded-md px-2 py-1.5 text-left disabled:cursor-default disabled:opacity-100 ${FOCUS_RING_CLASSES}`}
             >

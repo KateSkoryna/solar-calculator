@@ -169,7 +169,8 @@
       "rough": "Rough",
       "good": "Good",
       "precise": "Precise",
-      "helper": "Answer more questions to make the estimate more accurate."
+      "helper": "Answer more questions to make the estimate more accurate.",
+      "preciseHelper": "Your answers cover everything that shapes the estimate."
     }
   },
   "login": {

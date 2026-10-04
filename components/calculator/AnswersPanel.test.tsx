@@ -62,4 +62,15 @@ describe("AnswersPanel", () => {
 
     expect(panel.getByText("Your answers · 10 × Van")).toBeInTheDocument();
   });
+
+  it("stops asking for more answers once the estimate is precise", () => {
+    const panel = renderAnswersPanel(100, "PRECISE");
+
+    expect(
+      panel.queryByText(calculatorMessages.accuracy.helper),
+    ).not.toBeInTheDocument();
+    expect(
+      panel.getAllByText(calculatorMessages.accuracy.preciseHelper).length,
+    ).toBeGreaterThan(0);
+  });
 });
