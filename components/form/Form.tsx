@@ -112,11 +112,7 @@ export default function Form({ steps }: FormProps) {
         })}
 
         <div className="flex justify-center bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-white/20">
-          <Button
-            type="submit"
-            label={t("calculate")}
-            className="px-8 py-3 bg-lime text-on-lime rounded-md font-medium hover:opacity-90 transition-opacity"
-          />
+          <Button type="submit">{t("calculate")}</Button>
         </div>
       </form>
     </FormProvider>
