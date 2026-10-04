@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { LuArrowRight } from "react-icons/lu";
@@ -13,6 +12,8 @@ import ProgressBar from "@/components/common/ProgressBar";
 import RolePill from "@/components/common/RolePill";
 import StatusPill from "@/components/common/StatusPill";
 import Text from "@/components/common/Text";
+import CalculatorInputsShowcase from "@/components/dev/CalculatorInputsShowcase";
+import ShowcaseSection from "@/components/dev/ShowcaseSection";
 import Button from "@/components/form/Button";
 import ButtonLink from "@/components/form/ButtonLink";
 import Input from "@/components/form/Input";
@@ -23,23 +24,6 @@ const SAMPLE_REPORT_PROGRESS = 66;
 const SAMPLE_STEP_PROGRESS = 2;
 const SAMPLE_STEP_COUNT = 4;
 const SAMPLE_LINK_TARGET = "/calculator";
-
-function ShowcaseSection({
-  title,
-  children,
-}: {
-  title: string;
-  children: ReactNode;
-}) {
-  return (
-    <section className="flex flex-col gap-4">
-      <Heading level={2} size="title">
-        {title}
-      </Heading>
-      {children}
-    </section>
-  );
-}
 
 export default function ComponentShowcasePage() {
   if (process.env.NODE_ENV === "production") {
@@ -188,6 +172,8 @@ export default function ComponentShowcasePage() {
           <p className="text-muted">{t("disclosureBody")}</p>
         </Disclosure>
       </ShowcaseSection>
+
+      <CalculatorInputsShowcase />
     </PageContainer>
   );
 }
