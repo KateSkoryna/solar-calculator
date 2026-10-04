@@ -1389,6 +1389,86 @@ A button that shows and hides something tells assistive technology its state wit
 
 The icon is `aria-hidden`, so the accessible name comes only from `aria-label`.
 
+### Honest marketing numbers (computed example vs. invented values)
+
+A landing page that shows "pays off in 1.5 years" is making a claim. If someone typed that number by hand, it goes stale the day an assumption changes, and nobody can say where it came from. Here the example is a real input, run through the same engine as every user calculation, and labelled "Sample" so nobody mistakes it for their own result:
+
+```ts
+export const HOME_EXAMPLE_QUICK_CHECK: QuickCheckAnswers = {
+  vehicleType: "VAN",
+  quantity: 10,
+  cargoType: "REGULAR",
+  distanceBand: "REGIONAL",
+  idlingFrequency: "SOMETIMES",
+  cityLabel: "Berlin",
+  countryCode: "DE",
+  latitude: 52.52,
+  longitude: 13.405,
+  parkingType: "DEPOT",
+  solarPanelPlacement: "ROOF",
+};
+```
+
+The page test recomputes the payback with the engine and compares it with the text on screen, so the headline cannot drift away from the model.
+
+### Staggered entrance animation within the motion budget
+
+A stagger plays the same animation on several elements with a growing delay, which leads the eye from top to bottom. The guidelines cap it at three steps of 120 ms so the whole entrance stays under 800 ms and never delays reading:
+
+```ts
+export const RISE_STAGGER_CLASSES = [
+  "animate-rise",
+  "animate-rise [animation-delay:120ms]",
+  "animate-rise [animation-delay:240ms]",
+] as const;
+```
+
+The `rise` keyframes use `both` as fill mode, so a delayed element stays invisible until its turn instead of flashing in and then animating. Under "reduce motion" the global rule from step 3.1 switches every animation off and the content is simply there.
+
+### Server components calling pure functions
+
+The home page is a server component: it runs on the server and sends finished HTML. The engine is a pure function (same input, same output, no network, no database), so the page can call it directly, with no API route, no loading state and no JavaScript shipped to the browser for it:
+
+```ts
+export function calculateHomeExample(): HomeExampleResult {
+  const realisticScenario = calculate(
+    quickCheckToCalculationInput(HOME_EXAMPLE_QUICK_CHECK, ASSUMPTION_SET_V1),
+    ASSUMPTION_SET_V1,
+  ).scenarios.REALISTIC;
+
+  return {
+    paybackYears:
+      realisticScenario.paybackMonths === null
+        ? null
+        : realisticScenario.paybackMonths / MONTHS_PER_YEAR,
+    annualSavingsEuros: realisticScenario.annualSavingsCents / CENTS_PER_EURO,
+    co2AvoidedTonnesPerYear:
+      realisticScenario.co2AvoidedKgPerYear / KILOGRAMS_PER_TONNE,
+    yearlySolarEnergyKwh: realisticScenario.yearlySolarEnergyKwh,
+  };
+}
+```
+
+The same purity is what lets the engine run in the browser for anonymous visitors and in a Jest test without any setup.
+
+### Building pages from reusable components
+
+A page that repeats `<h2 className="font-display text-[30px] …">` in five places has five places to fix when the type scale changes. The type scale lives once, in `Heading` and `Text`, and sections are small components, so the page file reads as a table of contents:
+
+```tsx
+export default function Home() {
+  return (
+    <div className="flex flex-col gap-10 py-8 md:gap-14 md:py-12 lg:gap-[72px] lg:py-16">
+      <HomeHero />
+      <HowItWorks />
+      <BuiltFor />
+    </div>
+  );
+}
+```
+
+`Heading` separates meaning from looks: `level` picks the tag (`h1`–`h4`, which matters for screen readers and search engines) and `size` picks the visual style, so a small `h2` or a large `h3` needs no new CSS.
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit
