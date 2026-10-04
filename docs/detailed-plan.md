@@ -146,7 +146,7 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 | 3.4  | Home page                                          | DONE   |                                             |
 | 3.5  | Calculator input components                        | DONE   |                                             |
 | 3.6  | City search API                                    | DONE   |                                             |
-| 3.7  | Four-step calculator flow                          | TODO   |                                             |
+| 3.7  | Four-step calculator flow                          | DONE   |                                             |
 | 3.8  | Public results page                                | TODO   |                                             |
 | 3.9  | Fleet results page                                 | TODO   |                                             |
 | 3.10 | Auth screens                                       | TODO   |                                             |
