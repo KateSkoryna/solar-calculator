@@ -12,6 +12,7 @@ const QUICK_CHECK_ENGINE_TYPE = EngineType.DIESEL;
 const QUICK_CHECK_VEHICLE_MANUFACTURER = "Quick check";
 const DEFAULT_OPERATING_MONTHS_PER_YEAR = 12;
 const DEFAULT_WINTER_USAGE = true;
+const CHILLED_CARGO_TYPE = "CHILLED";
 
 export class InvalidQuickCheckError extends Error {
   constructor() {
@@ -46,6 +47,12 @@ function resolveIdleHoursPerDay(
   );
 }
 
+function resolveCoolingUnitType(answers: QuickCheckAnswers) {
+  return answers.cargoType === CHILLED_CARGO_TYPE
+    ? answers.coolingUnitType
+    : undefined;
+}
+
 export function quickCheckToCalculationInput(
   answers: QuickCheckAnswers,
   assumptionSet: AssumptionSet,
@@ -70,6 +77,7 @@ export function quickCheckToCalculationInput(
     solarPanelCapacityKw: answers.solarPanelCapacityKw,
     payloadReserveKg: answers.payloadReserveKg,
     maxRoofLoadKg: answers.maxRoofLoadKg,
+    coolingUnitType: resolveCoolingUnitType(answers),
   };
 }
 
@@ -110,6 +118,7 @@ export function quickCheckToVehicleData(
     country: answers.countryCode,
     cargoType: answers.cargoType,
     idleHoursPerDay: resolveIdleHoursPerDay(answers, assumptionSet),
+    coolingUnitType: resolveCoolingUnitType(answers),
     latitude: answers.latitude,
     longitude: answers.longitude,
   };

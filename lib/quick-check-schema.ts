@@ -6,7 +6,11 @@ import {
   VehicleType,
 } from "@/app/generated/prisma/enums";
 import { EU_COUNTRY_CODES } from "@/lib/assumptions/eu-countries";
-import { DISTANCE_BANDS, IDLING_FREQUENCIES } from "@/lib/assumptions/types";
+import {
+  COOLING_UNIT_TYPES,
+  DISTANCE_BANDS,
+  IDLING_FREQUENCIES,
+} from "@/lib/assumptions/types";
 
 const MAX_QUICK_CHECK_QUANTITY = 999;
 const MAX_CITY_LABEL_LENGTH = 120;
@@ -30,6 +34,7 @@ export const quickCheckSchema = z.object({
   payloadReserveKg: z.number().nonnegative().optional(),
   maxRoofLoadKg: z.number().nonnegative().optional(),
   operatingMonthsPerYear: z.number().int().min(1).max(12).optional(),
+  coolingUnitType: z.enum(COOLING_UNIT_TYPES).optional(),
 });
 
 export type QuickCheckAnswers = z.infer<typeof quickCheckSchema>;

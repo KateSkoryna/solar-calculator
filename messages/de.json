@@ -36,68 +36,8 @@
     }
   },
   "calculator": {
-    "title": "Solarpanel-Rechner",
-    "subtitle": "Berechne Energieeinsparungen, ROI und CO₂-Reduktion für Deine Nutzfahrzeugflotte",
-    "description": "Berechne die optimale Solarpanel-Konfiguration für Dein Nutzfahrzeug.",
-    "vehicleTypeSelection": "Fahrzeugtyp-Auswahl",
-    "vehicleDetails": "Fahrzeugdetails",
-    "locationSetup": "Standort & Panel-Aufbau",
-    "additionalNotes": "Zusätzliche Informationen",
-    "selectVehicle": "Fahrzeugtyp auswählen",
-    "selectVehicleType": "Wähle Deinen Fahrzeugtyp",
-    "van": "Transporter",
-    "truck": "LKW",
-    "bus": "Bus",
-    "trailer": "Anhänger",
-    "manufacturer": "Hersteller",
-    "manufacturerPlaceholder": "z.B. Mercedes, Ford, Volvo",
-    "model": "Modell",
-    "modelPlaceholder": "z.B. Sprinter, Transit, FH16",
-    "numberOfVehicles": "Anzahl der Fahrzeuge",
-    "averageDailyDistance": "Durchschnittliche Tagesstrecke (km)",
-    "energyConsumption": "Energieverbrauch (kWh/100km)",
-    "solarPanelCapacity": "Solarpanel-Kapazität (kW pro Fahrzeug)",
-    "payloadReserve": "Nutzlastreserve (kg)",
-    "maxRoofLoad": "Max. Dachlast (kg)",
-    "engineType": "Motortyp",
-    "selectEngineType": "Motortyp auswählen",
-    "diesel": "Diesel",
-    "petrol": "Benzin",
-    "electric": "Elektrisch",
-    "hybrid": "Hybrid",
-    "parkingType": "Parktyp",
-    "selectParkingType": "Parktyp auswählen",
-    "depot": "Depot",
-    "street": "Straße",
-    "customerSite": "Kundenstandort",
-    "mixedParking": "Gemischt",
-    "operatingMonths": "Betriebsmonate",
-    "winterUsage": "Winternutzung",
-    "city": "Stadt",
-    "cityPlaceholder": "z.B. Berlin",
-    "country": "Land",
-    "countryPlaceholder": "z.B. Deutschland",
-    "solarPanelPlacement": "Solarpanel-Platzierung",
-    "selectPanelPlacement": "Panel-Platzierung auswählen",
-    "roofPlacement": "Auf dem Dach (Maximale Sonneneinstrahlung)",
-    "sidesPlacement": "An den Seiten (Teilweise Sonneneinstrahlung)",
-    "backPlacement": "An der Rückseite (Begrenzte Sonneneinstrahlung)",
-    "allOverPlacement": "Überall - Dach + Seiten + Rückseite (Maximale Abdeckung)",
-    "notesPlaceholder": "Weitere Informationen oder Anforderungen...",
     "previous": "Zurück",
     "next": "Weiter",
-    "calculate": "Berechnen",
-    "results": "Ergebnisse",
-    "resultsPlaceholder": "Gib oben Deine Fahrzeugdaten ein, um die Ergebnisse zu sehen.",
-    "roofArea": "Dachfläche (m²)",
-    "areaPlaceholder": "z. B. 20",
-    "budget": "Budget (optional)",
-    "budgetPlaceholder": "z. B. 5000",
-    "installationType": "Installationsart",
-    "selectInstallationType": "Installationsart auswählen",
-    "roofMounted": "Auf dem Dach montiert",
-    "groundMounted": "Bodenmontiert",
-    "portable": "Tragbar",
     "options": {
       "vehicleType": {
         "VAN": "Transporter",
@@ -124,12 +64,41 @@
         "SIDESHint": "Tagsüber teilweise Sonne",
         "BACK": "Heck",
         "BACKHint": "Wenig Sonne"
+      },
+      "cargoType": {
+        "REGULAR": "Normale Güter",
+        "CHILLED": "Gekühlt oder tiefgekühlt",
+        "PASSENGERS": "Fahrgäste"
+      },
+      "distanceBand": {
+        "SHORT": "Kurze Strecken",
+        "SHORTExample": "Lieferungen in der Stadt",
+        "REGIONAL": "Regional",
+        "REGIONALExample": "Innerhalb einer Region",
+        "LONG": "Langstrecke",
+        "LONGExample": "Zwischen Städten",
+        "rangeHint": "{minimum}–{maximum} km pro Tag · {example}"
+      },
+      "idlingFrequency": {
+        "RARELY": "Selten",
+        "SOMETIMES": "Manchmal",
+        "OFTEN": "Oft"
+      },
+      "coolingUnitType": {
+        "DIESEL": "Diesel",
+        "ENGINE_DRIVEN": "Vom Lkw-Motor angetrieben",
+        "ELECTRIC": "Elektrisch",
+        "NOT_SURE": "Nicht sicher"
       }
     },
     "questions": {
       "vehicleType": "Welche Fahrzeuge haben Sie?",
       "parkingType": "Wo parken sie über Nacht?",
-      "solarPanelPlacement": "Wo sollen die Module angebracht werden?"
+      "solarPanelPlacement": "Wo sollen die Module angebracht werden?",
+      "cargoType": "Was transportieren sie?",
+      "idlingFrequency": "Laufen die Motoren im Stand?",
+      "idlingFrequencyHint": "Zum Beispiel für Klimaanlage oder Heizung in Pausen.",
+      "coolingUnitType": "Art des Kühlaggregats"
     },
     "quantity": {
       "label": "Wie viele?",
@@ -162,7 +131,10 @@
       "vehiclesValue": "{quantity} × {vehicleType}",
       "dailyDistance": "Tägliche Strecke",
       "location": "Standort",
-      "panels": "Module"
+      "panels": "Module",
+      "cargo": "Ladung",
+      "idling": "Motorlauf im Stand",
+      "dailyDistanceValue": "{kilometres} km"
     },
     "accuracy": {
       "title": "Genauigkeit der Schätzung",
@@ -171,6 +143,72 @@
       "precise": "Genau",
       "helper": "Beantworten Sie mehr Fragen, damit die Schätzung genauer wird.",
       "preciseHelper": "Ihre Antworten decken alles ab, was die Schätzung beeinflusst."
+    },
+    "savedAutomatically": "Ihre Antworten werden automatisch gespeichert",
+    "privacyNote": "Wir geben Ihre Flottendaten niemals weiter.",
+    "actions": {
+      "back": "Zurück",
+      "continue": "Weiter",
+      "seeResults": "Ergebnis ansehen"
+    },
+    "stepContent": {
+      "vehicles": {
+        "title": "Welche Fahrzeuge haben Sie?",
+        "helper": "Wählen Sie den Typ, der zum größten Teil Ihrer Flotte passt."
+      },
+      "dailyDriving": {
+        "title": "Wie weit fährt ein Fahrzeug an einem normalen Tag?",
+        "helper": "Eine grobe Schätzung genügt."
+      },
+      "location": {
+        "title": "Wo sind Ihre Fahrzeuge unterwegs?",
+        "helper": "So wissen wir, wie viel Sonne sie im Jahresverlauf bekommen."
+      },
+      "panels": {
+        "title": "Wo sollen die Module angebracht werden?",
+        "helper": "Mehr Sonne bedeutet mehr Ersparnis. Unsicher? Das Dach ist die übliche Wahl."
+      }
+    },
+    "city": {
+      "label": "Stadt",
+      "placeholder": "Zum Beispiel Berlin",
+      "hint": "Tippen Sie los und wählen Sie Ihre Stadt aus der Liste. Nur Städte in der EU.",
+      "required": "Bitte wählen Sie eine Stadt aus der Liste",
+      "loading": "Suche läuft…",
+      "noResults": "Keine Stadt gefunden. Bitte prüfen Sie die Schreibweise.",
+      "unavailable": "Die Städtesuche ist gerade nicht verfügbar. Bitte versuchen Sie es erneut."
+    },
+    "exactNumbers": {
+      "summary": "Ich kenne die genauen Zahlen",
+      "invalidNumber": "Bitte geben Sie eine gültige Zahl ein",
+      "averageDailyDistanceKm": {
+        "label": "Strecke pro Tag (km)",
+        "hint": "Pro Fahrzeug an einem normalen Arbeitstag."
+      },
+      "idleHoursPerDay": {
+        "label": "Motorlauf im Stand (Stunden pro Tag)",
+        "hint": "Von 0 bis 24."
+      },
+      "energyConsumptionKwhPer100km": {
+        "label": "Energieverbrauch (kWh pro 100 km)",
+        "hint": "Für Elektrofahrzeuge."
+      },
+      "operatingMonthsPerYear": {
+        "label": "Einsatzmonate pro Jahr",
+        "hint": "Von 1 bis 12."
+      },
+      "solarPanelCapacityKw": {
+        "label": "Modulleistung (kW)",
+        "hint": "Pro Fahrzeug."
+      },
+      "maxRoofLoadKg": {
+        "label": "Maximale Dachlast (kg)",
+        "hint": "Aus den Fahrzeugpapieren."
+      },
+      "payloadReserveKg": {
+        "label": "Freie Nutzlast (kg)",
+        "hint": "Gewicht, das das Fahrzeug noch tragen kann."
+      }
     }
   },
   "login": {

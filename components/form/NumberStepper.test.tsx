@@ -122,4 +122,25 @@ describe("NumberStepper", () => {
     expect(field).toHaveValue("100");
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
+
+  it("does not submit the form with Enter while the typed value is invalid", async () => {
+    const handleSubmit = jest.fn((event: { preventDefault: () => void }) =>
+      event.preventDefault(),
+    );
+    render(
+      <form onSubmit={handleSubmit}>
+        <ControlledNumberStepper initialValue={10} />
+        <button type="submit">Continue</button>
+      </form>,
+    );
+    const { field } = getControls();
+
+    await userEvent.clear(field);
+    await userEvent.type(field, "1500{Enter}");
+    expect(handleSubmit).not.toHaveBeenCalled();
+
+    await userEvent.clear(field);
+    await userEvent.type(field, "15{Enter}");
+    expect(handleSubmit).toHaveBeenCalledTimes(1);
+  });
 });
