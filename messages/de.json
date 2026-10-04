@@ -138,7 +138,9 @@
   },
   "footer": {
     "copyright": "© {currentYear} Solarrechner",
-    "tagline": "Unabhängig · Schätzungen, keine Angebote"
+    "privacy": "Datenschutz",
+    "legalNotice": "Impressum",
+    "legalNavigation": "Rechtliches"
   },
   "calculation": {
     "notFoundTitle": "Berechnung",
@@ -296,5 +298,65 @@
     "progressStepLabel": "Schritt 2 von 4",
     "disclosureSummary": "So haben wir gerechnet",
     "disclosureBody": "Jede Zahl zeigt, woher sie stammt."
+  },
+  "privacyPage": {
+    "title": "Datenschutz",
+    "intro": "Diese Seite erklärt in einfachen Worten, welche personenbezogenen Daten der Solarrechner speichert und warum.",
+    "sections": {
+      "calculator": {
+        "title": "Rechner ohne Konto nutzen",
+        "body": "Die Schnellprüfung läuft in Ihrem Browser. Ihre Antworten stehen in der Seitenadresse und im Sitzungsspeicher Ihres Browsers. Auf unseren Servern wird nichts gespeichert, bis Sie sich anmelden und ein Ergebnis speichern."
+      },
+      "account": {
+        "title": "Ihr Konto",
+        "body": "Wenn Sie sich anmelden, speichern wir Ihre E-Mail-Adresse und, falls Sie Google nutzen, Ihren Namen und Ihr Profilbild. Wir verwenden diese Daten nur für die Anmeldung und damit Ihr Team sieht, wer Sie sind."
+      },
+      "fleet": {
+        "title": "Flottendaten",
+        "body": "Fahrzeuge, Standorte und Berechnungen, die Sie speichern, gehören zu Ihrer Flotte. Nur Mitglieder dieser Flotte können sie sehen. Aktionen in einer Flotte werden ohne Namen oder E-Mail-Adressen in einem Aktivitätsprotokoll festgehalten."
+      },
+      "email": {
+        "title": "Anmelde-E-Mails",
+        "body": "Anmeldelinks werden über Gmail (Google) versendet. Google verarbeitet Ihre E-Mail-Adresse, um die Nachricht zuzustellen. Ein Link funktioniert einmal und läuft nach 15 Minuten ab."
+      },
+      "cookies": {
+        "title": "Cookies",
+        "body": "Wir setzen ein Cookie, das Sie angemeldet hält. Wir verwenden keine Werbe- oder Tracking-Cookies."
+      },
+      "technical": {
+        "title": "Technische Daten",
+        "body": "Ihre IP-Adresse wird einige Minuten im Arbeitsspeicher gehalten, um wiederholte Anfragen zu begrenzen. Sie wird nicht in die Datenbank geschrieben."
+      },
+      "retention": {
+        "title": "Speicherdauer",
+        "body": "Konto- und Flottendaten werden gespeichert, bis das Konto gelöscht wird."
+      },
+      "rights": {
+        "title": "Ihre Rechte",
+        "body": "Sie können jederzeit Auskunft, Berichtigung oder Löschung Ihrer Daten verlangen. Schreiben Sie an {email}."
+      }
+    }
+  },
+  "legalNoticePage": {
+    "title": "Impressum",
+    "intro": "Angaben dazu, wer diese Website betreibt.",
+    "sections": {
+      "operator": {
+        "title": "Betreiberin",
+        "body": "{name}"
+      },
+      "contact": {
+        "title": "Kontakt",
+        "body": "E-Mail: {email}"
+      },
+      "purpose": {
+        "title": "Über diese Website",
+        "body": "Der Solarrechner ist ein privates, nicht kommerzielles Portfolio-Projekt."
+      },
+      "liability": {
+        "title": "Schätzungen, keine Angebote",
+        "body": "Alle Ergebnisse sind Schätzungen auf Grundlage veröffentlichter Annahmen. Sie sind kein Angebot, kein Kostenvoranschlag und keine Finanzberatung."
+      }
+    }
   }
 }

@@ -138,7 +138,9 @@
   },
   "footer": {
     "copyright": "© {currentYear} Solar Calculator",
-    "tagline": "Independent · Estimates, not quotes"
+    "privacy": "Privacy",
+    "legalNotice": "Legal notice",
+    "legalNavigation": "Legal"
   },
   "calculation": {
     "notFoundTitle": "Calculation",
@@ -296,5 +298,65 @@
     "progressStepLabel": "Step 2 of 4",
     "disclosureSummary": "How we calculated this",
     "disclosureBody": "Every number shows where it came from."
+  },
+  "privacyPage": {
+    "title": "Privacy",
+    "intro": "This page explains in plain words which personal data Solar Calculator stores and why.",
+    "sections": {
+      "calculator": {
+        "title": "Using the calculator without an account",
+        "body": "The quick check runs in your browser. Your answers are kept in the page address and in your browser's session storage. Nothing is saved on our servers until you sign in and save a result."
+      },
+      "account": {
+        "title": "Your account",
+        "body": "When you sign in we store your email address and, if you use Google, your name and profile picture. We use them only to sign you in and to show your team who you are."
+      },
+      "fleet": {
+        "title": "Fleet data",
+        "body": "Vehicles, locations and calculations you save belong to your fleet. Only members of that fleet can see them. Actions in a fleet are recorded in an activity log without names or email addresses."
+      },
+      "email": {
+        "title": "Sign-in emails",
+        "body": "Sign-in links are sent through Gmail (Google). Google processes your email address to deliver the message. A link works once and expires after 15 minutes."
+      },
+      "cookies": {
+        "title": "Cookies",
+        "body": "We set one cookie that keeps you signed in. We do not use advertising or tracking cookies."
+      },
+      "technical": {
+        "title": "Technical data",
+        "body": "Your IP address is held in memory for a few minutes to limit repeated requests. It is not written to the database."
+      },
+      "retention": {
+        "title": "How long we keep data",
+        "body": "Account and fleet data are kept until the account is deleted."
+      },
+      "rights": {
+        "title": "Your rights",
+        "body": "You can ask to see, correct or delete your data at any time. Write to {email}."
+      }
+    }
+  },
+  "legalNoticePage": {
+    "title": "Legal notice",
+    "intro": "Information about who runs this website.",
+    "sections": {
+      "operator": {
+        "title": "Operator",
+        "body": "{name}"
+      },
+      "contact": {
+        "title": "Contact",
+        "body": "Email: {email}"
+      },
+      "purpose": {
+        "title": "About this website",
+        "body": "Solar Calculator is a private, non-commercial portfolio project."
+      },
+      "liability": {
+        "title": "Estimates, not quotes",
+        "body": "All results are estimates based on published assumptions. They are not an offer, a quote or financial advice."
+      }
+    }
   }
 }

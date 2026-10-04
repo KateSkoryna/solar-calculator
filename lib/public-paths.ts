@@ -19,3 +19,11 @@ export function loginPath(locale: string) {
 export function accountPath(locale: string) {
   return `/${locale}/user`;
 }
+
+export function privacyPath(locale: string) {
+  return `/${locale}/privacy`;
+}
+
+export function legalNoticePath(locale: string) {
+  return `/${locale}/legal-notice`;
+}
