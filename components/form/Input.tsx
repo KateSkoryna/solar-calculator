@@ -1,5 +1,7 @@
 import { useId, type InputHTMLAttributes, type Ref } from "react";
-import { LuCircleAlert } from "react-icons/lu";
+import FieldError from "@/components/form/FieldError";
+import FieldHint from "@/components/form/FieldHint";
+import FieldLabel from "@/components/form/FieldLabel";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -32,9 +34,7 @@ export default function Input({
 
   return (
     <div className="flex flex-col gap-2 text-left">
-      <label htmlFor={inputId} className="text-[15px] font-semibold text-ink">
-        {label}
-      </label>
+      <FieldLabel htmlFor={inputId}>{label}</FieldLabel>
       <input
         {...inputAttributes}
         ref={ref}
@@ -43,20 +43,8 @@ export default function Input({
         aria-describedby={describedBy}
         className={`h-14 w-full rounded-md border bg-surface px-4 text-base text-ink placeholder:text-muted focus:shadow-ring-selected focus:outline-none ${borderClasses} ${className}`}
       />
-      {hint && (
-        <p id={hintId} className="text-[13px] text-muted">
-          {hint}
-        </p>
-      )}
-      {error && (
-        <p
-          id={errorId}
-          className="flex items-center gap-1.5 text-[13px] font-semibold text-danger"
-        >
-          <LuCircleAlert aria-hidden="true" className="size-4 shrink-0" />
-          {error}
-        </p>
-      )}
+      {hint && <FieldHint id={hintId}>{hint}</FieldHint>}
+      {error && <FieldError id={errorId}>{error}</FieldError>}
     </div>
   );
 }
