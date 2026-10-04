@@ -138,7 +138,9 @@
   },
   "footer": {
     "copyright": "© {currentYear} Calculadora Solar",
-    "tagline": "Independiente · Estimaciones, no presupuestos"
+    "privacy": "Privacidad",
+    "legalNotice": "Aviso legal",
+    "legalNavigation": "Información legal"
   },
   "calculation": {
     "notFoundTitle": "Cálculo",
@@ -296,5 +298,65 @@
     "progressStepLabel": "Paso 2 de 4",
     "disclosureSummary": "Cómo lo hemos calculado",
     "disclosureBody": "Cada cifra muestra de dónde procede."
+  },
+  "privacyPage": {
+    "title": "Privacidad",
+    "intro": "Esta página explica con palabras sencillas qué datos personales guarda la Calculadora Solar y por qué.",
+    "sections": {
+      "calculator": {
+        "title": "Usar la calculadora sin cuenta",
+        "body": "La comprobación rápida se ejecuta en tu navegador. Tus respuestas se guardan en la dirección de la página y en el almacenamiento de sesión del navegador. No se guarda nada en nuestros servidores hasta que inicias sesión y guardas un resultado."
+      },
+      "account": {
+        "title": "Tu cuenta",
+        "body": "Cuando inicias sesión guardamos tu dirección de correo y, si usas Google, tu nombre y tu foto de perfil. Solo los usamos para iniciar tu sesión y para que tu equipo sepa quién eres."
+      },
+      "fleet": {
+        "title": "Datos de la flota",
+        "body": "Los vehículos, las ubicaciones y los cálculos que guardas pertenecen a tu flota. Solo los miembros de esa flota pueden verlos. Las acciones en una flota se registran en un historial de actividad sin nombres ni direcciones de correo."
+      },
+      "email": {
+        "title": "Correos de inicio de sesión",
+        "body": "Los enlaces de inicio de sesión se envían mediante Gmail (Google). Google trata tu dirección de correo para entregar el mensaje. Un enlace funciona una sola vez y caduca a los 15 minutos."
+      },
+      "cookies": {
+        "title": "Cookies",
+        "body": "Usamos una cookie que mantiene tu sesión iniciada. No usamos cookies de publicidad ni de seguimiento."
+      },
+      "technical": {
+        "title": "Datos técnicos",
+        "body": "Tu dirección IP se mantiene en memoria unos minutos para limitar las solicitudes repetidas. No se escribe en la base de datos."
+      },
+      "retention": {
+        "title": "Cuánto tiempo guardamos los datos",
+        "body": "Los datos de la cuenta y de la flota se conservan hasta que se elimina la cuenta."
+      },
+      "rights": {
+        "title": "Tus derechos",
+        "body": "Puedes pedir en cualquier momento ver, corregir o eliminar tus datos. Escribe a {email}."
+      }
+    }
+  },
+  "legalNoticePage": {
+    "title": "Aviso legal",
+    "intro": "Información sobre quién gestiona este sitio web.",
+    "sections": {
+      "operator": {
+        "title": "Responsable",
+        "body": "{name}"
+      },
+      "contact": {
+        "title": "Contacto",
+        "body": "Correo electrónico: {email}"
+      },
+      "purpose": {
+        "title": "Sobre este sitio web",
+        "body": "La Calculadora Solar es un proyecto de portafolio privado y sin ánimo de lucro."
+      },
+      "liability": {
+        "title": "Estimaciones, no presupuestos",
+        "body": "Todos los resultados son estimaciones basadas en supuestos publicados. No constituyen una oferta, un presupuesto ni asesoramiento financiero."
+      }
+    }
   }
 }
