@@ -110,4 +110,16 @@ describe("NumberStepper", () => {
       expect(handleChange).not.toHaveBeenCalledWith(Number(typedText));
     },
   );
+
+  it("restores the last valid value when the field loses focus", async () => {
+    render(<ControlledNumberStepper initialValue={10} />);
+    const { field } = getControls();
+
+    await userEvent.clear(field);
+    await userEvent.type(field, "1000");
+    await userEvent.tab();
+
+    expect(field).toHaveValue("100");
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
 });
