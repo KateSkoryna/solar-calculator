@@ -1,58 +1,11 @@
 import type { Vehicle } from "@/app/generated/prisma/client";
-import type { EuCountryCode } from "@/lib/assumptions/eu-countries";
 import { ASSUMPTION_SET_V1 } from "@/lib/assumptions/v1";
-import { CENTS_PER_EURO } from "@/lib/calculation-engine/constants";
-import {
-  calculate,
-  SCENARIO_KINDS,
-  type CalculationInput,
-} from "@/lib/calculation-engine";
+import { calculate, SCENARIO_KINDS } from "@/lib/calculation-engine";
+import { centsToAmount, toCalculationInput } from "@/lib/calculation-service";
 import { prisma } from "@/lib/prisma";
-
-const COUNTRY_CODE_BY_NAME: Record<string, EuCountryCode> = {
-  Germany: "DE",
-  France: "FR",
-};
 
 const BERLIN_COORDINATES = { latitude: 52.52, longitude: 13.405 };
 const LYON_COORDINATES = { latitude: 45.764, longitude: 4.8357 };
-
-function centsToAmount(cents: number) {
-  return (cents / CENTS_PER_EURO).toFixed(2);
-}
-
-function toCalculationInput(vehicle: Vehicle): CalculationInput {
-  const countryCode = COUNTRY_CODE_BY_NAME[vehicle.country];
-  if (!countryCode || vehicle.latitude === null || vehicle.longitude === null) {
-    throw new Error(
-      `Seed vehicle ${vehicle.id} needs a known country and coordinates`,
-    );
-  }
-
-  return {
-    manufacturer: vehicle.manufacturer,
-    model: vehicle.model,
-    city: vehicle.city,
-    vehicleType: vehicle.vehicleType,
-    engineType: vehicle.engineType,
-    parkingType: vehicle.parkingType,
-    solarPanelPlacement: vehicle.solarPanelPlacement,
-    cargoType: vehicle.cargoType,
-    quantity: vehicle.quantity,
-    averageDailyDistanceKm: vehicle.averageDailyDistanceKm,
-    operatingMonthsPerYear: vehicle.operatingMonthsPerYear,
-    winterUsage: vehicle.winterUsage,
-    countryCode,
-    latitude: vehicle.latitude,
-    longitude: vehicle.longitude,
-    energyConsumptionKwhPer100km: vehicle.energyConsumptionKwhPer100km,
-    solarPanelCapacityKw: vehicle.solarPanelCapacityKw,
-    payloadReserveKg: vehicle.payloadReserveKg,
-    maxRoofLoadKg: vehicle.maxRoofLoadKg,
-    coolingUnitType: vehicle.coolingUnitType ?? undefined,
-    idleHoursPerDay: vehicle.idleHoursPerDay,
-  };
-}
 
 async function seedBerlinDeliveryFleet() {
   const fleet = await prisma.fleet.upsert({

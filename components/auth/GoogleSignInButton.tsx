@@ -2,16 +2,18 @@
 
 import { signIn } from "next-auth/react";
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { workspacePath } from "@/lib/workspace-path";
 
 export default function GoogleSignInButton() {
   const t = useTranslations("auth");
+  const locale = useLocale();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
     try {
-      await signIn("google", { callbackUrl: "/user" });
+      await signIn("google", { callbackUrl: workspacePath(locale) });
     } catch (error) {
       console.error("Google sign in error:", error);
       setIsLoading(false);

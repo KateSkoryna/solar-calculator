@@ -7,6 +7,7 @@ import { z } from "zod";
 import { signIn } from "next-auth/react";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { workspacePath } from "@/lib/workspace-path";
 
 type EmailSignInFormData = z.infer<ReturnType<typeof buildEmailSignInSchema>>;
 
@@ -44,7 +45,7 @@ export default function EmailSignInForm() {
     try {
       const result = await signIn("nodemailer", {
         email,
-        callbackUrl: `/${locale}/user`,
+        callbackUrl: workspacePath(locale),
         redirect: false,
       });
 

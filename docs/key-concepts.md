@@ -955,6 +955,199 @@ The database enum, the engine list and the API schema all name the same values. 
 expect([...SCENARIO_KINDS].sort()).toEqual(Object.values(ScenarioKind).sort());
 ```
 
+### Server-side recomputation as a trust boundary
+
+A client can send any JSON, so it is never trusted to supply results. The route accepts only a vehicle id and notes, and the server recomputes everything from the stored vehicle. Unknown fields are stripped:
+
+```ts
+export const calculationInputSchema = z
+  .object({
+    vehicleId: z.string().min(1),
+    notes: z.string().min(1).optional(),
+  })
+  .strip();
+```
+
+### Immutable input snapshots
+
+Prices and assumptions change, so each scenario stores the exact resolved input and where each value came from. Reopening an old calculation then shows what was actually computed:
+
+```ts
+vehicleSpec: {
+  input: scenarioResult.resolvedInput,
+  inputSources: output.inputSources,
+},
+```
+
+### Atomic multi-row writes
+
+A calculation is one calculation, three scenarios, three snapshots, three results and an audit event. They are written inside one transaction, so a failure anywhere leaves nothing behind:
+
+```ts
+const calculation = await prisma.$transaction((tx) =>
+  createCalculationForVehicle(tx, {
+    fleetId,
+    vehicle,
+    requestedByUserId,
+    notes,
+  }),
+);
+```
+
+### Onboarding as a transaction
+
+Creating a workspace touches several tables: the user's name, the fleet, the owner membership and an audit event. If any write fails, none of them should stay. One transaction wraps them all:
+
+```ts
+const fleet = await prisma.$transaction(async (tx) => {
+  if (userName) {
+    await tx.user.updateMany({
+      where: { id: userId, name: null },
+      data: { name: userName },
+    });
+  }
+
+  return createFleetWithOwner(tx, { name: companyName, userId });
+});
+```
+
+### Unique slug generation
+
+A slug is a readable, URL-safe name that must be unique. The service tries the plain slug first, then `-2`, `-3` and so on, shortening the base so the result never exceeds the length limit:
+
+```ts
+for (let number = FIRST_DUPLICATE_SUFFIX_NUMBER; ; number += 1) {
+  const suffix = `-${number}`;
+  const candidate =
+    truncateSlug(baseSlug, MAX_FLEET_SLUG_LENGTH - suffix.length) + suffix;
+  if (await isSlugAvailable(transaction, candidate)) return candidate;
+}
+```
+
+The database unique constraint stays the final guard if two requests pick the same slug at the same moment.
+
+### Reserved route names
+
+`/en/[fleetSlug]` is a dynamic route, so a fleet called "login" would fight with the real `/en/login` page. Fixed page names are never handed out as slugs, and a test reads the folders under `app/[locale]/` so a new page cannot be forgotten:
+
+```ts
+if (RESERVED_FLEET_SLUGS.includes(slug)) return false;
+```
+
+### Post-login routing hubs
+
+Every sign-in method sends the user to one neutral page, `/[locale]/workspace`, which decides where they belong: no session means login, no fleet means onboarding, otherwise their first fleet.
+
+```ts
+if (!firstMembership) {
+  redirect(onboardingPath(locale));
+}
+
+redirect(`/${locale}/${firstMembership.fleet.slug}`);
+```
+
+### Pending invitations
+
+An owner can type the email of someone who has never signed in. There is no user row to attach a membership to yet, so the system stores a `FleetInvitation` (fleet, lowercase email, role) instead. Inviting the same email again updates the role instead of failing:
+
+```ts
+const invitation = await transaction.fleetInvitation.upsert({
+  where: { fleetId_email: { fleetId, email: normalizedEmail } },
+  create: {
+    fleetId,
+    email: normalizedEmail,
+    role,
+    invitedByUserId: actorUserId,
+  },
+  update: { role, invitedByUserId: actorUserId },
+});
+```
+
+### Claiming an invitation on first sign-in
+
+When someone signs in, the `signIn` event looks for invitations that match their email, turns each into a real membership, deletes it and writes an `INVITATION_CLAIMED` audit event, all in one transaction. Because it runs on every sign-in method, the person lands directly in the fleet instead of on onboarding:
+
+```ts
+const membership = await transaction.fleetMembership.upsert({
+  where: { fleetId_userId: { fleetId: invitation.fleetId, userId } },
+  create: { fleetId: invitation.fleetId, userId, role: invitation.role },
+  update: {},
+});
+await transaction.fleetInvitation.deleteMany({ where: { id: invitation.id } });
+```
+
+### Email as an identity key
+
+The email address is what links an invitation to a person, so whoever controls that email gets the access. That is only safe if the provider proved ownership: an email-link click does, and Google does when `email_verified` is true. Anything else never claims an invitation:
+
+```ts
+if (account?.provider === EMAIL_LINK_PROVIDER_ID) return true;
+if (account?.provider === GOOGLE_PROVIDER_ID) {
+  return profile?.email_verified === true;
+}
+return false;
+```
+
+Emails are also lowercased before they are stored or compared, so `Kim@Example.com` and `kim@example.com` are the same person.
+
+### Idempotent membership creation
+
+Claiming must be safe to repeat, for example if a sign-in event fires twice or the person was added as a member in the meantime. `upsert` with an empty `update` creates the membership once and never overwrites an existing role:
+
+```ts
+update: {},
+```
+
+### Never trusting client-computed values
+
+The browser can show a result, but it can never be the source of one. The quick-check API accepts only the answers, validates them with the shared schema (zod drops unknown keys, so a forged `paybackPeriodMonths` is discarded) and runs the engine on the server:
+
+```ts
+const answers = quickCheckSchema.parse(await request.json());
+...
+return createCalculationForVehicle(tx, {
+  fleetId,
+  vehicle,
+  requestedByUserId: membership.userId,
+  input: quickCheckToCalculationInput(answers, ASSUMPTION_SET_V1),
+});
+```
+
+Values the user never answered stay `undefined` in that input, so the stored snapshot marks them `PRESET` instead of pretending the user provided them.
+
+### Idempotent save actions
+
+Signing in can be repeated (a refresh, a double click, a second tab), and it must not create duplicate vehicles. The answers are hashed in canonical form (keys sorted, so key order never matters) and the hash is unique per fleet:
+
+```ts
+export function hashQuickCheck(answers: QuickCheckAnswers) {
+  return createHash("sha256")
+    .update(JSON.stringify(sortKeysDeep(answers)))
+    .digest("hex");
+}
+```
+
+The first save returns 201; the same answers again return 200 with the same calculation and write nothing.
+
+### Carrying intent across a login redirect
+
+An anonymous visitor's answers must survive the sign-in round trip, which leaves and re-enters the site. They wait in `sessionStorage`, and `/workspace` (the page every sign-in lands on) saves them to the first fleet. Every storage call is wrapped, because storage can be blocked in private windows:
+
+```ts
+export function readPendingQuickCheck(): QuickCheckAnswers | null {
+  try {
+    const stored = sessionStorage.getItem(PENDING_QUICK_CHECK_STORAGE_KEY);
+    if (stored === null) return null;
+    const parsed = quickCheckSchema.safeParse(JSON.parse(stored));
+    return parsed.success ? parsed.data : null;
+  } catch {
+    return null;
+  }
+}
+```
+
+Stored data is validated again on read, so a tampered value is treated as no value.
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit

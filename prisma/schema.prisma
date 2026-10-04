@@ -86,21 +86,23 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  accounts     Account[]
-  memberships  FleetMembership[]
-  calculations Calculation[]
-  reportJobs   ReportJob[]
-  auditEvents  AuditEvent[]
+  accounts        Account[]
+  memberships     FleetMembership[]
+  sentInvitations FleetInvitation[]
+  calculations    Calculation[]
+  reportJobs      ReportJob[]
+  auditEvents     AuditEvent[]
 }
 
 model Fleet {
-  id        String      @id @default(cuid())
+  id        String       @id @default(cuid())
   name      String
-  slug      String      @unique
-  type      VehicleType
-  createdAt DateTime    @default(now())
+  slug      String       @unique
+  type      VehicleType?
+  createdAt DateTime     @default(now())
 
   memberships  FleetMembership[]
+  invitations  FleetInvitation[]
   vehicles     Vehicle[]
   calculations Calculation[]
   reportJobs   ReportJob[]
@@ -120,6 +122,21 @@ model FleetMembership {
 
   @@unique([fleetId, userId])
   @@index([userId])
+}
+
+model FleetInvitation {
+  id              String   @id @default(cuid())
+  fleetId         String
+  email           String
+  role            Role
+  invitedByUserId String
+  createdAt       DateTime @default(now())
+
+  fleet     Fleet @relation(fields: [fleetId], references: [id], onDelete: Restrict)
+  invitedBy User  @relation(fields: [invitedByUserId], references: [id], onDelete: Restrict)
+
+  @@unique([fleetId, email])
+  @@index([email])
 }
 
 model Vehicle {
@@ -146,6 +163,7 @@ model Vehicle {
   idleHoursPerDay              Float               @default(0)
   latitude                     Float?
   longitude                    Float?
+  sourceQuickCheckHash         String?
   deletedAt                    DateTime?
   createdAt                    DateTime            @default(now())
 
@@ -153,6 +171,7 @@ model Vehicle {
   calculations Calculation[]
 
   @@unique([id, fleetId])
+  @@unique([fleetId, sourceQuickCheckHash])
   @@index([fleetId, deletedAt])
 }
 
