@@ -1148,6 +1148,94 @@ export function readPendingQuickCheck(): QuickCheckAnswers | null {
 
 Stored data is validated again on read, so a tampered value is treated as no value.
 
+## Daylight UI Redesign
+
+### Design tokens
+
+A design token is a named design decision (a colour, a radius, a shadow, an easing curve) stored once and used everywhere. Components never write `#B6F065`; they write `bg-lime`. Changing the brand colour is then a one-line edit in `app/globals.css`:
+
+```css
+:root {
+  --ground: #f6f4ee;
+  --surface: #ffffff;
+  --ink: #16231b;
+  --lime: #b6f065;
+  --on-lime: #16231b;
+}
+```
+
+A test (`app/design-tokens.test.ts`) keeps the list honest: every name in `DESIGN_TOKEN_NAMES` must exist in both the light and the dark block.
+
+### Semantic vs. raw colours
+
+A raw name says what a colour looks like (`green-900`, `white`). A semantic name says what it is for (`ink` = text, `surface` = cards, `on-lime` = text placed on lime). Semantic names survive a theme change: `surface` is white in light mode and dark green in dark mode, and the component using `bg-surface` does not need to know.
+
+```tsx
+<div className="rounded-lg border border-line-strong bg-surface p-6 text-center sm:p-8">
+```
+
+The old variables mixed both ideas (`--text-white`, `--card`), which is why the dark theme needed special cases.
+
+### Tailwind v4 `@theme inline`
+
+Tailwind v4 is configured in CSS. `@theme` registers a variable as a utility: `--color-surface` creates `bg-surface`, `text-surface`, `border-surface`. The `inline` keyword makes the utility point at our own variable instead of copying its value at build time, so the utility follows the variable when the theme changes at runtime:
+
+```css
+@theme inline {
+  --color-surface: var(--surface);
+  --font-display: var(--font-bricolage);
+  --radius-lg: 20px;
+  --shadow-hover: 0 12px 28px rgb(22 35 27 / 0.1);
+  --animate-rise: rise 0.7s var(--ease-out-soft) both;
+}
+```
+
+### Theming with `data-theme`
+
+`next-themes` writes `data-theme="dark"` on `<html>`. The dark block has a more specific selector than `:root`, so it overrides the same variable names, and every utility built on them switches at once with no component code:
+
+```css
+:root[data-theme="dark"] {
+  --ground: #0f1712;
+  --surface: #17231b;
+  --ink: #eef1ea;
+}
+```
+
+### `prefers-reduced-motion`
+
+Some people get dizzy or distracted by movement and switch on "reduce motion" in their operating system. The browser reports it through a media query. One rule, nested inside its selector as `CLAUDE.md` requires, turns off every keyframe animation and keeps only colour transitions, so progress bars simply appear at their final size:
+
+```css
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none !important;
+    transition-property:
+      color, background-color, border-color, outline-color,
+      text-decoration-color, fill, stroke !important;
+  }
+}
+```
+
+### Font subsetting
+
+A full font file contains thousands of characters most pages never show. A subset is a smaller file with one group of characters. `next/font` downloads only the subsets and weights listed, hosts them with the app (no request to Google at runtime) and exposes each family as a CSS variable. `latin-ext` is needed for German umlauts and Spanish accents:
+
+```ts
+const bricolageGrotesque = Bricolage_Grotesque({
+  variable: "--font-bricolage",
+  subsets: ["latin", "latin-ext"],
+  weight: ["500", "700", "800"],
+  fallback: ["system-ui", "-apple-system", "Segoe UI", "sans-serif"],
+});
+```
+
+The values must be written literally in the call: `next/font` reads them at build time and rejects variables.
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit
