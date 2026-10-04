@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode, Ref } from "react";
 
 export const HEADING_SIZES = [
   "display-xl",
@@ -45,6 +45,8 @@ interface HeadingProps {
   tone?: TextTone;
   id?: string;
   className?: string;
+  tabIndex?: number;
+  ref?: Ref<HTMLHeadingElement>;
   children: ReactNode;
 }
 
@@ -54,13 +56,17 @@ export default function Heading({
   tone = "ink",
   id,
   className = "",
+  tabIndex,
+  ref,
   children,
 }: HeadingProps) {
   const HeadingTag = HEADING_TAGS[level];
 
   return (
     <HeadingTag
+      ref={ref}
       id={id}
+      tabIndex={tabIndex}
       className={`mb-0 ${HEADING_SIZE_CLASSES[size]} ${TEXT_TONE_CLASSES[tone]} ${className}`}
     >
       {children}

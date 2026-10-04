@@ -36,68 +36,8 @@
     }
   },
   "calculator": {
-    "title": "Calculadora de Paneles Solares",
-    "subtitle": "Calcula el ahorro energético, ROI y reducción de CO₂ para tu flota de vehículos comerciales",
-    "description": "Calcula la configuración óptima de paneles solares para tu vehículo comercial.",
-    "vehicleTypeSelection": "Selección de Tipo de Vehículo",
-    "vehicleDetails": "Detalles del Vehículo",
-    "locationSetup": "Ubicación y Configuración de Paneles",
-    "additionalNotes": "Información Adicional",
-    "selectVehicle": "Selecciona tipo de vehículo",
-    "selectVehicleType": "Selecciona tu tipo de vehículo",
-    "van": "Furgoneta",
-    "truck": "Camión",
-    "bus": "Autobús",
-    "trailer": "Remolque",
-    "manufacturer": "Fabricante",
-    "manufacturerPlaceholder": "ej. Mercedes, Ford, Volvo",
-    "model": "Modelo",
-    "modelPlaceholder": "ej. Sprinter, Transit, FH16",
-    "numberOfVehicles": "Número de Vehículos",
-    "averageDailyDistance": "Distancia Diaria Promedio (km)",
-    "energyConsumption": "Consumo de Energía (kWh/100km)",
-    "solarPanelCapacity": "Capacidad de Paneles Solares (kW por vehículo)",
-    "payloadReserve": "Reserva de Carga (kg)",
-    "maxRoofLoad": "Carga Máxima del Techo (kg)",
-    "engineType": "Tipo de Motor",
-    "selectEngineType": "Selecciona tipo de motor",
-    "diesel": "Diésel",
-    "petrol": "Gasolina",
-    "electric": "Eléctrico",
-    "hybrid": "Híbrido",
-    "parkingType": "Tipo de Estacionamiento",
-    "selectParkingType": "Selecciona tipo de estacionamiento",
-    "depot": "Depósito",
-    "street": "Calle",
-    "customerSite": "Sitio del Cliente",
-    "mixedParking": "Mixto",
-    "operatingMonths": "Meses de Operación",
-    "winterUsage": "Uso en Invierno",
-    "city": "Ciudad",
-    "cityPlaceholder": "ej. Berlín",
-    "country": "País",
-    "countryPlaceholder": "ej. Alemania",
-    "solarPanelPlacement": "Ubicación de Paneles Solares",
-    "selectPanelPlacement": "Selecciona ubicación de paneles",
-    "roofPlacement": "En el Techo (Máxima exposición solar)",
-    "sidesPlacement": "En los Lados (Exposición solar parcial)",
-    "backPlacement": "En la Parte Trasera (Exposición solar limitada)",
-    "allOverPlacement": "Todo - Techo + Lados + Trasera (Cobertura máxima)",
-    "notesPlaceholder": "Cualquier información o requisito adicional...",
     "previous": "Anterior",
     "next": "Siguiente",
-    "calculate": "Calcular",
-    "results": "Resultados",
-    "resultsPlaceholder": "Ingresa los detalles de tu vehículo arriba para ver los resultados.",
-    "roofArea": "Superficie del techo (m²)",
-    "areaPlaceholder": "p. ej., 20",
-    "budget": "Presupuesto (opcional)",
-    "budgetPlaceholder": "p. ej., 5000",
-    "installationType": "Tipo de instalación",
-    "selectInstallationType": "Selecciona el tipo de instalación",
-    "roofMounted": "Montado en el techo",
-    "groundMounted": "Montado en el suelo",
-    "portable": "Portátil",
     "options": {
       "vehicleType": {
         "VAN": "Furgoneta",
@@ -124,12 +64,41 @@
         "SIDESHint": "Sol parcial durante el día",
         "BACK": "Parte trasera",
         "BACKHint": "Poco sol"
+      },
+      "cargoType": {
+        "REGULAR": "Mercancía normal",
+        "CHILLED": "Refrigerada o congelada",
+        "PASSENGERS": "Pasajeros"
+      },
+      "distanceBand": {
+        "SHORT": "Trayectos cortos",
+        "SHORTExample": "Repartos en ciudad",
+        "REGIONAL": "Regional",
+        "REGIONALExample": "Dentro de una región",
+        "LONG": "Larga distancia",
+        "LONGExample": "Entre ciudades",
+        "rangeHint": "{minimum}–{maximum} km al día · {example}"
+      },
+      "idlingFrequency": {
+        "RARELY": "Rara vez",
+        "SOMETIMES": "A veces",
+        "OFTEN": "A menudo"
+      },
+      "coolingUnitType": {
+        "DIESEL": "Diésel",
+        "ENGINE_DRIVEN": "Accionado por el motor del camión",
+        "ELECTRIC": "Eléctrico",
+        "NOT_SURE": "No lo sé"
       }
     },
     "questions": {
       "vehicleType": "¿Qué tipo de vehículos tienes?",
       "parkingType": "¿Dónde aparcan por la noche?",
-      "solarPanelPlacement": "¿Dónde irían los paneles?"
+      "solarPanelPlacement": "¿Dónde irían los paneles?",
+      "cargoType": "¿Qué transportan?",
+      "idlingFrequency": "¿Los motores siguen en marcha con el vehículo parado?",
+      "idlingFrequencyHint": "Por ejemplo, para el aire acondicionado o la calefacción durante los descansos.",
+      "coolingUnitType": "Tipo de equipo de frío"
     },
     "quantity": {
       "label": "¿Cuántos?",
@@ -162,7 +131,10 @@
       "vehiclesValue": "{quantity} × {vehicleType}",
       "dailyDistance": "Recorrido diario",
       "location": "Ubicación",
-      "panels": "Paneles"
+      "panels": "Paneles",
+      "cargo": "Carga",
+      "idling": "Motor en marcha parado",
+      "dailyDistanceValue": "{kilometres} km"
     },
     "accuracy": {
       "title": "Precisión de la estimación",
@@ -171,6 +143,72 @@
       "precise": "Precisa",
       "helper": "Responde más preguntas para que la estimación sea más precisa.",
       "preciseHelper": "Tus respuestas cubren todo lo que influye en la estimación."
+    },
+    "savedAutomatically": "Tus respuestas se guardan automáticamente",
+    "privacyNote": "Nunca compartimos los datos de tu flota.",
+    "actions": {
+      "back": "Atrás",
+      "continue": "Continuar",
+      "seeResults": "Ver mis resultados"
+    },
+    "stepContent": {
+      "vehicles": {
+        "title": "¿Qué tipo de vehículos tienes?",
+        "helper": "Elige el que mejor represente a la mayor parte de tu flota."
+      },
+      "dailyDriving": {
+        "title": "¿Cuánto recorre un vehículo en un día normal?",
+        "helper": "Basta con una estimación aproximada."
+      },
+      "location": {
+        "title": "¿Dónde circulan tus vehículos?",
+        "helper": "Así sabemos cuánto sol reciben a lo largo del año."
+      },
+      "panels": {
+        "title": "¿Dónde irían los paneles?",
+        "helper": "Más sol significa más ahorro. ¿No lo tienes claro? El techo es la opción habitual."
+      }
+    },
+    "city": {
+      "label": "Ciudad",
+      "placeholder": "Por ejemplo Berlín",
+      "hint": "Empieza a escribir y elige tu ciudad de la lista. Solo ciudades de la UE.",
+      "required": "Elige una ciudad de la lista",
+      "loading": "Buscando…",
+      "noResults": "No se ha encontrado ninguna ciudad. Revisa cómo está escrita.",
+      "unavailable": "La búsqueda de ciudades no está disponible ahora mismo. Inténtalo de nuevo."
+    },
+    "exactNumbers": {
+      "summary": "Conozco las cifras exactas",
+      "invalidNumber": "Introduce un número válido",
+      "averageDailyDistanceKm": {
+        "label": "Distancia por día (km)",
+        "hint": "Por vehículo, en un día normal de trabajo."
+      },
+      "idleHoursPerDay": {
+        "label": "Motor en marcha con el vehículo parado (horas al día)",
+        "hint": "De 0 a 24."
+      },
+      "energyConsumptionKwhPer100km": {
+        "label": "Consumo de energía (kWh cada 100 km)",
+        "hint": "Para vehículos eléctricos."
+      },
+      "operatingMonthsPerYear": {
+        "label": "Meses de uso al año",
+        "hint": "De 1 a 12."
+      },
+      "solarPanelCapacityKw": {
+        "label": "Potencia de los paneles (kW)",
+        "hint": "Por vehículo."
+      },
+      "maxRoofLoadKg": {
+        "label": "Carga máxima del techo (kg)",
+        "hint": "Según la documentación del vehículo."
+      },
+      "payloadReserveKg": {
+        "label": "Carga útil disponible (kg)",
+        "hint": "Peso que el vehículo aún puede llevar."
+      }
     }
   },
   "login": {

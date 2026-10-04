@@ -11,6 +11,7 @@ export const DEFAULT_STEPPER_MINIMUM = 1;
 export const DEFAULT_STEPPER_MAXIMUM = 999;
 
 const WHOLE_NUMBER_PATTERN = /^\d+$/;
+const SUBMIT_KEY = "Enter";
 
 const STEPPER_BUTTON_CLASSES = `inline-flex size-14 shrink-0 items-center justify-center rounded-md border border-line-strong bg-surface text-ink hover:border-ink disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-line-strong ${FOCUS_RING_CLASSES}`;
 
@@ -96,6 +97,11 @@ export default function NumberStepper({
           aria-describedby={describedBy}
           onChange={(event) => handleTyping(event.target.value)}
           onBlur={() => setDraft(String(committedValue))}
+          onKeyDown={(event) => {
+            if (event.key === SUBMIT_KEY && !isDraftValid) {
+              event.preventDefault();
+            }
+          }}
           className="h-14 w-full min-w-0 flex-1 rounded-md border border-line-strong bg-surface px-3 text-center text-[22px] font-semibold text-ink tabular-nums focus:border-ink focus:shadow-ring-selected focus:outline-none aria-[invalid]:border-danger md:w-28 md:flex-none"
         />
         <button
