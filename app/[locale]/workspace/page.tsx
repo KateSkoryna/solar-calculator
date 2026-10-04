@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { onboardingPath } from "@/lib/workspace-path";
+import PendingQuickCheckRedirect from "@/components/workspace/PendingQuickCheckRedirect";
 
 export default async function WorkspacePage({
   params,
@@ -18,12 +19,17 @@ export default async function WorkspacePage({
   const firstMembership = await prisma.fleetMembership.findFirst({
     where: { userId: session.user.id },
     orderBy: { createdAt: "asc" },
-    select: { fleet: { select: { slug: true } } },
+    select: { fleet: { select: { id: true, slug: true } } },
   });
 
   if (!firstMembership) {
     redirect(onboardingPath(locale));
   }
 
-  redirect(`/${locale}/${firstMembership.fleet.slug}`);
+  return (
+    <PendingQuickCheckRedirect
+      fleetId={firstMembership.fleet.id}
+      fleetPath={`/${locale}/${firstMembership.fleet.slug}`}
+    />
+  );
 }

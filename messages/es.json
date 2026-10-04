@@ -238,5 +238,8 @@
     "submit": "Crear espacio de trabajo",
     "saving": "Creando…",
     "error": "No pudimos crear tu espacio de trabajo. Revisa el nombre de la empresa (2–80 caracteres) e inténtalo de nuevo."
+  },
+  "workspace": {
+    "savingQuickCheck": "Guardando tu resultado…"
   }
 }

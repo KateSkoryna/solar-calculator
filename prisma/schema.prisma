@@ -163,6 +163,7 @@ model Vehicle {
   idleHoursPerDay              Float               @default(0)
   latitude                     Float?
   longitude                    Float?
+  sourceQuickCheckHash         String?
   deletedAt                    DateTime?
   createdAt                    DateTime            @default(now())
 
@@ -170,6 +171,7 @@ model Vehicle {
   calculations Calculation[]
 
   @@unique([id, fleetId])
+  @@unique([fleetId, sourceQuickCheckHash])
   @@index([fleetId, deletedAt])
 }
 

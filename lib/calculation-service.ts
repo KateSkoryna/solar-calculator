@@ -80,6 +80,7 @@ interface CreateCalculationForVehicleParams {
   vehicle: Vehicle;
   requestedByUserId: string;
   notes?: string;
+  input?: CalculationInput;
 }
 
 export async function createCalculationForVehicle(
@@ -89,9 +90,9 @@ export async function createCalculationForVehicle(
     vehicle,
     requestedByUserId,
     notes,
+    input = toCalculationInput(vehicle),
   }: CreateCalculationForVehicleParams,
 ) {
-  const input = toCalculationInput(vehicle);
   const output = calculate(input, ASSUMPTION_SET_V1);
 
   const calculation = await transaction.calculation.create({

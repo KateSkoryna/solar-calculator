@@ -238,5 +238,8 @@
     "submit": "Arbeitsbereich erstellen",
     "saving": "Wird erstellt…",
     "error": "Wir konnten deinen Arbeitsbereich nicht erstellen. Prüfe den Firmennamen (2–80 Zeichen) und versuche es erneut."
+  },
+  "workspace": {
+    "savingQuickCheck": "Ihr Ergebnis wird gespeichert…"
   }
 }

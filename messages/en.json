@@ -238,5 +238,8 @@
     "submit": "Create workspace",
     "saving": "Creating…",
     "error": "We couldn't create your workspace. Check the company name (2–80 characters) and try again."
+  },
+  "workspace": {
+    "savingQuickCheck": "Saving your result…"
   }
 }
