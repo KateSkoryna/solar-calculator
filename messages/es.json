@@ -109,33 +109,36 @@
   "theme": {
     "light": "Modo Claro",
     "dark": "Modo Oscuro",
-    "toggleAriaLabel": "Cambiar tema",
-    "sunIconAlt": "Icono de sol",
-    "moonIconAlt": "Icono de luna"
+    "toggleAriaLabel": "Cambiar tema"
   },
   "language": {
     "en": "Inglés",
     "es": "Español",
-    "de": "Alemán"
+    "de": "Alemán",
+    "switcherLabel": "Cambiar idioma"
   },
   "clientmenu": {
-    "login": "Iniciar Sesión",
     "signin": "Registrarse",
-    "logout": "Cerrar Sesión",
-    "userProfile": "Perfil de Usuario",
-    "myAccount": "Mi Cuenta"
+    "logout": "Cerrar Sesión"
   },
   "header": {
     "title": "Calculadora Solar",
-    "home": "Inicio",
     "calculator": "Calculadora",
-    "about": "Acerca de"
+    "about": "Acerca de",
+    "howItWorks": "Cómo funciona",
+    "myFleet": "Mi flota",
+    "logIn": "Iniciar sesión",
+    "logOut": "Cerrar sesión",
+    "myAccount": "Mi cuenta",
+    "userMenu": "Menú de la cuenta",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "menuTitle": "Menú",
+    "mainNavigation": "Principal"
   },
   "footer": {
-    "title": "Calculadora Solar",
-    "description": "Calcula el ROI, el ahorro energético y la reducción de CO₂ de tus paneles solares para flotas de vehículos comerciales.",
-    "followUs": "Síguenos",
-    "copyright": "© {currentYear} Calculadora Solar. Todos los derechos reservados."
+    "copyright": "© {currentYear} Calculadora Solar",
+    "tagline": "Independiente · Estimaciones, no presupuestos"
   },
   "calculation": {
     "notFoundTitle": "Cálculo",

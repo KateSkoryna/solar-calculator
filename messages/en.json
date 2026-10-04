@@ -109,33 +109,36 @@
   "theme": {
     "light": "Light Mode",
     "dark": "Dark Mode",
-    "toggleAriaLabel": "Toggle theme",
-    "sunIconAlt": "Sun icon",
-    "moonIconAlt": "Moon icon"
+    "toggleAriaLabel": "Toggle theme"
   },
   "language": {
     "en": "English",
     "es": "Spanish",
-    "de": "German"
+    "de": "German",
+    "switcherLabel": "Change language"
   },
   "clientmenu": {
-    "login": "Login",
     "signin": "Sign In",
-    "logout": "Logout",
-    "userProfile": "User Profile",
-    "myAccount": "My Account"
+    "logout": "Logout"
   },
   "header": {
     "title": "Solar Calculator",
-    "home": "Home",
     "calculator": "Calculator",
-    "about": "About"
+    "about": "About",
+    "howItWorks": "How it works",
+    "myFleet": "My fleet",
+    "logIn": "Log in",
+    "logOut": "Log out",
+    "myAccount": "My account",
+    "userMenu": "Account menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "menuTitle": "Menu",
+    "mainNavigation": "Main"
   },
   "footer": {
-    "title": "Solar Calculator",
-    "description": "Calculate your solar panel ROI, energy savings, and CO₂ reduction for commercial vehicle fleets.",
-    "followUs": "Follow us",
-    "copyright": "© {currentYear} Solar Calculator. All rights reserved."
+    "copyright": "© {currentYear} Solar Calculator",
+    "tagline": "Independent · Estimates, not quotes"
   },
   "calculation": {
     "notFoundTitle": "Calculation",
