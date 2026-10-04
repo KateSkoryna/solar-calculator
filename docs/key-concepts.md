@@ -1469,6 +1469,84 @@ export default function Home() {
 
 `Heading` separates meaning from looks: `level` picks the tag (`h1`–`h4`, which matters for screen readers and search engines) and `size` picks the visual style, so a small `h2` or a large `h3` needs no new CSS.
 
+### Native radio groups and keyboard behaviour
+
+Radio buttons that share a `name` form one group, and the browser gives that group its keyboard behaviour for free: Tab enters the group once (on the checked radio), the arrow keys move and select, and Tab leaves. A choice card keeps all of that by putting a real, visually hidden radio inside a `<label>`; the card is only styling around it:
+
+```tsx
+export default function VisuallyHiddenRadio({
+  name,
+  value,
+  checked,
+  disabled = false,
+  onSelect,
+}: VisuallyHiddenRadioProps) {
+  return (
+    <input
+      type="radio"
+      name={name}
+      value={value}
+      checked={checked}
+      disabled={disabled}
+      onChange={onSelect}
+      className="sr-only"
+    />
+  );
+}
+```
+
+`sr-only` hides the input visually but keeps it focusable. The card reacts to the hidden input with Tailwind's `has-[:checked]:` and `has-[:focus-visible]:` variants, so no JavaScript is needed for the selected or focused look.
+
+### `role="radiogroup"`
+
+Screen readers need to know which radios belong together and what the question is. The wrapper gets `role="radiogroup"` and a name, either its own (`aria-label`) or the visible question (`aria-labelledby`). A screen reader then announces "What kind of vehicles do you have?, radio group, Van, 1 of 4":
+
+```tsx
+<div
+  role="radiogroup"
+  aria-label={label}
+  aria-labelledby={labelledBy}
+  className={`grid gap-3 md:gap-4 ${CHOICE_CARD_GROUP_LAYOUT_CLASSES[layout]}`}
+>
+```
+
+### Controlled inputs
+
+A controlled input has no state of its own: the parent passes the `value` and an `onChange`, and what is on screen is always what the parent holds. The number stepper is controlled for its number, but keeps a private `draft` string so the user can type "1000" or clear the field without the parent ever seeing an invalid number:
+
+```tsx
+const handleTyping = (typedText: string) => {
+  setDraft(typedText);
+  if (WHOLE_NUMBER_PATTERN.test(typedText)) {
+    const typedNumber = Number(typedText);
+    if (isWithinRange(typedNumber)) {
+      setCommittedValue(typedNumber);
+      onChange(typedNumber);
+    }
+  }
+};
+```
+
+### react-hook-form `Controller`
+
+react-hook-form normally reads native inputs through `register`. A custom component such as a choice-card group has no single native input to register, so `Controller` is the adapter: it hands the component a `value` and an `onChange` and keeps the form state in sync. The group's props were shaped to fit it directly:
+
+```tsx
+<Controller
+  control={control}
+  name="vehicle"
+  render={({ field }) => (
+    <ChoiceCardGroup
+      name={field.name}
+      label={GROUP_LABEL}
+      options={VEHICLE_OPTIONS}
+      value={field.value}
+      onChange={field.onChange}
+    />
+  )}
+/>
+```
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit
