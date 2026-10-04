@@ -1612,6 +1612,99 @@ function mapboxReplies(features: unknown[], status = 200) {
 
 That is how the tests prove that all 27 country codes are sent, that a Mapbox 500 becomes a 503 without Mapbox details, and that the key never appears in a response.
 
+### Multi-step form state
+
+A wizard shows one question at a time, but it is still one form. All four steps share a single react-hook-form instance through `FormProvider`, so going back never loses an answer and the last step can submit everything at once. Each step only declares which fields belong to it, and Continue validates just those:
+
+```ts
+const continueOrFinish = async () => {
+  const isStepValid = await form.trigger(CALCULATOR_STEP_FIELDS[stepKey]);
+  if (!isStepValid) {
+    revealFirstInvalidField();
+    return;
+  }
+
+  if (stepIndex === LOCATION_STEP_INDEX && form.getValues("city") === null) {
+    rejectMissingCity();
+    return;
+  }
+
+  if (stepIndex < LAST_STEP_INDEX) {
+    goToStep(stepIndex + 1);
+    return;
+  }
+
+  const quickCheckAnswers = toQuickCheckAnswers(form.getValues());
+  if (quickCheckAnswers === null) {
+    goToStep(LOCATION_STEP_INDEX);
+    return;
+  }
+  router.push(resultsPath(locale, encodeQuickCheck(quickCheckAnswers)));
+};
+```
+
+The answers are also written to `sessionStorage` on every change and read back on load, so a refresh keeps them. Stored data is validated with the same zod schema before use.
+
+### Optional fields filled from presets
+
+Most people do not know their vehicle's energy use per 100 km, so the form must work without it. Every technical field is optional; an empty field becomes `undefined`, and the engine fills it from the assumption set. Only what the user really typed is sent on:
+
+```ts
+function parseOptionalNumber(typedValue: unknown) {
+  const trimmedText = String(typedValue ?? "")
+    .trim()
+    .replace(",", ".");
+  return trimmedText === "" ? undefined : Number(trimmedText);
+}
+```
+
+Because `undefined` means "use the preset" and a number means "the user told us", the accuracy meter can count how many inputs are real and move from Rough to Precise.
+
+### Focus management on step change
+
+When the question changes, a sighted user sees new content, but a keyboard or screen-reader user is still on the Continue button of a screen that no longer exists. After each step change the wizard moves focus to the new question. A heading is not focusable by default, so it gets `tabIndex={-1}`: focusable from code, but not a stop in the Tab order.
+
+```tsx
+<Heading
+  ref={questionRef}
+  level={1}
+  size="display-m"
+  id={CALCULATOR_QUESTION_ID}
+  tabIndex={-1}
+  className="focus:outline-none"
+>
+  {t(`stepContent.${stepKey}.title`)}
+</Heading>
+```
+
+The same idea handles errors: Continue without a city moves focus to the city field, next to the message.
+
+### `aria-live` announcements
+
+A live region is an element whose text changes are read out by a screen reader without moving focus. `polite` waits until the user is idle. The wizard keeps one visually hidden region and writes the new position into it on every step change:
+
+```tsx
+<p aria-live="polite" className="sr-only">
+  {announcement}
+</p>
+```
+
+The region must already be in the page before its text changes; an element that is inserted together with its text is often not announced. The city field uses the same technique for "Searching…" and "No city found".
+
+### Validation on blur
+
+Validating on every keystroke shouts "invalid" while someone is still typing "1" on the way to "12". Validating only on submit hides the problem until the end. On blur is the middle: the field is checked when the user leaves it, and again when they press Continue.
+
+```ts
+const form = useForm<CalculatorFormValues>({
+  resolver: zodResolver(calculatorFormSchema),
+  defaultValues: CALCULATOR_DEFAULT_VALUES,
+  mode: "onBlur",
+});
+```
+
+If Continue finds an invalid number inside the closed "I know the exact numbers" section, the wizard opens the section and moves focus to that field, so the error is never hidden.
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit
