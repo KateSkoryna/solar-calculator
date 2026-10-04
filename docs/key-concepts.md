@@ -1098,6 +1098,56 @@ Claiming must be safe to repeat, for example if a sign-in event fires twice or t
 update: {},
 ```
 
+### Never trusting client-computed values
+
+The browser can show a result, but it can never be the source of one. The quick-check API accepts only the answers, validates them with the shared schema (zod drops unknown keys, so a forged `paybackPeriodMonths` is discarded) and runs the engine on the server:
+
+```ts
+const answers = quickCheckSchema.parse(await request.json());
+...
+return createCalculationForVehicle(tx, {
+  fleetId,
+  vehicle,
+  requestedByUserId: membership.userId,
+  input: quickCheckToCalculationInput(answers, ASSUMPTION_SET_V1),
+});
+```
+
+Values the user never answered stay `undefined` in that input, so the stored snapshot marks them `PRESET` instead of pretending the user provided them.
+
+### Idempotent save actions
+
+Signing in can be repeated (a refresh, a double click, a second tab), and it must not create duplicate vehicles. The answers are hashed in canonical form (keys sorted, so key order never matters) and the hash is unique per fleet:
+
+```ts
+export function hashQuickCheck(answers: QuickCheckAnswers) {
+  return createHash("sha256")
+    .update(JSON.stringify(sortKeysDeep(answers)))
+    .digest("hex");
+}
+```
+
+The first save returns 201; the same answers again return 200 with the same calculation and write nothing.
+
+### Carrying intent across a login redirect
+
+An anonymous visitor's answers must survive the sign-in round trip, which leaves and re-enters the site. They wait in `sessionStorage`, and `/workspace` (the page every sign-in lands on) saves them to the first fleet. Every storage call is wrapped, because storage can be blocked in private windows:
+
+```ts
+export function readPendingQuickCheck(): QuickCheckAnswers | null {
+  try {
+    const stored = sessionStorage.getItem(PENDING_QUICK_CHECK_STORAGE_KEY);
+    if (stored === null) return null;
+    const parsed = quickCheckSchema.safeParse(JSON.parse(stored));
+    return parsed.success ? parsed.data : null;
+  } catch {
+    return null;
+  }
+}
+```
+
+Stored data is validated again on read, so a tampered value is treated as no value.
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit

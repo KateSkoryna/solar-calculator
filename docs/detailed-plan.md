@@ -429,24 +429,6 @@ These are settled. Steps rely on them; do not revisit them without the owner.
   4. Standard checks S1–S6, S8–S10 pass.
 - **Owner review (browser):** sign in with an email link using a new address → you land on `/en/onboarding` → enter name and company → you land on `/en/<slug>` (the old pages may still look unstyled); sign in with Google as a user with no fleet → `/en/onboarding`.
 
-### Step 2.6 — Save a quick check to a fleet
-
-- **Depends on:** 2.5
-- **Purpose:** An anonymous result must survive sign-up without trusting numbers computed in the browser.
-- **Concepts to learn:** never trusting client-computed values, idempotent "save" actions, carrying intent across a login redirect
-- **Instructions:**
-  1. Create `lib/quick-check-schema.ts`: the zod schema of the calculator answers (vehicle type, quantity 1–999, cargo type, distance band, idling answer, city label, country code in `EU_COUNTRY_CODES`, latitude, longitude, parking type, panel placement, optional exact fields). This schema is shared by the calculator (3.7), the results URL (3.8) and this API.
-  2. Create `lib/quick-check-mapping.ts`: `quickCheckToCalculationInput(answers, assumptionSet)` and `quickCheckToVehicleData(answers, assumptionSet)`, plus `encodeQuickCheck`/`decodeQuickCheck` (base64url JSON, validated with the schema on decode).
-  3. Add `sourceQuickCheckHash String?` to `Vehicle` with `@@unique([fleetId, sourceQuickCheckHash])`; migrate. The hash is SHA-256 of the canonical (sorted-keys) JSON of the answers.
-  4. Add `POST /api/fleets/[fleetId]/quick-checks` (roles: `FLEET_EDITOR_ROLES`): validates answers, creates the vehicle and a calculation via `createCalculationForVehicle`, writes `VEHICLE_CREATED` and `CALCULATION_CREATED` events. If the hash already exists in the fleet, return 200 with the existing calculation instead of creating a new one.
-  5. Create `lib/pending-quick-check.ts` with `PENDING_QUICK_CHECK_STORAGE_KEY` and `savePendingQuickCheck`, `readPendingQuickCheck`, `clearPendingQuickCheck` (each wrapped in try/catch; storage failures return null).
-  6. Make `/[locale]/workspace` render a small client component that, if a pending quick check exists, posts it to the target fleet, clears it and navigates to the new calculation; otherwise it redirects as before.
-- **Definition of done:**
-  1. Unit tests: encode → decode round-trips; decode rejects tampered, non-EU and malformed input; the mapping fills presets and marks them `PRESET`.
-  2. API tests: first POST returns 201 and creates one vehicle and one calculation; an identical second POST returns 200 with the same calculation ID and creates nothing; a body with extra result fields has no effect on stored numbers; a viewer gets 403.
-  3. `lib/pending-quick-check.test.ts` proves that the functions return null (and do not throw) when `sessionStorage` throws.
-  4. Standard checks S1–S6, S8–S10 pass.
-
 ---
 
 ## Milestone 3: Daylight UI Redesign
