@@ -1337,6 +1337,58 @@ export function renderWithIntl(component: ReactElement) {
 
 `messages/messages.test.ts` then guarantees that German and Spanish have exactly the same keys as English and no empty values.
 
+### The native `<dialog>` element for menus
+
+`<dialog>` is the browser's built-in modal. Calling `showModal()` puts it in the top layer (above everything, no `z-index` fights), draws a `::backdrop`, makes the rest of the page inert and closes on Escape. The mobile menu is a dialog styled as a full-height sheet on the right:
+
+```tsx
+const openMenu = () => {
+  dialogRef.current?.showModal();
+  setIsOpen(true);
+};
+
+const closeMenu = () => {
+  dialogRef.current?.close();
+};
+```
+
+Every way of closing (close button, link click, Escape) ends in `close()`, and the dialog's `close` event is the single place where state is updated.
+
+### Focus trapping
+
+While a modal is open, Tab must stay inside it; otherwise keyboard users wander into the page hidden behind the backdrop. `showModal()` does this natively by making everything outside the dialog inert, so no focus-trap library or key listener is needed. A plain `<div>` overlay or `dialog.show()` (non-modal) would not trap focus.
+
+### Returning focus to the trigger
+
+When a menu closes, focus must go back to the control that opened it. Without that, focus resets to the top of the page and a keyboard user loses their place. The `close` event handler does both jobs:
+
+```tsx
+const handleDialogClosed = () => {
+  setIsOpen(false);
+  openButtonRef.current?.focus();
+};
+```
+
+### `aria-expanded`
+
+A button that shows and hides something tells assistive technology its state with `aria-expanded`, and which element it controls with `aria-controls`. A screen reader then announces "Open menu, collapsed, button" instead of just "button":
+
+```tsx
+<button
+  ref={openButtonRef}
+  type="button"
+  aria-label={t("openMenu")}
+  aria-expanded={isOpen}
+  aria-controls={dialogId}
+  onClick={openMenu}
+  className={`lg:hidden ${ICON_BUTTON_CLASSES}`}
+>
+  <LuMenu aria-hidden="true" className="size-5" />
+</button>
+```
+
+The icon is `aria-hidden`, so the accessible name comes only from `aria-label`.
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit
