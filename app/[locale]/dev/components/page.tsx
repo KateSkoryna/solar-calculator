@@ -7,13 +7,16 @@ import Avatar, { AVATAR_TONES } from "@/components/common/Avatar";
 import Badge from "@/components/common/Badge";
 import Card, { CARD_TONES } from "@/components/common/Card";
 import Disclosure from "@/components/common/Disclosure";
+import Heading from "@/components/common/Heading";
 import Logo from "@/components/common/Logo";
 import ProgressBar from "@/components/common/ProgressBar";
 import RolePill from "@/components/common/RolePill";
 import StatusPill from "@/components/common/StatusPill";
+import Text from "@/components/common/Text";
 import Button from "@/components/form/Button";
 import ButtonLink from "@/components/form/ButtonLink";
 import Input from "@/components/form/Input";
+import PageContainer from "@/components/layout/PageContainer";
 import { BUTTON_SIZES, BUTTON_VARIANTS } from "@/lib/button-styles";
 
 const SAMPLE_REPORT_PROGRESS = 66;
@@ -30,7 +33,9 @@ function ShowcaseSection({
 }) {
   return (
     <section className="flex flex-col gap-4">
-      <h2 className="font-display text-[28px] font-bold text-ink">{title}</h2>
+      <Heading level={2} size="title">
+        {title}
+      </Heading>
       {children}
     </section>
   );
@@ -45,12 +50,12 @@ export default function ComponentShowcasePage() {
   const forwardIcon = <LuArrowRight aria-hidden="true" className="size-5" />;
 
   return (
-    <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-12 px-4 py-10 md:px-10 lg:px-20">
+    <PageContainer className="flex flex-col gap-12 py-10">
       <header className="flex flex-col gap-2">
-        <h1 className="font-display text-[40px] font-extrabold text-ink">
+        <Heading level={1} size="display-s">
           {t("title")}
-        </h1>
-        <p className="text-muted">{t("intro")}</p>
+        </Heading>
+        <Text tone="muted">{t("intro")}</Text>
       </header>
 
       <ShowcaseSection title={t("sections.button")}>
@@ -183,6 +188,6 @@ export default function ComponentShowcasePage() {
           <p className="text-muted">{t("disclosureBody")}</p>
         </Disclosure>
       </ShowcaseSection>
-    </div>
+    </PageContainer>
   );
 }

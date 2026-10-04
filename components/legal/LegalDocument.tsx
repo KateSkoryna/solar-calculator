@@ -1,3 +1,6 @@
+import Heading from "@/components/common/Heading";
+import Text from "@/components/common/Text";
+
 interface LegalDocumentSection {
   title: string;
   body: string;
@@ -17,17 +20,19 @@ export default function LegalDocument({
   return (
     <article className="mx-auto flex w-full max-w-[760px] flex-col gap-8 px-4 py-10 text-left md:px-10 md:py-14">
       <header className="flex flex-col gap-3">
-        <h1 className="mb-0 font-display text-[32px] font-extrabold text-ink md:text-[40px]">
+        <Heading level={1} size="display-s">
           {title}
-        </h1>
-        <p className="text-[17px] text-muted">{intro}</p>
+        </Heading>
+        <Text size="body-l" tone="muted">
+          {intro}
+        </Text>
       </header>
       {sections.map((section) => (
         <section key={section.title} className="flex flex-col gap-2">
-          <h2 className="mb-0 font-display text-[22px] font-bold text-ink">
+          <Heading level={2} size="title">
             {section.title}
-          </h2>
-          <p className="text-base leading-relaxed text-ink">{section.body}</p>
+          </Heading>
+          <Text>{section.body}</Text>
         </section>
       ))}
     </article>

@@ -12,6 +12,7 @@ import {
 } from "@/lib/public-nav";
 import { homePath, loginPath } from "@/lib/public-paths";
 import MobileMenu from "./MobileMenu";
+import PageContainer from "./PageContainer";
 import UserProfileButton from "./UserProfileButton";
 
 export interface HeaderUser {
@@ -33,7 +34,7 @@ function HeaderBar({ user }: HeaderBarProps) {
 
   return (
     <header className="relative z-50 border-b border-line bg-ground">
-      <div className="mx-auto flex min-h-[72px] w-full max-w-[1440px] items-center justify-between gap-4 px-4 md:px-10 lg:min-h-20 lg:px-20">
+      <PageContainer className="flex min-h-[72px] items-center justify-between gap-4 lg:min-h-20">
         <Link
           href={homePath(locale)}
           className={`rounded-full ${FOCUS_RING_CLASSES}`}
@@ -74,7 +75,7 @@ function HeaderBar({ user }: HeaderBarProps) {
           )}
           <MobileMenu navLinks={navLinks} isSignedIn={isSignedIn} />
         </div>
-      </div>
+      </PageContainer>
     </header>
   );
 }
