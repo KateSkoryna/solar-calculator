@@ -4,7 +4,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { workspacePath } from "@/lib/workspace-path";
 import {
   checkRateLimit,
+  CITY_SEARCH_RATE_LIMIT,
   SENSITIVE_ENDPOINT_RATE_LIMIT,
+  type RateLimitConfig,
 } from "@/lib/rate-limit";
 
 const intlMiddleware = createIntlMiddleware({
@@ -17,6 +19,7 @@ interface RateLimitedRoute {
   name: string;
   method: string;
   path: string;
+  limit: RateLimitConfig;
 }
 
 const RATE_LIMITED_ROUTES: RateLimitedRoute[] = [
@@ -24,16 +27,25 @@ const RATE_LIMITED_ROUTES: RateLimitedRoute[] = [
     name: "email-sign-in",
     method: "POST",
     path: "/api/auth/signin/nodemailer",
+    limit: SENSITIVE_ENDPOINT_RATE_LIMIT,
   },
   {
     name: "calculation-create",
     method: "POST",
     path: "/api/fleets/:fleetId/calculations",
+    limit: SENSITIVE_ENDPOINT_RATE_LIMIT,
   },
   {
     name: "fleet-create",
     method: "POST",
     path: "/api/fleets",
+    limit: SENSITIVE_ENDPOINT_RATE_LIMIT,
+  },
+  {
+    name: "city-search",
+    method: "GET",
+    path: "/api/geocode",
+    limit: CITY_SEARCH_RATE_LIMIT,
   },
 ];
 
@@ -74,7 +86,7 @@ export default function middleware(request: NextRequest) {
 
   if (rateLimitedRoute) {
     const key = `${rateLimitedRoute.name}:${getClientIp(request)}`;
-    const allowed = checkRateLimit(key, SENSITIVE_ENDPOINT_RATE_LIMIT);
+    const allowed = checkRateLimit(key, rateLimitedRoute.limit);
 
     if (!allowed) {
       return NextResponse.json({ error: "Too many requests" }, { status: 429 });
@@ -121,5 +133,6 @@ export const config = {
     "/api/auth/signin/nodemailer",
     "/api/fleets/:fleetId/calculations",
     "/api/fleets",
+    "/api/geocode",
   ],
 };
