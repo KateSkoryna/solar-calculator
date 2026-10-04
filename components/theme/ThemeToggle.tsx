@@ -11,7 +11,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
-      className="p-2 rounded-lg font-bold font-[family:var(--font-inter)] transition-colors hover:opacity-80 flex items-center gap-2 bg-[var(--card)] text-[var(--text-heading)] border-2 border-[var(--border)] focus:border-[var(--accent)] focus:outline-none"
+      className="p-2 rounded-lg font-bold font-body transition-colors hover:opacity-80 flex items-center gap-2 bg-surface text-ink border-2 border-line-strong focus:border-lime focus:outline-none"
       aria-label={t("toggleAriaLabel")}
     >
       <Image

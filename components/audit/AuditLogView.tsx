@@ -101,13 +101,13 @@ export default function AuditLogView({
     <div className="mx-auto w-full max-w-4xl">
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-4">
         <div>
-          <label className="mb-2 block text-sm font-medium text-[var(--text-body)]">
+          <label className="mb-2 block text-sm font-medium text-ink">
             {t("user")}
           </label>
           <select
             value={actorUserId}
             onChange={(e) => applyFilter(setActorUserId, e.target.value)}
-            className="w-full rounded-md bg-[var(--input)] p-3 text-[var(--text-body)] focus:ring-2 focus:ring-[var(--accent)] focus:outline-none"
+            className="w-full rounded-md bg-surface p-3 text-ink focus:ring-2 focus:ring-lime focus:outline-none"
           >
             <option value="">{t("allUsers")}</option>
             {users.map((user) => (
@@ -119,13 +119,13 @@ export default function AuditLogView({
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-[var(--text-body)]">
+          <label className="mb-2 block text-sm font-medium text-ink">
             {t("entityType")}
           </label>
           <select
             value={entityType}
             onChange={(e) => applyFilter(setEntityType, e.target.value)}
-            className="w-full rounded-md bg-[var(--input)] p-3 text-[var(--text-body)] focus:ring-2 focus:ring-[var(--accent)] focus:outline-none"
+            className="w-full rounded-md bg-surface p-3 text-ink focus:ring-2 focus:ring-lime focus:outline-none"
           >
             <option value="">{t("allTypes")}</option>
             {entityTypes.map((type) => (
@@ -137,35 +137,31 @@ export default function AuditLogView({
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-[var(--text-body)]">
+          <label className="mb-2 block text-sm font-medium text-ink">
             {t("from")}
           </label>
           <input
             type="date"
             value={from}
             onChange={(e) => applyFilter(setFrom, e.target.value)}
-            className="w-full rounded-md bg-[var(--input)] p-3 text-[var(--text-body)] focus:ring-2 focus:ring-[var(--accent)] focus:outline-none"
+            className="w-full rounded-md bg-surface p-3 text-ink focus:ring-2 focus:ring-lime focus:outline-none"
           />
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-[var(--text-body)]">
+          <label className="mb-2 block text-sm font-medium text-ink">
             {t("to")}
           </label>
           <input
             type="date"
             value={to}
             onChange={(e) => applyFilter(setTo, e.target.value)}
-            className="w-full rounded-md bg-[var(--input)] p-3 text-[var(--text-body)] focus:ring-2 focus:ring-[var(--accent)] focus:outline-none"
+            className="w-full rounded-md bg-surface p-3 text-ink focus:ring-2 focus:ring-lime focus:outline-none"
           />
         </div>
       </div>
 
-      {isLoading && (
-        <p className="text-center text-[var(--text-body)]">
-          {tAuth("loading")}
-        </p>
-      )}
+      {isLoading && <p className="text-center text-ink">{tAuth("loading")}</p>}
       {isError && (
         <p className="text-center text-red-500">
           {error instanceof Error ? error.message : t("loadError")}
@@ -175,9 +171,9 @@ export default function AuditLogView({
       {data && (
         <>
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-[var(--text-body)]">
+            <table className="w-full text-left text-sm text-ink">
               <thead>
-                <tr className="border-b border-[var(--border)]">
+                <tr className="border-b border-line-strong">
                   <th className="py-2 pr-4">{t("timestamp")}</th>
                   <th className="py-2 pr-4">{t("user")}</th>
                   <th className="py-2 pr-4">{t("action")}</th>
@@ -186,10 +182,7 @@ export default function AuditLogView({
               </thead>
               <tbody>
                 {data.events.map((event) => (
-                  <tr
-                    key={event.id}
-                    className="border-b border-[var(--border)]"
-                  >
+                  <tr key={event.id} className="border-b border-line-strong">
                     <td className="py-2 pr-4 whitespace-nowrap">
                       {new Date(event.createdAt).toLocaleString()}
                     </td>
@@ -218,18 +211,18 @@ export default function AuditLogView({
               type="button"
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page <= 1}
-              className="rounded-md border border-[var(--border)] bg-[var(--card)] px-4 py-2 text-[var(--text-body)] disabled:opacity-40"
+              className="rounded-md border border-line-strong bg-surface px-4 py-2 text-ink disabled:opacity-40"
             >
               {tCalculator("previous")}
             </button>
-            <span className="text-sm text-[var(--text-body)]">
+            <span className="text-sm text-ink">
               {t("pageOf", { page: data.page, totalPages })}
             </span>
             <button
               type="button"
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page >= totalPages}
-              className="rounded-md border border-[var(--border)] bg-[var(--card)] px-4 py-2 text-[var(--text-body)] disabled:opacity-40"
+              className="rounded-md border border-line-strong bg-surface px-4 py-2 text-ink disabled:opacity-40"
             >
               {tCalculator("next")}
             </button>

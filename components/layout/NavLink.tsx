@@ -27,8 +27,8 @@ export default function NavLink({
   return (
     <Link
       href={href}
-      className={` focus:outline-none transition-colors hover:text-[var(--accent)] focus:text-[var(--accent)] text-shadow-sm ${
-        isActive() ? "text-[var(--accent)]" : "text-[var(--text-body)]"
+      className={` focus:outline-none transition-colors hover:text-lime-soft-ink focus:text-lime-soft-ink text-shadow-sm ${
+        isActive() ? "text-lime-soft-ink" : "text-ink"
       } ${className}`}
     >
       {children}

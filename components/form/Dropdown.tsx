@@ -64,7 +64,7 @@ export default function Dropdown({
 
   return (
     <div>
-      <label className="block text-sm font-medium text-[var(--text-white)] mb-2">
+      <label className="block text-sm font-medium text-white mb-2">
         {label}
       </label>
       <details
@@ -75,8 +75,8 @@ export default function Dropdown({
       >
         <summary
           className={`w-full p-3 rounded-md border-2 border-white/20 list-none cursor-pointer
-            bg-white/10 backdrop-blur-md text-[var(--text-white)]
-            focus:outline-none focus:border-[var(--accent)] transition-colors
+            bg-white/10 backdrop-blur-md text-white
+            focus:outline-none focus:border-lime transition-colors
             flex justify-between items-center ${!selectedValue ? "opacity-60" : ""}`}
         >
           <span>{displayText}</span>
@@ -103,11 +103,11 @@ export default function Dropdown({
               key={option.value}
               type="button"
               onClick={() => handleSelect(option.value)}
-              className={`w-full !justify-start text-left px-3 py-2 hover:bg-[var(--accent)]/10
+              className={`w-full !justify-start text-left px-3 py-2 hover:bg-lime/10
                 transition-colors whitespace-nowrap ${
                   selectedValue === option.value
-                    ? "bg-[var(--accent)]/20 text-[var(--accent)]"
-                    : "text-[var(--text-white)]"
+                    ? "bg-lime/20 text-lime"
+                    : "text-white"
                 }`}
             >
               {option.label}

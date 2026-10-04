@@ -20,7 +20,7 @@ function NotFoundMessage({ title, text }: { title: string; text: string }) {
   return (
     <Section>
       <PageTitle>{title}</PageTitle>
-      <p className="text-center text-[var(--text-body)]">{text}</p>
+      <p className="text-center text-ink">{text}</p>
     </Section>
   );
 }

@@ -103,7 +103,7 @@ export default function Form({ steps }: FormProps) {
               className="relative bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-white/20"
               style={{ zIndex: steps.length - index }}
             >
-              <h3 className="text-lg font-semibold !text-[var(--text-white)] mb-4">
+              <h3 className="text-lg font-semibold !text-white mb-4">
                 {t(step.name)}
               </h3>
               <StepComponent />
@@ -115,7 +115,7 @@ export default function Form({ steps }: FormProps) {
           <Button
             type="submit"
             label={t("calculate")}
-            className="px-8 py-3 bg-[var(--accent)] text-[var(--text-on-accent)] rounded-md font-medium hover:opacity-90 transition-opacity"
+            className="px-8 py-3 bg-lime text-on-lime rounded-md font-medium hover:opacity-90 transition-opacity"
           />
         </div>
       </form>

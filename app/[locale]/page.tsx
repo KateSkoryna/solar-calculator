@@ -36,9 +36,7 @@ export default function Home() {
       <HeroSectionCover>
         <PageTitle>{t("title")}</PageTitle>
 
-        <p className="mb-8 text-xl font-[family:var(--font-inter)] text-[var(--text-white)]">
-          {t("description")}
-        </p>
+        <p className="mb-8 text-xl font-body text-white">{t("description")}</p>
 
         <div className="grid grid-cols-2 gap-3 md:gap-4 lg:flex lg:flex-col lg:items-center">
           {features.map((feature) => (
@@ -46,10 +44,10 @@ export default function Home() {
               key={feature.id}
               className="bg-white/10 backdrop-blur-md p-3 md:p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow text-left lg:w-1/2 flex flex-col border border-white/20"
             >
-              <h3 className="text-base md:text-base lg:text-2xl font-semibold !text-[var(--text-white)] mb-2 md:mb-3 h-12 md:h-12 lg:h-auto overflow-hidden text-center lg:text-left">
+              <h3 className="text-base md:text-base lg:text-2xl font-semibold !text-white mb-2 md:mb-3 h-12 md:h-12 lg:h-auto overflow-hidden text-center lg:text-left">
                 {feature.title}
               </h3>
-              <p className="text-xs md:text-base text-[var(--text-white)] flex-1">
+              <p className="text-xs md:text-base text-white flex-1">
                 {feature.description}
               </p>
             </div>
@@ -58,7 +56,7 @@ export default function Home() {
 
         <Link
           href="/calculator"
-          className="mt-8 text-center lg:text-left inline-block bg-[var(--accent)] text-[var(--text-on-accent)] px-16 py-6 rounded-full font-large text-lg hover:opacity-90 transition-opacity"
+          className="mt-8 text-center lg:text-left inline-block bg-lime text-on-lime px-16 py-6 rounded-full font-large text-lg hover:opacity-90 transition-opacity"
         >
           {t("getStarted")}
         </Link>

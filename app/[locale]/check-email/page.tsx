@@ -8,18 +8,11 @@ export default async function CheckEmailPage() {
   return (
     <Section>
       <div className="mx-auto max-w-md">
-        <div className="bg-[var(--form-bg)] p-8 rounded-lg shadow-md">
-          <h3 className="!text-[var(--accent)] text-center mb-4">
-            {t("title")}
-          </h3>
-          <p className="text-center text-[var(--text-body)] mb-6">
-            {t("message")}
-          </p>
+        <div className="bg-surface p-8 rounded-lg shadow-md">
+          <h3 className="!text-lime-soft-ink text-center mb-4">{t("title")}</h3>
+          <p className="text-center text-ink mb-6">{t("message")}</p>
           <div className="text-center">
-            <Link
-              href="/login"
-              className="text-[var(--accent)] hover:underline"
-            >
+            <Link href="/login" className="text-lime-soft-ink hover:underline">
               {t("backToLogin")}
             </Link>
           </div>

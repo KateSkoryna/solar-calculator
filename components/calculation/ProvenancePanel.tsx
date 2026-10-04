@@ -24,11 +24,11 @@ function ProvenanceRow({
 }) {
   return (
     <div className="flex justify-between gap-4 py-2">
-      <dt className="flex items-center text-sm text-[var(--text-body)]">
+      <dt className="flex items-center text-sm text-ink">
         {label}
         <InfoTooltip text={description} />
       </dt>
-      <dd className="text-sm font-medium text-[var(--text-body)]">{value}</dd>
+      <dd className="text-sm font-medium text-ink">{value}</dd>
     </div>
   );
 }
@@ -47,11 +47,11 @@ export default async function ProvenancePanel({
   const t = await getTranslations("calculation");
 
   return (
-    <div className="mx-auto w-full max-w-2xl rounded-md border border-[var(--border)] bg-[var(--card)] p-6">
-      <h2 className="mb-4 text-lg font-semibold text-[var(--accent)]">
+    <div className="mx-auto w-full max-w-2xl rounded-md border border-line-strong bg-surface p-6">
+      <h2 className="mb-4 text-lg font-semibold text-lime-soft-ink">
         {t("provenanceTitle")}
       </h2>
-      <dl className="divide-y divide-[var(--border)]">
+      <dl className="divide-y divide-line-strong">
         <ProvenanceRow
           label={t("requestedBy")}
           value={actorLabel}

@@ -21,10 +21,8 @@ export default async function OnboardingPage({
   return (
     <Section>
       <div className="mx-auto max-w-md">
-        <div className="bg-[var(--form-bg)] p-8 rounded-lg shadow-md">
-          <h3 className="!text-[var(--accent)] text-center mb-6">
-            {t("title")}
-          </h3>
+        <div className="bg-surface p-8 rounded-lg shadow-md">
+          <h3 className="!text-lime-soft-ink text-center mb-6">{t("title")}</h3>
           <OnboardingForm />
         </div>
       </div>
