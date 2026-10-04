@@ -1,32 +1,93 @@
-import NavLink from "./NavLink";
-import ClientMenu from "./ClientMenu";
-import { getTranslations } from "next-intl/server";
-import Container from "./Container";
+import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 import { auth } from "@/auth";
+import Logo from "@/components/common/Logo";
+import ButtonLink from "@/components/form/ButtonLink";
+import LanguageSwitcher from "@/components/language/LanguageSwitcher";
+import ThemeToggle from "@/components/theme/ThemeToggle";
+import { FOCUS_RING_CLASSES } from "@/lib/focus-ring";
+import {
+  buildPublicNavItems,
+  PUBLIC_NAV_MESSAGE_NAMESPACE,
+} from "@/lib/public-nav";
+import { homePath, loginPath } from "@/lib/public-paths";
+import MobileMenu from "./MobileMenu";
+import UserProfileButton from "./UserProfileButton";
 
-export default async function Header() {
-  const [t, session] = await Promise.all([getTranslations("header"), auth()]);
+export interface HeaderUser {
+  name: string;
+  imageUrl: string | null;
+}
+
+interface HeaderBarProps {
+  user: HeaderUser | null;
+}
+
+function HeaderBar({ user }: HeaderBarProps) {
+  const t = useTranslations(PUBLIC_NAV_MESSAGE_NAMESPACE);
+  const locale = useLocale();
+  const isSignedIn = user !== null;
+  const navLinks = buildPublicNavItems(locale, isSignedIn).map(
+    ({ messageKey, href }) => ({ label: t(messageKey), href }),
+  );
 
   return (
-    <header className="relative z-50 border-b-1 border-line-strong">
-      <Container>
-        <nav className="flex items-center justify-between py-4">
-          <div className="flex items-center gap-4 md:gap-8 flex-shrink min-w-0">
-            <ul className="hidden md:flex items-center gap-4 lg:gap-6">
-              <li>
-                <NavLink href="/">{t("home")}</NavLink>
-              </li>
-              <li>
-                <NavLink href="/calculator">{t("calculator")}</NavLink>
-              </li>
-            </ul>
-          </div>
+    <header className="relative z-50 border-b border-line bg-ground">
+      <div className="mx-auto flex min-h-[72px] w-full max-w-[1440px] items-center justify-between gap-4 px-4 md:px-10 lg:min-h-20 lg:px-20">
+        <Link
+          href={homePath(locale)}
+          className={`rounded-full ${FOCUS_RING_CLASSES}`}
+        >
+          <Logo />
+        </Link>
 
-          <div className="flex-shrink-0">
-            <ClientMenu session={session} />
-          </div>
+        <nav aria-label={t("mainNavigation")} className="hidden lg:block">
+          <ul className="flex items-center gap-8">
+            {navLinks.map(({ label, href }) => (
+              <li key={href} className="mb-0">
+                <Link
+                  href={href}
+                  className={`rounded-sm text-[15px] font-semibold text-ink hover:text-lime-soft-ink ${FOCUS_RING_CLASSES}`}
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </nav>
-      </Container>
+
+        <div className="flex items-center gap-3">
+          <div className="hidden items-center gap-3 lg:flex">
+            <LanguageSwitcher />
+            <ThemeToggle />
+          </div>
+          {user ? (
+            <div className="hidden lg:block">
+              <UserProfileButton name={user.name} imageUrl={user.imageUrl} />
+            </div>
+          ) : (
+            <div className="hidden md:block">
+              <ButtonLink href={loginPath(locale)} variant="dark" size="sm">
+                {t("logIn")}
+              </ButtonLink>
+            </div>
+          )}
+          <MobileMenu navLinks={navLinks} isSignedIn={isSignedIn} />
+        </div>
+      </div>
     </header>
   );
+}
+
+export default async function Header() {
+  const session = await auth();
+  const sessionUser = session?.user;
+  const user: HeaderUser | null = sessionUser
+    ? {
+        name: sessionUser.name ?? sessionUser.email ?? "",
+        imageUrl: sessionUser.image ?? null,
+      }
+    : null;
+
+  return <HeaderBar user={user} />;
 }

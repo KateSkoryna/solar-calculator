@@ -1,51 +1,63 @@
 "use client";
 
-import { useState } from "react";
-import { signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useId, useState } from "react";
+import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import { CgProfile } from "react-icons/cg";
-import { IoMdLogOut } from "react-icons/io";
-import { FaUserCircle } from "react-icons/fa";
+import { LuLogOut, LuUser } from "react-icons/lu";
+import Avatar from "@/components/common/Avatar";
+import { FOCUS_RING_CLASSES } from "@/lib/focus-ring";
+import { accountPath } from "@/lib/public-paths";
+import { signOutToHome } from "@/lib/sign-out";
 
-export default function UserProfileButton() {
-  const router = useRouter();
-  const t = useTranslations("clientmenu");
+const MENU_ITEM_CLASSES = `flex w-full items-center justify-start gap-2 rounded-md px-3 py-2.5 text-left text-[15px] font-semibold text-ink hover:bg-soft ${FOCUS_RING_CLASSES}`;
+
+interface UserProfileButtonProps {
+  name: string;
+  imageUrl: string | null;
+}
+
+export default function UserProfileButton({
+  name,
+  imageUrl,
+}: UserProfileButtonProps) {
+  const t = useTranslations("header");
   const locale = useLocale();
-  const [isDropdownOpen, setisDropdownOpen] = useState(false);
-
-  const userSignOut = async () => {
-    await signOut({ callbackUrl: `/${locale}` });
-  };
-
-  const navigateToAccount = () => {
-    router.push("/user");
-    setisDropdownOpen(false);
-  };
+  const menuId = useId();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <div className="relative">
       <button
-        onClick={() => setisDropdownOpen(!isDropdownOpen)}
-        className="p-2 rounded-lg font-bold font-body transition-colors hover:opacity-80 flex items-center gap-2 bg-surface text-ink border-2 border-line-strong focus:border-lime focus:outline-none"
-        aria-label={t("userProfile")}
+        type="button"
+        aria-label={t("userMenu")}
+        aria-expanded={isMenuOpen}
+        aria-controls={menuId}
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        className={`rounded-full ${FOCUS_RING_CLASSES}`}
       >
-        <FaUserCircle size={18} />
+        <Avatar name={name} imageUrl={imageUrl} />
       </button>
 
-      {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-surface border border-line-strong rounded-md shadow-lg py-1 z-9999">
-          <button
-            onClick={navigateToAccount}
-            className="w-full text-left px-4 py-2 text-ink hover:bg-soft flex items-center gap-2"
+      {isMenuOpen && (
+        <div
+          id={menuId}
+          className="absolute right-0 z-50 mt-2 flex w-52 flex-col gap-1 rounded-md border border-line bg-surface p-2 shadow-hover"
+        >
+          <Link
+            href={accountPath(locale)}
+            onClick={() => setIsMenuOpen(false)}
+            className={MENU_ITEM_CLASSES}
           >
-            <CgProfile size={18} /> {t("myAccount")}
-          </button>
+            <LuUser aria-hidden="true" className="size-[18px]" />
+            {t("myAccount")}
+          </Link>
           <button
-            onClick={userSignOut}
-            className="w-full text-left px-4 py-2 text-ink hover:bg-soft flex items-center gap-2"
+            type="button"
+            onClick={() => signOutToHome(locale)}
+            className={MENU_ITEM_CLASSES}
           >
-            <IoMdLogOut size={18} /> {t("logout")}
+            <LuLogOut aria-hidden="true" className="size-[18px]" />
+            {t("logOut")}
           </button>
         </div>
       )}

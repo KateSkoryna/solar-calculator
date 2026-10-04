@@ -2,7 +2,11 @@
 
 import { useTheme } from "next-themes";
 import { useTranslations } from "next-intl";
-import Image from "next/image";
+import { LuMoon, LuSun } from "react-icons/lu";
+import { FOCUS_RING_CLASSES } from "@/lib/focus-ring";
+
+const LIGHT_THEME = "light";
+const DARK_THEME = "dark";
 
 export default function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -10,24 +14,15 @@ export default function ThemeToggle() {
 
   return (
     <button
-      onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
-      className="p-2 rounded-lg font-bold font-body transition-colors hover:opacity-80 flex items-center gap-2 bg-surface text-ink border-2 border-line-strong focus:border-lime focus:outline-none"
+      type="button"
+      onClick={() =>
+        setTheme(resolvedTheme === DARK_THEME ? LIGHT_THEME : DARK_THEME)
+      }
       aria-label={t("toggleAriaLabel")}
+      className={`inline-flex size-11 items-center justify-center rounded-full border border-line-strong bg-surface text-ink hover:border-ink ${FOCUS_RING_CLASSES}`}
     >
-      <Image
-        src="/sun.svg"
-        alt={t("sunIconAlt")}
-        width={18}
-        height={18}
-        className="hidden dark:block"
-      />
-      <Image
-        src="/moon.svg"
-        alt={t("moonIconAlt")}
-        width={18}
-        height={18}
-        className="block dark:hidden"
-      />
+      <LuSun aria-hidden="true" className="hidden size-5 dark:block" />
+      <LuMoon aria-hidden="true" className="block size-5 dark:hidden" />
     </button>
   );
 }

@@ -109,33 +109,36 @@
   "theme": {
     "light": "Heller Modus",
     "dark": "Dunkler Modus",
-    "toggleAriaLabel": "Design umschalten",
-    "sunIconAlt": "Sonnensymbol",
-    "moonIconAlt": "Mondsymbol"
+    "toggleAriaLabel": "Design umschalten"
   },
   "language": {
     "en": "Englisch",
     "es": "Spanisch",
-    "de": "Deutsch"
+    "de": "Deutsch",
+    "switcherLabel": "Sprache ändern"
   },
   "clientmenu": {
-    "login": "Anmeldung",
     "signin": "Anmeldung",
-    "logout": "Abmelden",
-    "userProfile": "Profil",
-    "myAccount": "Mein Konto"
+    "logout": "Abmelden"
   },
   "header": {
     "title": "Solarrechner",
-    "home": "Startseite",
     "calculator": "Rechner",
-    "about": "Über uns"
+    "about": "Über uns",
+    "howItWorks": "So funktioniert es",
+    "myFleet": "Meine Flotte",
+    "logIn": "Anmelden",
+    "logOut": "Abmelden",
+    "myAccount": "Mein Konto",
+    "userMenu": "Kontomenü",
+    "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schließen",
+    "menuTitle": "Menü",
+    "mainNavigation": "Hauptnavigation"
   },
   "footer": {
-    "title": "Solarrechner",
-    "description": "Berechnen Sie ROI, Energieeinsparungen und CO₂-Reduktion Ihrer Solarpanels für Nutzfahrzeugflotten.",
-    "followUs": "Folge uns",
-    "copyright": "© {currentYear} Solarrechner. Alle Rechte vorbehalten."
+    "copyright": "© {currentYear} Solarrechner",
+    "tagline": "Unabhängig · Schätzungen, keine Angebote"
   },
   "calculation": {
     "notFoundTitle": "Berechnung",
