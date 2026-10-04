@@ -241,5 +241,57 @@
   },
   "workspace": {
     "savingQuickCheck": "Saving your result…"
+  },
+  "roles": {
+    "owner": "Owner",
+    "manager": "Manager",
+    "viewer": "Viewer"
+  },
+  "status": {
+    "queued": "Waiting to start",
+    "validating": "Checking your data",
+    "calculating": "Calculating",
+    "renderingCharts": "Drawing charts",
+    "generatingReport": "Making PDF",
+    "generatingRecommendations": "Writing recommendations",
+    "completed": "Ready",
+    "failed": "Failed — try again",
+    "cancelled": "Cancelled"
+  },
+  "devShowcase": {
+    "title": "Component showcase",
+    "intro": "Every shared component in every variant. This page exists only in development.",
+    "sections": {
+      "button": "Button",
+      "buttonLink": "Button link",
+      "card": "Card",
+      "input": "Input",
+      "logo": "Logo",
+      "badge": "Badge",
+      "rolePill": "Role pill",
+      "statusPill": "Status pill",
+      "avatar": "Avatar",
+      "progressBar": "Progress bar",
+      "disclosure": "Disclosure"
+    },
+    "buttonLabel": "Start my estimate",
+    "buttonWithIcon": "With icon",
+    "buttonLoading": "Saving",
+    "buttonDisabled": "Disabled",
+    "linkLabel": "Go to the calculator",
+    "cardTitle": "Card title",
+    "cardAction": "Action",
+    "cardBody": "Cards group related content and never use fully rounded corners.",
+    "inputLabel": "City",
+    "inputPlaceholder": "For example Berlin",
+    "inputHint": "We use the city to estimate sun hours.",
+    "inputError": "Please enter a city",
+    "sampleBadge": "Sample figures",
+    "infoBadge": "Free · no sign-up needed for an estimate",
+    "avatarName": "Maria Schmidt",
+    "progressReportLabel": "Drawing charts… step 4 of 6",
+    "progressStepLabel": "Step 2 of 4",
+    "disclosureSummary": "How we calculated this",
+    "disclosureBody": "Every number shows where it came from."
   }
 }

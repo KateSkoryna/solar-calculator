@@ -105,6 +105,7 @@
   --animate-grow: grow 0.8s var(--ease-out-soft) both;
   --animate-pulse: pulse 1.6s var(--ease-standard) infinite;
   --animate-spin: spin 70s linear infinite;
+  --animate-spinner: spin 0.8s linear infinite;
 
   @keyframes rise {
     from {
@@ -184,147 +185,149 @@
   }
 }
 
-body {
-  background: var(--ground);
-  color: var(--ink);
-  font-family:
-    var(--font-instrument),
-    system-ui,
-    -apple-system,
-    "Segoe UI",
-    sans-serif;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
-  margin: 0;
-  padding: 0;
-}
-
-button,
-.btn {
-  font-family: inherit;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-button:disabled,
-.btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-primary {
-  background: var(--lime);
-  color: var(--on-lime);
-}
-
-.btn-primary:hover:not(:disabled) {
-  opacity: 0.9;
-  transform: translateY(-1px);
-}
-
-.btn-secondary {
-  background: var(--surface);
-  color: var(--ink);
-  border: 2px solid var(--line-strong);
-}
-
-.btn-secondary:hover:not(:disabled) {
-  border-color: var(--lime);
-}
-
-input,
-textarea,
-select {
-  font-family: inherit;
-  font-size: 1rem;
-  transition: all 0.2s ease;
-  width: 100%;
-}
-
-a {
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-ul,
-ol {
-  margin: 0;
-  padding: 0;
-  list-style-position: inside;
-}
-
-ul {
-  list-style-type: disc;
-}
-
-ol {
-  list-style-type: decimal;
-}
-
-li {
-  margin-bottom: 0.5rem;
-  color: var(--ink);
-  line-height: 1.6;
-}
-
-li:last-child {
-  margin-bottom: 0;
-}
-
-nav ul,
-nav ol {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-nav li {
-  margin-bottom: 0;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: var(--ink);
-  font-family:
-    var(--font-bricolage),
-    system-ui,
-    -apple-system,
-    "Segoe UI",
-    sans-serif;
-  margin: 0 0 1rem 0;
-  font-weight: 800;
-}
-
-h2 {
-  font-size: 2rem;
-  line-height: 1.3;
-}
-
-.invert-link {
-  color: var(--ink);
-
-  &:hover,
-  &:focus {
-    color: var(--lime-soft-ink);
+@layer base {
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family:
+      var(--font-instrument),
+      system-ui,
+      -apple-system,
+      "Segoe UI",
+      sans-serif;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+    margin: 0;
+    padding: 0;
   }
 
-  svg {
-    color: currentColor;
+  button,
+  .btn {
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
-}
 
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+  button:disabled,
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background: var(--lime);
+    color: var(--on-lime);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: var(--surface);
+    color: var(--ink);
+    border: 2px solid var(--line-strong);
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    border-color: var(--lime);
+  }
+
+  input,
+  textarea,
+  select {
+    font-family: inherit;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    width: 100%;
+  }
+
+  a {
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  ul,
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style-position: inside;
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+
+  li {
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  li:last-child {
+    margin-bottom: 0;
+  }
+
+  nav ul,
+  nav ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  nav li {
+    margin-bottom: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--ink);
+    font-family:
+      var(--font-bricolage),
+      system-ui,
+      -apple-system,
+      "Segoe UI",
+      sans-serif;
+    margin: 0 0 1rem 0;
+    font-weight: 800;
+  }
+
+  h2 {
+    font-size: 2rem;
+    line-height: 1.3;
+  }
+
+  .invert-link {
+    color: var(--ink);
+
+    &:hover,
+    &:focus {
+      color: var(--lime-soft-ink);
+    }
+
+    svg {
+      color: currentColor;
+    }
+  }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
