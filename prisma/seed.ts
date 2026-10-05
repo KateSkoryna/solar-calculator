@@ -1,7 +1,11 @@
 import type { Vehicle } from "@/app/generated/prisma/client";
 import { ASSUMPTION_SET_V1 } from "@/lib/assumptions/v1";
 import { calculate, SCENARIO_KINDS } from "@/lib/calculation-engine";
-import { centsToAmount, toCalculationInput } from "@/lib/calculation-service";
+import {
+  toCalculationInput,
+  toInputSnapshotData,
+  toResultData,
+} from "@/lib/calculation-service";
 import { prisma } from "@/lib/prisma";
 
 const BERLIN_COORDINATES = { latitude: 52.52, longitude: 13.405 };
@@ -267,7 +271,6 @@ async function seedCalculation(params: {
   const output = calculate(input, ASSUMPTION_SET_V1);
 
   for (const kind of SCENARIO_KINDS) {
-    const result = output.scenarios[kind];
     const scenarioId = `${params.id}_${kind.toLowerCase()}`;
 
     const scenarioData = {
@@ -286,13 +289,7 @@ async function seedCalculation(params: {
       },
     });
 
-    const snapshotData = {
-      vehicleSpec: { ...input },
-      energyPriceAssumptionVersion: output.assumptionSetVersion,
-      emissionsFactorVersion: output.assumptionSetVersion,
-      solarYieldAssumptionVersion: output.assumptionSetVersion,
-      currencyConversionSourceVersion: output.assumptionSetVersion,
-    };
+    const snapshotData = toInputSnapshotData(output, kind);
     await prisma.calculationInputSnapshot.upsert({
       where: { calculationScenarioId: scenario.id },
       update: snapshotData,
@@ -303,18 +300,7 @@ async function seedCalculation(params: {
       },
     });
 
-    const resultData = {
-      paybackPeriodMonths: result.paybackMonths,
-      totalSolarYieldKwh: result.yearlySolarEnergyKwh,
-      co2SavedKg: result.co2AvoidedKgPerYear,
-      netSavingsAmount: centsToAmount(result.tenYearNetGainCents),
-      annualSavingsAmount: centsToAmount(result.annualSavingsCents),
-      oneTimeCostAmount: centsToAmount(result.oneTimeCostAfterSubsidyCents),
-      subsidyAmount: centsToAmount(result.subsidyCents),
-      savingsBreakdown: result.savingsByTypeCents,
-      cumulativeSavingsSeries: result.cumulativeSavingsSeriesCents,
-      currency: "EUR",
-    };
+    const resultData = toResultData(output, kind);
     await prisma.calculationResult.upsert({
       where: { calculationScenarioId: scenario.id },
       update: resultData,

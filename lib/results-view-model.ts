@@ -5,10 +5,18 @@ import {
   SERIES_YEARS,
 } from "@/lib/calculation-engine/constants";
 import {
+  amountToCents,
+  parseStoredCumulativeSeries,
+  parseStoredSavingsBreakdown,
+  parseStoredVehicleSpec,
+  requireCompleteScenarios,
+  type StoredCalculation,
+} from "@/lib/stored-calculation";
+import {
   SAVINGS_TYPES,
   SCENARIO_KINDS,
   type CalculationInput,
-  type CalculationOutput,
+  type InputSources,
   type InputSource,
   type PanelPlacement,
   type SavingsType,
@@ -53,10 +61,13 @@ export const INPUT_VALUE_KINDS = {
 export type InputKey = keyof CalculationInput;
 export type InputValueKind = (typeof INPUT_VALUE_KINDS)[InputKey];
 
+const INPUT_KEYS = Object.keys(INPUT_VALUE_KINDS) as InputKey[];
 const PAYS_OFF_MAX_MONTHS = SERIES_YEARS * MONTHS_PER_YEAR;
 const MINIMUM_DURATION_MONTHS = 1;
 const FIRST_YEAR = 1;
 const KILOGRAMS_PER_TONNE = 1000;
+const TONNES_DECIMAL_PLACES = 3;
+const BREAK_EVEN_YEAR_DECIMAL_PLACES = 2;
 const FULL_PERCENT = 100;
 const NO_SHARE_PERCENT = 0;
 const ALWAYS_SHOWN_SAVINGS_TYPE: SavingsType = "FEWER_BATTERY_BREAKDOWNS";
@@ -142,11 +153,35 @@ export interface ResultsViewModel {
   assumptionSetVersion: string;
 }
 
-type Scenarios = CalculationOutput["scenarios"];
+export type ResultsScenario = Pick<
+  ScenarioResult,
+  | "resolvedInput"
+  | "annualSavingsCents"
+  | "savingsByTypeCents"
+  | "oneTimeCostAfterSubsidyCents"
+  | "paybackMonths"
+  | "cumulativeSavingsSeriesCents"
+  | "co2AvoidedKgPerYear"
+  | "tenYearNetGainCents"
+>;
+
+export interface ResultsSource {
+  formulaVersion: string;
+  assumptionSetVersion: string;
+  inputSources: InputSources;
+  scenarios: Record<ScenarioKind, ResultsScenario>;
+}
+
+type Scenarios = ResultsSource["scenarios"];
 type DurationTranslator = (
   key: string,
   values: Record<string, number>,
 ) => string;
+
+function roundTo(value: number, decimalPlaces: number) {
+  const factor = 10 ** decimalPlaces;
+  return Math.round(value * factor) / factor;
+}
 
 function centsToEuros(cents: number) {
   return cents / CENTS_PER_EURO;
@@ -212,7 +247,7 @@ function paybackRange(scenarios: Scenarios): PaybackRange | null {
 
 function valueRange(
   scenarios: Scenarios,
-  pickValue: (scenario: ScenarioResult) => number,
+  pickValue: (scenario: ResultsScenario) => number,
 ): ValueRange {
   const scenarioValues = SCENARIO_KINDS.map((kind) =>
     pickValue(scenarios[kind]),
@@ -224,7 +259,7 @@ function valueRange(
   };
 }
 
-function cumulativeSavingsEuros(scenario: ScenarioResult, year: number) {
+function cumulativeSavingsEuros(scenario: ResultsScenario, year: number) {
   return centsToEuros(
     scenario.cumulativeSavingsSeriesCents[year] +
       scenario.oneTimeCostAfterSubsidyCents,
@@ -249,7 +284,10 @@ function breakEvenPoints(scenarios: Scenarios): BreakEvenPoint[] {
     return [
       {
         kind,
-        year: Math.min(paybackMonths / MONTHS_PER_YEAR, SERIES_YEARS),
+        year: roundTo(
+          Math.min(paybackMonths / MONTHS_PER_YEAR, SERIES_YEARS),
+          BREAK_EVEN_YEAR_DECIMAL_PLACES,
+        ),
         savingsEuros: centsToEuros(oneTimeCostAfterSubsidyCents),
       },
     ];
@@ -273,7 +311,7 @@ function breakEvenYearRange(scenarios: Scenarios): BreakEvenYearRange | null {
   return { earliest, latest };
 }
 
-function savingsBreakdown(realistic: ScenarioResult): SavingsLine[] {
+function savingsBreakdown(realistic: ResultsScenario): SavingsLine[] {
   return SAVINGS_TYPES.filter(
     (type) =>
       type === ALWAYS_SHOWN_SAVINGS_TYPE ||
@@ -289,10 +327,10 @@ function savingsBreakdown(realistic: ScenarioResult): SavingsLine[] {
   }));
 }
 
-function inputRows(output: CalculationOutput): InputRow[] {
+function inputRows(output: ResultsSource): InputRow[] {
   const { resolvedInput } = output.scenarios.REALISTIC;
 
-  return (Object.keys(output.inputSources) as InputKey[]).flatMap((key) => {
+  return INPUT_KEYS.flatMap((key) => {
     const source = output.inputSources[key];
     const value = resolvedInput[key];
     if (source === undefined || value === undefined) return [];
@@ -309,7 +347,7 @@ export function typicalValueInputKeys(inputs: InputRow[]): InputKey[] {
 }
 
 export function toResultsViewModel(
-  output: CalculationOutput,
+  output: ResultsSource,
   context: ResultsContext = {},
 ): ResultsViewModel {
   const { scenarios } = output;
@@ -342,9 +380,11 @@ export function toResultsViewModel(
       oneTimeCostEuros: valueRange(scenarios, (scenario) =>
         centsToEuros(scenario.oneTimeCostAfterSubsidyCents),
       ),
-      co2AvoidedTonnes: valueRange(
-        scenarios,
-        (scenario) => scenario.co2AvoidedKgPerYear / KILOGRAMS_PER_TONNE,
+      co2AvoidedTonnes: valueRange(scenarios, (scenario) =>
+        roundTo(
+          scenario.co2AvoidedKgPerYear / KILOGRAMS_PER_TONNE,
+          TONNES_DECIMAL_PLACES,
+        ),
       ),
       tenYearGainEuros: valueRange(scenarios, (scenario) =>
         centsToEuros(scenario.tenYearNetGainCents),
@@ -361,5 +401,38 @@ export function toResultsViewModel(
     inputs: inputRows(output),
     formulaVersion: output.formulaVersion,
     assumptionSetVersion: output.assumptionSetVersion,
+  };
+}
+
+export function storedCalculationToEngineOutput(
+  calculation: StoredCalculation,
+): ResultsSource {
+  const stored = requireCompleteScenarios(calculation);
+  const { inputSources } = parseStoredVehicleSpec(
+    stored.REALISTIC.inputSnapshot.vehicleSpec,
+  );
+
+  const scenarioEntries = SCENARIO_KINDS.map((kind) => {
+    const { inputSnapshot, result } = stored[kind];
+    const scenario: ResultsScenario = {
+      resolvedInput: parseStoredVehicleSpec(inputSnapshot.vehicleSpec).input,
+      annualSavingsCents: amountToCents(result.annualSavingsAmount),
+      savingsByTypeCents: parseStoredSavingsBreakdown(result.savingsBreakdown),
+      oneTimeCostAfterSubsidyCents: amountToCents(result.oneTimeCostAmount),
+      paybackMonths: result.paybackPeriodMonths,
+      cumulativeSavingsSeriesCents: parseStoredCumulativeSeries(
+        result.cumulativeSavingsSeries,
+      ),
+      co2AvoidedKgPerYear: result.co2SavedKg,
+      tenYearNetGainCents: amountToCents(result.netSavingsAmount),
+    };
+    return [kind, scenario] as const;
+  });
+
+  return {
+    formulaVersion: stored.REALISTIC.formulaVersion,
+    assumptionSetVersion: stored.REALISTIC.assumptionSetVersion,
+    inputSources,
+    scenarios: Object.fromEntries(scenarioEntries) as Scenarios,
   };
 }
