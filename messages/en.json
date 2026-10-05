@@ -475,5 +475,153 @@
         "body": "All results are estimates based on published assumptions. They are not an offer, a quote or financial advice."
       }
     }
+  },
+  "results": {
+    "actions": {
+      "changeAnswers": "Change answers",
+      "shareLink": "Share link",
+      "linkCopied": "Link copied. Anyone with it can see this result.",
+      "linkCopyFailed": "We couldn't copy the link. Copy it from the address bar instead."
+    },
+    "context": {
+      "dailyDistance": "{kilometres} km a day"
+    },
+    "verdict": {
+      "PAYS_OFF": "Yes — solar pays for itself in about <duration></duration>.",
+      "SLOWLY": "Solar pays off slowly — about <duration></duration>.",
+      "UNLIKELY": "Solar is unlikely to pay off for this setup.",
+      "unlikelySuggestion": "Try roof-only panels or check the exact numbers.",
+      "range": "Between {shortest} and {longest}, depending on sun and prices.",
+      "rangeBestCase": "In the best case about {shortest}; in the worst case it does not pay off.",
+      "lead": "After that, your fleet keeps around {annualSavings} a year that would otherwise go on fuel."
+    },
+    "duration": {
+      "long": {
+        "yearsAndMonths": "{years, plural, one {# year} other {# years}} {months, plural, one {# month} other {# months}}",
+        "yearsOnly": "{years, plural, one {# year} other {# years}}",
+        "monthsOnly": "{months, plural, one {# month} other {# months}}"
+      },
+      "short": {
+        "yearsAndMonths": "{years, plural, one {# yr} other {# yrs}} {months} mo",
+        "yearsOnly": "{years, plural, one {# yr} other {# yrs}}",
+        "monthsOnly": "{months} mo"
+      }
+    },
+    "units": {
+      "tonnes": "{value} t"
+    },
+    "tiles": {
+      "annualSavings": "Money saved each year",
+      "oneTimeCost": "One-time cost after subsidies",
+      "co2Avoided": "CO₂ avoided each year",
+      "tenYearGain": "Total gain over 10 years",
+      "range": "{low}–{high}, depending on sun and prices"
+    },
+    "chart": {
+      "title": "When do you get your money back?",
+      "subtitle": "Your savings add up each year. Once they pass the dashed line, the panels are paid off.",
+      "legend": {
+        "PESSIMISTIC": "Pessimistic",
+        "REALISTIC": "Realistic",
+        "OPTIMISTIC": "Optimistic"
+      },
+      "costLabel": "Cost {cost}",
+      "yearTick": "Yr {year}",
+      "captionWithRange": "Savings most likely pass the {cost} cost during year {year} — between year {earliest} and year {latest}.",
+      "captionSingle": "Savings most likely pass the {cost} cost during year {year}.",
+      "captionNever": "Savings most likely do not pass the {cost} cost within 10 years.",
+      "tableCaption": "Savings added up by the end of each year",
+      "tableYear": "Year",
+      "tableYearRow": "Year {year}"
+    },
+    "breakdown": {
+      "title": "Where the savings come from",
+      "subtitle": "What your fleet saves in a typical year, before upkeep of the panels.",
+      "perYear": "{amount} a year",
+      "types": {
+        "COOLING_UNIT_FUEL": "Cooling unit fuel",
+        "LESS_IDLING": "Less engine idling",
+        "FEWER_BATTERY_BREAKDOWNS": "Fewer battery breakdowns",
+        "ALTERNATOR_FUEL": "Less work for the alternator",
+        "DIRECT_CHARGING": "Charging the drive battery"
+      },
+      "hints": {
+        "COOLING_UNIT_FUEL": "The panels run the cooling unit, so it burns less fuel.",
+        "LESS_IDLING": "Drivers can stop the engine while parked and still have power.",
+        "FEWER_BATTERY_BREAKDOWNS": "Batteries stay charged, so fewer call-outs and replacements.",
+        "ALTERNATOR_FUEL": "The engine spends less fuel on making electricity.",
+        "DIRECT_CHARGING": "Sunlight replaces electricity you would buy from the grid."
+      }
+    },
+    "howWeCalculated": {
+      "summary": "How we calculated this",
+      "intro": "Based on the sunshine at your location, today's fuel and electricity prices there and typical panel wear over time. These are estimates, not a quote.",
+      "inputsTitle": "What we used",
+      "sources": {
+        "PROVIDED": "You told us",
+        "PRESET": "Typical value",
+        "MEASURED": "Measured"
+      },
+      "methodVersion": "Method version",
+      "assumptionsVersion": "Assumptions used",
+      "yes": "Yes",
+      "no": "No",
+      "inputs": {
+        "manufacturer": "Manufacturer",
+        "model": "Model",
+        "city": "City",
+        "vehicleType": "Vehicle type",
+        "engineType": "Engine",
+        "parkingType": "Where they park",
+        "solarPanelPlacement": "Panel placement",
+        "cargoType": "Cargo",
+        "coolingUnitType": "Cooling unit",
+        "quantity": "Number of vehicles",
+        "averageDailyDistanceKm": "Daily distance per vehicle",
+        "operatingMonthsPerYear": "Months in use each year",
+        "latitude": "Latitude",
+        "longitude": "Longitude",
+        "energyConsumptionKwhPer100km": "Energy use",
+        "solarPanelCapacityKw": "Panel power per vehicle",
+        "payloadReserveKg": "Weight to keep free",
+        "maxRoofLoadKg": "Max weight on the roof",
+        "idleHoursPerDay": "Parked with the engine running",
+        "winterUsage": "Used in winter",
+        "countryCode": "Country",
+        "subsidyOverrideCents": "Subsidy"
+      },
+      "values": {
+        "quantity": "{value}",
+        "averageDailyDistanceKm": "{value} km",
+        "operatingMonthsPerYear": "{value}",
+        "latitude": "{value}°",
+        "longitude": "{value}°",
+        "energyConsumptionKwhPer100km": "{value} kWh per 100 km",
+        "solarPanelCapacityKw": "{value} kW",
+        "payloadReserveKg": "{value} kg",
+        "maxRoofLoadKg": "{value} kg",
+        "idleHoursPerDay": "{value} hours a day"
+      },
+      "engineType": {
+        "DIESEL": "Diesel",
+        "PETROL": "Petrol",
+        "ELECTRIC": "Electric",
+        "HYBRID": "Hybrid"
+      }
+    },
+    "save": {
+      "title": "Want to keep this result?",
+      "text": "Save it to your fleet to come back to it, share it with your team and add more vehicles.",
+      "button": "Save to my fleet",
+      "failed": "We couldn't save this result. Try again.",
+      "preciseTitle": "Want a more precise result?",
+      "presetIntro": "This quick estimate used typical values instead of your own numbers for:",
+      "preciseText": "Save it to your fleet to enter your real numbers, add the rest of your vehicles and share the result with your team."
+    },
+    "error": {
+      "title": "We couldn't read this result",
+      "text": "The link is incomplete or out of date. Answer the questions again to get a fresh estimate.",
+      "action": "Go to the calculator"
+    }
   }
 }
