@@ -2,58 +2,21 @@ import { useFormatter, useLocale, useTranslations } from "next-intl";
 import Badge from "@/components/common/Badge";
 import Disclosure from "@/components/common/Disclosure";
 import Text from "@/components/common/Text";
-import { CENTS_PER_EURO } from "@/lib/calculation-engine/constants";
+import { formatInputValue } from "@/lib/input-value-format";
 import type { ProvenanceDetails } from "@/lib/stored-calculation";
-import {
-  RESULTS_CURRENCY,
-  type InputKey,
-  type InputRow,
-} from "@/lib/results-view-model";
-
-const NUMBER_FRACTION_DIGITS = 2;
-const CALCULATOR_OPTIONS_NAMESPACE = "calculator.options";
-const OPTION_NAMESPACES: Partial<Record<InputKey, string>> = {
-  vehicleType: `${CALCULATOR_OPTIONS_NAMESPACE}.vehicleType`,
-  parkingType: `${CALCULATOR_OPTIONS_NAMESPACE}.parkingType`,
-  solarPanelPlacement: `${CALCULATOR_OPTIONS_NAMESPACE}.solarPanelPlacement`,
-  cargoType: `${CALCULATOR_OPTIONS_NAMESPACE}.cargoType`,
-  coolingUnitType: `${CALCULATOR_OPTIONS_NAMESPACE}.coolingUnitType`,
-  engineType: "results.howWeCalculated.engineType",
-};
+import type { InputRow } from "@/lib/results-view-model";
 
 function useInputValueFormatter() {
   const translate = useTranslations();
-  const t = useTranslations("results.howWeCalculated");
   const format = useFormatter();
   const locale = useLocale();
 
-  return ({ key, kind, value }: InputRow) => {
-    if (kind === "option") {
-      return translate(`${OPTION_NAMESPACES[key]}.${value}`);
-    }
-    if (kind === "boolean") return value ? t("yes") : t("no");
-    if (kind === "country") {
-      return (
-        new Intl.DisplayNames([locale], { type: "region" }).of(String(value)) ??
-        String(value)
-      );
-    }
-    if (kind === "money") {
-      return format.number(Number(value) / CENTS_PER_EURO, {
-        style: "currency",
-        currency: RESULTS_CURRENCY,
-        maximumFractionDigits: 0,
-      });
-    }
-    if (kind === "number") {
-      return t(`values.${key}`, {
-        value: format.number(Number(value), {
-          maximumFractionDigits: NUMBER_FRACTION_DIGITS,
-        }),
-      });
-    }
-    return String(value);
-  };
+  return (row: InputRow) =>
+    formatInputValue(row, {
+      translate,
+      locale,
+      formatNumber: format.number,
+    });
 }
 
 interface DetailRowProps {
