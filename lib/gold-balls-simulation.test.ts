@@ -1,5 +1,6 @@
 import {
   BALL_COUNT,
+  WANDERER_COUNT,
   GoldBallsSimulation,
   type Bounds,
   type SunShape,
@@ -12,6 +13,7 @@ const FALL_FRAMES = 60 * 1.5;
 const TOTAL_FRAMES = 60 * 10;
 const SEED_SETTLED_FRAMES = 60 * 5.2;
 const MAX_SINGLE_BALL_RADIUS = 9;
+const JOINING_BALL_COUNT = BALL_COUNT - WANDERER_COUNT;
 const PHASE_TOLERANCE_PIXELS = 1;
 
 function seededRandom(seed: number) {
@@ -129,7 +131,7 @@ describe("GoldBallsSimulation", () => {
       largestRadius = Math.max(largestRadius, simulation.cluster?.radius ?? 0);
     }
 
-    expect(absorbedCounts.size).toBeGreaterThan(BALL_COUNT / 2);
+    expect(absorbedCounts.size).toBeGreaterThan(JOINING_BALL_COUNT / 2);
     expect(largestRadius).toBeGreaterThan(MAX_SINGLE_BALL_RADIUS);
   });
 
@@ -147,16 +149,48 @@ describe("GoldBallsSimulation", () => {
     });
     expect(
       simulation.balls.filter((ball) => ball.state === "absorbed"),
-    ).toHaveLength(BALL_COUNT - 1);
+    ).toHaveLength(JOINING_BALL_COUNT - 1);
   });
 
-  it("stops moving once merged", () => {
+  it("keeps a few sparkles wandering inside the box after the sun forms", () => {
     const simulation = createSimulation();
     run(simulation, TOTAL_FRAMES);
-    const merged = simulation.balls.map(({ x, y }) => ({ x, y }));
+    const wanderers = simulation.balls.filter((ball) => ball.isWanderer);
+    const before = wanderers.map(({ x, y }) => ({ x, y }));
+    const cluster = { ...simulation.cluster! };
 
-    run(simulation, 10);
+    run(simulation, 120);
 
-    expect(simulation.balls.map(({ x, y }) => ({ x, y }))).toEqual(merged);
+    expect(wanderers).toHaveLength(WANDERER_COUNT);
+    expect(wanderers.every((ball) => ball.state === "free")).toBe(true);
+    expect(wanderers.map(({ x, y }) => ({ x, y }))).not.toEqual(before);
+    expect(simulation.cluster).toMatchObject({
+      x: cluster.x,
+      y: cluster.y,
+      radius: cluster.radius,
+    });
+    for (const ball of wanderers) {
+      expect(ball.x).toBeGreaterThanOrEqual(0);
+      expect(ball.x).toBeLessThanOrEqual(BOUNDS.width);
+      expect(ball.y).toBeGreaterThanOrEqual(0);
+      expect(ball.y).toBeLessThanOrEqual(BOUNDS.height);
+      expect(
+        Math.hypot(ball.x - SUN.center.x, ball.y - SUN.center.y),
+      ).toBeGreaterThanOrEqual(SUN.radius - PHASE_TOLERANCE_PIXELS);
+    }
+  });
+
+  it("can start with only the wandering sparkles", () => {
+    const simulation = GoldBallsSimulation.ambient(BOUNDS, seededRandom(3));
+    simulation.setSun(SUN);
+
+    run(simulation, 60);
+
+    expect(simulation.isMerged).toBe(true);
+    expect(simulation.balls).toHaveLength(WANDERER_COUNT);
+    for (const ball of simulation.balls) {
+      expect(ball.y).toBeGreaterThanOrEqual(0);
+      expect(ball.y).toBeLessThanOrEqual(BOUNDS.height);
+    }
   });
 });
