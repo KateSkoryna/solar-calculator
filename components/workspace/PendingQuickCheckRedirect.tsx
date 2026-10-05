@@ -13,11 +13,13 @@ const SERVER_ERROR_STATUS = 500;
 interface PendingQuickCheckRedirectProps {
   fleetId: string;
   fleetPath: string;
+  overviewPath: string;
 }
 
 export default function PendingQuickCheckRedirect({
   fleetId,
   fleetPath,
+  overviewPath,
 }: PendingQuickCheckRedirectProps) {
   const t = useTranslations("workspace");
   const router = useRouter();
@@ -26,7 +28,8 @@ export default function PendingQuickCheckRedirect({
     const pendingQuickCheck = readPendingQuickCheck();
 
     if (!pendingQuickCheck) {
-      router.replace(fleetPath);
+      clearPendingQuickCheck();
+      router.replace(overviewPath);
       return;
     }
 
@@ -51,7 +54,7 @@ export default function PendingQuickCheckRedirect({
           router.replace(`${fleetPath}/calculations/${calculation.id}`);
         }
       } catch {
-        if (!isCancelled) router.replace(fleetPath);
+        if (!isCancelled) router.replace(overviewPath);
       }
     }
 
@@ -60,7 +63,7 @@ export default function PendingQuickCheckRedirect({
     return () => {
       isCancelled = true;
     };
-  }, [fleetId, fleetPath, router]);
+  }, [fleetId, fleetPath, overviewPath, router]);
 
   return <p className="p-6 text-center">{t("savingQuickCheck")}</p>;
 }
