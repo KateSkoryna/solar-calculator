@@ -1852,6 +1852,63 @@ const tick = setInterval(
 
 The address is kept in `sessionStorage`, not in the web address, so it does not end up in browser history, server logs or referrer headers.
 
+### Nested layouts
+
+A `layout.tsx` wraps every page below its folder and stays mounted while you move between them. `app/[locale]/[fleetSlug]/layout.tsx` is the one place that checks "does this fleet exist and am I a member?", so the audit page, the calculation page and every future workspace page get the check and the navigation without repeating either. The layout is a server component: it loads data first and answers 404 before anything renders.
+
+```tsx
+const workspace = await loadWorkspaceLayout(session, fleetSlug);
+
+if (!workspace) {
+  notFound();
+}
+```
+
+A non-member and an unknown slug look the same to the visitor, so the page does not reveal which fleets exist.
+
+### Rendering several navigations from one config
+
+The sidebar, the icon rail and the bottom tab bar show the same four destinations. They read one constant instead of each keeping its own list, so adding a destination is a one-line change and the three can never disagree:
+
+```ts
+export const WORKSPACE_NAV_ITEMS: WorkspaceNavItem[] = [
+  { messageKey: "overview", routeSuffix: "", icon: LuLayoutDashboard },
+  { messageKey: "vehicles", routeSuffix: "/vehicles", icon: LuTruck },
+  {
+    messageKey: "calculations",
+    routeSuffix: "/calculations",
+    icon: LuCalculator,
+  },
+  { messageKey: "audit", routeSuffix: "/audit", icon: LuUsers },
+];
+```
+
+All three navigations render at once in the HTML; Tailwind's `hidden md:flex lg:hidden` style classes decide which one is visible at each width.
+
+### Safe-area insets
+
+Phones with a home indicator draw over the bottom edge of the screen. `env(safe-area-inset-bottom)` is the height of that area, so a fixed bottom bar adds it as padding and the page content reserves the same space, so nothing ends up hidden behind the bar:
+
+```tsx
+<nav className="fixed inset-x-0 bottom-0 pb-[env(safe-area-inset-bottom)] md:hidden">
+```
+
+```tsx
+<div className="pb-[calc(76px+env(safe-area-inset-bottom))] md:pb-0">
+  {children}
+</div>
+```
+
+### `aria-current`
+
+`aria-current="page"` tells a screen reader which link points at the page you are on, and it doubles as a styling hook. The Overview link is current only on the exact fleet address, while the others stay current on their sub-pages (a single calculation keeps "Calculations" highlighted):
+
+```ts
+return isFleetRoot
+  ? normalizedPathname === href
+  : normalizedPathname === href || normalizedPathname.startsWith(`${href}/`);
+```
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit

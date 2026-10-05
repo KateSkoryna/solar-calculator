@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
-import LegalNoticePage from "@/app/[locale]/legal-notice/page";
-import PrivacyPage from "@/app/[locale]/privacy/page";
+import LegalNoticePage from "@/app/[locale]/(public)/legal-notice/page";
+import PrivacyPage from "@/app/[locale]/(public)/privacy/page";
 import { SITE_OWNER_EMAIL, SITE_OWNER_NAME } from "@/lib/site-owner";
 import {
   englishMessages,

@@ -323,7 +323,17 @@
     "error": "No hemos podido crear tu espacio de trabajo. Revisa el nombre de la empresa (de 2 a 80 caracteres) e inténtalo de nuevo."
   },
   "workspace": {
-    "savingQuickCheck": "Guardando tu resultado…"
+    "savingQuickCheck": "Guardando tu resultado…",
+    "nav": {
+      "overview": "Resumen",
+      "vehicles": "Vehículos",
+      "calculations": "Cálculos",
+      "audit": "Equipo y actividad"
+    },
+    "mainNavigation": "Principal",
+    "fleetLabel": "Flota",
+    "switchFleet": "Cambiar de flota",
+    "home": "Inicio de Solar Calculator"
   },
   "roles": {
     "owner": "Propietario",

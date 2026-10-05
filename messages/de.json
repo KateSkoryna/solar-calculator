@@ -323,7 +323,17 @@
     "error": "Wir konnten Ihren Arbeitsbereich nicht erstellen. Prüfen Sie den Firmennamen (2–80 Zeichen) und versuchen Sie es erneut."
   },
   "workspace": {
-    "savingQuickCheck": "Ihr Ergebnis wird gespeichert…"
+    "savingQuickCheck": "Ihr Ergebnis wird gespeichert…",
+    "nav": {
+      "overview": "Übersicht",
+      "vehicles": "Fahrzeuge",
+      "calculations": "Berechnungen",
+      "audit": "Team & Aktivität"
+    },
+    "mainNavigation": "Hauptnavigation",
+    "fleetLabel": "Flotte",
+    "switchFleet": "Flotte wechseln",
+    "home": "Solarrechner Startseite"
   },
   "roles": {
     "owner": "Inhaber",

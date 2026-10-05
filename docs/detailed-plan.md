@@ -603,23 +603,6 @@ Every step follows [`design-guidelines.md`](./design-guidelines.md) and the prev
   3. Standard checks S1–S4, S6, S8–S10 pass.
 - **Owner review (browser):** `/en/login`, `/en/register`, `/en/check-email`, `/en/onboarding` at three widths against the Login previews; the full sign-up flow with an email link and with Google.
 
-### Step 3.11 — Workspace shell
-
-- **Depends on:** 3.10
-- **Purpose:** Workspace navigation as a sidebar (desktop), icon rail (tablet) and bottom tab bar (mobile).
-- **Concepts to learn:** nested layouts, rendering several navigations from one config, safe-area insets, `aria-current`
-- **Instructions:**
-  1. Create `lib/workspace-nav.ts` with `WORKSPACE_NAV_ITEMS` (Overview → `/[slug]`, Vehicles → `/[slug]/vehicles`, Calculations → `/[slug]/calculations`, Team & activity → `/[slug]/audit`; each with message key and Lucide icon).
-  2. Create `app/[locale]/[fleetSlug]/layout.tsx` (server): resolve the fleet by slug and require membership (404 otherwise); render `WorkspaceSidebar`, `WorkspaceIconRail` and `WorkspaceTabBar` from the constant, plus `FleetSwitcher` (hidden chevron with one fleet) and the user menu.
-  3. The tab bar is fixed with `env(safe-area-inset-bottom)` padding; the content reserves the same space.
-  4. Vehicles and Calculations links will 404 until step 3.14; the Overview page is built in 3.13.
-- **Definition of done:**
-  1. Tests: all three navs render exactly the items in `WORKSPACE_NAV_ITEMS`; the item for the current path has `aria-current="page"`; the tab bar nav has `aria-label`; the fleet switcher shows a menu with several fleets and a static label with one.
-  2. A test proves the layout's data loader returns not-found for a non-member.
-  3. `grep -rn "\"/audit\"\|'/audit'" components app` shows the route only inside `lib/workspace-nav.ts`.
-  4. Standard checks S1–S4, S6, S8–S10 pass.
-- **Owner review (browser):** signed in, `/en/berlin/audit` at 1440 → 834 → 390 px: sidebar → rail → tab bar, correct active item, nothing hidden behind the tab bar, dark mode active item in lime.
-
 ### Step 3.12 — Team & activity page
 
 - **Depends on:** 3.11

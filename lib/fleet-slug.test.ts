@@ -78,17 +78,24 @@ describe("createUniqueFleetSlug", () => {
   });
 });
 
+function isRouteGroup(folderName: string) {
+  return folderName.startsWith("(");
+}
+
+function listStaticRouteFolderNames(directory: string): string[] {
+  return fs
+    .readdirSync(directory, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && !entry.name.startsWith("["))
+    .flatMap((entry) =>
+      isRouteGroup(entry.name)
+        ? listStaticRouteFolderNames(path.join(directory, entry.name))
+        : [entry.name],
+    );
+}
+
 describe("RESERVED_FLEET_SLUGS", () => {
-  it("contains every static route folder under app/[locale]", () => {
-    const staticFolderNames = fs
-      .readdirSync(LOCALE_APP_DIRECTORY, { withFileTypes: true })
-      .filter(
-        (entry) =>
-          entry.isDirectory() &&
-          !entry.name.startsWith("[") &&
-          !entry.name.startsWith("("),
-      )
-      .map((entry) => entry.name);
+  it("contains every static route folder under app/[locale], including those inside route groups", () => {
+    const staticFolderNames = listStaticRouteFolderNames(LOCALE_APP_DIRECTORY);
 
     expect(staticFolderNames.length).toBeGreaterThan(0);
     staticFolderNames.forEach((folderName) =>
