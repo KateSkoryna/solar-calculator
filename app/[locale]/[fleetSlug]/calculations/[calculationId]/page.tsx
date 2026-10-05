@@ -11,7 +11,7 @@ import {
 import { findFleetBySlug } from "@/lib/fleet-repo";
 import Section from "@/components/layout/Section";
 import PageTitle from "@/components/common/PageTitle";
-import StatTile from "@/components/calculation/StatTile";
+import StatTile from "@/components/results/StatTile";
 import ProvenancePanel from "@/components/calculation/ProvenancePanel";
 
 const DISPLAYED_SCENARIO_KIND = ScenarioKind.REALISTIC;
@@ -110,7 +110,7 @@ export default async function CalculationResultPage({
         {calculation.vehicle.manufacturer} {calculation.vehicle.model}
       </PageTitle>
 
-      <div className="mx-auto mb-10 grid w-full max-w-4xl grid-cols-2 gap-6 sm:grid-cols-4">
+      <div className="mx-auto mb-10 grid w-full max-w-4xl gap-4 md:grid-cols-2">
         <StatTile
           label={t("paybackPeriod")}
           value={
@@ -118,22 +118,22 @@ export default async function CalculationResultPage({
               ? t("noPayback")
               : `${result.paybackPeriodMonths.toFixed(1)} ${t("paybackUnit")}`
           }
-          tooltip={t("paybackPeriodTooltip")}
+          explanation={t("paybackPeriodTooltip")}
         />
         <StatTile
           label={t("solarYield")}
           value={`${result.totalSolarYieldKwh.toFixed(0)} kWh`}
-          tooltip={t("solarYieldTooltip")}
+          explanation={t("solarYieldTooltip")}
         />
         <StatTile
           label={t("co2Saved")}
           value={`${result.co2SavedKg.toFixed(0)} kg`}
-          tooltip={t("co2SavedTooltip")}
+          explanation={t("co2SavedTooltip")}
         />
         <StatTile
           label={t("netSavings")}
           value={`${Number(result.netSavingsAmount).toFixed(2)} ${result.currency}`}
-          tooltip={t("netSavingsTooltip")}
+          explanation={t("netSavingsTooltip")}
         />
       </div>
 

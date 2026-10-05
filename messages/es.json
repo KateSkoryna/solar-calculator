@@ -475,5 +475,153 @@
         "body": "Todos los resultados son estimaciones basadas en supuestos publicados. No constituyen una oferta, un presupuesto ni asesoramiento financiero."
       }
     }
+  },
+  "results": {
+    "actions": {
+      "changeAnswers": "Cambiar respuestas",
+      "shareLink": "Compartir enlace",
+      "linkCopied": "Enlace copiado. Cualquiera que lo tenga puede ver este resultado.",
+      "linkCopyFailed": "No pudimos copiar el enlace. Cópialo desde la barra de direcciones."
+    },
+    "context": {
+      "dailyDistance": "{kilometres} km al día"
+    },
+    "verdict": {
+      "PAYS_OFF": "Sí: la energía solar se amortiza en aproximadamente <duration></duration>.",
+      "SLOWLY": "La energía solar se amortiza despacio: en aproximadamente <duration></duration>.",
+      "UNLIKELY": "Es poco probable que la energía solar se amortice con esta configuración.",
+      "unlikelySuggestion": "Prueba con paneles solo en el techo o revisa las cifras exactas.",
+      "range": "Entre {shortest} y {longest}, según el sol y los precios.",
+      "rangeBestCase": "En el mejor de los casos, en aproximadamente {shortest}; en el peor, no se amortiza.",
+      "lead": "Después, tu flota se queda con unos {annualSavings} al año que de otro modo se irían en combustible."
+    },
+    "duration": {
+      "long": {
+        "yearsAndMonths": "{years, plural, one {# año} other {# años}} y {months, plural, one {# mes} other {# meses}}",
+        "yearsOnly": "{years, plural, one {# año} other {# años}}",
+        "monthsOnly": "{months, plural, one {# mes} other {# meses}}"
+      },
+      "short": {
+        "yearsAndMonths": "{years} a {months} m",
+        "yearsOnly": "{years} a",
+        "monthsOnly": "{months} m"
+      }
+    },
+    "units": {
+      "tonnes": "{value} t"
+    },
+    "tiles": {
+      "annualSavings": "Dinero ahorrado cada año",
+      "oneTimeCost": "Coste único tras las ayudas",
+      "co2Avoided": "CO₂ evitado cada año",
+      "tenYearGain": "Ganancia total en 10 años",
+      "range": "{low}–{high}, según el sol y los precios"
+    },
+    "chart": {
+      "title": "¿Cuándo recuperas tu dinero?",
+      "subtitle": "Tus ahorros se suman cada año. Cuando superan la línea discontinua, los paneles están pagados.",
+      "legend": {
+        "PESSIMISTIC": "Pesimista",
+        "REALISTIC": "Realista",
+        "OPTIMISTIC": "Optimista"
+      },
+      "costLabel": "Coste {cost}",
+      "yearTick": "Año {year}",
+      "captionWithRange": "Lo más probable es que los ahorros superen el coste de {cost} durante el año {year}, entre el año {earliest} y el año {latest}.",
+      "captionSingle": "Lo más probable es que los ahorros superen el coste de {cost} durante el año {year}.",
+      "captionNever": "Lo más probable es que los ahorros no superen el coste de {cost} en 10 años.",
+      "tableCaption": "Ahorros acumulados al final de cada año",
+      "tableYear": "Año",
+      "tableYearRow": "Año {year}"
+    },
+    "breakdown": {
+      "title": "De dónde viene el ahorro",
+      "subtitle": "Lo que ahorra tu flota en un año normal, antes del mantenimiento de los paneles.",
+      "perYear": "{amount} al año",
+      "types": {
+        "COOLING_UNIT_FUEL": "Combustible del equipo de frío",
+        "LESS_IDLING": "Menos ralentí",
+        "FEWER_BATTERY_BREAKDOWNS": "Menos averías de batería",
+        "ALTERNATOR_FUEL": "Menos trabajo para el alternador",
+        "DIRECT_CHARGING": "Carga de la batería de tracción"
+      },
+      "hints": {
+        "COOLING_UNIT_FUEL": "Los paneles alimentan el equipo de frío, que gasta menos combustible.",
+        "LESS_IDLING": "Los conductores pueden apagar el motor al estacionar y seguir teniendo energía.",
+        "FEWER_BATTERY_BREAKDOWNS": "Las baterías se mantienen cargadas: menos asistencias y sustituciones.",
+        "ALTERNATOR_FUEL": "El motor gasta menos combustible en generar electricidad.",
+        "DIRECT_CHARGING": "La luz del sol sustituye la electricidad que comprarías de la red."
+      }
+    },
+    "howWeCalculated": {
+      "summary": "Cómo lo calculamos",
+      "intro": "Nos basamos en las horas de sol de tu ubicación, los precios actuales del combustible y la electricidad allí y el desgaste habitual de los paneles. Son estimaciones, no un presupuesto.",
+      "inputsTitle": "Qué datos usamos",
+      "sources": {
+        "PROVIDED": "Nos lo dijiste",
+        "PRESET": "Valor típico",
+        "MEASURED": "Medido"
+      },
+      "methodVersion": "Versión del método",
+      "assumptionsVersion": "Supuestos utilizados",
+      "yes": "Sí",
+      "no": "No",
+      "inputs": {
+        "manufacturer": "Fabricante",
+        "model": "Modelo",
+        "city": "Ciudad",
+        "vehicleType": "Tipo de vehículo",
+        "engineType": "Motor",
+        "parkingType": "Dónde aparcan",
+        "solarPanelPlacement": "Ubicación de los paneles",
+        "cargoType": "Carga",
+        "coolingUnitType": "Equipo de frío",
+        "quantity": "Número de vehículos",
+        "averageDailyDistanceKm": "Distancia diaria por vehículo",
+        "operatingMonthsPerYear": "Meses de uso al año",
+        "latitude": "Latitud",
+        "longitude": "Longitud",
+        "energyConsumptionKwhPer100km": "Consumo de energía",
+        "solarPanelCapacityKw": "Potencia de paneles por vehículo",
+        "payloadReserveKg": "Peso que hay que dejar libre",
+        "maxRoofLoadKg": "Peso máximo en el techo",
+        "idleHoursPerDay": "Aparcado con el motor en marcha",
+        "winterUsage": "Se usa en invierno",
+        "countryCode": "País",
+        "subsidyOverrideCents": "Ayuda"
+      },
+      "values": {
+        "quantity": "{value}",
+        "averageDailyDistanceKm": "{value} km",
+        "operatingMonthsPerYear": "{value}",
+        "latitude": "{value}°",
+        "longitude": "{value}°",
+        "energyConsumptionKwhPer100km": "{value} kWh por 100 km",
+        "solarPanelCapacityKw": "{value} kW",
+        "payloadReserveKg": "{value} kg",
+        "maxRoofLoadKg": "{value} kg",
+        "idleHoursPerDay": "{value} horas al día"
+      },
+      "engineType": {
+        "DIESEL": "Diésel",
+        "PETROL": "Gasolina",
+        "ELECTRIC": "Eléctrico",
+        "HYBRID": "Híbrido"
+      }
+    },
+    "save": {
+      "title": "¿Quieres conservar este resultado?",
+      "text": "Guárdalo en tu flota para volver a él, compartirlo con tu equipo y añadir más vehículos.",
+      "button": "Guardar en mi flota",
+      "failed": "No pudimos guardar este resultado. Inténtalo de nuevo.",
+      "preciseTitle": "¿Quieres un resultado más preciso?",
+      "presetIntro": "Esta estimación rápida usó valores típicos en lugar de tus propias cifras para:",
+      "preciseText": "Guárdala en tu flota para introducir tus cifras reales, añadir el resto de tus vehículos y compartir el resultado con tu equipo."
+    },
+    "error": {
+      "title": "No pudimos leer este resultado",
+      "text": "El enlace está incompleto o desactualizado. Responde de nuevo a las preguntas para obtener una estimación nueva.",
+      "action": "Ir a la calculadora"
+    }
   }
 }

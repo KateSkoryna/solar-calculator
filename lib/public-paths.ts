@@ -33,3 +33,7 @@ export const RESULTS_ANSWERS_PARAMETER = "answers";
 export function resultsPath(locale: string, encodedAnswers: string) {
   return `/${locale}/results?${RESULTS_ANSWERS_PARAMETER}=${encodedAnswers}`;
 }
+
+export function registerPath(locale: string) {
+  return `/${locale}/register`;
+}
