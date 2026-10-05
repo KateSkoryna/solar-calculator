@@ -13,6 +13,10 @@ import {
   SUN_HIGHLIGHT_RADIUS_RATIO,
 } from "@/lib/sun-highlight";
 import {
+  hasPlayedSunAnimation,
+  markSunAnimationPlayed,
+} from "@/lib/sun-animation-session";
+import {
   REDUCED_MOTION_MEDIA_QUERY,
   useMediaQuery,
 } from "@/lib/use-media-query";
@@ -47,7 +51,11 @@ export default function AnimatedSun() {
     const context = canvas?.getContext("2d");
     if (prefersReducedMotion || !canvas || !sunElement || !container) return;
 
-    if (!context || typeof ResizeObserver === "undefined") {
+    if (
+      !context ||
+      typeof ResizeObserver === "undefined" ||
+      hasPlayedSunAnimation()
+    ) {
       const revealFrame = requestAnimationFrame(() => setIsMerged(true));
       return () => cancelAnimationFrame(revealFrame);
     }
@@ -125,6 +133,7 @@ export default function AnimatedSun() {
       draw();
 
       if (simulation.isMerged) {
+        markSunAnimationPlayed();
         setIsMerged(true);
         return;
       }
