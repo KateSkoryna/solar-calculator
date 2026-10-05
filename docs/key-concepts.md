@@ -1705,6 +1705,71 @@ const form = useForm<CalculatorFormValues>({
 
 If Continue finds an invalid number inside the closed "I know the exact numbers" section, the wizard opens the section and moves focus to that field, so the error is never hidden.
 
+### Humanising durations
+
+The engine reports payback as a number of months, sometimes with decimals ("52.3"). People think in years and months, so the number is rounded and split into parts first, and only then turned into words by the translation file, which knows the plural rules of each language:
+
+```ts
+export function humaniseDuration(totalMonths: number): DurationParts {
+  const wholeMonths = Math.max(
+    MINIMUM_DURATION_MONTHS,
+    Math.round(totalMonths),
+  );
+  return {
+    years: Math.floor(wholeMonths / MONTHS_PER_YEAR),
+    months: wholeMonths % MONTHS_PER_YEAR,
+  };
+}
+```
+
+The English message is `{years, plural, one {# year} other {# years}} {months, plural, one {# month} other {# months}}`, so 52 months becomes "4 years 4 months" and 13 months becomes "1 year 1 month". German uses the dative forms ("4 Jahren 4 Monaten") because the duration always follows "nach" or "zwischen".
+
+### Locale-aware number, currency and unit formatting
+
+"€4,200" in English is "4.200 €" in German and "4200 €" in Spanish: the symbol's position, the thousands separator and the spacing all change. Gluing a "€" onto a number by hand is therefore always wrong for someone. The `Intl` formatter, reached through next-intl's `useFormatter`, does it per locale:
+
+```ts
+const money = (euros: number) =>
+  format.number(euros, {
+    style: "currency",
+    currency: RESULTS_CURRENCY,
+    maximumSignificantDigits: MONEY_SIGNIFICANT_DIGITS,
+  });
+```
+
+Three significant digits also rounds to what matters ("€168,000", not "€168,368.19"). Units that `Intl` does not know, such as tonnes, go through a translated message (`"{value} t"`) with the number formatted separately.
+
+### Accessible charts (figcaption and hidden table)
+
+A chart is a picture: a screen reader cannot read lines, and anyone can misread them. Two additions make it usable for everybody. The `<figcaption>` says the conclusion in words, and a visually hidden table carries the exact numbers of all three lines:
+
+```tsx
+<figcaption>
+  <Text size="small" tone="muted">
+    {caption}
+  </Text>
+</figcaption>
+<table className="sr-only">
+  <caption>{t("tableCaption")}</caption>
+```
+
+The drawn chart itself is marked `aria-hidden`, so assistive technology reads the caption and the table instead of hundreds of SVG shapes. The three lines also differ by thickness and dash pattern, never by colour alone.
+
+### View models shared by several pages
+
+The engine returns raw data: cents, months, three scenarios. The page needs decisions: which verdict sentence, which tiles, which chart points. A view model is one pure function that makes all those decisions, so components only display what they are given:
+
+```ts
+export function verdictVariantFor(
+  paybackMonths: number | null,
+): VerdictVariant {
+  if (paybackMonths === null) return "UNLIKELY";
+  return paysOffWithinSeries(paybackMonths) ? "PAYS_OFF" : "SLOWLY";
+}
+```
+
+Because it has no React and no translations inside, it is easy to test with plain values, and the saved fleet result page can feed it stored data and get exactly the same screen as the public page.
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit
