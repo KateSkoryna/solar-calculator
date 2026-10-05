@@ -27,3 +27,9 @@ export function privacyPath(locale: string) {
 export function legalNoticePath(locale: string) {
   return `/${locale}/legal-notice`;
 }
+
+export const RESULTS_ANSWERS_PARAMETER = "answers";
+
+export function resultsPath(locale: string, encodedAnswers: string) {
+  return `/${locale}/results?${RESULTS_ANSWERS_PARAMETER}=${encodedAnswers}`;
+}

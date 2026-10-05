@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { toErrorResponse } from "@/lib/api-errors";
 import {
   citySearchQuerySchema,
   GEOCODING_UNAVAILABLE_ERROR_KEY,
@@ -6,7 +7,6 @@ import {
   INVALID_CITY_QUERY_ERROR_KEY,
   searchEuCities,
 } from "@/lib/geocode";
-import { toErrorResponse } from "@/lib/api-errors";
 import { logger } from "@/lib/logger";
 
 export async function GET(request: Request) {
