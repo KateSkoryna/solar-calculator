@@ -24,6 +24,7 @@
   --chart-profit: #7fb33a;
   --chart-payoff: #d5dccf;
   --sun: #f2b544;
+  --sun-core: #fff1c2;
   --warn-soft: #fbefd6;
   --warn-ink: #7a4f0b;
   --danger: #b42318;
@@ -50,6 +51,7 @@
   --chart-profit: #7fb33a;
   --chart-payoff: #3a4c40;
   --sun: #f2b544;
+  --sun-core: #fff1c2;
   --warn-soft: #3a3020;
   --warn-ink: #f4cf86;
   --danger: #f97066;
@@ -76,6 +78,7 @@
   --color-chart-profit: var(--chart-profit);
   --color-chart-payoff: var(--chart-payoff);
   --color-sun: var(--sun);
+  --color-sun-core: var(--sun-core);
   --color-warn-soft: var(--warn-soft);
   --color-warn-ink: var(--warn-ink);
   --color-danger: var(--danger);
