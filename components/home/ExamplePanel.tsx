@@ -1,6 +1,6 @@
 import { useFormatter, useTranslations } from "next-intl";
 import Badge from "@/components/common/Badge";
-import BrandIllustration from "@/components/common/BrandIllustration";
+import AnimatedSun from "@/components/home/AnimatedSun";
 import MiniStat from "@/components/common/MiniStat";
 import Text from "@/components/common/Text";
 import { PAYBACK_HORIZON_YEARS } from "@/lib/calculation-engine/constants";
@@ -62,9 +62,10 @@ export default function ExamplePanel() {
     <div
       className={`relative flex min-h-[400px] items-end overflow-hidden rounded-2xl bg-forest p-4 pt-32 md:p-8 md:pt-40 lg:min-h-[520px] ${RISE_STAGGER_CLASSES[1]}`}
     >
-      <BrandIllustration className="absolute -top-16 -right-16 w-56 md:w-72" />
+      <AnimatedSun />
       <div
         data-testid="home-example"
+        data-ball-obstacle=""
         className="relative flex w-full flex-col gap-5 rounded-xl bg-surface p-5 text-left shadow-float md:p-6"
       >
         <div className="flex flex-wrap items-center justify-between gap-2">
