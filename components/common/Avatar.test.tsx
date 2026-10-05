@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import Avatar from "./Avatar";
 
 const PERSON_NAME = "Maria Schmidt";
@@ -26,6 +26,25 @@ describe("Avatar", () => {
     expect(screen.getByRole("img", { name: PERSON_NAME })).toHaveAttribute(
       "src",
       PERSON_IMAGE_URL,
+    );
+  });
+
+  it("sends no referrer so Google profile pictures load", () => {
+    render(<Avatar name={PERSON_NAME} imageUrl={PERSON_IMAGE_URL} />);
+
+    expect(screen.getByRole("img", { name: PERSON_NAME })).toHaveAttribute(
+      "referrerpolicy",
+      "no-referrer",
+    );
+  });
+
+  it("falls back to initials when the image cannot be loaded", () => {
+    render(<Avatar name={PERSON_NAME} imageUrl={PERSON_IMAGE_URL} />);
+
+    fireEvent.error(screen.getByRole("img", { name: PERSON_NAME }));
+
+    expect(screen.getByRole("img", { name: PERSON_NAME })).toHaveTextContent(
+      PERSON_INITIALS,
     );
   });
 });
