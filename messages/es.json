@@ -211,12 +211,6 @@
       }
     }
   },
-  "login": {
-    "title": "Inicia Sesión en tu Cuenta",
-    "noAccount": "¿No tienes una cuenta?",
-    "signUp": "Regístrate",
-    "orContinueWithEmail": "O continúa con correo electrónico"
-  },
   "theme": {
     "light": "Modo Claro",
     "dark": "Modo Oscuro",
@@ -260,20 +254,11 @@
   },
   "auth": {
     "genericError": "Algo salió mal. Por favor, inténtalo de nuevo.",
-    "invalidEmail": "Dirección de correo electrónico no válida",
-    "backToLogin": "Volver a iniciar sesión",
     "signingIn": "Iniciando sesión...",
-    "continueWithGoogle": "Continuar con Google",
-    "loading": "Cargando...",
     "oauthAccountNotLinked": "Esta dirección de correo ya está registrada con otro método de acceso. Usa el enlace de acceso enviado a esa dirección.",
-    "emailSignInFailed": "No hemos podido enviar el enlace de acceso ahora mismo. Inténtalo de nuevo más tarde o continúa con Google.",
-    "linkExpiredOrUsed": "Este enlace de acceso ha caducado o ya se ha usado. Solicita uno nuevo más abajo."
-  },
-  "register": {
-    "title": "Crear cuenta",
-    "orContinueWithEmail": "O regístrate con correo electrónico",
-    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
-    "loginLink": "Iniciar sesión"
+    "linkExpiredOrUsed": "Este enlace ha caducado o ya se usó. Envía uno nuevo.",
+    "emailSignInFailed": "No hemos podido enviar el enlace de acceso ahora mismo. Inténtalo más tarde o continúa con Google.",
+    "loading": "Cargando..."
   },
   "user": {
     "welcome": "¡Bienvenido, {name}!",
@@ -301,14 +286,23 @@
     "moreInfo": "Más información"
   },
   "emailSignIn": {
-    "email": "Correo electrónico",
-    "emailPlaceholder": "Introduce tu correo electrónico",
-    "submitButton": "Enviarme un enlace de acceso"
+    "email": "Correo de trabajo",
+    "emailPlaceholder": "tu@empresa.com",
+    "invalidEmail": "Introduce un correo electrónico válido.",
+    "submitButton": "Envíame un enlace de acceso",
+    "sending": "Enviando…",
+    "sendNewLink": "Enviar un enlace nuevo"
   },
   "checkEmail": {
     "title": "Revisa tu correo",
-    "message": "Si la dirección es válida, te hemos enviado un enlace de acceso. Solo funciona una vez y caduca en 15 minutos. Mira también en la carpeta de spam.",
-    "backToLogin": "Volver al inicio de sesión"
+    "message": "Hemos enviado un enlace a {email}. Funciona durante {minutes} minutos.",
+    "messageUnknownAddress": "Te hemos enviado un enlace de acceso. Funciona durante {minutes} minutos.",
+    "spamHint": "¿No lo encuentras? Mira en la carpeta de spam.",
+    "resend": "Enviar de nuevo",
+    "resendIn": "Enviar de nuevo en {seconds} s",
+    "resent": "Hemos enviado un enlace nuevo.",
+    "resendFailed": "No hemos podido enviar un enlace nuevo ahora mismo. Inténtalo de nuevo en un momento.",
+    "differentEmail": "Usar otro correo"
   },
   "signInEmail": {
     "subject": "Tu enlace de acceso a Solar Calculator",
@@ -320,11 +314,13 @@
   },
   "onboarding": {
     "title": "Configura tu espacio de trabajo",
+    "intro": "Cuéntanos quién eres y para qué empresa es. Después podrás invitar a tu equipo.",
     "userName": "Tu nombre",
     "companyName": "Empresa",
+    "companyRequired": "Introduce el nombre de tu empresa (de 2 a 80 caracteres).",
     "submit": "Crear espacio de trabajo",
     "saving": "Creando…",
-    "error": "No pudimos crear tu espacio de trabajo. Revisa el nombre de la empresa (2–80 caracteres) e inténtalo de nuevo."
+    "error": "No hemos podido crear tu espacio de trabajo. Revisa el nombre de la empresa (de 2 a 80 caracteres) e inténtalo de nuevo."
   },
   "workspace": {
     "savingQuickCheck": "Guardando tu resultado…"
@@ -603,5 +599,31 @@
       "text": "El enlace está incompleto o desactualizado. Responde de nuevo a las preguntas para obtener una estimación nueva.",
       "action": "Ir a la calculadora"
     }
+  },
+  "authShell": {
+    "headline": "Todas las cifras de tu flota en un solo lugar.",
+    "benefits": {
+      "saveCompare": "Guarda y compara cálculos",
+      "pdfReports": "Descarga informes en PDF para tu banco",
+      "inviteTeam": "Invita a tu equipo"
+    },
+    "footer": "Gratis · Independiente · Sin llamadas de ventas",
+    "close": "Cerrar"
+  },
+  "signIn": {
+    "tabs": {
+      "label": "Cuenta",
+      "login": "Iniciar sesión",
+      "register": "Crear cuenta"
+    },
+    "login": {
+      "title": "Bienvenido de nuevo",
+      "google": "Continuar con Google"
+    },
+    "register": {
+      "title": "Crea tu cuenta",
+      "google": "Registrarse con Google"
+    },
+    "divider": "o con correo electrónico"
   }
 }

@@ -1,7 +1,7 @@
 import { createHash } from "crypto";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { SIGN_IN_LINK_MAX_AGE_SECONDS } from "@/lib/sign-in-link-lifetime";
 
-export const SIGN_IN_LINK_MAX_AGE_SECONDS = 900;
 export const DAILY_SIGN_IN_EMAIL_LIMIT = 400;
 
 const MILLISECONDS_PER_SECOND = 1000;

@@ -211,12 +211,6 @@
       }
     }
   },
-  "login": {
-    "title": "Bei Deinem Konto anmelden",
-    "noAccount": "Noch kein Konto?",
-    "signUp": "Registrieren",
-    "orContinueWithEmail": "Oder mit E-Mail fortfahren"
-  },
   "theme": {
     "light": "Heller Modus",
     "dark": "Dunkler Modus",
@@ -260,20 +254,11 @@
   },
   "auth": {
     "genericError": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
-    "invalidEmail": "Ungültige E-Mail-Adresse",
-    "backToLogin": "Zurück zur Anmeldung",
     "signingIn": "Anmeldung läuft...",
-    "continueWithGoogle": "Mit Google fortfahren",
-    "loading": "Wird geladen...",
     "oauthAccountNotLinked": "Diese E-Mail-Adresse ist bereits mit einer anderen Anmeldemethode registriert. Nutze stattdessen den Anmeldelink, der an diese Adresse gesendet wird.",
-    "emailSignInFailed": "Wir konnten den Anmeldelink gerade nicht senden. Bitte versuche es später erneut oder melde dich mit Google an.",
-    "linkExpiredOrUsed": "Dieser Anmeldelink ist abgelaufen oder wurde bereits verwendet. Fordere unten einen neuen an."
-  },
-  "register": {
-    "title": "Konto erstellen",
-    "orContinueWithEmail": "Oder mit E-Mail registrieren",
-    "alreadyHaveAccount": "Sie haben bereits ein Konto?",
-    "loginLink": "Anmelden"
+    "linkExpiredOrUsed": "Dieser Link ist abgelaufen oder wurde bereits verwendet. Senden Sie einen neuen.",
+    "emailSignInFailed": "Wir konnten den Anmeldelink gerade nicht senden. Bitte versuchen Sie es später erneut oder melden Sie sich mit Google an.",
+    "loading": "Wird geladen..."
   },
   "user": {
     "welcome": "Willkommen, {name}!",
@@ -301,14 +286,23 @@
     "moreInfo": "Weitere Informationen"
   },
   "emailSignIn": {
-    "email": "E-Mail-Adresse",
-    "emailPlaceholder": "E-Mail-Adresse eingeben",
-    "submitButton": "Anmeldelink per E-Mail senden"
+    "email": "Geschäftliche E-Mail",
+    "emailPlaceholder": "sie@firma.de",
+    "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    "submitButton": "Anmeldelink per E-Mail senden",
+    "sending": "Wird gesendet…",
+    "sendNewLink": "Neuen Link senden"
   },
   "checkEmail": {
-    "title": "Prüfe dein Postfach",
-    "message": "Wenn die Adresse gültig ist, haben wir dir einen Anmeldelink geschickt. Er funktioniert nur einmal und läuft in 15 Minuten ab. Schau auch im Spam-Ordner nach.",
-    "backToLogin": "Zurück zur Anmeldung"
+    "title": "Prüfen Sie Ihr Postfach",
+    "message": "Wir haben einen Link an {email} gesendet. Er funktioniert {minutes} Minuten lang.",
+    "messageUnknownAddress": "Wir haben Ihnen einen Anmeldelink gesendet. Er funktioniert {minutes} Minuten lang.",
+    "spamHint": "Nichts gefunden? Schauen Sie im Spam-Ordner nach.",
+    "resend": "Erneut senden",
+    "resendIn": "Erneut senden in {seconds} s",
+    "resent": "Wir haben einen neuen Link gesendet.",
+    "resendFailed": "Wir konnten gerade keinen neuen Link senden. Bitte versuchen Sie es gleich noch einmal.",
+    "differentEmail": "Andere E-Mail verwenden"
   },
   "signInEmail": {
     "subject": "Dein Anmeldelink für Solar Calculator",
@@ -319,12 +313,14 @@
     "fallback": "Falls die Schaltfläche nicht funktioniert, kopiere diesen Link in deinen Browser:"
   },
   "onboarding": {
-    "title": "Richte deinen Arbeitsbereich ein",
-    "userName": "Dein Name",
-    "companyName": "Unternehmen",
+    "title": "Richten Sie Ihren Arbeitsbereich ein",
+    "intro": "Sagen Sie uns, wer Sie sind und für welche Firma dies gilt. Ihr Team können Sie danach einladen.",
+    "userName": "Ihr Name",
+    "companyName": "Firma",
+    "companyRequired": "Bitte geben Sie den Namen Ihrer Firma ein (2–80 Zeichen).",
     "submit": "Arbeitsbereich erstellen",
     "saving": "Wird erstellt…",
-    "error": "Wir konnten deinen Arbeitsbereich nicht erstellen. Prüfe den Firmennamen (2–80 Zeichen) und versuche es erneut."
+    "error": "Wir konnten Ihren Arbeitsbereich nicht erstellen. Prüfen Sie den Firmennamen (2–80 Zeichen) und versuchen Sie es erneut."
   },
   "workspace": {
     "savingQuickCheck": "Ihr Ergebnis wird gespeichert…"
@@ -603,5 +599,31 @@
       "text": "Der Link ist unvollständig oder veraltet. Beantworten Sie die Fragen erneut, um eine neue Schätzung zu erhalten.",
       "action": "Zum Rechner"
     }
+  },
+  "authShell": {
+    "headline": "Alle Zahlen Ihrer Flotte an einem Ort.",
+    "benefits": {
+      "saveCompare": "Berechnungen speichern und vergleichen",
+      "pdfReports": "PDF-Berichte für Ihre Bank herunterladen",
+      "inviteTeam": "Ihr Team einladen"
+    },
+    "footer": "Kostenlos · Unabhängig · Keine Verkaufsanrufe",
+    "close": "Schließen"
+  },
+  "signIn": {
+    "tabs": {
+      "label": "Konto",
+      "login": "Anmelden",
+      "register": "Konto erstellen"
+    },
+    "login": {
+      "title": "Willkommen zurück",
+      "google": "Weiter mit Google"
+    },
+    "register": {
+      "title": "Erstellen Sie Ihr Konto",
+      "google": "Mit Google registrieren"
+    },
+    "divider": "oder mit E-Mail"
   }
 }

@@ -1,97 +1,91 @@
 "use client";
 
-import { useLocale, useTranslations } from "next-intl";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useLocale, useTranslations } from "next-intl";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import Button from "@/components/form/Button";
+import FormAlert from "@/components/form/FormAlert";
+import Input from "@/components/form/Input";
+import { FLEETS_API_PATH } from "@/lib/fleet-api-paths";
 import { workspacePath } from "@/lib/workspace-path";
 
-const INPUT_CLASS_NAME =
-  "w-full p-3 border border-line-strong rounded-md bg-surface text-ink";
+const MAX_NAME_LENGTH = 80;
+const MIN_COMPANY_NAME_LENGTH = 2;
+
+const onboardingSchema = z.object({
+  userName: z.string().trim().max(MAX_NAME_LENGTH),
+  companyName: z
+    .string()
+    .trim()
+    .min(MIN_COMPANY_NAME_LENGTH)
+    .max(MAX_NAME_LENGTH),
+});
+
+type OnboardingValues = z.infer<typeof onboardingSchema>;
 
 export default function OnboardingForm() {
   const t = useTranslations("onboarding");
   const locale = useLocale();
   const router = useRouter();
-  const [userName, setUserName] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [hasError, setHasError] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
+  const [hasSavingFailed, setHasSavingFailed] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<OnboardingValues>({
+    resolver: zodResolver(onboardingSchema),
+    defaultValues: { userName: "", companyName: "" },
+    mode: "onBlur",
+  });
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsSaving(true);
-    setHasError(false);
+  const createWorkspace = handleSubmit(async ({ userName, companyName }) => {
+    setHasSavingFailed(false);
 
     try {
-      const response = await fetch("/api/fleets", {
+      const response = await fetch(FLEETS_API_PATH, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          companyName,
-          userName: userName.trim() || undefined,
-        }),
+        body: JSON.stringify({ companyName, userName: userName || undefined }),
       });
-
       if (!response.ok) throw new Error("Fleet creation failed");
-
-      router.push(workspacePath(locale));
     } catch {
-      setHasError(true);
-      setIsSaving(false);
+      setHasSavingFailed(true);
+      return;
     }
-  };
+
+    router.push(workspacePath(locale));
+  });
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      {hasError && (
-        <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-          {t("error")}
-        </div>
-      )}
-
-      <div>
-        <label
-          htmlFor="onboarding-user-name"
-          className="block text-sm font-medium text-ink mb-2"
-        >
-          {t("userName")}
-        </label>
-        <input
-          id="onboarding-user-name"
-          value={userName}
-          onChange={(event) => setUserName(event.target.value)}
-          maxLength={80}
-          disabled={isSaving}
-          className={INPUT_CLASS_NAME}
+    <form
+      noValidate
+      onSubmit={createWorkspace}
+      className="flex flex-1 flex-col gap-5"
+    >
+      <div className="grid gap-4 md:grid-cols-2">
+        <Input
+          {...register("userName")}
+          autoComplete="name"
+          maxLength={MAX_NAME_LENGTH}
+          label={t("userName")}
+        />
+        <Input
+          {...register("companyName")}
+          autoComplete="organization"
+          maxLength={MAX_NAME_LENGTH}
+          label={t("companyName")}
+          error={errors.companyName ? t("companyRequired") : undefined}
         />
       </div>
-
-      <div>
-        <label
-          htmlFor="onboarding-company-name"
-          className="block text-sm font-medium text-ink mb-2"
-        >
-          {t("companyName")}
-        </label>
-        <input
-          id="onboarding-company-name"
-          value={companyName}
-          onChange={(event) => setCompanyName(event.target.value)}
-          required
-          minLength={2}
-          maxLength={80}
-          disabled={isSaving}
-          className={INPUT_CLASS_NAME}
-        />
+      <div className="mt-auto flex flex-col gap-5 md:mt-0">
+        {hasSavingFailed && <FormAlert>{t("error")}</FormAlert>}
+        <Button type="submit" size="lg" fullWidth loading={isSubmitting}>
+          {isSubmitting ? t("saving") : t("submit")}
+        </Button>
       </div>
-
-      <button
-        type="submit"
-        disabled={isSaving}
-        className="w-full bg-lime text-on-lime p-3 rounded-md font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {isSaving ? t("saving") : t("submit")}
-      </button>
     </form>
   );
 }

@@ -1,98 +1,89 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocale, useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { signIn } from "next-auth/react";
-import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
-import { workspacePath } from "@/lib/workspace-path";
+import Button from "@/components/form/Button";
+import FormAlert from "@/components/form/FormAlert";
+import Input from "@/components/form/Input";
+import { savePendingSignInEmail } from "@/lib/pending-sign-in-email";
+import { checkEmailPath } from "@/lib/public-paths";
+import { requestSignInLink } from "@/lib/request-sign-in-link";
 
-type EmailSignInFormData = z.infer<ReturnType<typeof buildEmailSignInSchema>>;
+const emailSignInSchema = z.object({ email: z.email() });
 
-function buildEmailSignInSchema(invalidEmail: string) {
-  return z.object({
-    email: z.string().email(invalidEmail),
-  });
+type EmailSignInValues = z.infer<typeof emailSignInSchema>;
+
+interface EmailSignInFormProps {
+  linkProblem: string | null;
 }
 
-export default function EmailSignInForm() {
+export default function EmailSignInForm({ linkProblem }: EmailSignInFormProps) {
   const t = useTranslations("emailSignIn");
   const tAuth = useTranslations("auth");
   const locale = useLocale();
   const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const emailSignInSchema = useMemo(
-    () => buildEmailSignInSchema(tAuth("invalidEmail")),
-    [tAuth],
-  );
-
+  const [sendingFailed, setSendingFailed] = useState(false);
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<EmailSignInFormData>({
+    formState: { errors, isSubmitting },
+  } = useForm<EmailSignInValues>({
     resolver: zodResolver(emailSignInSchema),
+    defaultValues: { email: "" },
   });
 
-  const onSubmit = async ({ email }: EmailSignInFormData) => {
-    setIsLoading(true);
-    setError(null);
+  const sendLink = handleSubmit(async ({ email }) => {
+    setSendingFailed(false);
+    const outcome = await requestSignInLink(email, locale);
 
-    try {
-      const result = await signIn("nodemailer", {
-        email,
-        callbackUrl: workspacePath(locale),
-        redirect: false,
-      });
-
-      if (result?.error) {
-        setError(tAuth("emailSignInFailed"));
-        setIsLoading(false);
-        return;
-      }
-
-      router.push(`/${locale}/check-email`);
-    } catch {
-      setError(tAuth("genericError"));
-      setIsLoading(false);
+    if (outcome === "failed") {
+      setSendingFailed(true);
+      return;
     }
-  };
+
+    savePendingSignInEmail(email);
+    router.push(checkEmailPath(locale));
+  });
+
+  const formProblem = sendingFailed ? tAuth("emailSignInFailed") : linkProblem;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {error && (
-        <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-          {error}
-        </div>
-      )}
-
-      <div>
-        <label className="block text-sm font-medium text-ink mb-2">
-          {t("email")}
-        </label>
-        <input
-          {...register("email")}
-          type="email"
-          className="w-full p-3 border border-line-strong rounded-md bg-surface text-ink"
-          placeholder={t("emailPlaceholder")}
-          disabled={isLoading}
-        />
-        {errors.email && (
-          <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+    <form noValidate onSubmit={sendLink} className="flex flex-1 flex-col gap-5">
+      <Input
+        {...register("email")}
+        type="email"
+        autoComplete="email"
+        label={t("email")}
+        placeholder={t("emailPlaceholder")}
+        error={errors.email ? t("invalidEmail") : undefined}
+      />
+      <div className="mt-auto flex flex-col gap-5 md:mt-0">
+        {formProblem && (
+          <FormAlert
+            action={
+              linkProblem && !sendingFailed ? (
+                <Button
+                  variant="dark"
+                  size="sm"
+                  type="button"
+                  onClick={sendLink}
+                >
+                  {t("sendNewLink")}
+                </Button>
+              ) : undefined
+            }
+          >
+            {formProblem}
+          </FormAlert>
         )}
+        <Button type="submit" size="lg" fullWidth loading={isSubmitting}>
+          {isSubmitting ? t("sending") : t("submitButton")}
+        </Button>
       </div>
-
-      <button
-        type="submit"
-        disabled={isLoading}
-        className="w-full bg-lime text-on-lime p-3 rounded-md font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {isLoading ? tAuth("loading") : t("submitButton")}
-      </button>
     </form>
   );
 }

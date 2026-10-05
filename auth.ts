@@ -6,7 +6,7 @@ import type { PrismaClient } from "@/app/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getSmtpServerConfig } from "@/lib/email/smtp-settings";
 import { sendSignInLink } from "@/lib/email/send-sign-in-link";
-import { SIGN_IN_LINK_MAX_AGE_SECONDS } from "@/lib/sign-in-link-limits";
+import { SIGN_IN_LINK_MAX_AGE_SECONDS } from "@/lib/sign-in-link-lifetime";
 import { ADMIN_FLEET_ID } from "@/lib/fleet-auth";
 import { handleSignInEvent } from "@/lib/sign-in-event";
 
