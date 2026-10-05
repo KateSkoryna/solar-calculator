@@ -241,5 +241,57 @@
   },
   "workspace": {
     "savingQuickCheck": "Ihr Ergebnis wird gespeichert…"
+  },
+  "roles": {
+    "owner": "Inhaber",
+    "manager": "Manager",
+    "viewer": "Betrachter"
+  },
+  "status": {
+    "queued": "Wartet auf Start",
+    "validating": "Daten werden geprüft",
+    "calculating": "Wird berechnet",
+    "renderingCharts": "Diagramme werden gezeichnet",
+    "generatingReport": "PDF wird erstellt",
+    "generatingRecommendations": "Empfehlungen werden geschrieben",
+    "completed": "Fertig",
+    "failed": "Fehlgeschlagen — bitte erneut versuchen",
+    "cancelled": "Abgebrochen"
+  },
+  "devShowcase": {
+    "title": "Komponentenübersicht",
+    "intro": "Alle gemeinsamen Komponenten in jeder Variante. Diese Seite gibt es nur in der Entwicklung.",
+    "sections": {
+      "button": "Schaltfläche",
+      "buttonLink": "Schaltflächen-Link",
+      "card": "Karte",
+      "input": "Eingabefeld",
+      "logo": "Logo",
+      "badge": "Abzeichen",
+      "rolePill": "Rollen-Kennzeichen",
+      "statusPill": "Status-Kennzeichen",
+      "avatar": "Avatar",
+      "progressBar": "Fortschrittsbalken",
+      "disclosure": "Aufklappbereich"
+    },
+    "buttonLabel": "Schätzung starten",
+    "buttonWithIcon": "Mit Symbol",
+    "buttonLoading": "Wird gespeichert",
+    "buttonDisabled": "Deaktiviert",
+    "linkLabel": "Zum Rechner",
+    "cardTitle": "Kartentitel",
+    "cardAction": "Aktion",
+    "cardBody": "Karten bündeln zusammengehörige Inhalte und haben nie vollständig runde Ecken.",
+    "inputLabel": "Stadt",
+    "inputPlaceholder": "Zum Beispiel Berlin",
+    "inputHint": "Mit der Stadt schätzen wir die Sonnenstunden.",
+    "inputError": "Bitte geben Sie eine Stadt ein",
+    "sampleBadge": "Beispielwerte",
+    "infoBadge": "Kostenlos · keine Anmeldung für eine Schätzung nötig",
+    "avatarName": "Maria Schmidt",
+    "progressReportLabel": "Diagramme werden gezeichnet… Schritt 4 von 6",
+    "progressStepLabel": "Schritt 2 von 4",
+    "disclosureSummary": "So haben wir gerechnet",
+    "disclosureBody": "Jede Zahl zeigt, woher sie stammt."
   }
 }

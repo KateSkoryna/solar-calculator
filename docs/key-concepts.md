@@ -1236,6 +1236,107 @@ const bricolageGrotesque = Bricolage_Grotesque({
 
 The values must be written literally in the call: `next/font` reads them at build time and rejects variables.
 
+### Component variant APIs
+
+Instead of one component per look, a component takes a small, closed set of named options. The names are listed once in a constant, the type is derived from that list, and a `Record` keyed by the type forces every variant to have styles. Adding a variant without styling it is a compile error:
+
+```ts
+export const BUTTON_VARIANTS = [
+  "primary",
+  "dark",
+  "secondary",
+  "ghost",
+  "danger",
+] as const;
+
+export type ButtonVariant = (typeof BUTTON_VARIANTS)[number];
+
+const BUTTON_VARIANT_CLASSES: Record<ButtonVariant, string> = {
+  primary:
+    "border-transparent bg-lime text-on-lime hover:-translate-y-px hover:brightness-95",
+  dark: "border-transparent bg-ink text-ground hover:border-ink hover:opacity-90",
+  secondary: "border-line-strong bg-surface text-ink hover:border-ink",
+  ghost: "border-transparent bg-transparent text-ink hover:border-ink",
+  danger: "border-transparent bg-danger text-white hover:border-ink",
+};
+```
+
+The same list drives the showcase page and the tests (`it.each(BUTTON_VARIANTS)`), so nothing is typed twice.
+
+### `<a>` vs `<button>` semantics
+
+A link goes somewhere; a button does something. Browsers and screen readers treat them differently: a link can be opened in a new tab and is announced as "link", a button reacts to the space bar and is announced as "button". They can look identical, so `Button` and `ButtonLink` share one style function but render different elements:
+
+```tsx
+export default function ButtonLink({
+  variant = DEFAULT_BUTTON_VARIANT,
+  size = DEFAULT_BUTTON_SIZE,
+  icon,
+  fullWidth = false,
+  className = "",
+  children,
+  ...linkProps
+}: ButtonLinkProps) {
+  return (
+    <Link
+      {...linkProps}
+      className={buildButtonClassName({
+        variant,
+        size,
+        fullWidth,
+        inactive: false,
+        className,
+      })}
+    >
+      {children}
+      {icon}
+    </Link>
+  );
+}
+```
+
+### Focus-visible styling
+
+Keyboard users need to see which element has focus; mouse users do not want a ring after every click. The `:focus-visible` pseudo-class matches only when the browser decides a ring is useful (keyboard navigation). One constant holds the ring so every interactive component gets the same one:
+
+```ts
+export const FOCUS_RING_CLASSES =
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink";
+```
+
+### Accessible names
+
+Every control needs a name that assistive technology can read out. The name comes from visible text, a linked `<label>`, `aria-label` or `aria-labelledby`. Extra help text is linked with `aria-describedby`. The input builds these links from one generated id:
+
+```tsx
+const generatedId = useId();
+const inputId = id ?? generatedId;
+const hintId = `${inputId}-hint`;
+const errorId = `${inputId}-error`;
+const describedBy =
+  [externalDescriptionId, hint ? hintId : "", error ? errorId : ""]
+    .filter(Boolean)
+    .join(" ") || undefined;
+```
+
+Tests query by role and name (`getByRole("textbox", { name: "City" })`), so a component without an accessible name fails its test.
+
+### Testing components with real translations
+
+Mocking `useTranslations` to return the key hides missing or misspelt keys. Rendering with the real English messages catches them, and the test reads like what a user sees:
+
+```tsx
+export function renderWithIntl(component: ReactElement) {
+  return render(
+    <NextIntlClientProvider locale={TEST_LOCALE} messages={englishMessages}>
+      {component}
+    </NextIntlClientProvider>,
+  );
+}
+```
+
+`messages/messages.test.ts` then guarantees that German and Spanish have exactly the same keys as English and no empty values.
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit

@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import Input from "@/components/form/Input";
+import Input from "@/components/form/RegisteredInput";
 import Dropdown from "@/components/form/Dropdown";
 import Checkbox from "@/components/form/Checkbox";
 import { EngineType, ParkingType } from "@/types/calculator";

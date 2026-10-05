@@ -141,7 +141,7 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 | 2.6  | Save a quick check to a fleet                      | DONE   |                                             |
 | 2.7  | Invite members by email before they sign in        | DONE   |                                             |
 | 3.1  | Design tokens, fonts and motion                    | DONE   |                                             |
-| 3.2  | Core components and test utilities                 | TODO   |                                             |
+| 3.2  | Core components and test utilities                 | DONE   |                                             |
 | 3.3  | Public header, mobile menu and footer              | TODO   |                                             |
 | 3.4  | Home page                                          | TODO   |                                             |
 | 3.5  | Calculator input components                        | TODO   |                                             |

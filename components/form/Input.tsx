@@ -1,42 +1,61 @@
-import { useFormContext } from "react-hook-form";
+import { useId, type InputHTMLAttributes, type Ref } from "react";
+import { LuCircleAlert } from "react-icons/lu";
 
-interface InputProps {
-  name: string;
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
-  type?: string;
-  placeholder?: string;
-  className?: string;
+  hint?: string;
+  error?: string;
+  ref?: Ref<HTMLInputElement>;
 }
 
 export default function Input({
-  name,
   label,
-  type = "text",
-  placeholder,
+  hint,
+  error,
+  id,
   className = "",
+  ref,
+  "aria-describedby": externalDescriptionId,
+  ...inputAttributes
 }: InputProps) {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
-
-  const error = errors[name];
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
+  const hintId = `${inputId}-hint`;
+  const errorId = `${inputId}-error`;
+  const describedBy =
+    [externalDescriptionId, hint ? hintId : "", error ? errorId : ""]
+      .filter(Boolean)
+      .join(" ") || undefined;
+  const borderClasses = error
+    ? "border-danger"
+    : "border-line-strong focus:border-ink";
 
   return (
-    <div>
-      <label className="block text-sm font-medium text-white mb-2">
+    <div className="flex flex-col gap-2 text-left">
+      <label htmlFor={inputId} className="text-[15px] font-semibold text-ink">
         {label}
       </label>
       <input
-        type={type}
-        {...register(name, { valueAsNumber: type === "number" })}
-        className={`w-full p-3 rounded-md border-2 border-white/20
-            bg-white/10 backdrop-blur-md text-white placeholder:text-white/60
-            focus:outline-none focus:border-lime ${className}`}
-        placeholder={placeholder}
+        {...inputAttributes}
+        ref={ref}
+        id={inputId}
+        aria-invalid={error ? "true" : undefined}
+        aria-describedby={describedBy}
+        className={`h-14 w-full rounded-md border bg-surface px-4 text-base text-ink placeholder:text-muted focus:shadow-ring-selected focus:outline-none ${borderClasses} ${className}`}
       />
+      {hint && (
+        <p id={hintId} className="text-[13px] text-muted">
+          {hint}
+        </p>
+      )}
       {error && (
-        <p className="text-red-500 text-sm mt-1">{error.message as string}</p>
+        <p
+          id={errorId}
+          className="flex items-center gap-1.5 text-[13px] font-semibold text-danger"
+        >
+          <LuCircleAlert aria-hidden="true" className="size-4 shrink-0" />
+          {error}
+        </p>
       )}
     </div>
   );

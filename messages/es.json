@@ -241,5 +241,57 @@
   },
   "workspace": {
     "savingQuickCheck": "Guardando tu resultado…"
+  },
+  "roles": {
+    "owner": "Propietario",
+    "manager": "Gestor",
+    "viewer": "Lector"
+  },
+  "status": {
+    "queued": "En espera",
+    "validating": "Comprobando tus datos",
+    "calculating": "Calculando",
+    "renderingCharts": "Dibujando gráficos",
+    "generatingReport": "Creando el PDF",
+    "generatingRecommendations": "Redactando recomendaciones",
+    "completed": "Listo",
+    "failed": "Error — inténtalo de nuevo",
+    "cancelled": "Cancelado"
+  },
+  "devShowcase": {
+    "title": "Muestrario de componentes",
+    "intro": "Todos los componentes compartidos en cada variante. Esta página solo existe en desarrollo.",
+    "sections": {
+      "button": "Botón",
+      "buttonLink": "Enlace con forma de botón",
+      "card": "Tarjeta",
+      "input": "Campo de texto",
+      "logo": "Logotipo",
+      "badge": "Insignia",
+      "rolePill": "Etiqueta de rol",
+      "statusPill": "Etiqueta de estado",
+      "avatar": "Avatar",
+      "progressBar": "Barra de progreso",
+      "disclosure": "Sección desplegable"
+    },
+    "buttonLabel": "Empezar mi estimación",
+    "buttonWithIcon": "Con icono",
+    "buttonLoading": "Guardando",
+    "buttonDisabled": "Desactivado",
+    "linkLabel": "Ir a la calculadora",
+    "cardTitle": "Título de la tarjeta",
+    "cardAction": "Acción",
+    "cardBody": "Las tarjetas agrupan contenido relacionado y nunca tienen esquinas totalmente redondeadas.",
+    "inputLabel": "Ciudad",
+    "inputPlaceholder": "Por ejemplo Berlín",
+    "inputHint": "Usamos la ciudad para estimar las horas de sol.",
+    "inputError": "Introduce una ciudad",
+    "sampleBadge": "Cifras de ejemplo",
+    "infoBadge": "Gratis · sin registro para obtener una estimación",
+    "avatarName": "Maria Schmidt",
+    "progressReportLabel": "Dibujando gráficos… paso 4 de 6",
+    "progressStepLabel": "Paso 2 de 4",
+    "disclosureSummary": "Cómo lo hemos calculado",
+    "disclosureBody": "Cada cifra muestra de dónde procede."
   }
 }
