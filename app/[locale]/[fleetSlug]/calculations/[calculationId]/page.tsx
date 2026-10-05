@@ -1,159 +1,84 @@
 import { redirect } from "next/navigation";
+import type { Session } from "next-auth";
 import { getTranslations } from "next-intl/server";
 import { auth } from "@/auth";
-import { ScenarioKind } from "@/app/generated/prisma/enums";
-import { prisma } from "@/lib/prisma";
+import ResultsNotice from "@/components/results/ResultsNotice";
+import ResultsView from "@/components/results/ResultsView";
+import { ForbiddenError } from "@/lib/fleet-auth";
+import { loadFleetCalculation } from "@/lib/fleet-calculation-loader";
+import { loginPath } from "@/lib/public-paths";
 import {
-  requireFleetRole,
-  ANY_FLEET_ROLE,
-  ForbiddenError,
-} from "@/lib/fleet-auth";
-import { findFleetBySlug } from "@/lib/fleet-repo";
-import Section from "@/components/layout/Section";
-import PageTitle from "@/components/common/PageTitle";
-import StatTile from "@/components/results/StatTile";
-import ProvenancePanel from "@/components/calculation/ProvenancePanel";
+  storedCalculationToEngineOutput,
+  toResultsViewModel,
+} from "@/lib/results-view-model";
+import {
+  IncompleteStoredCalculationError,
+  toProvenanceDetails,
+  type StoredCalculation,
+} from "@/lib/stored-calculation";
 
-const DISPLAYED_SCENARIO_KIND = ScenarioKind.REALISTIC;
+interface CalculationResultPageProps {
+  params: Promise<{
+    locale: string;
+    fleetSlug: string;
+    calculationId: string;
+  }>;
+}
 
-function NotFoundMessage({ title, text }: { title: string; text: string }) {
-  return (
-    <Section>
-      <PageTitle>{title}</PageTitle>
-      <p className="text-center text-ink">{text}</p>
-    </Section>
-  );
+async function findCalculation(
+  session: Session | null,
+  fleetSlug: string,
+  calculationId: string,
+) {
+  try {
+    return await loadFleetCalculation(session, fleetSlug, calculationId);
+  } catch (error) {
+    if (error instanceof ForbiddenError) return null;
+    throw error;
+  }
+}
+
+function readResults(calculation: StoredCalculation) {
+  try {
+    return {
+      viewModel: toResultsViewModel(
+        storedCalculationToEngineOutput(calculation),
+      ),
+      provenance: toProvenanceDetails(calculation),
+    };
+  } catch (error) {
+    if (error instanceof IncompleteStoredCalculationError) return null;
+    throw error;
+  }
 }
 
 export default async function CalculationResultPage({
   params,
-}: {
-  params: Promise<{ fleetSlug: string; calculationId: string }>;
-}) {
+}: CalculationResultPageProps) {
+  const { locale, fleetSlug, calculationId } = await params;
   const session = await auth();
 
   if (!session?.user) {
-    redirect("/login");
+    redirect(loginPath(locale));
   }
 
   const t = await getTranslations("calculation");
-  const { fleetSlug, calculationId } = await params;
-  const fleet = await findFleetBySlug(fleetSlug);
-
-  if (!fleet) {
-    return <NotFoundMessage title={t("notFoundTitle")} text={t("notFound")} />;
-  }
-
-  try {
-    await requireFleetRole(session, fleet.id, ANY_FLEET_ROLE);
-  } catch (error) {
-    if (error instanceof ForbiddenError) {
-      return (
-        <NotFoundMessage title={t("notFoundTitle")} text={t("notFound")} />
-      );
-    }
-    throw error;
-  }
-
-  const calculation = await prisma.calculation.findFirst({
-    where: { id: calculationId, fleetId: fleet.id },
-    select: {
-      createdAt: true,
-      vehicle: { select: { manufacturer: true, model: true } },
-      requestedByUser: { select: { name: true, email: true } },
-      scenarios: {
-        where: { kind: DISPLAYED_SCENARIO_KIND },
-        select: {
-          formulaVersion: true,
-          assumptionSetVersion: true,
-          inputSnapshot: {
-            select: {
-              capturedAt: true,
-              energyPriceAssumptionVersion: true,
-              emissionsFactorVersion: true,
-              solarYieldAssumptionVersion: true,
-              currencyConversionSourceVersion: true,
-            },
-          },
-          result: {
-            select: {
-              paybackPeriodMonths: true,
-              totalSolarYieldKwh: true,
-              co2SavedKg: true,
-              netSavingsAmount: true,
-              currency: true,
-              computedAt: true,
-            },
-          },
-        },
-      },
-    },
-  });
+  const calculation = await findCalculation(session, fleetSlug, calculationId);
 
   if (!calculation) {
-    return <NotFoundMessage title={t("notFoundTitle")} text={t("notFound")} />;
+    return <ResultsNotice title={t("notFoundTitle")} text={t("notFound")} />;
   }
 
-  const [scenario] = calculation.scenarios;
+  const results = readResults(calculation);
 
-  if (!scenario || !scenario.inputSnapshot || !scenario.result) {
-    return (
-      <NotFoundMessage title={t("notFoundTitle")} text={t("noResultYet")} />
-    );
+  if (!results) {
+    return <ResultsNotice title={t("notFoundTitle")} text={t("noResultYet")} />;
   }
-
-  const { inputSnapshot, result } = scenario;
 
   return (
-    <Section>
-      <PageTitle>
-        {calculation.vehicle.manufacturer} {calculation.vehicle.model}
-      </PageTitle>
-
-      <div className="mx-auto mb-10 grid w-full max-w-4xl gap-4 md:grid-cols-2">
-        <StatTile
-          label={t("paybackPeriod")}
-          value={
-            result.paybackPeriodMonths === null
-              ? t("noPayback")
-              : `${result.paybackPeriodMonths.toFixed(1)} ${t("paybackUnit")}`
-          }
-          explanation={t("paybackPeriodTooltip")}
-        />
-        <StatTile
-          label={t("solarYield")}
-          value={`${result.totalSolarYieldKwh.toFixed(0)} kWh`}
-          explanation={t("solarYieldTooltip")}
-        />
-        <StatTile
-          label={t("co2Saved")}
-          value={`${result.co2SavedKg.toFixed(0)} kg`}
-          explanation={t("co2SavedTooltip")}
-        />
-        <StatTile
-          label={t("netSavings")}
-          value={`${Number(result.netSavingsAmount).toFixed(2)} ${result.currency}`}
-          explanation={t("netSavingsTooltip")}
-        />
-      </div>
-
-      <ProvenancePanel
-        actorLabel={
-          calculation.requestedByUser.name ?? calculation.requestedByUser.email
-        }
-        calculatedAt={result.computedAt}
-        formulaVersion={scenario.formulaVersion}
-        assumptionSetVersion={scenario.assumptionSetVersion}
-        inputSnapshotCapturedAt={inputSnapshot.capturedAt}
-        energyPriceAssumptionVersion={
-          inputSnapshot.energyPriceAssumptionVersion
-        }
-        emissionsFactorVersion={inputSnapshot.emissionsFactorVersion}
-        solarYieldAssumptionVersion={inputSnapshot.solarYieldAssumptionVersion}
-        currencyConversionSourceVersion={
-          inputSnapshot.currencyConversionSourceVersion
-        }
-      />
-    </Section>
+    <ResultsView
+      viewModel={results.viewModel}
+      provenance={results.provenance}
+    />
   );
 }
