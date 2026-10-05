@@ -1901,13 +1901,77 @@ Phones with a home indicator draw over the bottom edge of the screen. `env(safe-
 
 ### `aria-current`
 
-`aria-current="page"` tells a screen reader which link points at the page you are on, and it doubles as a styling hook. The Overview link is current only on the exact fleet address, while the others stay current on their sub-pages (a single calculation keeps "Calculations" highlighted):
+`aria-current="page"` tells a screen reader which link points at the page you are on, and it doubles as a styling hook. A link is current on its own address and on everything below it, so a single calculation keeps "Calculations" highlighted:
 
 ```ts
-return isFleetRoot
-  ? normalizedPathname === href
-  : normalizedPathname === href || normalizedPathname.startsWith(`${href}/`);
+export function isWorkspaceNavItemCurrent(pathname: string, href: string) {
+  const normalizedPathname = pathname.replace(/\/+$/, "");
+  return (
+    normalizedPathname === href || normalizedPathname.startsWith(`${href}/`)
+  );
+}
 ```
+
+### Turning audit events into sentences with ICU messages
+
+An audit event is data: `VEHICLE_UPDATED`, who did it, a few ids. People should never see that. Each action maps to a message key, and the translation file holds the sentence with `{placeholders}` that the code fills in. Because the sentence lives in the message, German and Spanish can reorder the words without any code change:
+
+```ts
+translate("audit.events.vehicleUpdatedField", {
+  actor: "Mira Hoffmann",
+  field: "daily distance",
+  subject: "Scania R450",
+  from: "180 km",
+  to: "220 km",
+});
+```
+
+```json
+"vehicleUpdatedField": "{actor} changed {field} for {subject} from {from} to {to}"
+```
+
+The map is typed as `Record<AuditAction, string>`, so adding a new action without a sentence is a compile error, and a test loops over every action to prove none renders a raw enum name. When the stored data is missing, the sentence falls back to something true but less specific ("{actor} edited {subject}").
+
+### Recording before/after values
+
+A log that only says "vehicle updated" cannot answer "what changed?". When the vehicle is updated, the route reads the current row inside the same transaction, compares it with the incoming fields and stores only the fields whose value actually differs:
+
+```ts
+metadata: { changes: buildVehicleChanges(existing, data) },
+```
+
+```json
+{ "changes": [{ "field": "averageDailyDistanceKm", "from": 180, "to": 220 }] }
+```
+
+Reading and writing in one transaction means the "from" value is always the one that was really replaced. Older events have no `changes`, so they use the fallback sentence instead of guessing.
+
+### Owner-only actions
+
+The page decides what to show, the API decides what is allowed, and both use the same role lists. The server page turns the viewer's role into two flags, and the buttons only render when the flag is true:
+
+```tsx
+canManageTeam={FLEET_OWNER_ONLY.includes(access.role)}
+canSeeActivity={FLEET_EDITOR_ROLES.includes(access.role)}
+```
+
+Hiding a button is a courtesy, not security: the member routes still call `requireFleetRole(session, fleetId, FLEET_OWNER_ONLY)`, so a viewer who sends the request by hand gets a 403. Owners also get no menu on their own row, so nobody can lock themselves out of the fleet by accident.
+
+### Accessible tabs
+
+Tabs are not links: they switch panels on the same page. The tab list needs `role="tablist"`, each tab `role="tab"`, `aria-selected` and `aria-controls` pointing at its panel, and the keyboard must work: arrow keys move between tabs, and only the selected tab is in the Tab order (a "roving tabindex"), so one Tab press moves past the whole list:
+
+```tsx
+<button
+  role="tab"
+  aria-selected={isSelected}
+  aria-controls={panelId}
+  tabIndex={isSelected ? 0 : -1}
+  onKeyDown={(event) => handleKeyDown(event, tabIndex)}
+>
+```
+
+On tablet and desktop both panels are visible at once, so the tab list is hidden there with `md:hidden` and the inactive panel uses `hidden md:block`.
 
 ---
 
