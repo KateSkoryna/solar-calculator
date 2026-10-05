@@ -30,10 +30,10 @@ export default function Footer() {
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-4">
           <div className="lg:max-w-xs">
-            <h4 className="text-lg font-bold mb-4 text-[var(--accent)]">
+            <h4 className="text-lg font-bold mb-4 text-lime-soft-ink">
               {t("title")}
             </h4>
-            <p className="text-[var(--text-body)]">{t("description")}</p>
+            <p className="text-ink">{t("description")}</p>
           </div>
 
           <div>
@@ -55,8 +55,8 @@ export default function Footer() {
           </div>
         </div>
       </Container>
-      <div className="py-4 border-t border-[var(--border)]">
-        <p className="text-center text-[var(--text-body)]">
+      <div className="py-4 border-t border-line-strong">
+        <p className="text-center text-ink">
           {t("copyright", { currentYear })}
         </p>
       </div>

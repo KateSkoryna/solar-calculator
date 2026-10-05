@@ -33,9 +33,7 @@ export default function Calculator() {
     <Section className="text-left">
       <PageTitle>{t("title")}</PageTitle>
 
-      <p className="text-center text-lg text-[var(--text-white)] mb-6">
-        {t("subtitle")}
-      </p>
+      <p className="text-center text-lg text-white mb-6">{t("subtitle")}</p>
 
       <div className="w-full mx-auto md:w-3/4 lg:w-1/2">
         <Form steps={steps} />

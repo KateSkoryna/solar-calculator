@@ -6,7 +6,7 @@ import { useState, type FormEvent } from "react";
 import { workspacePath } from "@/lib/workspace-path";
 
 const INPUT_CLASS_NAME =
-  "w-full p-3 border border-[var(--border)] rounded-md bg-[var(--input)] text-[var(--text-body)]";
+  "w-full p-3 border border-line-strong rounded-md bg-surface text-ink";
 
 export default function OnboardingForm() {
   const t = useTranslations("onboarding");
@@ -52,7 +52,7 @@ export default function OnboardingForm() {
       <div>
         <label
           htmlFor="onboarding-user-name"
-          className="block text-sm font-medium text-[var(--text-body)] mb-2"
+          className="block text-sm font-medium text-ink mb-2"
         >
           {t("userName")}
         </label>
@@ -69,7 +69,7 @@ export default function OnboardingForm() {
       <div>
         <label
           htmlFor="onboarding-company-name"
-          className="block text-sm font-medium text-[var(--text-body)] mb-2"
+          className="block text-sm font-medium text-ink mb-2"
         >
           {t("companyName")}
         </label>
@@ -88,7 +88,7 @@ export default function OnboardingForm() {
       <button
         type="submit"
         disabled={isSaving}
-        className="w-full bg-[var(--accent)] text-white p-3 rounded-md font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full bg-lime text-on-lime p-3 rounded-md font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isSaving ? t("saving") : t("submit")}
       </button>

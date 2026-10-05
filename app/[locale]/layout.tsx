@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Lexend, Inter } from "next/font/google";
+import { Bricolage_Grotesque, Instrument_Sans } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -11,35 +11,18 @@ import Footer from "@/components/layout/Footer";
 import "../globals.css";
 import { isValidLocale } from "@/lib/utils";
 
-const lexend = Lexend({
-  variable: "--font-lexend",
-  subsets: ["latin"],
-  weight: ["400", "700", "900"],
-  fallback: [
-    "system-ui",
-    "-apple-system",
-    "BlinkMacSystemFont",
-    "Segoe UI",
-    "Roboto",
-    "Helvetica",
-    "Arial",
-    "sans-serif",
-  ],
+const bricolageGrotesque = Bricolage_Grotesque({
+  variable: "--font-bricolage",
+  subsets: ["latin", "latin-ext"],
+  weight: ["500", "700", "800"],
+  fallback: ["system-ui", "-apple-system", "Segoe UI", "sans-serif"],
 });
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  fallback: [
-    "system-ui",
-    "-apple-system",
-    "BlinkMacSystemFont",
-    "Segoe UI",
-    "Roboto",
-    "Helvetica",
-    "Arial",
-    "sans-serif",
-  ],
+const instrumentSans = Instrument_Sans({
+  variable: "--font-instrument",
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500", "600"],
+  fallback: ["system-ui", "-apple-system", "Segoe UI", "sans-serif"],
 });
 
 export const metadata: Metadata = {
@@ -67,7 +50,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
-        className={`${lexend.variable} ${inter.variable} flex min-h-dvh flex-col`}
+        className={`${bricolageGrotesque.variable} ${instrumentSans.variable} flex min-h-dvh flex-col`}
       >
         <SessionProvider>
           <QueryProvider>

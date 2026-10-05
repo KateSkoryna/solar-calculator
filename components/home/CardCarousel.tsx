@@ -17,14 +17,12 @@ export default function CardCarousel() {
 
   const cards: CarouselCard[] = [
     {
-      icon: <FaSolarPanel className="w-6 h-6 text-[var(--accent)] mb-1" />,
+      icon: <FaSolarPanel className="w-6 h-6 text-lime-soft-ink mb-1" />,
       title: t("card1Title"),
       content: (
         <>
-          <p className="text-xs text-[var(--text-body)] mb-1">
-            {t("card1Desc")}
-          </p>
-          <ul className="space-y-0.5 text-xs text-[var(--text-body)] list-disc list-inside">
+          <p className="text-xs text-ink mb-1">{t("card1Desc")}</p>
+          <ul className="space-y-0.5 text-xs text-ink list-disc list-inside">
             <li>{t("card1Item1")}</li>
             <li>{t("card1Item2")}</li>
             <li>{t("card1Item3")}</li>
@@ -34,32 +32,28 @@ export default function CardCarousel() {
       ),
     },
     {
-      icon: <FaCalculator className="w-6 h-6 text-[var(--accent)] mb-1" />,
+      icon: <FaCalculator className="w-6 h-6 text-lime-soft-ink mb-1" />,
       title: t("card2Title"),
       content: (
         <>
-          <p className="text-xs text-[var(--text-body)] mb-1">
-            {t("card2Desc")}
-          </p>
-          <ul className="space-y-0.5 text-xs text-[var(--text-body)] mb-2 list-disc list-inside">
+          <p className="text-xs text-ink mb-1">{t("card2Desc")}</p>
+          <ul className="space-y-0.5 text-xs text-ink mb-2 list-disc list-inside">
             <li>{t("card2Item1")}</li>
             <li>{t("card2Item2")}</li>
             <li>{t("card2Item3")}</li>
             <li>{t("card2Item4")}</li>
           </ul>
-          <p className="text-xs text-[var(--text-body)]">{t("card2Footer")}</p>
+          <p className="text-xs text-ink">{t("card2Footer")}</p>
         </>
       ),
     },
     {
-      icon: <FaIndustry className="w-6 h-6 text-[var(--accent)] mb-1" />,
+      icon: <FaIndustry className="w-6 h-6 text-lime-soft-ink mb-1" />,
       title: t("card3Title"),
       content: (
         <>
-          <p className="text-xs text-[var(--text-body)] mb-1">
-            {t("card3Desc")}
-          </p>
-          <ul className="space-y-0.5 text-xs text-[var(--text-body)] list-disc list-inside">
+          <p className="text-xs text-ink mb-1">{t("card3Desc")}</p>
+          <ul className="space-y-0.5 text-xs text-ink list-disc list-inside">
             <li>{t("card3Item1")}</li>
             <li>{t("card3Item2")}</li>
             <li>{t("card3Item3")}</li>
@@ -95,7 +89,7 @@ export default function CardCarousel() {
       <div className="flex items-center justify-center gap-8">
         <button
           onClick={handlePrevious}
-          className="flex-shrink-0 w-12 h-12 rounded-full bg-[var(--accent)] text-white flex items-center justify-center hover:opacity-90 transition-opacity z-10"
+          className="flex-shrink-0 w-12 h-12 rounded-full bg-lime text-on-lime flex items-center justify-center hover:opacity-90 transition-opacity z-10"
           aria-label={t("previousCard")}
         >
           <IoIosArrowBack className="w-6 h-6" />
@@ -113,18 +107,17 @@ export default function CardCarousel() {
                 key={index}
                 className={`
                   absolute transition-all duration-500 ease-in-out
-                  bg-[var(--card)] rounded-lg p-4
+                  bg-surface rounded-lg p-4 shadow-hover
                   ${isCenter ? "scale-150 z-20 opacity-100" : "scale-100 z-10 opacity-60"}
                   ${isLeft ? "-translate-x-[450px]" : ""}
                   ${isRight ? "translate-x-[450px]" : ""}
                   ${position === "hidden" ? "opacity-0 pointer-events-none" : ""}
                   w-72 h-80
                 `}
-                style={{ boxShadow: "var(--card-shadow)" }}
               >
                 <div className="flex flex-col items-center text-center">
                   {card.icon}
-                  <h2 className="text-sm font-bold text-[var(--text-heading)] mb-1">
+                  <h2 className="text-sm font-bold text-ink mb-1">
                     {card.title}
                   </h2>
                   <div className="text-left">{card.content}</div>
@@ -136,7 +129,7 @@ export default function CardCarousel() {
 
         <button
           onClick={handleNext}
-          className="flex-shrink-0 w-12 h-12 rounded-full bg-[var(--accent)] text-white flex items-center justify-center hover:opacity-90 transition-opacity z-10"
+          className="flex-shrink-0 w-12 h-12 rounded-full bg-lime text-on-lime flex items-center justify-center hover:opacity-90 transition-opacity z-10"
           aria-label={t("nextCard")}
         >
           <IoIosArrowForward className="w-6 h-6" />

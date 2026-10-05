@@ -25,7 +25,7 @@ const steps = [
 
 export default function MultiStepForm() {
   return (
-    <div className="w-full bg-[var(--form-bg)] rounded-lg">
+    <div className="w-full bg-surface rounded-lg">
       <Form steps={steps} />
     </div>
   );

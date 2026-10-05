@@ -137,10 +137,10 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 | 2.2  | Pure calculation engine                            | DONE   |                                             |
 | 2.3  | Store scenarios and the full result shape          | DONE   |                                             |
 | 2.4  | Run the engine on fleet calculations               | DONE   |                                             |
-| 2.5  | Create a fleet on sign-up                          | REVIEW | Ready for review — 2026-09-30               |
-| 2.6  | Save a quick check to a fleet                      | TODO   |                                             |
-| 2.7  | Invite members by email before they sign in        | TODO   |                                             |
-| 3.1  | Design tokens, fonts and motion                    | TODO   |                                             |
+| 2.5  | Create a fleet on sign-up                          | DONE   |                                             |
+| 2.6  | Save a quick check to a fleet                      | DONE   |                                             |
+| 2.7  | Invite members by email before they sign in        | DONE   |                                             |
+| 3.1  | Design tokens, fonts and motion                    | DONE   |                                             |
 | 3.2  | Core components and test utilities                 | TODO   |                                             |
 | 3.3  | Public header, mobile menu and footer              | TODO   |                                             |
 | 3.4  | Home page                                          | TODO   |                                             |

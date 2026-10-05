@@ -71,13 +71,13 @@ export default function EmailSignInForm() {
       )}
 
       <div>
-        <label className="block text-sm font-medium text-[var(--text-body)] mb-2">
+        <label className="block text-sm font-medium text-ink mb-2">
           {t("email")}
         </label>
         <input
           {...register("email")}
           type="email"
-          className="w-full p-3 border border-[var(--border)] rounded-md bg-[var(--input)] text-[var(--text-body)]"
+          className="w-full p-3 border border-line-strong rounded-md bg-surface text-ink"
           placeholder={t("emailPlaceholder")}
           disabled={isLoading}
         />
@@ -89,7 +89,7 @@ export default function EmailSignInForm() {
       <button
         type="submit"
         disabled={isLoading}
-        className="w-full bg-[var(--accent)] text-white p-3 rounded-md font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full bg-lime text-on-lime p-3 rounded-md font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isLoading ? tAuth("loading") : t("submitButton")}
       </button>

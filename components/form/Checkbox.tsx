@@ -35,15 +35,15 @@ export default function Checkbox({
           bg-white/10 backdrop-blur-md !flex !items-center !justify-start gap-3
           ${
             isChecked
-              ? "border-[var(--accent)] bg-[var(--accent)]/20"
-              : "border-white/20 hover:border-[var(--accent)]/50"
+              ? "border-lime bg-lime/20"
+              : "border-white/20 hover:border-lime/50"
           } ${className}`}
       >
         <div
           className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all
             ${
               isChecked
-                ? "border-[var(--accent)] bg-[var(--accent)]"
+                ? "border-lime bg-lime"
                 : "border-white/20 bg-white/10 backdrop-blur-md"
             }`}
         >
@@ -63,9 +63,7 @@ export default function Checkbox({
             </svg>
           )}
         </div>
-        <span className="text-sm font-medium text-[var(--text-white)]">
-          {label}
-        </span>
+        <span className="text-sm font-medium text-white">{label}</span>
       </button>
       {error && (
         <p className="text-red-500 text-sm mt-1">{error.message as string}</p>

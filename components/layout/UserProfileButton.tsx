@@ -27,23 +27,23 @@ export default function UserProfileButton() {
     <div className="relative">
       <button
         onClick={() => setisDropdownOpen(!isDropdownOpen)}
-        className="p-2 rounded-lg font-bold font-[family:var(--font-inter)] transition-colors hover:opacity-80 flex items-center gap-2 bg-[var(--card)] text-[var(--text-heading)] border-2 border-[var(--border)] focus:border-[var(--accent)] focus:outline-none"
+        className="p-2 rounded-lg font-bold font-body transition-colors hover:opacity-80 flex items-center gap-2 bg-surface text-ink border-2 border-line-strong focus:border-lime focus:outline-none"
         aria-label={t("userProfile")}
       >
         <FaUserCircle size={18} />
       </button>
 
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-[var(--card)] border border-[var(--border)] rounded-md shadow-lg py-1 z-9999">
+        <div className="absolute right-0 mt-2 w-48 bg-surface border border-line-strong rounded-md shadow-lg py-1 z-9999">
           <button
             onClick={navigateToAccount}
-            className="w-full text-left px-4 py-2 text-[var(--text-heading)] hover:bg-[var(--accent-hover)] flex items-center gap-2"
+            className="w-full text-left px-4 py-2 text-ink hover:bg-soft flex items-center gap-2"
           >
             <CgProfile size={18} /> {t("myAccount")}
           </button>
           <button
             onClick={userSignOut}
-            className="w-full text-left px-4 py-2 text-[var(--text-heading)] hover:bg-[var(--accent-hover)] flex items-center gap-2"
+            className="w-full text-left px-4 py-2 text-ink hover:bg-soft flex items-center gap-2"
           >
             <IoMdLogOut size={18} /> {t("logout")}
           </button>

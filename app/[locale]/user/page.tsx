@@ -17,8 +17,8 @@ export default async function UserPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="bg-[var(--form-bg)] p-8 rounded-lg shadow-md max-w-md w-full">
-        <h1 className="text-2xl font-bold text-[var(--accent)] mb-6">
+      <div className="bg-surface p-8 rounded-lg shadow-md max-w-md w-full">
+        <h1 className="text-2xl font-bold text-lime-soft-ink mb-6">
           {t("welcome", {
             name: session.user.name || session.user.email || "",
           })}
@@ -26,26 +26,20 @@ export default async function UserPage() {
 
         <div className="space-y-4">
           <div>
-            <p className="text-sm text-[var(--text-body)]">{t("emailLabel")}</p>
-            <p className="font-medium text-[var(--text-body)]">
-              {session.user.email}
-            </p>
+            <p className="text-sm text-ink">{t("emailLabel")}</p>
+            <p className="font-medium text-ink">{session.user.email}</p>
           </div>
 
           <div>
-            <p className="text-sm text-[var(--text-body)]">
-              {t("userIdLabel")}
-            </p>
-            <p className="font-medium text-[var(--text-body)] text-xs break-all">
+            <p className="text-sm text-ink">{t("userIdLabel")}</p>
+            <p className="font-medium text-ink text-xs break-all">
               {session.user.id}
             </p>
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-[var(--border)]">
-          <p className="text-sm text-[var(--text-body)] mb-4">
-            {t("protectedNotice")}
-          </p>
+        <div className="mt-8 pt-6 border-t border-line-strong">
+          <p className="text-sm text-ink mb-4">{t("protectedNotice")}</p>
           <form
             action={async () => {
               "use server";

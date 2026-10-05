@@ -29,20 +29,20 @@ export default function LanguageSwitcher() {
 
   return (
     <details ref={detailsRef} className="relative cursor-pointer">
-      <summary className="px-4 py-2 rounded-lg font-bold font-[family:var(--font-inter)] text-sm flex items-center gap-2 transition-colors bg-[var(--card)] text-[var(--text-heading)] list-none border-2 border-[var(--border)] focus:border-[var(--accent)] focus:outline-none">
+      <summary className="px-4 py-2 rounded-lg font-bold font-body text-sm flex items-center gap-2 transition-colors bg-surface text-ink list-none border-2 border-line-strong focus:border-lime focus:outline-none">
         <span>{currentLocale.toUpperCase()}</span>
         <span className="text-xs">▼</span>
       </summary>
 
-      <ul className="absolute top-[calc(100%+2px)] z-50 rounded-lg overflow-hidden min-w-full bg-[var(--card)] border-2 border-[var(--border)] shadow-[0_4px_6px_rgba(0,0,0,0.1)]">
+      <ul className="absolute top-[calc(100%+2px)] z-50 rounded-lg overflow-hidden min-w-full bg-surface border-2 border-line-strong shadow-[0_4px_6px_rgba(0,0,0,0.1)]">
         {locales.map((loc) => (
           <li key={loc}>
             <button
               onClick={() => handleLocaleChange(loc)}
-              className={`w-full px-4 py-2 font-bold font-[family:var(--font-inter)] text-sm text-left transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[var(--accent)] ${
+              className={`w-full px-4 py-2 font-bold font-body text-sm text-left transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-lime ${
                 currentLocale === loc
-                  ? "bg-[var(--primary)] text-[var(--text-on-primary)]"
-                  : "bg-[var(--card)] text-[var(--text-body)]"
+                  ? "bg-soft text-ink"
+                  : "bg-surface text-ink"
               }`}
               aria-label={`Switch to ${t(loc)}`}
             >

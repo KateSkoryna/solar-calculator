@@ -23,14 +23,12 @@ export default function Select({
 
   return (
     <div>
-      <label className="block text-sm font-medium text-[var(--text-body)] mb-2">
-        {label}
-      </label>
+      <label className="block text-sm font-medium text-ink mb-2">{label}</label>
       <select
         {...register(name)}
         className={`w-full p-3 rounded-md
-          bg-[var(--input)] text-[var(--text-body)]
-          focus:outline-none focus:ring-2 focus:ring-[var(--accent)] ${className}`}
+          bg-surface text-ink
+          focus:outline-none focus:ring-2 focus:ring-lime ${className}`}
       >
         {children}
       </select>

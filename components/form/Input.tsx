@@ -24,15 +24,15 @@ export default function Input({
 
   return (
     <div>
-      <label className="block text-sm font-medium text-[var(--text-white)] mb-2">
+      <label className="block text-sm font-medium text-white mb-2">
         {label}
       </label>
       <input
         type={type}
         {...register(name, { valueAsNumber: type === "number" })}
         className={`w-full p-3 rounded-md border-2 border-white/20
-            bg-white/10 backdrop-blur-md text-[var(--text-white)] placeholder:text-white/60
-            focus:outline-none focus:border-[var(--accent)] ${className}`}
+            bg-white/10 backdrop-blur-md text-white placeholder:text-white/60
+            focus:outline-none focus:border-lime ${className}`}
         placeholder={placeholder}
       />
       {error && (

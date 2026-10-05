@@ -42,27 +42,27 @@ export default function VehicleTypeStep() {
               className={`relative p-3 border-2 rounded-lg transition-all duration-300 group bg-white/10 backdrop-blur-md flex-1
                 ${
                   isSelected
-                    ? "border-[var(--accent)] bg-[var(--accent)]/20 scale-105"
-                    : "border-white/20 hover:border-[var(--accent)]/50 scale-100"
+                    ? "border-lime bg-lime/20 scale-105"
+                    : "border-white/20 hover:border-lime/50 scale-100"
                 }`}
             >
               {isSelected && (
-                <div className="absolute top-2 right-2 w-2 h-2 bg-[var(--accent)] rounded-full" />
+                <div className="absolute top-2 right-2 w-2 h-2 bg-lime rounded-full" />
               )}
               <div className="flex flex-col items-center gap-2">
                 <IconComponent
                   className={`w-8 h-8 transition-colors
                     ${
                       isSelected
-                        ? "text-[var(--accent)]"
-                        : "text-[var(--text-white)] group-hover:text-[var(--accent)]"
+                        ? "text-lime"
+                        : "text-white group-hover:text-lime"
                     }`}
                 />
                 <span
                   className={`font-medium text-sm ${
                     isSelected
-                      ? "text-[var(--accent)]"
-                      : "text-[var(--text-white)] group-hover:text-[var(--accent)]"
+                      ? "text-lime"
+                      : "text-white group-hover:text-lime"
                   }`}
                 >
                   {vehicle.label}
