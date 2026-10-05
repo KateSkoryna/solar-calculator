@@ -15,6 +15,8 @@ export const RESERVED_FLEET_SLUGS: readonly string[] = [
   "workspace",
   "onboarding",
   "dev",
+  "privacy",
+  "legal-notice",
 ];
 
 const GERMAN_TRANSLITERATIONS: Record<string, string> = {
