@@ -1814,6 +1814,44 @@ const savingsBreakdownSchema = z.record(z.enum(SAVINGS_TYPES), z.number());
 
 Two database details also matter. PostgreSQL's `jsonb` does not keep key order, so the view model walks inputs in a fixed list order, never in the order the keys arrive. And a `Float` column can lose the last digit of a number, so values that are only displayed (tonnes of CO₂, the break-even year) are rounded first.
 
+### Shareable tab URLs (links vs. tabs)
+
+"Log in" and "Create account" look like tabs, but each one is a page of its own, so they are real links. That keeps the addresses shareable, makes the back button work and lets a page be opened straight on the right screen. The control tells assistive technology which one is open with `aria-current`, which is the link version of `aria-selected`:
+
+```tsx
+<Link
+  key={href}
+  href={href}
+  aria-current={isCurrent ? "page" : undefined}
+```
+
+Real tabs, with `role="tablist"` and arrow keys, are only for switching content inside one page (step 3.12).
+
+### Form-level vs. field-level errors
+
+A field-level error belongs to one input and sits directly under it ("Please enter a valid email address."). A form-level error is about the whole attempt: the link expired, or the email could not be sent. It cannot be pinned to a field, so it gets its own alert above the button, with a plain sentence and an action. The two use different components so they cannot be mixed up:
+
+```tsx
+<FormAlert action={<Button onClick={sendLink}>{t("sendNewLink")}</Button>}>
+  {formProblem}
+</FormAlert>
+```
+
+The message never says whether an account exists for the address, so the form cannot be used to find out who is registered.
+
+### Designing the waiting moment of a passwordless flow
+
+After "Email me a sign-in link" the person has to leave the page, find an email and come back. The screen they wait on must say where the link went, how long it lives, what to do if it does not arrive and how to try again, without letting them hammer the server. A countdown disables "Send it again" for 60 seconds and shows the seconds left:
+
+```ts
+const tick = setInterval(
+  () => setRemainingSeconds((seconds) => Math.max(seconds - 1, 0)),
+  TICK_MILLISECONDS,
+);
+```
+
+The address is kept in `sessionStorage`, not in the web address, so it does not end up in browser history, server logs or referrer headers.
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit

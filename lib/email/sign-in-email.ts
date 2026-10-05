@@ -1,7 +1,7 @@
 import { createTranslator } from "next-intl";
 import { defaultLocale, locales, type Locale } from "@/i18n";
 import { renderSignInEmailHtml } from "@/lib/email/sign-in-email-template";
-import { SIGN_IN_LINK_MAX_AGE_SECONDS } from "@/lib/sign-in-link-limits";
+import { SIGN_IN_LINK_MAX_AGE_SECONDS } from "@/lib/sign-in-link-lifetime";
 
 const SECONDS_PER_MINUTE = 60;
 

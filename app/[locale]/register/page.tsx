@@ -1,12 +1,13 @@
-import RegisterForm from "@/components/register/Form";
-import Section from "@/components/layout/Section";
+import { Suspense } from "react";
+import AuthShell from "@/components/auth/AuthShell";
+import SignInPanel from "@/components/auth/SignInPanel";
 
 export default function RegisterPage() {
   return (
-    <Section>
-      <div className="mx-auto max-w-md">
-        <RegisterForm />
-      </div>
-    </Section>
+    <AuthShell>
+      <Suspense fallback={null}>
+        <SignInPanel mode="register" />
+      </Suspense>
+    </AuthShell>
   );
 }

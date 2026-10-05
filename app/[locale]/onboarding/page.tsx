@@ -1,8 +1,11 @@
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { auth } from "@/auth";
-import Section from "@/components/layout/Section";
+import AuthShell from "@/components/auth/AuthShell";
+import Heading from "@/components/common/Heading";
+import Text from "@/components/common/Text";
 import OnboardingForm from "@/components/onboarding/OnboardingForm";
+import { loginPath } from "@/lib/public-paths";
 
 export default async function OnboardingPage({
   params,
@@ -13,19 +16,24 @@ export default async function OnboardingPage({
   const session = await auth();
 
   if (!session?.user) {
-    redirect(`/${locale}/login`);
+    redirect(loginPath(locale));
   }
 
   const t = await getTranslations("onboarding");
 
   return (
-    <Section>
-      <div className="mx-auto max-w-md">
-        <div className="bg-surface p-8 rounded-lg shadow-md">
-          <h3 className="!text-lime-soft-ink text-center mb-6">{t("title")}</h3>
-          <OnboardingForm />
+    <AuthShell>
+      <div className="flex flex-1 flex-col gap-6">
+        <div className="flex flex-col gap-3 text-left">
+          <Heading level={1} size="display-s">
+            {t("title")}
+          </Heading>
+          <Text size="body-l" tone="muted">
+            {t("intro")}
+          </Text>
         </div>
+        <OnboardingForm />
       </div>
-    </Section>
+    </AuthShell>
   );
 }
