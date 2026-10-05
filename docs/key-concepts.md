@@ -1770,6 +1770,50 @@ export function verdictVariantFor(
 
 Because it has no React and no translations inside, it is easy to test with plain values, and the saved fleet result page can feed it stored data and get exactly the same screen as the public page.
 
+### Sharing UI between server-loaded and client-computed data
+
+The public results page computes everything in the browser, while the saved results page loads rows from the database on the server. Both end in the same screen because the screen only ever sees one thing, the view model. Each page has its own small adapter that produces it, and nothing below that point knows where the numbers came from:
+
+```ts
+export function storedCalculationToEngineOutput(
+  calculation: StoredCalculation,
+): ResultsSource {
+  const stored = requireCompleteScenarios(calculation);
+  const { inputSources } = parseStoredVehicleSpec(
+    stored.REALISTIC.inputSnapshot.vehicleSpec,
+  );
+```
+
+A test keeps the two paths honest: the view model built from a saved row must equal the view model built by running the engine again on the same input.
+
+### Server-only data loading
+
+A page that reads the database runs on the server, so it can use Prisma directly, but the access check must stay next to the query. One loader function does both steps in a fixed order, so a page cannot read a calculation without passing the check, and a user from another fleet gets a refusal instead of data:
+
+```ts
+export async function loadFleetCalculation(
+  session: Session | null,
+  fleetSlug: string,
+  calculationId: string,
+) {
+  const fleet = await findFleetBySlug(fleetSlug);
+  if (!fleet) return null;
+
+  await requireFleetRole(session, fleet.id, ANY_FLEET_ROLE);
+```
+
+The query also filters by `fleetId`, so a calculation id that belongs to another fleet is simply "not found".
+
+### Parsing what comes back from the database
+
+A JSON column is typed as "anything" when it is read back. Instead of casting it, the loader checks the shape with zod and throws a named error if it does not match, which the page turns into the plain "no result yet" message:
+
+```ts
+const savingsBreakdownSchema = z.record(z.enum(SAVINGS_TYPES), z.number());
+```
+
+Two database details also matter. PostgreSQL's `jsonb` does not keep key order, so the view model walks inputs in a fixed list order, never in the order the keys arrive. And a `Float` column can lose the last digit of a number, so values that are only displayed (tonnes of CO₂, the break-even year) are rounded first.
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit
