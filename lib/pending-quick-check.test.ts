@@ -1,5 +1,6 @@
 import {
   clearPendingQuickCheck,
+  PENDING_QUICK_CHECK_COOKIE_NAME,
   PENDING_QUICK_CHECK_STORAGE_KEY,
   readPendingQuickCheck,
   savePendingQuickCheck,
@@ -20,9 +21,29 @@ const answers: QuickCheckAnswers = {
   solarPanelPlacement: "ROOF",
 };
 
+function hasPendingQuickCheckCookie() {
+  return document.cookie.includes(`${PENDING_QUICK_CHECK_COOKIE_NAME}=1`);
+}
+
 afterEach(() => {
   jest.restoreAllMocks();
-  sessionStorage.clear();
+  localStorage.clear();
+  clearPendingQuickCheck();
+});
+
+describe("pending quick check flag cookie", () => {
+  it("is set when answers are saved so the server can see them", () => {
+    savePendingQuickCheck(answers);
+
+    expect(hasPendingQuickCheckCookie()).toBe(true);
+  });
+
+  it("is removed when the answers are cleared", () => {
+    savePendingQuickCheck(answers);
+    clearPendingQuickCheck();
+
+    expect(hasPendingQuickCheckCookie()).toBe(false);
+  });
 });
 
 describe("pending quick check storage", () => {
@@ -35,12 +56,12 @@ describe("pending quick check storage", () => {
   });
 
   it("returns null for stored data that fails validation", () => {
-    sessionStorage.setItem(PENDING_QUICK_CHECK_STORAGE_KEY, '{"quantity":0}');
+    localStorage.setItem(PENDING_QUICK_CHECK_STORAGE_KEY, '{"quantity":0}');
 
     expect(readPendingQuickCheck()).toBeNull();
   });
 
-  it("returns null and does not throw when sessionStorage throws", () => {
+  it("returns null and does not throw when localStorage throws", () => {
     jest.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
       throw new Error("storage blocked");
     });

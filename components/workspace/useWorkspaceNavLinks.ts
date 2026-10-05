@@ -21,7 +21,7 @@ export function useWorkspaceNavLinks(fleetSlug: string) {
       label: t(item.messageKey),
       href,
       Icon: item.icon,
-      isCurrent: isWorkspaceNavItemCurrent(pathname, href, item),
+      isCurrent: isWorkspaceNavItemCurrent(pathname, href),
     };
   });
 }

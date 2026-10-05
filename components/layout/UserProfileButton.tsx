@@ -14,21 +14,16 @@ const MENU_ITEM_CLASSES = `flex w-full items-center justify-start gap-2 rounded-
 interface UserProfileButtonProps {
   name: string;
   imageUrl: string | null;
-  opensUpward?: boolean;
 }
 
 export default function UserProfileButton({
   name,
   imageUrl,
-  opensUpward = false,
 }: UserProfileButtonProps) {
   const t = useTranslations("header");
   const locale = useLocale();
   const menuId = useId();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuPositionClasses = opensUpward
-    ? "bottom-full left-0 mb-2"
-    : "right-0 mt-2";
 
   return (
     <div className="relative">
@@ -46,7 +41,7 @@ export default function UserProfileButton({
       {isMenuOpen && (
         <div
           id={menuId}
-          className={`absolute z-50 flex w-52 flex-col gap-1 rounded-md border border-line bg-surface p-2 shadow-hover ${menuPositionClasses}`}
+          className="absolute right-0 z-50 mt-2 flex w-52 flex-col gap-1 rounded-md border border-line bg-surface p-2 shadow-hover"
         >
           <Link
             href={accountPath(locale)}

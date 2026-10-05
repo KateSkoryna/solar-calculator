@@ -1,72 +1,82 @@
-import { redirect } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { notFound, redirect } from "next/navigation";
+import type { Session } from "next-auth";
 import { auth } from "@/auth";
+import Heading from "@/components/common/Heading";
+import Text from "@/components/common/Text";
+import TeamAndActivityView from "@/components/team/TeamAndActivityView";
 import { prisma } from "@/lib/prisma";
 import {
-  requireFleetRole,
+  ANY_FLEET_ROLE,
   FLEET_EDITOR_ROLES,
+  FLEET_OWNER_ONLY,
   ForbiddenError,
+  requireFleetRole,
 } from "@/lib/fleet-auth";
 import { findFleetBySlug } from "@/lib/fleet-repo";
-import { AuditEntityType } from "@/lib/audit";
-import Section from "@/components/layout/Section";
-import PageTitle from "@/components/common/PageTitle";
-import AuditLogView from "@/components/audit/AuditLogView";
+import { loginPath } from "@/lib/public-paths";
+import { getTranslations } from "next-intl/server";
 
-function NotFoundMessage({ title, text }: { title: string; text: string }) {
-  return (
-    <Section>
-      <PageTitle>{title}</PageTitle>
-      <p className="text-center text-ink">{text}</p>
-    </Section>
-  );
+async function findMemberAccess(session: Session, fleetId: string) {
+  try {
+    return await requireFleetRole(session, fleetId, ANY_FLEET_ROLE);
+  } catch (error) {
+    if (error instanceof ForbiddenError) return null;
+    throw error;
+  }
 }
 
-export default async function AuditLogPage({
+export default async function TeamAndActivityPage({
   params,
 }: {
-  params: Promise<{ fleetSlug: string }>;
+  params: Promise<{ locale: string; fleetSlug: string }>;
 }) {
+  const { locale, fleetSlug } = await params;
   const session = await auth();
 
-  if (!session?.user) {
-    redirect("/login");
+  if (!session?.user?.id) {
+    redirect(loginPath(locale));
+  }
+
+  const fleet = await findFleetBySlug(fleetSlug);
+  const access = fleet ? await findMemberAccess(session, fleet.id) : null;
+
+  if (!fleet || !access) {
+    notFound();
   }
 
   const t = await getTranslations("audit");
-  const { fleetSlug } = await params;
-  const fleet = await findFleetBySlug(fleetSlug);
-
-  if (!fleet) {
-    return <NotFoundMessage title={t("title")} text={t("notFound")} />;
-  }
-
-  try {
-    await requireFleetRole(session, fleet.id, FLEET_EDITOR_ROLES);
-  } catch (error) {
-    if (error instanceof ForbiddenError) {
-      return <NotFoundMessage title={t("title")} text={t("notFound")} />;
-    }
-    throw error;
-  }
-
-  const fleetMembers = await prisma.fleetMembership.findMany({
+  const memberships = await prisma.fleetMembership.findMany({
     where: { fleetId: fleet.id },
-    select: { user: { select: { id: true, email: true } } },
     orderBy: { createdAt: "asc" },
+    select: {
+      role: true,
+      user: { select: { id: true, name: true, email: true, image: true } },
+    },
   });
 
   return (
-    <Section>
-      <PageTitle>{t("title")}</PageTitle>
-      <AuditLogView
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-2">
+        <Text size="small" tone="muted">
+          {fleet.name}
+        </Text>
+        <Heading level={1} size="display-s">
+          {t("title")}
+        </Heading>
+      </div>
+      <TeamAndActivityView
         fleetId={fleet.id}
-        users={fleetMembers.map((membership) => ({
-          id: membership.user.id,
-          email: membership.user.email,
+        currentUserId={session.user.id}
+        canManageTeam={FLEET_OWNER_ONLY.includes(access.role)}
+        canSeeActivity={FLEET_EDITOR_ROLES.includes(access.role)}
+        members={memberships.map(({ role, user }) => ({
+          userId: user.id,
+          name: user.name,
+          email: user.email,
+          imageUrl: user.image,
+          role,
         }))}
-        entityTypes={Object.values(AuditEntityType)}
       />
-    </Section>
+    </div>
   );
 }

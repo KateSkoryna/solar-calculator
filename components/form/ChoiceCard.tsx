@@ -12,13 +12,19 @@ export const CHOICE_CARD_LAYOUTS = [
 export type ChoiceCardLayout = (typeof CHOICE_CARD_LAYOUTS)[number];
 
 const CHOICE_CARD_LAYOUT_CLASSES: Record<ChoiceCardLayout, string> = {
-  vertical: "flex-col items-start gap-4 p-5",
+  vertical: "flex-col items-start gap-2.5 p-3",
   horizontal: "flex-row items-center gap-4 p-4",
   compact: "flex-col items-start gap-2.5 p-3.5",
 };
 
+const LABEL_LAYOUT_CLASSES: Record<ChoiceCardLayout, string> = {
+  vertical: "text-base break-words",
+  horizontal: "text-lg",
+  compact: "text-lg",
+};
+
 const ICON_TILE_LAYOUT_CLASSES: Record<ChoiceCardLayout, string> = {
-  vertical: "size-[72px] [&>svg]:size-11",
+  vertical: "size-12 [&>svg]:size-8",
   horizontal: "size-16 [&>svg]:size-10",
   compact: "size-12 [&>svg]:size-8",
 };
@@ -68,7 +74,9 @@ export default function ChoiceCard({
         </span>
       )}
       <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-        <span className="font-body text-lg leading-[1.3] font-semibold text-ink">
+        <span
+          className={`font-body leading-[1.3] font-semibold text-ink ${LABEL_LAYOUT_CLASSES[layout]}`}
+        >
           {label}
         </span>
         {hint && (

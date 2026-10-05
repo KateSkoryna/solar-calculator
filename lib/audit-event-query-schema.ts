@@ -5,7 +5,11 @@ import { DEFAULT_AUDIT_EVENT_PAGE_SIZE } from "@/lib/audit-event-constants";
 export const auditEventQuerySchema = z
   .object({
     actorUserId: z.string().min(1).optional(),
-    entityType: z.enum(Object.values(AuditEntityType)).optional(),
+    entityType: z.array(z.enum(Object.values(AuditEntityType))).optional(),
+    includeAccessDenied: z
+      .enum(["true", "false"])
+      .default("false")
+      .transform((value) => value === "true"),
     from: z.coerce.date().optional(),
     to: z.coerce.date().optional(),
     page: z.coerce.number().int().positive().default(1),

@@ -267,20 +267,105 @@
     "protectedNotice": "Erfolgreich angemeldet! Diese Seite ist geschützt."
   },
   "audit": {
-    "title": "Audit-Protokoll",
-    "notFound": "Diese Flotte existiert nicht.",
-    "user": "Benutzer",
-    "entityType": "Entitätstyp",
+    "title": "Team & Aktivität",
+    "activityTitle": "Was sich geändert hat",
+    "tabsLabel": "Team und Aktivität",
+    "tabActivity": "Aktivität",
+    "tabTeam": "Team",
+    "filters": {
+      "label": "Anzeigen",
+      "all": "Alles",
+      "vehicles": "Fahrzeuge",
+      "calculations": "Berechnungen",
+      "team": "Team"
+    },
+    "moreFilters": "Weitere Filter",
+    "user": "Person",
+    "allUsers": "Alle Personen",
     "from": "Von",
     "to": "Bis",
-    "allUsers": "Alle Benutzer",
-    "allTypes": "Alle Typen",
-    "loadError": "Audit-Ereignisse konnten nicht geladen werden.",
-    "timestamp": "Zeitstempel",
-    "action": "Aktion",
-    "entity": "Entität",
-    "noResults": "Keine Audit-Ereignisse entsprechen diesen Filtern.",
-    "pageOf": "Seite {page} von {totalPages}"
+    "loading": "Wird geladen…",
+    "loadError": "Die Aktivität konnte nicht geladen werden. Bitte versuchen Sie es erneut.",
+    "noResults": "Hier hat sich noch nichts geändert.",
+    "pageOf": "Seite {page} von {totalPages}",
+    "newer": "Neuere",
+    "older": "Ältere",
+    "time": {
+      "today": "Heute, {time}",
+      "yesterday": "Gestern, {time}"
+    },
+    "events": {
+      "fleetCreated": "{actor} hat diese Flotte erstellt",
+      "vehicleCreated": "{actor} hat {subject} hinzugefügt",
+      "vehicleUpdated": "{actor} hat {subject} bearbeitet",
+      "vehicleUpdatedField": "{actor} hat {field} für {subject} von {from} auf {to} geändert",
+      "vehicleDeleted": "{actor} hat {subject} entfernt",
+      "calculationCreated": "{actor} hat eine Berechnung durchgeführt",
+      "accessDenied": "{actor} wollte etwas öffnen, wofür keine Berechtigung besteht",
+      "membershipAdded": "{actor} hat {subject} als {role} zum Team hinzugefügt",
+      "membershipRoleUpdated": "{actor} hat die Rolle von {subject} auf {role} geändert",
+      "membershipRemoved": "{actor} hat {subject} aus dem Team entfernt",
+      "invitationCreated": "{actor} hat {subject} als {role} eingeladen",
+      "invitationClaimed": "{actor} ist dem Team als {role} beigetreten",
+      "invitationCanceled": "{actor} hat die Einladung für {subject} zurückgezogen"
+    },
+    "fields": {
+      "manufacturer": "Hersteller",
+      "model": "Modell",
+      "city": "Stadt",
+      "countryCode": "Land",
+      "vehicleType": "Fahrzeugtyp",
+      "engineType": "Antrieb",
+      "parkingType": "Abstellort",
+      "solarPanelPlacement": "Modulanordnung",
+      "cargoType": "Ladung",
+      "coolingUnitType": "Kühlaggregat",
+      "quantity": "Fahrzeuganzahl",
+      "averageDailyDistanceKm": "Tagesstrecke",
+      "operatingMonthsPerYear": "Einsatzmonate",
+      "latitude": "Breitengrad",
+      "longitude": "Längengrad",
+      "energyConsumptionKwhPer100km": "Energieverbrauch",
+      "solarPanelCapacityKw": "Modulleistung",
+      "payloadReserveKg": "freizuhaltendes Gewicht",
+      "maxRoofLoadKg": "maximale Dachlast",
+      "idleHoursPerDay": "Standzeit mit laufendem Motor",
+      "winterUsage": "Winternutzung"
+    },
+    "unknownActor": "Jemand",
+    "unknownRole": "eine neue Rolle",
+    "valueNotSet": "nicht festgelegt",
+    "unknownSubject": {
+      "fleet": "diese Flotte",
+      "vehicle": "ein Fahrzeug",
+      "calculation": "eine Berechnung",
+      "person": "jemanden"
+    }
+  },
+  "team": {
+    "title": "Team · {count, plural, one {# Person} other {# Personen}}",
+    "members": "Teammitglieder",
+    "you": "Sie",
+    "invite": "Einladen",
+    "inviteEmail": "Geschäftliche E-Mail",
+    "inviteRole": "Rolle",
+    "inviteSubmit": "Einladung senden",
+    "inviteSending": "Wird gesendet…",
+    "inviteAdded": "{email} hat jetzt Zugriff auf diese Flotte.",
+    "inviteSaved": "Einladung für {email} gespeichert. Der Zugriff gilt, sobald sich die Person mit dieser Adresse anmeldet.",
+    "inviteError": "Die Person konnte nicht eingeladen werden. Prüfen Sie die E-Mail-Adresse und versuchen Sie es erneut.",
+    "roleExplainer": {
+      "owner": "alles, auch Abrechnung und Team.",
+      "manager": "Fahrzeuge hinzufügen und Berechnungen durchführen.",
+      "viewer": "darf ansehen, nichts ändern."
+    },
+    "memberMenu": "Optionen für {name}",
+    "changeRole": "Zu {role} machen",
+    "remove": "Aus dem Team entfernen",
+    "removeConfirm": "{name} aus dem Team entfernen?",
+    "removeConfirmAction": "Ja, entfernen",
+    "cancel": "Abbrechen",
+    "actionError": "Das Team konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut."
   },
   "common": {
     "moreInfo": "Weitere Informationen"
@@ -333,7 +418,7 @@
     "mainNavigation": "Hauptnavigation",
     "fleetLabel": "Flotte",
     "switchFleet": "Flotte wechseln",
-    "home": "Solarrechner Startseite"
+    "comingSoon": "Diese Seite ist in Arbeit."
   },
   "roles": {
     "owner": "Inhaber",

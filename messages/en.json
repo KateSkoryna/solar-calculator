@@ -267,20 +267,105 @@
     "protectedNotice": "Logged in successfully! This page is protected."
   },
   "audit": {
-    "title": "Audit Log",
-    "notFound": "This fleet does not exist.",
+    "title": "Team & activity",
+    "activityTitle": "What changed",
+    "tabsLabel": "Team and activity",
+    "tabActivity": "Activity",
+    "tabTeam": "Team",
+    "filters": {
+      "label": "Show",
+      "all": "Everything",
+      "vehicles": "Vehicles",
+      "calculations": "Calculations",
+      "team": "Team"
+    },
+    "moreFilters": "More filters",
     "user": "User",
-    "entityType": "Entity type",
+    "allUsers": "All users",
     "from": "From",
     "to": "To",
-    "allUsers": "All users",
-    "allTypes": "All types",
-    "loadError": "Failed to load audit events.",
-    "timestamp": "Timestamp",
-    "action": "Action",
-    "entity": "Entity",
-    "noResults": "No audit events match these filters.",
-    "pageOf": "Page {page} of {totalPages}"
+    "loading": "Loading…",
+    "loadError": "We couldn't load the activity. Please try again.",
+    "noResults": "Nothing has changed here yet.",
+    "pageOf": "Page {page} of {totalPages}",
+    "newer": "Newer",
+    "older": "Older",
+    "time": {
+      "today": "Today, {time}",
+      "yesterday": "Yesterday, {time}"
+    },
+    "events": {
+      "fleetCreated": "{actor} created this fleet",
+      "vehicleCreated": "{actor} added {subject}",
+      "vehicleUpdated": "{actor} edited {subject}",
+      "vehicleUpdatedField": "{actor} changed {field} for {subject} from {from} to {to}",
+      "vehicleDeleted": "{actor} removed {subject}",
+      "calculationCreated": "{actor} ran a calculation",
+      "accessDenied": "{actor} tried to open something they cannot access",
+      "membershipAdded": "{actor} added {subject} to the team as {role}",
+      "membershipRoleUpdated": "{actor} changed the role of {subject} to {role}",
+      "membershipRemoved": "{actor} removed {subject} from the team",
+      "invitationCreated": "{actor} invited {subject} as {role}",
+      "invitationClaimed": "{actor} joined the team as {role}",
+      "invitationCanceled": "{actor} canceled the invitation for {subject}"
+    },
+    "fields": {
+      "manufacturer": "manufacturer",
+      "model": "model",
+      "city": "city",
+      "countryCode": "country",
+      "vehicleType": "vehicle type",
+      "engineType": "engine",
+      "parkingType": "parking place",
+      "solarPanelPlacement": "panel placement",
+      "cargoType": "cargo",
+      "coolingUnitType": "cooling unit",
+      "quantity": "number of vehicles",
+      "averageDailyDistanceKm": "daily distance",
+      "operatingMonthsPerYear": "months in use",
+      "latitude": "latitude",
+      "longitude": "longitude",
+      "energyConsumptionKwhPer100km": "energy use",
+      "solarPanelCapacityKw": "panel power",
+      "payloadReserveKg": "weight to keep free",
+      "maxRoofLoadKg": "maximum roof weight",
+      "idleHoursPerDay": "idling time",
+      "winterUsage": "winter use"
+    },
+    "unknownActor": "Someone",
+    "unknownRole": "a new role",
+    "valueNotSet": "not set",
+    "unknownSubject": {
+      "fleet": "this fleet",
+      "vehicle": "a vehicle",
+      "calculation": "a calculation",
+      "person": "someone"
+    }
+  },
+  "team": {
+    "title": "Team · {count, plural, one {# person} other {# people}}",
+    "members": "Team members",
+    "you": "You",
+    "invite": "Invite",
+    "inviteEmail": "Work email",
+    "inviteRole": "Role",
+    "inviteSubmit": "Send invite",
+    "inviteSending": "Sending…",
+    "inviteAdded": "{email} now has access to this fleet.",
+    "inviteSaved": "Invitation saved for {email}. They get access when they sign in with that address.",
+    "inviteError": "We couldn't invite that person. Check the email address and try again.",
+    "roleExplainer": {
+      "owner": "everything, including billing and team.",
+      "manager": "add vehicles and run calculations.",
+      "viewer": "can look, not change."
+    },
+    "memberMenu": "Options for {name}",
+    "changeRole": "Make {role}",
+    "remove": "Remove from team",
+    "removeConfirm": "Remove {name} from the team?",
+    "removeConfirmAction": "Yes, remove",
+    "cancel": "Cancel",
+    "actionError": "We couldn't update the team. Please try again."
   },
   "common": {
     "moreInfo": "More information"
@@ -333,7 +418,7 @@
     "mainNavigation": "Main",
     "fleetLabel": "Fleet",
     "switchFleet": "Switch fleet",
-    "home": "Solar Calculator home"
+    "comingSoon": "This page is on its way."
   },
   "roles": {
     "owner": "Owner",

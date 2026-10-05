@@ -15,7 +15,7 @@ export interface WorkspaceNavItem {
 }
 
 export const WORKSPACE_NAV_ITEMS: WorkspaceNavItem[] = [
-  { messageKey: "overview", routeSuffix: "", icon: LuLayoutDashboard },
+  { messageKey: "overview", routeSuffix: "/overview", icon: LuLayoutDashboard },
   { messageKey: "vehicles", routeSuffix: "/vehicles", icon: LuTruck },
   {
     messageKey: "calculations",
@@ -33,14 +33,9 @@ export function workspaceNavHref(
   return `/${locale}/${fleetSlug}${routeSuffix}`;
 }
 
-export function isWorkspaceNavItemCurrent(
-  pathname: string,
-  href: string,
-  { routeSuffix }: WorkspaceNavItem,
-) {
+export function isWorkspaceNavItemCurrent(pathname: string, href: string) {
   const normalizedPathname = pathname.replace(/\/+$/, "");
-  const isFleetRoot = routeSuffix === "";
-  return isFleetRoot
-    ? normalizedPathname === href
-    : normalizedPathname === href || normalizedPathname.startsWith(`${href}/`);
+  return (
+    normalizedPathname === href || normalizedPathname.startsWith(`${href}/`)
+  );
 }

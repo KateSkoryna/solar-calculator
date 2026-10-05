@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { LuChevronDown } from "react-icons/lu";
 import { FOCUS_RING_CLASSES } from "@/lib/focus-ring";
+import { fleetOverviewPath } from "@/lib/workspace-path";
 import type { WorkspaceFleet } from "@/lib/workspace-layout-loader";
 
 type FleetSwitcherVariant = "sidebar" | "compact";
@@ -34,6 +35,9 @@ export default function FleetSwitcher({
   const currentFleetName = currentFleet?.name ?? currentFleetSlug;
   const hasSeveralFleets = fleets.length > 1;
   const isSidebar = variant === "sidebar";
+  const menuPositionClasses = isSidebar
+    ? "bottom-[calc(100%+6px)]"
+    : "top-[calc(100%+6px)]";
   const labelClasses = `flex min-h-11 items-center gap-2 ${VARIANT_CLASSES[variant]}`;
 
   const content = (
@@ -74,11 +78,13 @@ export default function FleetSwitcher({
         {content}
       </summary>
 
-      <ul className="absolute left-0 top-[calc(100%+6px)] z-50 flex min-w-full list-none flex-col gap-1 rounded-md border border-line bg-surface p-2 shadow-hover">
+      <ul
+        className={`absolute left-0 z-50 flex min-w-full list-none flex-col gap-1 rounded-md border border-line bg-surface p-2 shadow-hover ${menuPositionClasses}`}
+      >
         {fleets.map(({ id, name, slug }) => (
           <li key={id} className="mb-0">
             <Link
-              href={`/${locale}/${slug}`}
+              href={fleetOverviewPath(locale, slug)}
               aria-current={slug === currentFleetSlug ? "true" : undefined}
               onClick={() => {
                 if (detailsRef.current) detailsRef.current.open = false;

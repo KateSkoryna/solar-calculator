@@ -603,23 +603,6 @@ Every step follows [`design-guidelines.md`](./design-guidelines.md) and the prev
   3. Standard checks S1–S4, S6, S8–S10 pass.
 - **Owner review (browser):** `/en/login`, `/en/register`, `/en/check-email`, `/en/onboarding` at three widths against the Login previews; the full sign-up flow with an email link and with Google.
 
-### Step 3.12 — Team & activity page
-
-- **Depends on:** 3.11
-- **Purpose:** "Who is on my team, what can they do, and what changed?" — in sentences, not enum names.
-- **Concepts to learn:** turning audit events into sentences with ICU messages, recording before/after values, owner-only actions, accessible tabs
-- **Instructions:**
-  1. Change the vehicle PATCH route so `VEHICLE_UPDATED` metadata stores `changes: [{ field, from, to }]` for each changed field.
-  2. Create `lib/activity-sentences.ts`: maps every `AuditAction` to a message key under `audit.events.*` with placeholders; falls back to "{actor} edited {vehicle}" when `changes` is missing; `ACCESS_DENIED` is excluded from the default view.
-  3. Rebuild `app/[locale]/[fleetSlug]/audit/page.tsx` per guidelines 8.6: Team card (members, role pills, role explainer; Invite and the per-member role menu only for owners, using the existing member routes), Activity card with chip filters, `ActivityItem`, pagination. Mobile uses the tabs variant of `SegmentedControl` (Activity / Team).
-  4. Keep the existing advanced filters under a "More filters" disclosure.
-- **Definition of done:**
-  1. `lib/activity-sentences.test.ts`: every value of `AuditAction` has a mapping (loop over the object); a `VEHICLE_UPDATED` event with changes renders "… changed daily distance for … from 180 km to 220 km"; without changes it renders the fallback.
-  2. API test: PATCHing `averageDailyDistanceKm` from 180 to 220 stores `{ field: "averageDailyDistanceKm", from: 180, to: 220 }`.
-  3. Component tests: a Viewer sees no Invite button or role menus; an Owner does; the tabs have `role="tab"`, `aria-selected`, and arrow keys switch tabs; no rendered text matches `/[A-Z]+_[A-Z]+/` (raw enum names).
-  4. Standard checks S1–S4, S6, S8–S10 pass.
-- **Owner review (browser):** `/en/berlin/audit` as owner (`k.skoryna@gmail.com`) and as viewer (`carol@example.com`) at three widths; edit a vehicle and check the new sentence.
-
 ### Step 3.13 — Fleet dashboard
 
 - **Depends on:** 3.12
@@ -631,7 +614,7 @@ Every step follows [`design-guidelines.md`](./design-guidelines.md) and the prev
      - average payback = mean of those groups' paybacks weighted by vehicle quantity (groups with `null` payback excluded and counted separately);
      - CO₂ avoided = sum;
      - not calculated yet = groups without a calculation plus groups calculated with an older assumption set.
-  2. Create `app/[locale]/[fleetSlug]/page.tsx` per guidelines 8.5: header with Add vehicles (editors only, → `/[slug]/vehicles/new`), KPI row, vehicle groups list (`components/fleet/VehicleGroupList.tsx`), recent activity (2 items + link), with loading, empty and error states. The report-in-progress card is added in 4.7.
+  2. Create `app/[locale]/[fleetSlug]/overview/page.tsx` per guidelines 8.5: header with Add vehicles (editors only, → `/[slug]/vehicles/new`), KPI row, vehicle groups list (`components/fleet/VehicleGroupList.tsx`), recent activity (2 items + link), with loading, empty and error states. The report-in-progress card is added in 4.7.
   3. Mark the guidelines' open question 12.8 as decided with these rules.
 - **Definition of done:**
   1. `lib/fleet-dashboard.test.ts` covers: an empty fleet, mixed current/stale groups, a group with `null` payback, the weighted average with quantities 1 and 9, and a group without a calculation.

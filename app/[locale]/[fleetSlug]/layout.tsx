@@ -1,6 +1,9 @@
 import type { ReactNode } from "react";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
+import PageContainer from "@/components/layout/PageContainer";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
 import WorkspaceIconRail from "@/components/workspace/WorkspaceIconRail";
 import WorkspaceSidebar from "@/components/workspace/WorkspaceSidebar";
 import WorkspaceTabBar from "@/components/workspace/WorkspaceTabBar";
@@ -28,30 +31,27 @@ export default async function FleetWorkspaceLayout({
     notFound();
   }
 
-  const user = {
-    name: session.user.name ?? session.user.email ?? "",
-    imageUrl: session.user.image ?? null,
-  };
-
   return (
-    <div className="flex min-h-dvh">
-      <WorkspaceSidebar
-        fleets={workspace.fleets}
-        currentFleetSlug={fleetSlug}
-        user={user}
-      />
-      <WorkspaceIconRail currentFleetSlug={fleetSlug} />
-      <div className="flex min-w-0 flex-1 flex-col">
+    <>
+      <Header />
+      <PageContainer className="flex flex-1 flex-col">
         <WorkspaceTopBar
           fleets={workspace.fleets}
           currentFleetSlug={fleetSlug}
-          user={user}
         />
-        <main className="flex-1 pb-[calc(76px+env(safe-area-inset-bottom))] md:pb-0">
-          {children}
-        </main>
+        <div className="flex flex-1 gap-6 py-6 md:py-10 lg:gap-8">
+          <WorkspaceSidebar
+            fleets={workspace.fleets}
+            currentFleetSlug={fleetSlug}
+          />
+          <WorkspaceIconRail currentFleetSlug={fleetSlug} />
+          <main className="min-w-0 flex-1">{children}</main>
+        </div>
+      </PageContainer>
+      <div className="pb-[calc(76px+env(safe-area-inset-bottom))] md:pb-0">
+        <Footer />
       </div>
       <WorkspaceTabBar currentFleetSlug={fleetSlug} />
-    </div>
+    </>
   );
 }
