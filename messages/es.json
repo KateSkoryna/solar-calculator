@@ -267,20 +267,105 @@
     "protectedNotice": "¡Sesión iniciada correctamente! Esta página está protegida."
   },
   "audit": {
-    "title": "Registro de auditoría",
-    "notFound": "Esta flota no existe.",
-    "user": "Usuario",
-    "entityType": "Tipo de entidad",
+    "title": "Equipo y actividad",
+    "activityTitle": "Qué ha cambiado",
+    "tabsLabel": "Equipo y actividad",
+    "tabActivity": "Actividad",
+    "tabTeam": "Equipo",
+    "filters": {
+      "label": "Mostrar",
+      "all": "Todo",
+      "vehicles": "Vehículos",
+      "calculations": "Cálculos",
+      "team": "Equipo"
+    },
+    "moreFilters": "Más filtros",
+    "user": "Persona",
+    "allUsers": "Todas las personas",
     "from": "Desde",
     "to": "Hasta",
-    "allUsers": "Todos los usuarios",
-    "allTypes": "Todos los tipos",
-    "loadError": "No se pudieron cargar los eventos de auditoría.",
-    "timestamp": "Marca de tiempo",
-    "action": "Acción",
-    "entity": "Entidad",
-    "noResults": "Ningún evento de auditoría coincide con estos filtros.",
-    "pageOf": "Página {page} de {totalPages}"
+    "loading": "Cargando…",
+    "loadError": "No hemos podido cargar la actividad. Inténtalo de nuevo.",
+    "noResults": "Aún no ha cambiado nada aquí.",
+    "pageOf": "Página {page} de {totalPages}",
+    "newer": "Más recientes",
+    "older": "Más antiguos",
+    "time": {
+      "today": "Hoy, {time}",
+      "yesterday": "Ayer, {time}"
+    },
+    "events": {
+      "fleetCreated": "{actor} creó esta flota",
+      "vehicleCreated": "{actor} añadió {subject}",
+      "vehicleUpdated": "{actor} editó {subject}",
+      "vehicleUpdatedField": "{actor} cambió {field} de {subject} de {from} a {to}",
+      "vehicleDeleted": "{actor} eliminó {subject}",
+      "calculationCreated": "{actor} hizo un cálculo",
+      "accessDenied": "{actor} intentó abrir algo a lo que no tiene acceso",
+      "membershipAdded": "{actor} añadió a {subject} al equipo como {role}",
+      "membershipRoleUpdated": "{actor} cambió el rol de {subject} a {role}",
+      "membershipRemoved": "{actor} quitó a {subject} del equipo",
+      "invitationCreated": "{actor} invitó a {subject} como {role}",
+      "invitationClaimed": "{actor} se unió al equipo como {role}",
+      "invitationCanceled": "{actor} canceló la invitación de {subject}"
+    },
+    "fields": {
+      "manufacturer": "el fabricante",
+      "model": "el modelo",
+      "city": "la ciudad",
+      "countryCode": "el país",
+      "vehicleType": "el tipo de vehículo",
+      "engineType": "el motor",
+      "parkingType": "el lugar de aparcamiento",
+      "solarPanelPlacement": "la colocación de los paneles",
+      "cargoType": "la carga",
+      "coolingUnitType": "el equipo de refrigeración",
+      "quantity": "el número de vehículos",
+      "averageDailyDistanceKm": "la distancia diaria",
+      "operatingMonthsPerYear": "los meses de uso",
+      "latitude": "la latitud",
+      "longitude": "la longitud",
+      "energyConsumptionKwhPer100km": "el consumo de energía",
+      "solarPanelCapacityKw": "la potencia de los paneles",
+      "payloadReserveKg": "el peso a mantener libre",
+      "maxRoofLoadKg": "el peso máximo en el techo",
+      "idleHoursPerDay": "el tiempo parado con el motor en marcha",
+      "winterUsage": "el uso en invierno"
+    },
+    "unknownActor": "Alguien",
+    "unknownRole": "un nuevo rol",
+    "valueNotSet": "sin definir",
+    "unknownSubject": {
+      "fleet": "esta flota",
+      "vehicle": "un vehículo",
+      "calculation": "un cálculo",
+      "person": "alguien"
+    }
+  },
+  "team": {
+    "title": "Equipo · {count, plural, one {# persona} other {# personas}}",
+    "members": "Miembros del equipo",
+    "you": "Tú",
+    "invite": "Invitar",
+    "inviteEmail": "Correo de trabajo",
+    "inviteRole": "Rol",
+    "inviteSubmit": "Enviar invitación",
+    "inviteSending": "Enviando…",
+    "inviteAdded": "{email} ya tiene acceso a esta flota.",
+    "inviteSaved": "Invitación guardada para {email}. Tendrá acceso cuando inicie sesión con esa dirección.",
+    "inviteError": "No hemos podido invitar a esa persona. Revisa el correo e inténtalo de nuevo.",
+    "roleExplainer": {
+      "owner": "todo, incluida la facturación y el equipo.",
+      "manager": "añadir vehículos y hacer cálculos.",
+      "viewer": "puede mirar, no cambiar."
+    },
+    "memberMenu": "Opciones de {name}",
+    "changeRole": "Hacer {role}",
+    "remove": "Quitar del equipo",
+    "removeConfirm": "¿Quitar a {name} del equipo?",
+    "removeConfirmAction": "Sí, quitar",
+    "cancel": "Cancelar",
+    "actionError": "No hemos podido actualizar el equipo. Inténtalo de nuevo."
   },
   "common": {
     "moreInfo": "Más información"
@@ -333,7 +418,7 @@
     "mainNavigation": "Principal",
     "fleetLabel": "Flota",
     "switchFleet": "Cambiar de flota",
-    "home": "Inicio de Solar Calculator"
+    "comingSoon": "Esta página está en camino."
   },
   "roles": {
     "owner": "Propietario",
