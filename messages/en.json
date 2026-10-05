@@ -97,7 +97,80 @@
     "selectInstallationType": "Select installation type",
     "roofMounted": "Roof Mounted",
     "groundMounted": "Ground Mounted",
-    "portable": "Portable"
+    "portable": "Portable",
+    "options": {
+      "vehicleType": {
+        "VAN": "Van",
+        "VANHint": "Sprinter, Transit",
+        "TRUCK": "Truck",
+        "TRUCKHint": "Actros, FH16",
+        "BUS": "Bus",
+        "BUSHint": "Citaro, Urbino",
+        "TRAILER": "Trailer",
+        "TRAILERHint": "Box, reefer"
+      },
+      "parkingType": {
+        "DEPOT": "At our depot",
+        "STREET": "On the street",
+        "CUSTOMER_SITE": "At customer sites",
+        "MIXED": "It varies"
+      },
+      "solarPanelPlacement": {
+        "ROOF": "Roof only",
+        "ROOFHint": "Most common, best value",
+        "ALL_OVER": "Roof, sides and back",
+        "ALL_OVERHint": "Most energy, higher cost",
+        "SIDES": "Sides",
+        "SIDESHint": "Partial sun during the day",
+        "BACK": "Back",
+        "BACKHint": "Limited sun"
+      }
+    },
+    "questions": {
+      "vehicleType": "What kind of vehicles do you have?",
+      "parkingType": "Where do they park overnight?",
+      "solarPanelPlacement": "Where would the panels go?"
+    },
+    "quantity": {
+      "label": "How many?",
+      "hint": "You can add different vehicle types later.",
+      "decrease": "Fewer vehicles",
+      "increase": "More vehicles",
+      "rangeError": "Please enter a number from {minimum} to {maximum}"
+    },
+    "steps": {
+      "vehicles": "Vehicles",
+      "vehiclesHint": "Type and number",
+      "dailyDriving": "Daily driving",
+      "dailyDrivingHint": "How far they go",
+      "location": "Location",
+      "locationHint": "Where they operate",
+      "panels": "Panels",
+      "panelsHint": "Where they go"
+    },
+    "stepIndicator": {
+      "navigationLabel": "Progress",
+      "position": "Step {current} of {total}",
+      "summary": "Step {current} of {total}: {label}",
+      "barLabel": "{number} · {label}"
+    },
+    "answers": {
+      "title": "Your answers",
+      "unanswered": "—",
+      "collapsedSummary": "Your answers · {summary}",
+      "vehicles": "Vehicles",
+      "vehiclesValue": "{quantity} × {vehicleType}",
+      "dailyDistance": "Daily distance",
+      "location": "Location",
+      "panels": "Panels"
+    },
+    "accuracy": {
+      "title": "Estimate accuracy",
+      "rough": "Rough",
+      "good": "Good",
+      "precise": "Precise",
+      "helper": "Answer more questions to make the estimate more accurate."
+    }
   },
   "login": {
     "title": "Login to Your Account",
@@ -276,7 +349,12 @@
       "statusPill": "Status pill",
       "avatar": "Avatar",
       "progressBar": "Progress bar",
-      "disclosure": "Disclosure"
+      "disclosure": "Disclosure",
+      "choiceCard": "Choice cards",
+      "chipGroup": "Chip group",
+      "numberStepper": "Number stepper",
+      "stepIndicator": "Step indicator",
+      "answersPanel": "Answers panel"
     },
     "buttonLabel": "Start my estimate",
     "buttonWithIcon": "With icon",
@@ -296,7 +374,8 @@
     "progressReportLabel": "Drawing charts… step 4 of 6",
     "progressStepLabel": "Step 2 of 4",
     "disclosureSummary": "How we calculated this",
-    "disclosureBody": "Every number shows where it came from."
+    "disclosureBody": "Every number shows where it came from.",
+    "sampleLocation": "Berlin, Germany"
   },
   "privacyPage": {
     "title": "Privacy",
