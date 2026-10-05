@@ -3,6 +3,7 @@ import Badge from "@/components/common/Badge";
 import Disclosure from "@/components/common/Disclosure";
 import Text from "@/components/common/Text";
 import { CENTS_PER_EURO } from "@/lib/calculation-engine/constants";
+import type { ProvenanceDetails } from "@/lib/stored-calculation";
 import {
   RESULTS_CURRENCY,
   type InputKey,
@@ -81,15 +82,20 @@ interface HowWeCalculatedProps {
   inputs: InputRow[];
   formulaVersion: string;
   assumptionSetVersion: string;
+  provenance?: ProvenanceDetails;
 }
 
 export default function HowWeCalculated({
   inputs,
   formulaVersion,
   assumptionSetVersion,
+  provenance,
 }: HowWeCalculatedProps) {
   const t = useTranslations("results.howWeCalculated");
+  const format = useFormatter();
   const formatInputValue = useInputValueFormatter();
+  const formatMoment = (moment: Date) =>
+    format.dateTime(moment, { dateStyle: "medium", timeStyle: "short" });
 
   return (
     <Disclosure summary={t("summary")}>
@@ -110,6 +116,38 @@ export default function HowWeCalculated({
             label={t("assumptionsVersion")}
             value={assumptionSetVersion}
           />
+          {provenance && (
+            <>
+              <DetailRow
+                label={t("provenance.requestedBy")}
+                value={provenance.requestedBy}
+              />
+              <DetailRow
+                label={t("provenance.calculatedOn")}
+                value={formatMoment(provenance.calculatedAt)}
+              />
+              <DetailRow
+                label={t("provenance.inputsSavedOn")}
+                value={formatMoment(provenance.inputsSavedAt)}
+              />
+              <DetailRow
+                label={t("provenance.energyPrices")}
+                value={provenance.energyPriceVersion}
+              />
+              <DetailRow
+                label={t("provenance.emissionsFactors")}
+                value={provenance.emissionsFactorVersion}
+              />
+              <DetailRow
+                label={t("provenance.solarYield")}
+                value={provenance.solarYieldVersion}
+              />
+              <DetailRow
+                label={t("provenance.currencyRates")}
+                value={provenance.currencyConversionVersion}
+              />
+            </>
+          )}
         </dl>
       </div>
     </Disclosure>

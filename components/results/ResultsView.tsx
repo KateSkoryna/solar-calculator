@@ -9,17 +9,20 @@ import { useResultsFormatters } from "@/components/results/useResultsFormatters"
 import VerdictHeadline from "@/components/results/VerdictHeadline";
 import PageContainer from "@/components/layout/PageContainer";
 import type { ResultsViewModel } from "@/lib/results-view-model";
+import type { ProvenanceDetails } from "@/lib/stored-calculation";
 
 interface ResultsViewProps {
   viewModel: ResultsViewModel;
   actions?: ReactNode;
   saveCard?: ReactNode;
+  provenance?: ProvenanceDetails;
 }
 
 export default function ResultsView({
   viewModel,
   actions,
   saveCard,
+  provenance,
 }: ResultsViewProps) {
   const t = useTranslations("results.tiles");
   const { money, tonnes, rangeOf } = useResultsFormatters();
@@ -62,6 +65,7 @@ export default function ResultsView({
           inputs={viewModel.inputs}
           formulaVersion={viewModel.formulaVersion}
           assumptionSetVersion={viewModel.assumptionSetVersion}
+          provenance={provenance}
         />
         {saveCard}
       </div>

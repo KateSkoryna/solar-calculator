@@ -2,13 +2,19 @@ import { createTranslator } from "next-intl";
 import {
   formatDuration,
   humaniseDuration,
+  storedCalculationToEngineOutput,
   toResultsViewModel,
 } from "@/lib/results-view-model";
+import {
+  IncompleteStoredCalculationError,
+  toProvenanceDetails,
+} from "@/lib/stored-calculation";
 import { SAVINGS_TYPES } from "@/lib/calculation-engine/types";
 import englishMessages from "@/messages/en.json";
 import {
   calculateOutput,
   outputWithRealisticPayback,
+  toStoredCalculation,
   withPaybackMonths,
 } from "@/test-support/results-fixtures";
 
@@ -173,5 +179,103 @@ describe("toResultsViewModel numbers", () => {
     expect(viewModel.formulaVersion).toBe(output.formulaVersion);
     expect(viewModel.assumptionSetVersion).toBe(output.assumptionSetVersion);
     expect(viewModel.summary.distanceBand).toBe("REGIONAL");
+  });
+});
+
+describe("storedCalculationToEngineOutput", () => {
+  it.each([
+    ["a plain van", {}],
+    ["a chilled trailer", { vehicleType: "TRAILER", cargoType: "CHILLED" }],
+    ["a fleet that never pays off", { averageDailyDistanceKm: 1 }],
+  ] as const)(
+    "gives the same screen for %s as the live calculation",
+    (_, inputOverrides) => {
+      const output = calculateOutput(inputOverrides);
+
+      const fromStored = toResultsViewModel(
+        storedCalculationToEngineOutput(toStoredCalculation(output)),
+      );
+
+      expect(fromStored).toEqual(toResultsViewModel(output));
+    },
+  );
+
+  it("does not depend on the order the database returns scenarios in", () => {
+    const output = calculateOutput();
+    const stored = toStoredCalculation(output);
+
+    const fromReversed = toResultsViewModel(
+      storedCalculationToEngineOutput({
+        ...stored,
+        scenarios: [...stored.scenarios].reverse(),
+      }),
+    );
+
+    expect(fromReversed).toEqual(toResultsViewModel(output));
+  });
+
+  it("refuses a calculation with a missing scenario", () => {
+    const stored = toStoredCalculation(calculateOutput());
+
+    expect(() =>
+      storedCalculationToEngineOutput({
+        ...stored,
+        scenarios: stored.scenarios.slice(1),
+      }),
+    ).toThrow(IncompleteStoredCalculationError);
+  });
+
+  it("refuses a scenario that has no result yet", () => {
+    const stored = toStoredCalculation(calculateOutput());
+
+    expect(() =>
+      storedCalculationToEngineOutput({
+        ...stored,
+        scenarios: stored.scenarios.map((scenario) => ({
+          ...scenario,
+          result: null,
+        })),
+      }),
+    ).toThrow(IncompleteStoredCalculationError);
+  });
+
+  it("refuses an unreadable input snapshot", () => {
+    const stored = toStoredCalculation(calculateOutput());
+
+    expect(() =>
+      storedCalculationToEngineOutput({
+        ...stored,
+        scenarios: stored.scenarios.map((scenario) => ({
+          ...scenario,
+          inputSnapshot: scenario.inputSnapshot && {
+            ...scenario.inputSnapshot,
+            vehicleSpec: "not an object",
+          },
+        })),
+      }),
+    ).toThrow(IncompleteStoredCalculationError);
+  });
+});
+
+describe("toProvenanceDetails", () => {
+  it("names who calculated and which assumptions were used", () => {
+    const output = calculateOutput();
+
+    expect(toProvenanceDetails(toStoredCalculation(output))).toMatchObject({
+      requestedBy: "Mira Hoffmann",
+      energyPriceVersion: output.assumptionSetVersion,
+      currencyConversionVersion: output.assumptionSetVersion,
+    });
+  });
+
+  it("falls back to the email when the person has no name", () => {
+    const stored = toStoredCalculation(calculateOutput());
+
+    expect(
+      toProvenanceDetails({
+        ...stored,
+        requestedByUser: { name: null, email: "mira@example.com" },
+      }).requestedBy,
+    ).toBe("mira@example.com");
   });
 });

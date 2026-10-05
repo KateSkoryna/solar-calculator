@@ -9,6 +9,8 @@ import {
   calculate,
   SCENARIO_KINDS,
   type CalculationInput,
+  type CalculationOutput,
+  type ScenarioKind,
 } from "@/lib/calculation-engine";
 import { AuditAction, AuditEntityType, recordAuditEvent } from "@/lib/audit";
 
@@ -41,6 +43,41 @@ export const CALCULATION_WITH_RESULTS_INCLUDE = {
 
 export function centsToAmount(cents: number) {
   return (cents / CENTS_PER_EURO).toFixed(2);
+}
+
+export function toInputSnapshotData(
+  output: CalculationOutput,
+  kind: ScenarioKind,
+) {
+  return {
+    vehicleSpec: {
+      input: output.scenarios[kind].resolvedInput,
+      inputSources: output.inputSources,
+    } as unknown as Prisma.InputJsonValue,
+    energyPriceAssumptionVersion: output.assumptionSetVersion,
+    emissionsFactorVersion: output.assumptionSetVersion,
+    solarYieldAssumptionVersion: output.assumptionSetVersion,
+    currencyConversionSourceVersion: output.assumptionSetVersion,
+  };
+}
+
+export function toResultData(output: CalculationOutput, kind: ScenarioKind) {
+  const scenarioResult = output.scenarios[kind];
+
+  return {
+    paybackPeriodMonths: scenarioResult.paybackMonths,
+    totalSolarYieldKwh: scenarioResult.yearlySolarEnergyKwh,
+    co2SavedKg: scenarioResult.co2AvoidedKgPerYear,
+    netSavingsAmount: centsToAmount(scenarioResult.tenYearNetGainCents),
+    annualSavingsAmount: centsToAmount(scenarioResult.annualSavingsCents),
+    oneTimeCostAmount: centsToAmount(
+      scenarioResult.oneTimeCostAfterSubsidyCents,
+    ),
+    subsidyAmount: centsToAmount(scenarioResult.subsidyCents),
+    savingsBreakdown: scenarioResult.savingsByTypeCents,
+    cumulativeSavingsSeries: scenarioResult.cumulativeSavingsSeriesCents,
+    currency: RESULT_CURRENCY,
+  };
 }
 
 export function toCalculationInput(vehicle: Vehicle): CalculationInput {
@@ -100,8 +137,6 @@ export async function createCalculationForVehicle(
   });
 
   for (const kind of SCENARIO_KINDS) {
-    const scenarioResult = output.scenarios[kind];
-
     await transaction.calculationScenario.create({
       data: {
         calculationId: calculation.id,
@@ -109,37 +144,8 @@ export async function createCalculationForVehicle(
         label: kind,
         formulaVersion: output.formulaVersion,
         assumptionSetVersion: output.assumptionSetVersion,
-        inputSnapshot: {
-          create: {
-            vehicleSpec: {
-              input: scenarioResult.resolvedInput,
-              inputSources: output.inputSources,
-            } as unknown as Prisma.InputJsonValue,
-            energyPriceAssumptionVersion: output.assumptionSetVersion,
-            emissionsFactorVersion: output.assumptionSetVersion,
-            solarYieldAssumptionVersion: output.assumptionSetVersion,
-            currencyConversionSourceVersion: output.assumptionSetVersion,
-          },
-        },
-        result: {
-          create: {
-            paybackPeriodMonths: scenarioResult.paybackMonths,
-            totalSolarYieldKwh: scenarioResult.yearlySolarEnergyKwh,
-            co2SavedKg: scenarioResult.co2AvoidedKgPerYear,
-            netSavingsAmount: centsToAmount(scenarioResult.tenYearNetGainCents),
-            annualSavingsAmount: centsToAmount(
-              scenarioResult.annualSavingsCents,
-            ),
-            oneTimeCostAmount: centsToAmount(
-              scenarioResult.oneTimeCostAfterSubsidyCents,
-            ),
-            subsidyAmount: centsToAmount(scenarioResult.subsidyCents),
-            savingsBreakdown: scenarioResult.savingsByTypeCents,
-            cumulativeSavingsSeries:
-              scenarioResult.cumulativeSavingsSeriesCents,
-            currency: RESULT_CURRENCY,
-          },
-        },
+        inputSnapshot: { create: toInputSnapshotData(output, kind) },
+        result: { create: toResultData(output, kind) },
       },
     });
   }
