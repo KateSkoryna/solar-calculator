@@ -149,7 +149,7 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 | 3.7  | Four-step calculator flow                          | DONE   |                                             |
 | 3.8  | Public results page                                | DONE   |                                             |
 | 3.9  | Fleet results page                                 | DONE   |                                             |
-| 3.10 | Auth screens                                       | TODO   |                                             |
+| 3.10 | Auth screens                                       | DONE   | Approved — 2026-10-05                       |
 | 3.11 | Workspace shell                                    | TODO   |                                             |
 | 3.12 | Team & activity page                               | TODO   |                                             |
 | 3.13 | Fleet dashboard                                    | TODO   |                                             |
