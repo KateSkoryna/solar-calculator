@@ -312,19 +312,6 @@
     line-height: 1.3;
   }
 
-  .invert-link {
-    color: var(--ink);
-
-    &:hover,
-    &:focus {
-      color: var(--lime-soft-ink);
-    }
-
-    svg {
-      color: currentColor;
-    }
-  }
-
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;

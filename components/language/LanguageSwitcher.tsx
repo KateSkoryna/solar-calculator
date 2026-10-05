@@ -1,52 +1,67 @@
 "use client";
 
-import { useLocale, useTranslations } from "next-intl";
-import { useRouter, usePathname } from "next/navigation";
-import { locales, type Locale } from "@/i18n";
 import { useRef } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
+import { LuChevronDown } from "react-icons/lu";
+import { locales, type Locale } from "@/i18n";
+import { FOCUS_RING_CLASSES } from "@/lib/focus-ring";
 
-export default function LanguageSwitcher() {
+const LOCALE_PREFIX_PATTERN = new RegExp(`^/(${locales.join("|")})(?=/|$)`);
+
+interface LanguageSwitcherProps {
+  opensUpward?: boolean;
+}
+
+export default function LanguageSwitcher({
+  opensUpward = false,
+}: LanguageSwitcherProps) {
   const currentLocale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
   const t = useTranslations("language");
   const detailsRef = useRef<HTMLDetailsElement>(null);
+  const menuPositionClasses = opensUpward
+    ? "bottom-[calc(100%+6px)] left-0"
+    : "top-[calc(100%+6px)] right-0";
 
-  const handleLocaleChange = (newLocale: Locale) => {
-    // Close the dropdown
+  const switchLocale = (newLocale: Locale) => {
     if (detailsRef.current) {
       detailsRef.current.open = false;
     }
-
-    // Remove current locale from pathname if it exists
-    const pathnameWithoutLocale = pathname.replace(/^\/(en|de|es)/, "");
-
-    // Build new path with locale prefix
-    const newPath = `/${newLocale}${pathnameWithoutLocale || ""}`;
-
-    router.push(newPath);
+    const pathnameWithoutLocale = (pathname ?? "").replace(
+      LOCALE_PREFIX_PATTERN,
+      "",
+    );
+    router.push(`/${newLocale}${pathnameWithoutLocale}`);
   };
 
   return (
-    <details ref={detailsRef} className="relative cursor-pointer">
-      <summary className="px-4 py-2 rounded-lg font-bold font-body text-sm flex items-center gap-2 transition-colors bg-surface text-ink list-none border-2 border-line-strong focus:border-lime focus:outline-none">
-        <span>{currentLocale.toUpperCase()}</span>
-        <span className="text-xs">▼</span>
+    <details ref={detailsRef} className="group relative">
+      <summary
+        aria-label={t("switcherLabel")}
+        className={`flex min-h-11 cursor-pointer list-none items-center gap-1.5 rounded-full border border-line-strong bg-surface px-4 text-sm font-semibold text-ink hover:border-ink [&::-webkit-details-marker]:hidden ${FOCUS_RING_CLASSES}`}
+      >
+        {currentLocale.toUpperCase()}
+        <LuChevronDown
+          aria-hidden="true"
+          className="size-4 transition-transform duration-150 group-open:rotate-180"
+        />
       </summary>
 
-      <ul className="absolute top-[calc(100%+2px)] z-50 rounded-lg overflow-hidden min-w-full bg-surface border-2 border-line-strong shadow-[0_4px_6px_rgba(0,0,0,0.1)]">
-        {locales.map((loc) => (
-          <li key={loc}>
+      <ul
+        className={`absolute z-50 flex min-w-40 list-none flex-col gap-1 rounded-md border border-line bg-surface p-2 shadow-hover ${menuPositionClasses}`}
+      >
+        {locales.map((locale) => (
+          <li key={locale} className="mb-0">
             <button
-              onClick={() => handleLocaleChange(loc)}
-              className={`w-full px-4 py-2 font-bold font-body text-sm text-left transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-lime ${
-                currentLocale === loc
-                  ? "bg-soft text-ink"
-                  : "bg-surface text-ink"
-              }`}
-              aria-label={`Switch to ${t(loc)}`}
+              type="button"
+              lang={locale}
+              aria-current={currentLocale === locale ? "true" : undefined}
+              onClick={() => switchLocale(locale)}
+              className={`w-full justify-start rounded-sm px-3 py-2 text-left text-sm font-semibold text-ink hover:bg-soft aria-[current]:bg-soft ${FOCUS_RING_CLASSES}`}
             >
-              {t(loc)}
+              {t(locale)}
             </button>
           </li>
         ))}
