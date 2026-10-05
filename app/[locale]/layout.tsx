@@ -8,6 +8,7 @@ import { SessionProvider } from "@/components/providers/SessionProvider";
 import { QueryProvider } from "@/components/providers/QueryProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import SiteChrome from "@/components/layout/SiteChrome";
 import "../globals.css";
 import { isValidLocale } from "@/lib/utils";
 
@@ -61,9 +62,9 @@ export default async function LocaleLayout({
               disableTransitionOnChange={false}
             >
               <NextIntlClientProvider messages={messages}>
-                <Header />
-                <main className="flex-1">{children}</main>
-                <Footer />
+                <SiteChrome header={<Header />} footer={<Footer />}>
+                  {children}
+                </SiteChrome>
               </NextIntlClientProvider>
             </ThemeProvider>
           </QueryProvider>

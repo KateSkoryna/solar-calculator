@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import { sendSignInLink } from "@/lib/email/send-sign-in-link";
-import { SIGN_IN_LINK_MAX_AGE_SECONDS } from "@/lib/sign-in-link-limits";
+import { SIGN_IN_LINK_MAX_AGE_SECONDS } from "@/lib/sign-in-link-lifetime";
 
 jest.mock("next-auth", () => ({
   __esModule: true,

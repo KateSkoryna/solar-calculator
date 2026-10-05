@@ -1,15 +1,13 @@
 import { Suspense } from "react";
-import Form from "@/components/login/Form";
-import Section from "@/components/layout/Section";
+import AuthShell from "@/components/auth/AuthShell";
+import SignInPanel from "@/components/auth/SignInPanel";
 
-export default async function Login() {
+export default function LoginPage() {
   return (
-    <Section>
-      <div className="mx-auto max-w-md">
-        <Suspense fallback={null}>
-          <Form />
-        </Suspense>
-      </div>
-    </Section>
+    <AuthShell>
+      <Suspense fallback={null}>
+        <SignInPanel mode="login" />
+      </Suspense>
+    </AuthShell>
   );
 }

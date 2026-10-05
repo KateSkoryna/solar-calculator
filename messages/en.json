@@ -211,12 +211,6 @@
       }
     }
   },
-  "login": {
-    "title": "Login to Your Account",
-    "noAccount": "Don't have an account?",
-    "signUp": "Sign up",
-    "orContinueWithEmail": "Or continue with email"
-  },
   "theme": {
     "light": "Light Mode",
     "dark": "Dark Mode",
@@ -260,20 +254,11 @@
   },
   "auth": {
     "genericError": "Something went wrong. Please try again.",
-    "invalidEmail": "Invalid email address",
-    "backToLogin": "Back to Login",
     "signingIn": "Signing in...",
-    "continueWithGoogle": "Continue with Google",
-    "loading": "Loading...",
     "oauthAccountNotLinked": "This email address is already registered with another sign-in method. Use the sign-in link sent to that address instead.",
+    "linkExpiredOrUsed": "This link has expired or was already used. Send a new one.",
     "emailSignInFailed": "We couldn't send the sign-in link right now. Please try again later or continue with Google.",
-    "linkExpiredOrUsed": "This sign-in link has expired or was already used. Request a new one below."
-  },
-  "register": {
-    "title": "Create Account",
-    "orContinueWithEmail": "Or register with email",
-    "alreadyHaveAccount": "Already have an account?",
-    "loginLink": "Login"
+    "loading": "Loading..."
   },
   "user": {
     "welcome": "Welcome, {name}!",
@@ -301,14 +286,23 @@
     "moreInfo": "More information"
   },
   "emailSignIn": {
-    "email": "Email Address",
-    "emailPlaceholder": "Enter your email",
-    "submitButton": "Email me a sign-in link"
+    "email": "Work email",
+    "emailPlaceholder": "you@company.com",
+    "invalidEmail": "Please enter a valid email address.",
+    "submitButton": "Email me a sign-in link",
+    "sending": "Sending…",
+    "sendNewLink": "Send a new link"
   },
   "checkEmail": {
     "title": "Check your email",
-    "message": "If the address is valid, we sent you a sign-in link. It works once and expires in 15 minutes. Check your spam folder if you don't see it.",
-    "backToLogin": "Back to Login"
+    "message": "We sent a link to {email}. It works for {minutes} minutes.",
+    "messageUnknownAddress": "We sent you a sign-in link. It works for {minutes} minutes.",
+    "spamHint": "Can't find it? Check your spam folder.",
+    "resend": "Send it again",
+    "resendIn": "Send it again in {seconds}s",
+    "resent": "We sent a new link.",
+    "resendFailed": "We couldn't send a new link right now. Please try again in a moment.",
+    "differentEmail": "Use a different email"
   },
   "signInEmail": {
     "subject": "Your sign-in link for Solar Calculator",
@@ -320,8 +314,10 @@
   },
   "onboarding": {
     "title": "Set up your workspace",
+    "intro": "Tell us who you are and which company this is for. You can invite your team afterwards.",
     "userName": "Your name",
     "companyName": "Company",
+    "companyRequired": "Please enter your company name (2–80 characters).",
     "submit": "Create workspace",
     "saving": "Creating…",
     "error": "We couldn't create your workspace. Check the company name (2–80 characters) and try again."
@@ -603,5 +599,31 @@
       "text": "The link is incomplete or out of date. Answer the questions again to get a fresh estimate.",
       "action": "Go to the calculator"
     }
+  },
+  "authShell": {
+    "headline": "Keep all your fleet's numbers in one place.",
+    "benefits": {
+      "saveCompare": "Save and compare calculations",
+      "pdfReports": "Download PDF reports for your bank",
+      "inviteTeam": "Invite your team"
+    },
+    "footer": "Free · Independent · No sales calls",
+    "close": "Close"
+  },
+  "signIn": {
+    "tabs": {
+      "label": "Account",
+      "login": "Log in",
+      "register": "Create account"
+    },
+    "login": {
+      "title": "Welcome back",
+      "google": "Continue with Google"
+    },
+    "register": {
+      "title": "Create your account",
+      "google": "Sign up with Google"
+    },
+    "divider": "or with email"
   }
 }

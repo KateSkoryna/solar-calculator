@@ -37,3 +37,7 @@ export function resultsPath(locale: string, encodedAnswers: string) {
 export function registerPath(locale: string) {
   return `/${locale}/register`;
 }
+
+export function checkEmailPath(locale: string) {
+  return `/${locale}/check-email`;
+}
