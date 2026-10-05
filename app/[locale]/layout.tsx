@@ -6,9 +6,6 @@ import { notFound } from "next/navigation";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { SessionProvider } from "@/components/providers/SessionProvider";
 import { QueryProvider } from "@/components/providers/QueryProvider";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import SiteChrome from "@/components/layout/SiteChrome";
 import "../globals.css";
 import { isValidLocale } from "@/lib/utils";
 
@@ -62,9 +59,7 @@ export default async function LocaleLayout({
               disableTransitionOnChange={false}
             >
               <NextIntlClientProvider messages={messages}>
-                <SiteChrome header={<Header />} footer={<Footer />}>
-                  {children}
-                </SiteChrome>
+                {children}
               </NextIntlClientProvider>
             </ThemeProvider>
           </QueryProvider>
