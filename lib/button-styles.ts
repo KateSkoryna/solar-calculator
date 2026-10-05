@@ -22,7 +22,7 @@ const BUTTON_BASE_CLASSES =
 const BUTTON_VARIANT_CLASSES: Record<ButtonVariant, string> = {
   primary:
     "border-transparent bg-lime text-on-lime hover:-translate-y-px hover:brightness-95",
-  dark: "border-transparent bg-ink text-ground hover:border-ink hover:opacity-90",
+  dark: "border-transparent bg-hero text-white hover:border-ink hover:opacity-90",
   secondary: "border-line-strong bg-surface text-ink hover:border-ink",
   ghost: "border-transparent bg-transparent text-ink hover:border-ink",
   danger: "border-transparent bg-danger text-white hover:border-ink",
