@@ -1,4 +1,4 @@
-interface RateLimitConfig {
+export interface RateLimitConfig {
   windowMs: number;
   maxRequests: number;
 }
@@ -11,6 +11,11 @@ interface RateLimitBucket {
 export const SENSITIVE_ENDPOINT_RATE_LIMIT: RateLimitConfig = {
   windowMs: 10_000,
   maxRequests: 5,
+};
+
+export const CITY_SEARCH_RATE_LIMIT: RateLimitConfig = {
+  windowMs: 10_000,
+  maxRequests: 30,
 };
 
 const buckets = new Map<string, RateLimitBucket>();

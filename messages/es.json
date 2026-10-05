@@ -169,7 +169,8 @@
       "rough": "Aproximada",
       "good": "Buena",
       "precise": "Precisa",
-      "helper": "Responde más preguntas para que la estimación sea más precisa."
+      "helper": "Responde más preguntas para que la estimación sea más precisa.",
+      "preciseHelper": "Tus respuestas cubren todo lo que influye en la estimación."
     }
   },
   "login": {

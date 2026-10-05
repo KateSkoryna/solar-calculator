@@ -1547,6 +1547,71 @@ react-hook-form normally reads native inputs through `register`. A custom compon
 />
 ```
 
+### Server-side API proxies that hide keys
+
+The browser must never see a paid API key: anything sent to the browser can be read and reused by anyone. The calculator therefore calls our own route, `/api/geocode`, and only the server adds the key and talks to Mapbox. The browser gets back a small, fixed shape and never the Mapbox response itself:
+
+```ts
+function buildMapboxUrl(query: string, locale: Locale, accessToken: string) {
+  const url = new URL(MAPBOX_FORWARD_GEOCODING_URL);
+  url.searchParams.set("q", query);
+  url.searchParams.set("types", MAPBOX_PLACE_TYPE);
+  url.searchParams.set("country", EU_COUNTRY_CODES.join(",").toLowerCase());
+  url.searchParams.set("language", locale);
+  url.searchParams.set("limit", String(MAX_CITY_RESULTS));
+  url.searchParams.set("access_token", accessToken);
+  return url;
+}
+```
+
+When Mapbox fails, the route answers 503 with a plain error key. The upstream message is logged on the server but never forwarded, because it can contain details about our account.
+
+### Input allowlists
+
+An allowlist states what is accepted and rejects everything else, which is safer than trying to list what is dangerous. The query must be 2–80 characters, the locale must be one we support (anything else quietly becomes the default), and a result is kept only if its country is in the EU list:
+
+```ts
+export const citySearchQuerySchema = z.object({
+  q: z
+    .string()
+    .trim()
+    .min(MIN_CITY_QUERY_LENGTH)
+    .max(MAX_CITY_QUERY_LENGTH)
+    .refine((query) => !query.includes(FORBIDDEN_QUERY_CHARACTER))
+    .refine((query) => query.split(/\s+/).length <= MAX_CITY_QUERY_WORDS),
+  locale: z.enum(locales).catch(defaultLocale),
+});
+```
+
+The same idea is applied to the answer: each Mapbox feature is parsed with a zod schema and dropped if it does not match, so a changed or malformed upstream response cannot leak odd data into the app.
+
+### Rate limiting
+
+Every call to our proxy costs a call to a paid service, so one visitor (or one script) must not be able to make thousands. The middleware counts requests per route and IP address in a time window and answers 429 when the limit is passed. Each route now carries its own limit, because typing in a search box legitimately sends more requests than creating a fleet:
+
+```ts
+export const CITY_SEARCH_RATE_LIMIT: RateLimitConfig = {
+  windowMs: 10_000,
+  maxRequests: 30,
+};
+```
+
+### Mocking `fetch` in tests
+
+Tests must not call the real Mapbox: it would be slow, cost money, need a secret in CI and fail whenever the network does. Replacing `global.fetch` with a Jest mock lets a test decide what "Mapbox" answers and then inspect the request the route tried to send:
+
+```ts
+function mapboxReplies(features: unknown[], status = 200) {
+  fetchMock.mockResolvedValue(
+    new Response(JSON.stringify({ type: "FeatureCollection", features }), {
+      status,
+    }),
+  );
+}
+```
+
+That is how the tests prove that all 27 country codes are sent, that a Mapbox 500 becomes a 503 without Mapbox details, and that the key never appears in a response.
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit

@@ -169,7 +169,8 @@
       "rough": "Grob",
       "good": "Gut",
       "precise": "Genau",
-      "helper": "Beantworten Sie mehr Fragen, damit die Schätzung genauer wird."
+      "helper": "Beantworten Sie mehr Fragen, damit die Schätzung genauer wird.",
+      "preciseHelper": "Ihre Antworten decken alles ab, was die Schätzung beeinflusst."
     }
   },
   "login": {

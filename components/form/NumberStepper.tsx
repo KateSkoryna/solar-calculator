@@ -43,7 +43,7 @@ export default function NumberStepper({
   const [draft, setDraft] = useState(String(value));
   const [committedValue, setCommittedValue] = useState(value);
 
-  if (value !== committedValue) {
+  if (!Object.is(value, committedValue)) {
     setCommittedValue(value);
     setDraft(String(value));
   }
@@ -95,6 +95,7 @@ export default function NumberStepper({
           aria-invalid={isDraftValid ? undefined : "true"}
           aria-describedby={describedBy}
           onChange={(event) => handleTyping(event.target.value)}
+          onBlur={() => setDraft(String(committedValue))}
           className="h-14 w-full min-w-0 flex-1 rounded-md border border-line-strong bg-surface px-3 text-center text-[22px] font-semibold text-ink tabular-nums focus:border-ink focus:shadow-ring-selected focus:outline-none aria-[invalid]:border-danger md:w-28 md:flex-none"
         />
         <button
