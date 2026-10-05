@@ -32,16 +32,11 @@ const expectedHrefs = WORKSPACE_NAV_ITEMS.map(
 );
 
 const FLEETS = [{ id: "fleet_1", name: "Berlin Delivery", slug: FLEET_SLUG }];
-const USER = { name: "Alice Example", imageUrl: null };
 
 const navigations = {
   sidebar: () =>
     renderWithIntl(
-      <WorkspaceSidebar
-        fleets={FLEETS}
-        currentFleetSlug={FLEET_SLUG}
-        user={USER}
-      />,
+      <WorkspaceSidebar fleets={FLEETS} currentFleetSlug={FLEET_SLUG} />,
     ),
   "icon rail": () =>
     renderWithIntl(<WorkspaceIconRail currentFleetSlug={FLEET_SLUG} />),

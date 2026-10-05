@@ -23,7 +23,7 @@ describe("FleetSwitcher", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: HAMBURG.name, hidden: true }),
-    ).toHaveAttribute("href", "/en/hamburg");
+    ).toHaveAttribute("href", "/en/hamburg/overview");
     expect(
       screen.getByRole("link", { name: BERLIN.name, hidden: true }),
     ).toHaveAttribute("aria-current", "true");

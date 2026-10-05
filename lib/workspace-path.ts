@@ -13,3 +13,7 @@ export function fleetCalculationPath(
 ) {
   return `/${locale}/${fleetSlug}/calculations/${calculationId}`;
 }
+
+export function fleetOverviewPath(locale: string, fleetSlug: string) {
+  return `/${locale}/${fleetSlug}/overview`;
+}
