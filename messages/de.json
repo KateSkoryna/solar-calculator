@@ -475,5 +475,153 @@
         "body": "Alle Ergebnisse sind Schätzungen auf Grundlage veröffentlichter Annahmen. Sie sind kein Angebot, kein Kostenvoranschlag und keine Finanzberatung."
       }
     }
+  },
+  "results": {
+    "actions": {
+      "changeAnswers": "Antworten ändern",
+      "shareLink": "Link teilen",
+      "linkCopied": "Link kopiert. Jeder mit diesem Link kann das Ergebnis sehen.",
+      "linkCopyFailed": "Der Link konnte nicht kopiert werden. Kopieren Sie ihn aus der Adresszeile."
+    },
+    "context": {
+      "dailyDistance": "{kilometres} km pro Tag"
+    },
+    "verdict": {
+      "PAYS_OFF": "Ja – Solar rechnet sich nach etwa <duration></duration>.",
+      "SLOWLY": "Solar rechnet sich langsam – nach etwa <duration></duration>.",
+      "UNLIKELY": "Solar rechnet sich für diese Konstellation wahrscheinlich nicht.",
+      "unlikelySuggestion": "Probieren Sie Module nur auf dem Dach oder prüfen Sie die genauen Zahlen.",
+      "range": "Zwischen {shortest} und {longest}, je nach Sonne und Preisen.",
+      "rangeBestCase": "Im besten Fall nach etwa {shortest}; im schlechtesten Fall rechnet es sich nicht.",
+      "lead": "Danach behält Ihre Flotte rund {annualSavings} pro Jahr, die sonst für Kraftstoff draufgingen."
+    },
+    "duration": {
+      "long": {
+        "yearsAndMonths": "{years, plural, one {# Jahr} other {# Jahren}} {months, plural, one {# Monat} other {# Monaten}}",
+        "yearsOnly": "{years, plural, one {# Jahr} other {# Jahren}}",
+        "monthsOnly": "{months, plural, one {# Monat} other {# Monaten}}"
+      },
+      "short": {
+        "yearsAndMonths": "{years} J. {months} Mon.",
+        "yearsOnly": "{years} J.",
+        "monthsOnly": "{months} Mon."
+      }
+    },
+    "units": {
+      "tonnes": "{value} t"
+    },
+    "tiles": {
+      "annualSavings": "Ersparnis pro Jahr",
+      "oneTimeCost": "Einmalige Kosten nach Förderung",
+      "co2Avoided": "Vermiedenes CO₂ pro Jahr",
+      "tenYearGain": "Gesamtgewinn über 10 Jahre",
+      "range": "{low}–{high}, je nach Sonne und Preisen"
+    },
+    "chart": {
+      "title": "Wann haben Sie Ihr Geld zurück?",
+      "subtitle": "Ihre Ersparnis wächst jedes Jahr. Sobald sie die gestrichelte Linie übersteigt, sind die Module bezahlt.",
+      "legend": {
+        "PESSIMISTIC": "Pessimistisch",
+        "REALISTIC": "Realistisch",
+        "OPTIMISTIC": "Optimistisch"
+      },
+      "costLabel": "Kosten {cost}",
+      "yearTick": "J. {year}",
+      "captionWithRange": "Die Ersparnis übersteigt die Kosten von {cost} voraussichtlich im {year}. Jahr – zwischen dem {earliest}. und dem {latest}. Jahr.",
+      "captionSingle": "Die Ersparnis übersteigt die Kosten von {cost} voraussichtlich im {year}. Jahr.",
+      "captionNever": "Die Ersparnis übersteigt die Kosten von {cost} voraussichtlich nicht innerhalb von 10 Jahren.",
+      "tableCaption": "Aufsummierte Ersparnis am Ende jedes Jahres",
+      "tableYear": "Jahr",
+      "tableYearRow": "Jahr {year}"
+    },
+    "breakdown": {
+      "title": "Woher die Ersparnis kommt",
+      "subtitle": "Was Ihre Flotte in einem typischen Jahr spart, vor der Wartung der Module.",
+      "perYear": "{amount} pro Jahr",
+      "types": {
+        "COOLING_UNIT_FUEL": "Kraftstoff für das Kühlaggregat",
+        "LESS_IDLING": "Weniger Leerlauf",
+        "FEWER_BATTERY_BREAKDOWNS": "Weniger Batteriepannen",
+        "ALTERNATOR_FUEL": "Entlastung der Lichtmaschine",
+        "DIRECT_CHARGING": "Laden der Antriebsbatterie"
+      },
+      "hints": {
+        "COOLING_UNIT_FUEL": "Die Module versorgen das Kühlaggregat, es verbraucht weniger Kraftstoff.",
+        "LESS_IDLING": "Fahrer können den Motor im Stand abstellen und haben trotzdem Strom.",
+        "FEWER_BATTERY_BREAKDOWNS": "Die Batterien bleiben geladen: weniger Pannenhilfe und Ersatz.",
+        "ALTERNATOR_FUEL": "Der Motor braucht weniger Kraftstoff für die Stromerzeugung.",
+        "DIRECT_CHARGING": "Sonnenlicht ersetzt Strom, den Sie sonst aus dem Netz kaufen."
+      }
+    },
+    "howWeCalculated": {
+      "summary": "So haben wir gerechnet",
+      "intro": "Grundlage sind die Sonnenstunden an Ihrem Standort, die heutigen Kraftstoff- und Strompreise dort und der übliche Leistungsverlust der Module. Das sind Schätzungen, kein Angebot.",
+      "inputsTitle": "Womit wir gerechnet haben",
+      "sources": {
+        "PROVIDED": "Ihre Angabe",
+        "PRESET": "Typischer Wert",
+        "MEASURED": "Gemessen"
+      },
+      "methodVersion": "Version der Methode",
+      "assumptionsVersion": "Verwendete Annahmen",
+      "yes": "Ja",
+      "no": "Nein",
+      "inputs": {
+        "manufacturer": "Hersteller",
+        "model": "Modell",
+        "city": "Stadt",
+        "vehicleType": "Fahrzeugtyp",
+        "engineType": "Motor",
+        "parkingType": "Wo sie parken",
+        "solarPanelPlacement": "Platzierung der Module",
+        "cargoType": "Ladung",
+        "coolingUnitType": "Kühlaggregat",
+        "quantity": "Anzahl der Fahrzeuge",
+        "averageDailyDistanceKm": "Tägliche Strecke pro Fahrzeug",
+        "operatingMonthsPerYear": "Einsatzmonate pro Jahr",
+        "latitude": "Breitengrad",
+        "longitude": "Längengrad",
+        "energyConsumptionKwhPer100km": "Energieverbrauch",
+        "solarPanelCapacityKw": "Modulleistung pro Fahrzeug",
+        "payloadReserveKg": "Freizuhaltendes Gewicht",
+        "maxRoofLoadKg": "Maximales Gewicht auf dem Dach",
+        "idleHoursPerDay": "Geparkt mit laufendem Motor",
+        "winterUsage": "Im Winter im Einsatz",
+        "countryCode": "Land",
+        "subsidyOverrideCents": "Förderung"
+      },
+      "values": {
+        "quantity": "{value}",
+        "averageDailyDistanceKm": "{value} km",
+        "operatingMonthsPerYear": "{value}",
+        "latitude": "{value}°",
+        "longitude": "{value}°",
+        "energyConsumptionKwhPer100km": "{value} kWh pro 100 km",
+        "solarPanelCapacityKw": "{value} kW",
+        "payloadReserveKg": "{value} kg",
+        "maxRoofLoadKg": "{value} kg",
+        "idleHoursPerDay": "{value} Stunden pro Tag"
+      },
+      "engineType": {
+        "DIESEL": "Diesel",
+        "PETROL": "Benzin",
+        "ELECTRIC": "Elektro",
+        "HYBRID": "Hybrid"
+      }
+    },
+    "save": {
+      "title": "Möchten Sie dieses Ergebnis behalten?",
+      "text": "Speichern Sie es in Ihrer Flotte, um später darauf zurückzukommen, es mit Ihrem Team zu teilen und weitere Fahrzeuge hinzuzufügen.",
+      "button": "In meiner Flotte speichern",
+      "failed": "Das Ergebnis konnte nicht gespeichert werden. Versuchen Sie es erneut.",
+      "preciseTitle": "Möchten Sie ein genaueres Ergebnis?",
+      "presetIntro": "Diese Schnellschätzung hat statt Ihrer eigenen Zahlen typische Werte verwendet für:",
+      "preciseText": "Speichern Sie sie in Ihrer Flotte, um Ihre echten Zahlen einzutragen, Ihre übrigen Fahrzeuge hinzuzufügen und das Ergebnis mit Ihrem Team zu teilen."
+    },
+    "error": {
+      "title": "Wir konnten dieses Ergebnis nicht lesen",
+      "text": "Der Link ist unvollständig oder veraltet. Beantworten Sie die Fragen erneut, um eine neue Schätzung zu erhalten.",
+      "action": "Zum Rechner"
+    }
   }
 }
