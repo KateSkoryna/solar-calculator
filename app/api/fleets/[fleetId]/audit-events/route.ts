@@ -5,6 +5,8 @@ import { requireFleetRole, FLEET_EDITOR_ROLES } from "@/lib/fleet-auth";
 import { toErrorResponse } from "@/lib/api-errors";
 import { auditEventQuerySchema } from "@/lib/audit-event-query-schema";
 import { Prisma } from "@/app/generated/prisma/client";
+import { AuditAction } from "@/lib/audit";
+import { loadAuditEventSubjectNames } from "@/lib/audit-event-labels";
 
 export async function GET(
   request: Request,
@@ -16,12 +18,20 @@ export async function GET(
     await requireFleetRole(session, fleetId, FLEET_EDITOR_ROLES);
 
     const { searchParams } = new URL(request.url);
-    const query = auditEventQuerySchema.parse(Object.fromEntries(searchParams));
+    const query = auditEventQuerySchema.parse({
+      ...Object.fromEntries(searchParams),
+      entityType: searchParams.getAll("entityType"),
+    });
 
     const where: Prisma.AuditEventWhereInput = {
       fleetId,
       ...(query.actorUserId && { actorUserId: query.actorUserId }),
-      ...(query.entityType && { entityType: query.entityType }),
+      ...(query.entityType?.length && {
+        entityType: { in: query.entityType },
+      }),
+      ...(!query.includeAccessDenied && {
+        action: { not: AuditAction.ACCESS_DENIED },
+      }),
       ...((query.from || query.to) && {
         createdAt: {
           ...(query.from && { gte: query.from }),
@@ -36,13 +46,24 @@ export async function GET(
         orderBy: [{ createdAt: "desc" }, { id: "desc" }],
         skip: (query.page - 1) * query.pageSize,
         take: query.pageSize,
-        include: { actorUser: { select: { id: true, email: true } } },
+        include: {
+          actorUser: { select: { id: true, email: true, name: true } },
+        },
       }),
       prisma.auditEvent.count({ where }),
     ]);
 
-    return NextResponse.json({
+    const subjectNames = await loadAuditEventSubjectNames(
+      prisma,
+      fleetId,
       events,
+    );
+
+    return NextResponse.json({
+      events: events.map((event, index) => ({
+        ...event,
+        subjectName: subjectNames[index],
+      })),
       totalCount,
       page: query.page,
       pageSize: query.pageSize,

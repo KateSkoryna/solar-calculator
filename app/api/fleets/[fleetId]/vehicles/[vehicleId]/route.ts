@@ -10,6 +10,7 @@ import {
 import { toErrorResponse } from "@/lib/api-errors";
 import { vehicleUpdateSchema } from "@/lib/vehicle-schema";
 import { findActiveVehicle } from "@/lib/vehicle-repo";
+import { buildVehicleChanges } from "@/lib/vehicle-changes";
 import { recordAuditEvent, AuditAction, AuditEntityType } from "@/lib/audit";
 
 export async function GET(
@@ -50,8 +51,12 @@ export async function PATCH(
     const data = vehicleUpdateSchema.parse(body);
 
     const vehicle = await prisma.$transaction(async (tx) => {
+      const vehicleKey = { id_fleetId: { id: vehicleId, fleetId } };
+      const existing = await tx.vehicle.findUniqueOrThrow({
+        where: { ...vehicleKey, deletedAt: null },
+      });
       const updated = await tx.vehicle.update({
-        where: { id_fleetId: { id: vehicleId, fleetId }, deletedAt: null },
+        where: { ...vehicleKey, deletedAt: null },
         data,
       });
 
@@ -61,7 +66,7 @@ export async function PATCH(
         action: AuditAction.VEHICLE_UPDATED,
         entityType: AuditEntityType.VEHICLE,
         entityId: updated.id,
-        metadata: { updatedFields: data },
+        metadata: { changes: buildVehicleChanges(existing, data) },
       });
 
       return updated;
