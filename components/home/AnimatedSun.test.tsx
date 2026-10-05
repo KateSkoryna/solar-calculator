@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import AnimatedSun from "./AnimatedSun";
+import { resolveSunColor, withAlpha } from "@/lib/sun-gradient";
 import {
   hasPlayedSunAnimation,
   markSunAnimationPlayed,
@@ -10,7 +11,9 @@ function stubDrawableCanvas() {
     arc: jest.fn(),
     beginPath: jest.fn(),
     clearRect: jest.fn(),
+    createRadialGradient: jest.fn(() => ({ addColorStop: jest.fn() })),
     fill: jest.fn(),
+    fillRect: jest.fn(),
     setTransform: jest.fn(),
   };
   jest
@@ -46,13 +49,16 @@ describe("AnimatedSun", () => {
     expect(screen.queryByRole("img")).not.toBeInTheDocument();
   });
 
-  it("keeps one lighter circle on the finished sun", () => {
+  it("finishes as a sun with two orbits and a lens flare", () => {
     const { container } = render(<AnimatedSun />);
 
-    expect(container.querySelectorAll("[data-sun-highlight]")).toHaveLength(1);
+    expect(container.querySelectorAll("[data-sun-orbit]")).toHaveLength(2);
+    expect(
+      container.querySelectorAll("[data-lens-flare]").length,
+    ).toBeGreaterThan(0);
   });
 
-  it("skips the animation once it has played in this session", async () => {
+  it("shows the sun at once and only wandering sparkles after the first play", async () => {
     const drawingContext = stubDrawableCanvas();
     markSunAnimationPlayed();
 
@@ -63,7 +69,7 @@ describe("AnimatedSun", () => {
         container.querySelector("[data-brand-illustration]")?.parentElement,
       ).toHaveClass("opacity-100"),
     );
-    expect(drawingContext.arc).not.toHaveBeenCalled();
+    await waitFor(() => expect(drawingContext.arc).toHaveBeenCalled());
   });
 
   it("plays the animation for a first visit", async () => {
@@ -83,5 +89,17 @@ describe("sun animation session", () => {
     markSunAnimationPlayed();
 
     expect(hasPlayedSunAnimation()).toBe(true);
+  });
+});
+
+describe("sun colours", () => {
+  it("falls back to the token value when the stylesheet gives none", () => {
+    expect(resolveSunColor("", "--sun")).toBe("#f2b544");
+    expect(resolveSunColor(" #abcdef ", "--sun")).toBe("#abcdef");
+  });
+
+  it("adds transparency to a hex colour", () => {
+    expect(withAlpha("#f2b544", 0)).toBe("#f2b54400");
+    expect(withAlpha("#f2b544", 1)).toBe("#f2b544ff");
   });
 });

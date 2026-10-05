@@ -30,6 +30,7 @@ export interface GoldBall {
   radius: number;
   baseRadius: number;
   state: BallState;
+  isWanderer: boolean;
   attractedSeconds: number;
 }
 
@@ -42,7 +43,8 @@ export type SimulationPhase =
 
 type RandomSource = () => number;
 
-export const BALL_COUNT = 24;
+export const BALL_COUNT = 30;
+export const WANDERER_COUNT = 6;
 export const BALL_OBSTACLE_SELECTOR = "[data-ball-obstacle]";
 
 const MIN_BALL_RADIUS = 5;
@@ -51,7 +53,6 @@ const FALL_DURATION_SECONDS = 1.4;
 const ROLL_DURATION_SECONDS = 2.8;
 const FIRST_ATTRACTION_DELAY_SECONDS = 0.7;
 const ATTRACTION_INTERVAL_SECONDS = 0.11;
-const SWELL_DURATION_SECONDS = 1;
 const GRAVITY = 1800;
 const NO_GRAVITY = 0;
 const WALL_RESTITUTION = 0.94;
@@ -61,11 +62,16 @@ const BREAK_MAX_SPEED = 760;
 const SPAWN_HEIGHT_RATIO = 0.8;
 const CLUSTER_STIFFNESS = 36;
 const CLUSTER_DAMPING = 2 * Math.sqrt(CLUSTER_STIFFNESS);
-const CLUSTER_GROWTH_RATE = 3;
+const GROWTH_STIFFNESS = 7;
+const GROWTH_DAMPING = 2 * Math.sqrt(GROWTH_STIFFNESS);
+const MERGED_RADIUS_TOLERANCE = 0.4;
 const ATTRACTION_ACCELERATION = 2600;
 const ATTRACTION_MAX_SPEED = 1100;
 const ATTRACTION_STEERING_RATE = 10;
 const ABSORB_OVERLAP_RATIO = 0.25;
+const WANDER_SPEED = 85;
+const WANDER_SPEED_EASE_RATE = 1.5;
+const WANDER_TURN_RADIANS_PER_SECOND = 5;
 const MAX_STEP_SECONDS = 1 / 30;
 const SUBSTEPS_PER_STEP = 3;
 const FULL_PROGRESS = 1;
@@ -78,7 +84,11 @@ function distanceBetween(first: Point, second: Point) {
   return Math.hypot(first.x - second.x, first.y - second.y);
 }
 
-function createBall(bounds: Bounds, random: RandomSource): GoldBall {
+function createBall(
+  bounds: Bounds,
+  random: RandomSource,
+  isWanderer: boolean,
+): GoldBall {
   const radius = randomBetween(random, MIN_BALL_RADIUS, MAX_BALL_RADIUS);
 
   return {
@@ -89,6 +99,7 @@ function createBall(bounds: Bounds, random: RandomSource): GoldBall {
     radius,
     baseRadius: radius,
     state: "free",
+    isWanderer,
     attractedSeconds: 0,
   };
 }
@@ -215,7 +226,7 @@ export class GoldBallsSimulation {
   phase: SimulationPhase = "falling";
   mergeProgress = 0;
   private elapsedSeconds = 0;
-  private swellStartSeconds = 0;
+  private clusterGrowthSpeed = 0;
   private nextAttractionSeconds = 0;
   private clusterTargetRadius = 0;
   private totalBallArea = 0;
@@ -227,9 +238,27 @@ export class GoldBallsSimulation {
     private bounds: Bounds,
     private readonly random: RandomSource = Math.random,
   ) {
-    this.balls = Array.from({ length: BALL_COUNT }, () =>
-      createBall(bounds, random),
+    this.balls = Array.from({ length: BALL_COUNT }, (_, index) =>
+      createBall(bounds, random, index < WANDERER_COUNT),
     );
+  }
+
+  static ambient(bounds: Bounds, random: RandomSource = Math.random) {
+    const simulation = new GoldBallsSimulation(bounds, random);
+    simulation.balls.splice(WANDERER_COUNT);
+    for (const wanderer of simulation.balls) {
+      const angle = random() * Math.PI * 2;
+      wanderer.y = randomBetween(
+        random,
+        wanderer.radius,
+        bounds.height - wanderer.radius,
+      );
+      wanderer.vx = Math.cos(angle) * WANDER_SPEED;
+      wanderer.vy = Math.sin(angle) * WANDER_SPEED;
+    }
+    simulation.phase = "merged";
+    simulation.mergeProgress = FULL_PROGRESS;
+    return simulation;
   }
 
   get isMerged() {
@@ -253,16 +282,14 @@ export class GoldBallsSimulation {
   }
 
   step(deltaSeconds: number) {
-    if (this.isMerged) return;
-
     const stepSeconds = Math.min(deltaSeconds, MAX_STEP_SECONDS);
     const substepSeconds = stepSeconds / SUBSTEPS_PER_STEP;
 
     for (let substep = 0; substep < SUBSTEPS_PER_STEP; substep += 1) {
       this.elapsedSeconds += substepSeconds;
-      this.advancePhase();
-      if (this.isMerged) return;
+      if (!this.isMerged) this.advancePhase();
       this.moveFreeBalls(substepSeconds);
+      if (this.isMerged) continue;
       this.moveAttractedBalls(substepSeconds);
       this.settleCluster(substepSeconds);
     }
@@ -286,18 +313,22 @@ export class GoldBallsSimulation {
       this.absorbArrivedBalls();
       if (
         this.balls.every(
-          (ball) => ball.state !== "free" && ball.state !== "attracted",
+          (ball) =>
+            ball.isWanderer ||
+            (ball.state !== "free" && ball.state !== "attracted"),
         )
       ) {
         this.startSwelling();
       }
     }
     if (this.phase === "swelling") {
-      this.mergeProgress = Math.min(
-        (this.elapsedSeconds - this.swellStartSeconds) / SWELL_DURATION_SECONDS,
-        FULL_PROGRESS,
-      );
-      if (this.mergeProgress >= FULL_PROGRESS) this.finishMerging();
+      const { cluster, sun } = this;
+      if (cluster === null || sun === null) return;
+
+      this.mergeProgress = Math.min(cluster.radius / sun.radius, FULL_PROGRESS);
+      if (sun.radius - cluster.radius <= MERGED_RADIUS_TOLERANCE) {
+        this.finishMerging();
+      }
     }
   }
 
@@ -321,13 +352,14 @@ export class GoldBallsSimulation {
       return;
     }
 
-    const [seed] = [...this.balls].sort(
+    const joiningBalls = this.balls.filter((ball) => !ball.isWanderer);
+    const [seed] = [...joiningBalls].sort(
       (first, second) =>
         distanceBetween(first, sun.center) -
         distanceBetween(second, sun.center),
     );
     seed.state = "cluster";
-    this.totalBallArea = this.balls.reduce(
+    this.totalBallArea = joiningBalls.reduce(
       (total, ball) => total + ball.radius ** 2,
       0,
     );
@@ -345,7 +377,7 @@ export class GoldBallsSimulation {
     }
 
     const [nextBall] = this.balls
-      .filter((ball) => ball.state === "free")
+      .filter((ball) => ball.state === "free" && !ball.isWanderer)
       .sort(
         (first, second) =>
           distanceBetween(first, cluster) - distanceBetween(second, cluster),
@@ -382,7 +414,6 @@ export class GoldBallsSimulation {
     if (this.sun === null) return;
 
     this.phase = "swelling";
-    this.swellStartSeconds = this.elapsedSeconds;
     this.clusterTargetRadius = this.sun.radius;
   }
 
@@ -393,6 +424,7 @@ export class GoldBallsSimulation {
       cluster.y = sun.center.y;
       cluster.radius = sun.radius;
     }
+    this.mergeProgress = FULL_PROGRESS;
     this.phase = "merged";
   }
 
@@ -400,9 +432,11 @@ export class GoldBallsSimulation {
     const freeBalls = this.balls.filter((ball) => ball.state === "free");
     const gravity = this.phase === "falling" ? GRAVITY : NO_GRAVITY;
     const isCeilingSolid = this.phase !== "falling";
-    const { cluster } = this;
+    const isWandering = this.phase !== "falling" && this.phase !== "rolling";
+    const sunBlocker = this.sunBlocker();
 
     for (const ball of freeBalls) {
+      if (isWandering && ball.isWanderer) this.wander(ball, seconds);
       ball.vy += gravity * seconds;
       ball.x += ball.vx * seconds;
       ball.y += ball.vy * seconds;
@@ -418,9 +452,33 @@ export class GoldBallsSimulation {
       if (this.obstacle !== null && ball.y > 0) {
         bounceOffRectangle(ball, this.obstacle);
       }
-      if (cluster !== null) bounceOffCircle(ball, cluster, cluster.radius);
+      if (sunBlocker !== null) {
+        bounceOffCircle(ball, sunBlocker.center, sunBlocker.radius);
+      }
       bounceOffWalls(ball, this.bounds, isCeilingSolid);
     }
+  }
+
+  private sunBlocker(): SunShape | null {
+    const { cluster } = this;
+    if (cluster !== null) {
+      return { center: { x: cluster.x, y: cluster.y }, radius: cluster.radius };
+    }
+    return this.isMerged ? this.sun : null;
+  }
+
+  private wander(ball: GoldBall, seconds: number) {
+    const speed = Math.hypot(ball.vx, ball.vy);
+    const easedSpeed =
+      speed +
+      (WANDER_SPEED - speed) *
+        Math.min(WANDER_SPEED_EASE_RATE * seconds, FULL_PROGRESS);
+    const heading =
+      Math.atan2(ball.vy, ball.vx) +
+      (this.random() - 0.5) * 2 * WANDER_TURN_RADIANS_PER_SECOND * seconds;
+
+    ball.vx = Math.cos(heading) * easedSpeed;
+    ball.vy = Math.sin(heading) * easedSpeed;
   }
 
   private moveAttractedBalls(seconds: number) {
@@ -464,8 +522,10 @@ export class GoldBallsSimulation {
       seconds;
     cluster.x += cluster.vx * seconds;
     cluster.y += cluster.vy * seconds;
-    cluster.radius +=
-      (this.clusterTargetRadius - cluster.radius) *
-      Math.min(CLUSTER_GROWTH_RATE * seconds, FULL_PROGRESS);
+    this.clusterGrowthSpeed +=
+      (GROWTH_STIFFNESS * (this.clusterTargetRadius - cluster.radius) -
+        GROWTH_DAMPING * this.clusterGrowthSpeed) *
+      seconds;
+    cluster.radius += this.clusterGrowthSpeed * seconds;
   }
 }

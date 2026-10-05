@@ -6,12 +6,14 @@ import {
   BALL_OBSTACLE_SELECTOR,
   GoldBallsSimulation,
   type Rectangle,
+  type SunShape,
 } from "@/lib/gold-balls-simulation";
 import {
-  SUN_HIGHLIGHT_ALPHA,
-  SUN_HIGHLIGHT_OFFSET_RATIO,
-  SUN_HIGHLIGHT_RADIUS_RATIO,
-} from "@/lib/sun-highlight";
+  resolveSunColor,
+  SUN_COLOR_VARIABLE,
+  SUN_CORE_COLOR_VARIABLE,
+  withAlpha,
+} from "@/lib/sun-gradient";
 import {
   hasPlayedSunAnimation,
   markSunAnimationPlayed,
@@ -22,8 +24,15 @@ import {
 } from "@/lib/use-media-query";
 
 const MILLISECONDS_PER_SECOND = 1000;
-const SUN_COLOR_VARIABLE = "--sun";
-const HIGHLIGHT_COLOR = "#ffffff";
+const TRAIL_FADE_PER_FRAME = 0.3;
+const SPARKLE_GLOW_RADIUS_RATIO = 2.4;
+const SPARKLE_CORE_SHARE = 0.35;
+const SPARKLE_CORE_ALPHA = 0.7;
+const SPARKLE_BODY_ALPHA = 0.28;
+const TWINKLE_DEPTH = 0.3;
+const TWINKLE_RADIANS_PER_SECOND = 7;
+const ERASE_COMPOSITE = "destination-out";
+const DRAW_COMPOSITE = "source-over";
 
 function relativeRectangle(element: Element, container: Element): Rectangle {
   const elementBox = element.getBoundingClientRect();
@@ -40,35 +49,52 @@ function relativeRectangle(element: Element, container: Element): Rectangle {
 export default function AnimatedSun() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sunRef = useRef<HTMLDivElement>(null);
+  const growingSunRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useMediaQuery(REDUCED_MOTION_MEDIA_QUERY);
-  const [isMerged, setIsMerged] = useState(false);
-  const isSunVisible = isMerged || prefersReducedMotion;
+  const [hasSunAppeared, setHasSunAppeared] = useState(false);
+  const isSunVisible = hasSunAppeared || prefersReducedMotion;
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const sunElement = sunRef.current;
+    const growingSun = growingSunRef.current;
     const container = canvas?.parentElement;
     const context = canvas?.getContext("2d");
-    if (prefersReducedMotion || !canvas || !sunElement || !container) return;
-
     if (
-      !context ||
-      typeof ResizeObserver === "undefined" ||
-      hasPlayedSunAnimation()
+      prefersReducedMotion ||
+      !canvas ||
+      !sunElement ||
+      !growingSun ||
+      !container
     ) {
-      const revealFrame = requestAnimationFrame(() => setIsMerged(true));
+      return;
+    }
+
+    if (!context || typeof ResizeObserver === "undefined") {
+      const revealFrame = requestAnimationFrame(() => setHasSunAppeared(true));
       return () => cancelAnimationFrame(revealFrame);
     }
 
-    const ballColor =
-      getComputedStyle(canvas).getPropertyValue(SUN_COLOR_VARIABLE).trim() ||
-      "#f2b544";
-    const simulation = new GoldBallsSimulation({
+    const canvasStyle = getComputedStyle(canvas);
+    const readColor = (colorVariable: string) =>
+      resolveSunColor(
+        canvasStyle.getPropertyValue(colorVariable),
+        colorVariable,
+      );
+    const coreColor = readColor(SUN_CORE_COLOR_VARIABLE);
+    const sunColor = readColor(SUN_COLOR_VARIABLE);
+    const bounds = {
       width: container.clientWidth,
       height: container.clientHeight,
-    });
+    };
+    const simulation = hasPlayedSunAnimation()
+      ? GoldBallsSimulation.ambient(bounds)
+      : new GoldBallsSimulation(bounds);
+    let isSunFinished = false;
     let animationFrame = 0;
     let previousTimestamp: number | null = null;
+    let sunShape: SunShape | null = null;
+    let isSunFollowingCluster = false;
 
     const measureLayout = () => {
       const pixelRatio = window.devicePixelRatio || 1;
@@ -86,40 +112,70 @@ export default function AnimatedSun() {
       );
 
       const sunBox = relativeRectangle(sunElement, container);
-      simulation.setSun({
+      sunShape = {
         center: {
           x: (sunBox.left + sunBox.right) / 2,
           y: (sunBox.top + sunBox.bottom) / 2,
         },
         radius: (sunBox.right - sunBox.left) / 2,
-      });
+      };
+      simulation.setSun(sunShape);
     };
 
-    const draw = () => {
-      context.clearRect(0, 0, container.clientWidth, container.clientHeight);
+    const growSunWithCluster = () => {
+      const { cluster } = simulation;
+      if (isSunFinished || cluster === null || sunShape === null) return;
 
-      for (const ball of simulation.balls) {
-        if (ball.state === "absorbed") continue;
-
-        context.globalAlpha = 1;
-        context.fillStyle = ballColor;
-        context.beginPath();
-        context.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-        context.fill();
-
-        context.globalAlpha = SUN_HIGHLIGHT_ALPHA;
-        context.fillStyle = HIGHLIGHT_COLOR;
-        context.beginPath();
-        context.arc(
-          ball.x - ball.radius * SUN_HIGHLIGHT_OFFSET_RATIO,
-          ball.y - ball.radius * SUN_HIGHLIGHT_OFFSET_RATIO,
-          ball.radius * SUN_HIGHLIGHT_RADIUS_RATIO,
-          0,
-          Math.PI * 2,
-        );
-        context.fill();
+      growingSun.style.transform = `translate(${cluster.x - sunShape.center.x}px, ${
+        cluster.y - sunShape.center.y
+      }px) scale(${cluster.radius / sunShape.radius})`;
+      if (!isSunFollowingCluster) {
+        isSunFollowingCluster = true;
+        setHasSunAppeared(true);
       }
-      context.globalAlpha = 1;
+    };
+
+    const draw = (elapsedSeconds: number) => {
+      context.globalCompositeOperation = ERASE_COMPOSITE;
+      context.fillStyle = withAlpha(sunColor, TRAIL_FADE_PER_FRAME);
+      context.fillRect(0, 0, container.clientWidth, container.clientHeight);
+      context.globalCompositeOperation = DRAW_COMPOSITE;
+
+      simulation.balls.forEach((ball, ballIndex) => {
+        if (ball.state === "absorbed" || ball.state === "cluster") return;
+
+        const twinkle =
+          1 -
+          TWINKLE_DEPTH *
+            (0.5 +
+              0.5 *
+                Math.sin(
+                  elapsedSeconds * TWINKLE_RADIANS_PER_SECOND + ballIndex,
+                ));
+        const glowRadius = ball.radius * SPARKLE_GLOW_RADIUS_RATIO;
+        const sparkle = context.createRadialGradient(
+          ball.x,
+          ball.y,
+          0,
+          ball.x,
+          ball.y,
+          glowRadius,
+        );
+        sparkle.addColorStop(
+          0,
+          withAlpha(coreColor, SPARKLE_CORE_ALPHA * twinkle),
+        );
+        sparkle.addColorStop(
+          SPARKLE_CORE_SHARE / SPARKLE_GLOW_RADIUS_RATIO,
+          withAlpha(sunColor, SPARKLE_BODY_ALPHA * twinkle),
+        );
+        sparkle.addColorStop(1, withAlpha(sunColor, 0));
+
+        context.fillStyle = sparkle;
+        context.beginPath();
+        context.arc(ball.x, ball.y, glowRadius, 0, Math.PI * 2);
+        context.fill();
+      });
     };
 
     const renderFrame = (timestamp: number) => {
@@ -130,12 +186,14 @@ export default function AnimatedSun() {
       previousTimestamp = timestamp;
 
       simulation.step(deltaSeconds);
-      draw();
+      draw(timestamp / MILLISECONDS_PER_SECOND);
+      growSunWithCluster();
 
-      if (simulation.isMerged) {
+      if (simulation.isMerged && !isSunFinished) {
+        isSunFinished = true;
         markSunAnimationPlayed();
-        setIsMerged(true);
-        return;
+        growingSun.style.transform = "";
+        setHasSunAppeared(true);
       }
       animationFrame = requestAnimationFrame(renderFrame);
     };
@@ -156,17 +214,17 @@ export default function AnimatedSun() {
       <canvas
         ref={canvasRef}
         aria-hidden="true"
-        className={`pointer-events-none absolute inset-0 size-full transition-opacity duration-300 ${
-          isMerged ? "opacity-0 delay-700" : "opacity-100"
-        }`}
+        className="pointer-events-none absolute inset-0 size-full"
       />
-      <div
-        ref={sunRef}
-        className={`absolute -top-16 -right-16 w-56 transition-opacity duration-700 md:w-72 ${
-          isSunVisible ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <BrandIllustration highlighted className="w-full" />
+      <div ref={sunRef} className="absolute -top-12 -right-12 w-44 md:w-56">
+        <div
+          ref={growingSunRef}
+          className={`transition-opacity duration-300 ${
+            isSunVisible ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <BrandIllustration radiant className="w-full" />
+        </div>
       </div>
     </>
   );
