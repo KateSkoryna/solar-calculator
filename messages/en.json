@@ -323,7 +323,17 @@
     "error": "We couldn't create your workspace. Check the company name (2–80 characters) and try again."
   },
   "workspace": {
-    "savingQuickCheck": "Saving your result…"
+    "savingQuickCheck": "Saving your result…",
+    "nav": {
+      "overview": "Overview",
+      "vehicles": "Vehicles",
+      "calculations": "Calculations",
+      "audit": "Team & activity"
+    },
+    "mainNavigation": "Main",
+    "fleetLabel": "Fleet",
+    "switchFleet": "Switch fleet",
+    "home": "Solar Calculator home"
   },
   "roles": {
     "owner": "Owner",
