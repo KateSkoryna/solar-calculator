@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 
 export const AVATAR_TONES = ["lime", "neutral"] as const;
@@ -29,7 +32,9 @@ interface AvatarProps {
 }
 
 export default function Avatar({ name, imageUrl, tone = "lime" }: AvatarProps) {
-  if (imageUrl) {
+  const [failedImageUrl, setFailedImageUrl] = useState<string | null>(null);
+
+  if (imageUrl && imageUrl !== failedImageUrl) {
     return (
       <Image
         src={imageUrl}
@@ -37,6 +42,8 @@ export default function Avatar({ name, imageUrl, tone = "lime" }: AvatarProps) {
         width={AVATAR_SIZE_IN_PIXELS}
         height={AVATAR_SIZE_IN_PIXELS}
         unoptimized
+        referrerPolicy="no-referrer"
+        onError={() => setFailedImageUrl(imageUrl)}
         className="size-10 shrink-0 rounded-full object-cover"
       />
     );
