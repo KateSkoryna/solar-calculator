@@ -764,19 +764,6 @@
   "vehicles": {
     "title": "Fahrzeuge",
     "loading": "Fahrzeuge werden geladen",
-    "actions": {
-      "edit": "Bearbeiten",
-      "editLabel": "{vehicle} bearbeiten",
-      "run": "Berechnung starten",
-      "runLabel": "Berechnung für {vehicle} starten",
-      "delete": "Löschen",
-      "deleteLabel": "{vehicle} löschen",
-      "failed": "Das hat nicht geklappt. Bitte versuche es erneut.",
-      "confirmTitle": "{vehicle} löschen?",
-      "confirmText": "Das Fahrzeug verschwindet aus deinen Listen. Frühere Berechnungen bleiben im Aktivitätsverlauf.",
-      "confirmDelete": "Löschen",
-      "cancel": "Abbrechen"
-    },
     "edit": {
       "title": "{vehicle} bearbeiten",
       "save": "Änderungen speichern",
@@ -791,6 +778,8 @@
         "panels": "Module"
       },
       "fields": {
+        "name": "Gruppenname",
+        "nameHint": "Zum Beispiel „Lieferwagen Berlin“. Leer lassen, um Stadt und Typ zu verwenden.",
         "manufacturer": "Hersteller",
         "model": "Modell",
         "vehicleType": "Fahrzeugtyp",
@@ -816,12 +805,35 @@
         "PETROL": "Benzin",
         "ELECTRIC": "Elektro",
         "HYBRID": "Hybrid"
+      },
+      "delete": {
+        "button": "Fahrzeuge löschen",
+        "failed": "Das hat nicht geklappt. Bitte versuche es erneut.",
+        "confirmTitle": "{vehicle} löschen?",
+        "confirmText": "Die Gruppe verschwindet aus deinen Listen. Frühere Berechnungen bleiben im Aktivitätsverlauf.",
+        "confirm": "Löschen",
+        "cancel": "Abbrechen"
+      },
+      "technical": {
+        "summary": "Technische Details",
+        "text": "Wir haben diese Werte mit typischen Angaben für diesen Fahrzeugtyp vorbelegt, du musst sie also nicht kennen. Ändere sie nur, wenn du die genauen Werte hast."
       }
     },
     "error": {
       "title": "Wir konnten deine Fahrzeuge nicht laden",
       "text": "Auf unserer Seite ist etwas schiefgelaufen. Bitte versuche es erneut.",
       "retry": "Erneut versuchen"
+    },
+    "list": {
+      "title": "Fahrzeuggruppen",
+      "columns": {
+        "name": "Name",
+        "type": "Typ",
+        "count": "Anzahl",
+        "location": "Standort"
+      },
+      "edit": "Bearbeiten",
+      "editLabel": "{vehicle} bearbeiten"
     }
   },
   "calculations": {

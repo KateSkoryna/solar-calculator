@@ -6,6 +6,7 @@ import {
 } from "@/lib/vehicle-edit-form";
 
 const original: VehicleEditFormValues = {
+  name: "",
   manufacturer: "Ford",
   model: "Transit",
   vehicleType: "VAN",
@@ -58,6 +59,22 @@ describe("toVehicleUpdate", () => {
     expect(
       toVehicleUpdate({ ...chilled, cargoType: "REGULAR" }, original),
     ).toEqual({});
+  });
+});
+
+describe("toVehicleUpdate group name", () => {
+  it("sends a new group name", () => {
+    expect(
+      toVehicleUpdate({ ...original, name: " Berlin vans " }, original),
+    ).toEqual({
+      name: "Berlin vans",
+    });
+  });
+
+  it("clears the group name when the field is emptied", () => {
+    expect(
+      toVehicleUpdate(original, { ...original, name: "Berlin vans" }),
+    ).toEqual({ name: null });
   });
 });
 

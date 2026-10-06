@@ -764,19 +764,6 @@
   "vehicles": {
     "title": "Vehicles",
     "loading": "Loading your vehicles",
-    "actions": {
-      "edit": "Edit",
-      "editLabel": "Edit {vehicle}",
-      "run": "Run calculation",
-      "runLabel": "Run calculation for {vehicle}",
-      "delete": "Delete",
-      "deleteLabel": "Delete {vehicle}",
-      "failed": "That did not work. Please try again.",
-      "confirmTitle": "Delete {vehicle}?",
-      "confirmText": "The vehicle disappears from your lists. Its past calculations stay in the activity history.",
-      "confirmDelete": "Delete",
-      "cancel": "Cancel"
-    },
     "edit": {
       "title": "Edit {vehicle}",
       "save": "Save changes",
@@ -791,6 +778,8 @@
         "panels": "Panels"
       },
       "fields": {
+        "name": "Group name",
+        "nameHint": "For example \"Berlin delivery vans\". Leave empty to use the city and type.",
         "manufacturer": "Manufacturer",
         "model": "Model",
         "vehicleType": "Vehicle type",
@@ -816,12 +805,35 @@
         "PETROL": "Petrol",
         "ELECTRIC": "Electric",
         "HYBRID": "Hybrid"
+      },
+      "delete": {
+        "button": "Delete vehicles",
+        "failed": "That did not work. Please try again.",
+        "confirmTitle": "Delete {vehicle}?",
+        "confirmText": "The group disappears from your lists. Its past calculations stay in the activity history.",
+        "confirm": "Delete",
+        "cancel": "Cancel"
+      },
+      "technical": {
+        "summary": "Technical details",
+        "text": "We filled these in with typical values for this vehicle type, so you do not need to know them. Change them only if you have the exact figures."
       }
     },
     "error": {
       "title": "We couldn't load your vehicles",
       "text": "Something went wrong on our side. Please try again.",
       "retry": "Try again"
+    },
+    "list": {
+      "title": "Vehicle groups",
+      "columns": {
+        "name": "Name",
+        "type": "Type",
+        "count": "Count",
+        "location": "Location"
+      },
+      "edit": "Edit",
+      "editLabel": "Edit {vehicle}"
     }
   },
   "calculations": {

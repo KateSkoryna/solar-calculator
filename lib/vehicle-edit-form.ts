@@ -4,10 +4,12 @@ import { CHILLED_CARGO_TYPE } from "@/lib/calculator-form";
 import { vehicleInputSchema } from "@/lib/vehicle-schema";
 
 export const NO_COOLING_UNIT = "";
+const MAX_VEHICLE_NAME_LENGTH = 80;
 
 export const vehicleEditFormSchema = vehicleInputSchema
   .omit({ coolingUnitType: true, latitude: true, longitude: true })
   .extend({
+    name: z.string().trim().max(MAX_VEHICLE_NAME_LENGTH),
     cargoType: vehicleInputSchema.shape.cargoType.unwrap(),
     idleHoursPerDay: vehicleInputSchema.shape.idleHoursPerDay.unwrap(),
     coolingUnitType: z.enum([...COOLING_UNIT_TYPES, NO_COOLING_UNIT]),
@@ -15,7 +17,12 @@ export const vehicleEditFormSchema = vehicleInputSchema
 
 export type VehicleEditFormValues = z.infer<typeof vehicleEditFormSchema>;
 
-export const VEHICLE_TEXT_FIELDS = ["manufacturer", "model", "city"] as const;
+export const VEHICLE_TEXT_FIELDS = [
+  "name",
+  "manufacturer",
+  "model",
+  "city",
+] as const;
 
 export const VEHICLE_NUMBER_FIELDS = [
   "quantity",
@@ -43,6 +50,7 @@ export const VEHICLE_FORM_GROUPS = [
   {
     key: "vehicle",
     fields: [
+      "name",
       "manufacturer",
       "model",
       "vehicleType",
@@ -55,22 +63,20 @@ export const VEHICLE_FORM_GROUPS = [
     key: "driving",
     fields: [
       "averageDailyDistanceKm",
-      "energyConsumptionKwhPer100km",
       "idleHoursPerDay",
       "operatingMonthsPerYear",
       "winterUsage",
     ],
   },
   { key: "location", fields: ["city", "country", "parkingType"] },
-  {
-    key: "panels",
-    fields: [
-      "solarPanelPlacement",
-      "solarPanelCapacityKw",
-      "payloadReserveKg",
-      "maxRoofLoadKg",
-    ],
-  },
+  { key: "panels", fields: ["solarPanelPlacement"] },
+] as const;
+
+export const VEHICLE_TECHNICAL_FIELDS = [
+  "energyConsumptionKwhPer100km",
+  "solarPanelCapacityKw",
+  "payloadReserveKg",
+  "maxRoofLoadKg",
 ] as const;
 
 export function isChilledVehicle({
@@ -83,7 +89,7 @@ export function toVehicleUpdate(
   values: VehicleEditFormValues,
   original: VehicleEditFormValues,
 ) {
-  const { coolingUnitType, ...rest } = values;
+  const { coolingUnitType, name, ...rest } = values;
   const isChilled = isChilledVehicle(values);
   const resolvedCooling =
     isChilled && coolingUnitType !== NO_COOLING_UNIT ? coolingUnitType : null;
@@ -94,6 +100,9 @@ export function toVehicleUpdate(
   const locationChanged =
     values.city !== original.city || values.country !== original.country;
 
+  const resolvedName = name.trim() || null;
+  const originalName = original.name.trim() || null;
+
   const changedFields = Object.fromEntries(
     Object.entries(rest).filter(
       ([field, value]) =>
@@ -103,6 +112,7 @@ export function toVehicleUpdate(
 
   return {
     ...changedFields,
+    ...(resolvedName !== originalName ? { name: resolvedName } : {}),
     ...(resolvedCooling !== originalCooling
       ? { coolingUnitType: resolvedCooling }
       : {}),

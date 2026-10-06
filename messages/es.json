@@ -764,19 +764,6 @@
   "vehicles": {
     "title": "Vehículos",
     "loading": "Cargando tus vehículos",
-    "actions": {
-      "edit": "Editar",
-      "editLabel": "Editar {vehicle}",
-      "run": "Ejecutar cálculo",
-      "runLabel": "Ejecutar cálculo para {vehicle}",
-      "delete": "Eliminar",
-      "deleteLabel": "Eliminar {vehicle}",
-      "failed": "No ha funcionado. Inténtalo de nuevo.",
-      "confirmTitle": "¿Eliminar {vehicle}?",
-      "confirmText": "El vehículo desaparece de tus listas. Sus cálculos anteriores permanecen en el historial de actividad.",
-      "confirmDelete": "Eliminar",
-      "cancel": "Cancelar"
-    },
     "edit": {
       "title": "Editar {vehicle}",
       "save": "Guardar cambios",
@@ -791,6 +778,8 @@
         "panels": "Paneles"
       },
       "fields": {
+        "name": "Nombre del grupo",
+        "nameHint": "Por ejemplo «Furgonetas de reparto Berlín». Déjalo vacío para usar la ciudad y el tipo.",
         "manufacturer": "Fabricante",
         "model": "Modelo",
         "vehicleType": "Tipo de vehículo",
@@ -816,12 +805,35 @@
         "PETROL": "Gasolina",
         "ELECTRIC": "Eléctrico",
         "HYBRID": "Híbrido"
+      },
+      "delete": {
+        "button": "Eliminar vehículos",
+        "failed": "No ha funcionado. Inténtalo de nuevo.",
+        "confirmTitle": "¿Eliminar {vehicle}?",
+        "confirmText": "El grupo desaparece de tus listas. Sus cálculos anteriores permanecen en el historial de actividad.",
+        "confirm": "Eliminar",
+        "cancel": "Cancelar"
+      },
+      "technical": {
+        "summary": "Detalles técnicos",
+        "text": "Los hemos rellenado con valores típicos para este tipo de vehículo, así que no necesitas conocerlos. Cámbialos solo si tienes las cifras exactas."
       }
     },
     "error": {
       "title": "No pudimos cargar tus vehículos",
       "text": "Algo salió mal por nuestra parte. Inténtalo de nuevo.",
       "retry": "Reintentar"
+    },
+    "list": {
+      "title": "Grupos de vehículos",
+      "columns": {
+        "name": "Nombre",
+        "type": "Tipo",
+        "count": "Cantidad",
+        "location": "Ubicación"
+      },
+      "edit": "Editar",
+      "editLabel": "Editar {vehicle}"
     }
   },
   "calculations": {

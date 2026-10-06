@@ -6,8 +6,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
 import { useLocale, useTranslations } from "next-intl";
 import Card from "@/components/common/Card";
+import Disclosure from "@/components/common/Disclosure";
 import Heading from "@/components/common/Heading";
 import Button from "@/components/form/Button";
+import DeleteVehicleButton from "@/components/fleet/DeleteVehicleButton";
 import ButtonLink from "@/components/form/ButtonLink";
 import FormAlert from "@/components/form/FormAlert";
 import Input from "@/components/form/Input";
@@ -20,6 +22,7 @@ import {
   NO_COOLING_UNIT,
   toVehicleUpdate,
   VEHICLE_FORM_GROUPS,
+  VEHICLE_TECHNICAL_FIELDS,
   vehicleEditFormSchema,
   type VehicleChoiceField,
   type VehicleEditFormValues,
@@ -47,6 +50,7 @@ interface VehicleEditFormProps {
   fleetSlug: string;
   vehicleId: string;
   vehicleName: string;
+  canDelete: boolean;
   initialValues: VehicleEditFormValues;
 }
 
@@ -55,6 +59,7 @@ export default function VehicleEditForm({
   fleetSlug,
   vehicleId,
   vehicleName,
+  canDelete,
   initialValues,
 }: VehicleEditFormProps) {
   const t = useTranslations("vehicles.edit");
@@ -142,13 +147,14 @@ export default function VehicleEditForm({
         </label>
       );
     }
-    const isNumber = !["manufacturer", "model", "city"].includes(field);
+    const isNumber = !["name", "manufacturer", "model", "city"].includes(field);
     const typedField = field as keyof VehicleEditFormValues;
     return (
       <Input
         key={field}
         label={t(`fields.${field}`)}
         error={fieldError(typedField)}
+        hint={field === "name" ? t("fields.nameHint") : undefined}
         {...(isNumber
           ? {
               type: "number",
@@ -207,6 +213,16 @@ export default function VehicleEditForm({
           </div>
         </Card>
       ))}
+      <Card as="section">
+        <Disclosure summary={t("technical.summary")}>
+          <div className="flex flex-col gap-4 pt-2">
+            <p className="text-[15px] text-muted">{t("technical.text")}</p>
+            <div className="grid gap-4 md:grid-cols-2">
+              {VEHICLE_TECHNICAL_FIELDS.map((field) => renderField(field))}
+            </div>
+          </div>
+        </Disclosure>
+      </Card>
       {hasSaveFailed && <FormAlert>{t("saveFailed")}</FormAlert>}
       <div className="flex flex-wrap gap-3">
         <Button type="submit" loading={isSubmitting}>
@@ -215,6 +231,16 @@ export default function VehicleEditForm({
         <ButtonLink href={vehiclesPath} variant="secondary">
           {t("cancel")}
         </ButtonLink>
+        {canDelete && (
+          <div className="md:ml-auto">
+            <DeleteVehicleButton
+              fleetId={fleetId}
+              fleetSlug={fleetSlug}
+              vehicleId={vehicleId}
+              vehicleName={vehicleName}
+            />
+          </div>
+        )}
       </div>
     </form>
   );
