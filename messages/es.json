@@ -549,8 +549,8 @@
       "dailyDistance": "{kilometres} km al día"
     },
     "verdict": {
-      "PAYS_OFF": "Sí: la energía solar se amortiza en aproximadamente <duration></duration>.",
-      "SLOWLY": "La energía solar se amortiza despacio: en aproximadamente <duration></duration>.",
+      "PAYS_OFF": "Sí: la energía solar se amortiza en aproximadamente <duration>.</duration>",
+      "SLOWLY": "La energía solar se amortiza despacio: en aproximadamente <duration>.</duration>",
       "UNLIKELY": "Es poco probable que la energía solar se amortice con esta configuración.",
       "unlikelySuggestion": "Prueba con paneles solo en el techo o revisa las cifras exactas.",
       "range": "Entre {shortest} y {longest}, según el sol y los precios.",
@@ -558,16 +558,9 @@
       "lead": "Después, tu flota se queda con unos {annualSavings} al año que de otro modo se irían en combustible."
     },
     "duration": {
-      "long": {
-        "yearsAndMonths": "{years, plural, one {# año} other {# años}} y {months, plural, one {# mes} other {# meses}}",
-        "yearsOnly": "{years, plural, one {# año} other {# años}}",
-        "monthsOnly": "{months, plural, one {# mes} other {# meses}}"
-      },
-      "short": {
-        "yearsAndMonths": "{years} a {months} m",
-        "yearsOnly": "{years} a",
-        "monthsOnly": "{months} m"
-      }
+      "yearsAndMonths": "{years, plural, one {# año} other {# años}} y {months, plural, one {# mes} other {# meses}}",
+      "yearsOnly": "{years, plural, one {# año} other {# años}}",
+      "monthsOnly": "{months, plural, one {# mes} other {# meses}}"
     },
     "units": {
       "tonnes": "{value} t"

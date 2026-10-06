@@ -32,7 +32,8 @@ describe("VerdictHeadline", () => {
 
     expect(headline).toHaveTextContent(/^Yes — solar pays for itself/);
     expect(headline).toHaveTextContent("4 years 4 months");
-    expect(headline).toHaveTextContent("4 yrs 4 mo");
+    expect(headline.lastElementChild).toHaveTextContent(/^4 years 4 months\.$/);
+    expect(headline.lastElementChild).toHaveClass("block");
     expect(
       screen.getByText(
         "Between 3 years 4 months and 6 years 8 months, depending on sun and prices.",

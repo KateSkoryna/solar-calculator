@@ -2,7 +2,6 @@ import { useFormatter, useTranslations } from "next-intl";
 import {
   formatDuration,
   RESULTS_CURRENCY,
-  type DurationForm,
   type DurationParts,
   type ValueRange,
 } from "@/lib/results-view-model";
@@ -36,8 +35,8 @@ export function useResultsFormatters() {
       }),
     });
 
-  const duration = (parts: DurationParts, form: DurationForm) =>
-    formatDuration(parts, form, (key, values) => t(`duration.${key}`, values));
+  const duration = (parts: DurationParts) =>
+    formatDuration(parts, (key, values) => t(`duration.${key}`, values));
 
   const rangeOf = (range: ValueRange, formatValue: (value: number) => string) =>
     t("tiles.range", {

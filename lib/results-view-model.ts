@@ -30,9 +30,6 @@ export const RESULTS_CURRENCY = "EUR";
 export const VERDICT_VARIANTS = ["PAYS_OFF", "SLOWLY", "UNLIKELY"] as const;
 export type VerdictVariant = (typeof VERDICT_VARIANTS)[number];
 
-export const DURATION_FORMS = ["long", "short"] as const;
-export type DurationForm = (typeof DURATION_FORMS)[number];
-
 export const INPUT_VALUE_KINDS = {
   manufacturer: "text",
   model: "text",
@@ -206,10 +203,9 @@ function durationMessageKey({ years, months }: DurationParts) {
 
 export function formatDuration(
   duration: DurationParts,
-  form: DurationForm,
   translate: DurationTranslator,
 ) {
-  return translate(`${form}.${durationMessageKey(duration)}`, {
+  return translate(durationMessageKey(duration), {
     years: duration.years,
     months: duration.months,
   });

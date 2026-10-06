@@ -8,22 +8,28 @@ interface ResultsNoticeProps {
   title: string;
   text: string;
   children?: ReactNode;
+  embedded?: boolean;
 }
 
 export default function ResultsNotice({
   title,
   text,
   children,
+  embedded = false,
 }: ResultsNoticeProps) {
-  return (
-    <PageContainer className="py-10 md:py-16">
-      <Card className="mx-auto flex max-w-[640px] flex-col items-start gap-4 text-left">
-        <Heading level={1} size="display-s">
-          {title}
-        </Heading>
-        <Text tone="muted">{text}</Text>
-        {children}
-      </Card>
-    </PageContainer>
+  const card = (
+    <Card className="mx-auto flex max-w-[640px] flex-col items-start gap-4 text-left">
+      <Heading level={1} size="display-s">
+        {title}
+      </Heading>
+      <Text tone="muted">{text}</Text>
+      {children}
+    </Card>
+  );
+
+  return embedded ? (
+    card
+  ) : (
+    <PageContainer className="py-10 md:py-16">{card}</PageContainer>
   );
 }

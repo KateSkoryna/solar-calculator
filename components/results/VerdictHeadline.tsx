@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import Heading from "@/components/common/Heading";
 import Text from "@/components/common/Text";
@@ -9,20 +10,22 @@ const HIGHLIGHT_CLASSES = "rounded-[14px] bg-lime px-3 text-on-lime";
 interface ResponsiveDurationProps {
   duration: DurationParts;
   highlighted: boolean;
+  children: ReactNode;
 }
 
 function ResponsiveDuration({
   duration,
   highlighted,
+  children,
 }: ResponsiveDurationProps) {
   const { duration: formatDuration } = useResultsFormatters();
 
   return (
-    <span className={highlighted ? HIGHLIGHT_CLASSES : ""}>
-      <span className="md:hidden">{formatDuration(duration, "short")}</span>
-      <span className="hidden md:inline">
-        {formatDuration(duration, "long")}
-      </span>
+    <span
+      className={`block w-fit md:inline ${highlighted ? HIGHLIGHT_CLASSES : ""}`}
+    >
+      {formatDuration(duration)}
+      {children}
     </span>
   );
 }
@@ -46,11 +49,13 @@ export default function VerdictHeadline({ verdict }: VerdictHeadlineProps) {
         {duration === null
           ? t(variant)
           : t.rich(variant, {
-              duration: () => (
+              duration: (sentenceEnd) => (
                 <ResponsiveDuration
                   duration={duration}
                   highlighted={variant === "PAYS_OFF"}
-                />
+                >
+                  {sentenceEnd}
+                </ResponsiveDuration>
               ),
             })}
       </Heading>
@@ -58,11 +63,11 @@ export default function VerdictHeadline({ verdict }: VerdictHeadlineProps) {
         <Text size="body-l" tone="muted" className="max-w-[760px] animate-rise">
           {range.longest === null
             ? t("rangeBestCase", {
-                shortest: formatDuration(range.shortest, "long"),
+                shortest: formatDuration(range.shortest),
               })
             : t("range", {
-                shortest: formatDuration(range.shortest, "long"),
-                longest: formatDuration(range.longest, "long"),
+                shortest: formatDuration(range.shortest),
+                longest: formatDuration(range.longest),
               })}
         </Text>
       )}

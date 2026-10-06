@@ -549,8 +549,8 @@
       "dailyDistance": "{kilometres} km a day"
     },
     "verdict": {
-      "PAYS_OFF": "Yes — solar pays for itself in about <duration></duration>.",
-      "SLOWLY": "Solar pays off slowly — about <duration></duration>.",
+      "PAYS_OFF": "Yes — solar pays for itself in about <duration>.</duration>",
+      "SLOWLY": "Solar pays off slowly — about <duration>.</duration>",
       "UNLIKELY": "Solar is unlikely to pay off for this setup.",
       "unlikelySuggestion": "Try roof-only panels or check the exact numbers.",
       "range": "Between {shortest} and {longest}, depending on sun and prices.",
@@ -558,16 +558,9 @@
       "lead": "After that, your fleet keeps around {annualSavings} a year that would otherwise go on fuel."
     },
     "duration": {
-      "long": {
-        "yearsAndMonths": "{years, plural, one {# year} other {# years}} {months, plural, one {# month} other {# months}}",
-        "yearsOnly": "{years, plural, one {# year} other {# years}}",
-        "monthsOnly": "{months, plural, one {# month} other {# months}}"
-      },
-      "short": {
-        "yearsAndMonths": "{years, plural, one {# yr} other {# yrs}} {months} mo",
-        "yearsOnly": "{years, plural, one {# yr} other {# yrs}}",
-        "monthsOnly": "{months} mo"
-      }
+      "yearsAndMonths": "{years, plural, one {# year} other {# years}} {months, plural, one {# month} other {# months}}",
+      "yearsOnly": "{years, plural, one {# year} other {# years}}",
+      "monthsOnly": "{months, plural, one {# month} other {# months}}"
     },
     "units": {
       "tonnes": "{value} t"

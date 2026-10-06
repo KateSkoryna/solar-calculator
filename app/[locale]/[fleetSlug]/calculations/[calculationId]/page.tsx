@@ -66,17 +66,26 @@ export default async function CalculationResultPage({
   const calculation = await findCalculation(session, fleetSlug, calculationId);
 
   if (!calculation) {
-    return <ResultsNotice title={t("notFoundTitle")} text={t("notFound")} />;
+    return (
+      <ResultsNotice embedded title={t("notFoundTitle")} text={t("notFound")} />
+    );
   }
 
   const results = readResults(calculation);
 
   if (!results) {
-    return <ResultsNotice title={t("notFoundTitle")} text={t("noResultYet")} />;
+    return (
+      <ResultsNotice
+        embedded
+        title={t("notFoundTitle")}
+        text={t("noResultYet")}
+      />
+    );
   }
 
   return (
     <ResultsView
+      embedded
       viewModel={results.viewModel}
       provenance={results.provenance}
     />

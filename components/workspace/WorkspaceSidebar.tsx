@@ -20,7 +20,7 @@ export default function WorkspaceSidebar({
   const navLinks = useWorkspaceNavLinks(currentFleetSlug);
 
   return (
-    <aside className="sticky top-6 hidden w-[260px] shrink-0 flex-col gap-6 self-start rounded-xl border border-line bg-side p-5 lg:flex">
+    <aside className="sticky top-6 z-10 hidden w-[260px] shrink-0 flex-col gap-6 self-start rounded-xl border border-line bg-side p-5 lg:flex">
       <nav aria-label={t("mainNavigation")} className="flex-1">
         <ul className="flex list-none flex-col gap-1">
           {navLinks.map(({ key, label, href, Icon, isCurrent }) => (
