@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
@@ -17,6 +17,7 @@ import { useCalculatorAnswers } from "@/components/calculator/useCalculatorAnswe
 import { useCalculatorSteps } from "@/components/calculator/useCalculatorOptions";
 import Heading from "@/components/common/Heading";
 import Text from "@/components/common/Text";
+import FormAlert from "@/components/form/FormAlert";
 import PageContainer from "@/components/layout/PageContainer";
 import {
   CALCULATOR_DEFAULT_VALUES,
@@ -33,15 +34,47 @@ import {
   saveCalculatorAnswers,
 } from "@/lib/calculator-storage";
 import { estimateAccuracy } from "@/lib/estimate-accuracy";
-import { resultsPath } from "@/lib/public-paths";
+import { fleetQuickChecksApiPath } from "@/lib/fleet-api-paths";
+import { homePath, resultsPath } from "@/lib/public-paths";
 import { encodeQuickCheck } from "@/lib/quick-check-mapping";
+import type { QuickCheckAnswers } from "@/lib/quick-check-schema";
+import { fleetCalculationPath, fleetVehiclesPath } from "@/lib/workspace-path";
 
 const FIRST_STEP_INDEX = 0;
 const LAST_STEP_INDEX = CALCULATOR_STEP_KEYS.length - 1;
 const LOCATION_STEP_INDEX = CALCULATOR_STEP_KEYS.indexOf("location");
 const INVALID_FIELD_SELECTOR = '[aria-invalid="true"]';
 
-export default function CalculatorWizard() {
+const PUBLIC_WIZARD_GRID_CLASSES =
+  "lg:grid-cols-[280px_minmax(0,1fr)_380px] lg:gap-10";
+const FLEET_WIZARD_GRID_CLASSES =
+  "xl:grid-cols-[220px_minmax(0,1fr)_320px] xl:gap-8";
+
+interface FleetTarget {
+  id: string;
+  slug: string;
+}
+
+interface CalculatorWizardProps {
+  fleet?: FleetTarget;
+}
+
+function WizardFrame({
+  isFleetMode,
+  children,
+}: {
+  isFleetMode: boolean;
+  children: ReactNode;
+}) {
+  return isFleetMode ? (
+    <>{children}</>
+  ) : (
+    <PageContainer className="py-6 md:py-10">{children}</PageContainer>
+  );
+}
+
+export default function CalculatorWizard({ fleet }: CalculatorWizardProps) {
+  const isFleetMode = fleet !== undefined;
   const t = useTranslations("calculator");
   const locale = useLocale();
   const router = useRouter();
@@ -53,6 +86,8 @@ export default function CalculatorWizard() {
   const hasRestoredAnswersRef = useRef(false);
   const formRef = useRef<HTMLFormElement>(null);
   const [isCityMissing, setIsCityMissing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [hasSaveFailed, setHasSaveFailed] = useState(false);
   const form = useForm<CalculatorFormValues>({
     resolver: zodResolver(calculatorFormSchema),
     defaultValues: CALCULATOR_DEFAULT_VALUES,
@@ -64,14 +99,18 @@ export default function CalculatorWizard() {
   const accuracy = estimateAccuracy(calculatorInputSources(values));
   const stepKey = CALCULATOR_STEP_KEYS[stepIndex];
   const { reset } = form;
+  const wizardGridClasses = isFleetMode
+    ? FLEET_WIZARD_GRID_CLASSES
+    : PUBLIC_WIZARD_GRID_CLASSES;
 
   useEffect(() => {
+    if (isFleetMode) return;
     const storedAnswers = readCalculatorAnswers();
     if (storedAnswers) {
       reset(storedAnswers);
     }
     hasRestoredAnswersRef.current = true;
-  }, [reset]);
+  }, [reset, isFleetMode]);
 
   useEffect(() => {
     if (hasRestoredAnswersRef.current) {
@@ -109,6 +148,31 @@ export default function CalculatorWizard() {
     });
   };
 
+  const saveToFleet = async (
+    targetFleet: FleetTarget,
+    answers: QuickCheckAnswers,
+  ) => {
+    setIsSaving(true);
+    setHasSaveFailed(false);
+    try {
+      const response = await fetch(fleetQuickChecksApiPath(targetFleet.id), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(answers),
+      });
+      if (!response.ok) throw new Error("Request failed");
+      const { calculation } = (await response.json()) as {
+        calculation: { id: string };
+      };
+      router.push(
+        fleetCalculationPath(locale, targetFleet.slug, calculation.id),
+      );
+    } catch {
+      setHasSaveFailed(true);
+      setIsSaving(false);
+    }
+  };
+
   const continueOrFinish = async () => {
     const isStepValid = await form.trigger(CALCULATOR_STEP_FIELDS[stepKey]);
     if (!isStepValid) {
@@ -131,12 +195,16 @@ export default function CalculatorWizard() {
       goToStep(LOCATION_STEP_INDEX);
       return;
     }
+    if (fleet) {
+      await saveToFleet(fleet, quickCheckAnswers);
+      return;
+    }
     router.push(resultsPath(locale, encodeQuickCheck(quickCheckAnswers)));
   };
 
   return (
     <FormProvider {...form}>
-      <PageContainer className="py-6 md:py-10">
+      <WizardFrame isFleetMode={isFleetMode}>
         <form
           ref={formRef}
           noValidate
@@ -144,7 +212,7 @@ export default function CalculatorWizard() {
             event.preventDefault();
             void continueOrFinish();
           }}
-          className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)_380px] lg:gap-10"
+          className={`grid gap-6 ${wizardGridClasses}`}
         >
           <div className="flex flex-col gap-4">
             <StepIndicator
@@ -152,9 +220,11 @@ export default function CalculatorWizard() {
               currentStepIndex={stepIndex}
               onStepSelect={goToStep}
             />
-            <Text size="small" tone="muted">
-              {t("savedAutomatically")}
-            </Text>
+            {!isFleetMode && (
+              <Text size="small" tone="muted">
+                {t("savedAutomatically")}
+              </Text>
+            )}
           </div>
 
           <div className="flex min-w-0 flex-col gap-6">
@@ -187,9 +257,17 @@ export default function CalculatorWizard() {
               )}
               {stepKey === "panels" && <PanelsStep />}
             </div>
+            {hasSaveFailed && <FormAlert>{t("saveToFleetFailed")}</FormAlert>}
             <CalculatorActions
               isFirstStep={stepIndex === FIRST_STEP_INDEX}
               isLastStep={stepIndex === LAST_STEP_INDEX}
+              backHref={
+                fleet ? fleetVehiclesPath(locale, fleet.slug) : homePath(locale)
+              }
+              finishLabel={
+                isFleetMode ? t("actions.saveToFleet") : t("actions.seeResults")
+              }
+              isSubmitting={isSaving}
               onBack={() => goToStep(stepIndex - 1)}
             />
           </div>
@@ -200,20 +278,22 @@ export default function CalculatorWizard() {
               accuracy={accuracy}
               summary={summary}
             />
-            <Text
-              size="small"
-              tone="muted"
-              className="hidden items-center gap-2 lg:flex"
-            >
-              <LuLock aria-hidden="true" className="size-4 shrink-0" />
-              {t("privacyNote")}
-            </Text>
+            {!isFleetMode && (
+              <Text
+                size="small"
+                tone="muted"
+                className="hidden items-center gap-2 lg:flex"
+              >
+                <LuLock aria-hidden="true" className="size-4 shrink-0" />
+                {t("privacyNote")}
+              </Text>
+            )}
           </div>
         </form>
         <p aria-live="polite" className="sr-only">
           {announcement}
         </p>
-      </PageContainer>
+      </WizardFrame>
     </FormProvider>
   );
 }

@@ -19,6 +19,7 @@ const groupMessages = englishMessages.overview.groups;
 function calculation(overrides: Partial<GroupCalculation> = {}) {
   return {
     id: "calc_1",
+    calculatedAt: new Date("2026-03-04T10:00:00Z"),
     assumptionSetVersion: CURRENT_VERSION,
     paybackMonths: 52,
     annualSavingsEuros: 1000,
@@ -30,6 +31,7 @@ function calculation(overrides: Partial<GroupCalculation> = {}) {
 function group(overrides: Partial<FleetVehicleGroup> = {}): FleetVehicleGroup {
   return {
     vehicleId: "vehicle_1",
+    name: null,
     manufacturer: "Ford",
     model: "Transit",
     vehicleType: VehicleType.VAN,
@@ -119,5 +121,21 @@ describe("VehicleGroupList", () => {
     await user.type(screen.getByLabelText(groupMessages.search), "nothing");
 
     expect(screen.getByText(groupMessages.noMatch)).toBeInTheDocument();
+  });
+
+  it("shows when the latest calculation was made, even if it is stale", () => {
+    renderList([
+      group({
+        latestCalculation: calculation({ assumptionSetVersion: "2025.2" }),
+      }),
+    ]);
+
+    expect(screen.getByText("Mar 4, 2026")).toBeInTheDocument();
+  });
+
+  it("shows a dash instead of a date when nothing was calculated", () => {
+    renderList([group({ latestCalculation: null })]);
+
+    expect(screen.queryByText(/2026/)).not.toBeInTheDocument();
   });
 });

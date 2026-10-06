@@ -15,6 +15,7 @@ import { FLEET_EDITOR_ROLES } from "@/lib/fleet-auth";
 import { loadFleetPageAccess } from "@/lib/fleet-page-access";
 import { loginPath } from "@/lib/public-paths";
 import { workspaceNavItemPath } from "@/lib/workspace-nav";
+import { fleetNewVehiclePath } from "@/lib/workspace-path";
 
 export default async function FleetOverviewPage({
   params,
@@ -40,7 +41,7 @@ export default async function FleetOverviewPage({
   const currentAssumptionSetVersion = ASSUMPTION_SET_V1.version;
   const groups = await loadFleetDashboardData(fleet.id);
   const vehiclesPath = workspaceNavItemPath(locale, fleetSlug, "vehicles");
-  const newVehiclePath = `${vehiclesPath}/new`;
+  const newVehiclePath = fleetNewVehiclePath(locale, fleetSlug);
   const vehicleCount = groups.reduce(
     (total, { quantity }) => total + quantity,
     0,

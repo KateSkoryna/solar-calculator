@@ -260,7 +260,7 @@ Fixed bottom bars MUST add `padding-bottom: env(safe-area-inset-bottom)` and the
 | `step-in`          | opacity 0→1, translateX 18→0           | 450 ms                                             | Calculator step content on step change                                                                                            |
 | `swap`             | opacity 0→1, translateY 8→0            | 300–350 ms                                         | Tab/segment content change (login tabs, team/activity)                                                                            |
 | `fill`             | width 0→value                          | 500 ms (step progress) / 1200 ms (report progress) | Progress bars                                                                                                                     |
-| `grow`             | scaleY 0→1, origin bottom              | 800 ms, stagger 50 ms per bar                      | Bar charts (none currently)                                                                                                         |
+| `grow`             | scaleY 0→1, origin bottom              | 800 ms, stagger 50 ms per bar                      | Bar charts (none currently)                                                                                                       |
 | `lift`             | translateY 0→-2/-3 px + `shadow-hover` | 150–200 ms                                         | Choice cards, "How it works" cards, stat tiles (pointer devices only: wrap in `@media (hover: hover)` nested inside the selector) |
 | `pulse`            | opacity 1→0.35→1                       | 1600 ms loop                                       | Status dot of an in-progress job only                                                                                             |
 | `spin`             | rotate 360°                            | 60–80 s loop                                       | Not used while the illustration is a placeholder circle; revisit when the final image arrives                                     |
@@ -489,11 +489,11 @@ Each screen lists route, purpose, content order per breakpoint, states and inter
 5. "Built for" dark band: Delivery & logistics, Public transport, Refrigerated transport (lime line icons).
 6. Footer: "© {year} Solar Calculator" + "Independent · Estimates, not quotes".
 
-|              | Desktop                                                 | Tablet                                           | Mobile                                                                      |
-| ------------ | ------------------------------------------------------- | ------------------------------------------------ | --------------------------------------------------------------------------- |
+|              | Desktop                                                 | Tablet                                           | Mobile                                                                               |
+| ------------ | ------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------ |
 | Hero         | 2 columns: text left, example panel right (520 px tall) | Stacked; example panel 400 px under the text     | Stacked; button full width; panel with 120 px illustration area on top; 2 mini stats |
-| How it works | 3 columns                                               | 3 horizontal rows (number tile left, text right) | 3 rows, smaller                                                             |
-| Built for    | 4-column band (title + 3 items)                         | Title + 3 columns                                | Title + 3 stacked rows                                                      |
+| How it works | 3 columns                                               | 3 horizontal rows (number tile left, text right) | 3 rows, smaller                                                                      |
+| Built for    | 4-column band (title + 3 items)                         | Title + 3 columns                                | Title + 3 stacked rows                                                               |
 
 **Motion:** `rise` on badge, h1, paragraph + CTA (stagger 0/120/240 ms), example panel `rise` 120 ms; card `lift` on hover.
 
@@ -611,6 +611,42 @@ Each screen lists route, purpose, content order per breakpoint, states and inter
 | Layout | Team 400 px left + Activity right | Team (2-column member grid) above Activity | Segmented control Activity / Team (Activity first) |
 
 **Sentence generation:** map each audit action to a message key with placeholders (`audit.events.vehicleUpdatedField`: "{actor} changed {field} for {vehicle} from {from} to {to}"). Fallback when old/new values are not stored: "{actor} edited {vehicle}". Never render raw enum names like `VEHICLE_UPDATED`.
+
+### 8.8 Vehicles — `/[locale]/[fleetSlug]/vehicles`, `/vehicles/new`, `/vehicles/[vehicleId]/edit` (built from the design system, no canvas)
+
+**Purpose:** "Which vehicles do we have, and how do I add, change or recalculate them?"
+
+**Content order:**
+
+1. Page header: h1 "Vehicles" → primary "Add vehicles" (+ icon) right, editors only.
+2. Vehicle groups card: one row per group with Name (the group name, falling back to manufacturer and model, or "{city} {count} {type}", for example "Madrid 7 Bus", for quick checks), Type, Count and Location. No status, payback, date or distance; those belong to Overview, Calculations and the edit page. Editors get one `secondary` "Edit" button per row; viewers see the same rows without it. A row is a group of identical vehicles, so editing it changes all of them.
+3. Delete lives at the bottom of the edit page (Owners only): `danger` "Delete vehicles" opens a confirm dialog ("Delete {name}?", the consequence in one sentence, `danger` "Delete" + `secondary` "Cancel"). Focus starts on Cancel; Escape cancels.
+4. `/vehicles/new`: the calculator wizard (8.2) in fleet mode, without the page container. The last button reads "Save to fleet" and posts to the quick-checks API; success lands on the new result.
+5. `/vehicles/[vehicleId]/edit`: h1 "Edit {name}" → a form card with grouped fields (Vehicle with the optional group name first, Driving, Location, Panel placement), then a collapsed "Technical details" disclosure with energy use, panel capacity, payload reserve and roof load, which are prefilled with typical values because fleet owners rarely know them using the shared form controls → "Save changes" (`primary`), "Cancel" (`secondary`) and, for Owners, "Delete vehicles" (`danger`) on the right. Only changed fields are sent.
+
+|        | Desktop                                  | Tablet               | Mobile                            |
+| ------ | ---------------------------------------- | -------------------- | --------------------------------- |
+| List   | Grid table, actions in a right column    | Two-line rows        | Cards with actions underneath     |
+| Wizard | Steps, question and answers in 3 columns | Question and answers | Single column, answers last       |
+| Edit   | Two-column form groups                   | Two-column form      | Single column, sticky actions off |
+
+**Rules:** empty fleet shows the 8.5 empty state; viewers opening `/new` or `/edit` get the not-found page; every route has a loading skeleton and an error card with "Try again".
+
+### 8.9 Calculations — `/[locale]/[fleetSlug]/calculations` (built from the design system, no canvas)
+
+**Purpose:** "What have we calculated, and which results are out of date?"
+
+**Content order:**
+
+1. Page header: h1 "Calculations" → primary "New calculation" (+ icon) right, editors only; it opens the calculator page (`/[locale]/calculator`); its result offers "Save to fleet".
+2. History card: title "Calculation history" + sort control (Newest first, Oldest first, Vehicle A–Z, Fastest payback) → rows newest first with Vehicle, Count, Date, Pays off in (realistic scenario), Status pill ("Calculated" or "Needs calculation" when the assumption version is not the current one). Each row links to its result.
+3. Empty state: "No calculations yet" with a link to add vehicles for editors.
+
+|      | Desktop    | Tablet        | Mobile                                 |
+| ---- | ---------- | ------------- | -------------------------------------- |
+| List | Grid table | Two-line rows | Cards: vehicle and date, payback, pill |
+
+**Rules:** "Pays off in" shows "Does not pay off" when there is no payback and an em dash when the scenario has no result; dates use the locale format.
 
 ### 8.7 Dark mode (all screens)
 

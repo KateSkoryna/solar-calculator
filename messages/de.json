@@ -149,7 +149,8 @@
     "actions": {
       "back": "Zurück",
       "continue": "Weiter",
-      "seeResults": "Ergebnis ansehen"
+      "seeResults": "Ergebnis ansehen",
+      "saveToFleet": "In Flotte speichern"
     },
     "stepContent": {
       "vehicles": {
@@ -209,7 +210,8 @@
         "label": "Freie Nutzlast (kg)",
         "hint": "Gewicht, das das Fahrzeug noch tragen kann."
       }
-    }
+    },
+    "saveToFleetFailed": "Wir konnten dieses Fahrzeug nicht speichern. Bitte versuche es erneut."
   },
   "theme": {
     "light": "Heller Modus",
@@ -394,6 +396,7 @@
         "count": "Anzahl",
         "location": "Standort",
         "paysOffIn": "Amortisation nach",
+        "calculatedOn": "Berechnet am",
         "status": "Status"
       },
       "status": {
@@ -462,8 +465,7 @@
     },
     "mainNavigation": "Hauptnavigation",
     "fleetLabel": "Flotte",
-    "switchFleet": "Flotte wechseln",
-    "comingSoon": "Diese Seite ist in Arbeit."
+    "switchFleet": "Flotte wechseln"
   },
   "roles": {
     "owner": "Inhaber",
@@ -758,5 +760,112 @@
       "google": "Mit Google registrieren"
     },
     "divider": "oder mit E-Mail"
+  },
+  "vehicles": {
+    "title": "Fahrzeuge",
+    "loading": "Fahrzeuge werden geladen",
+    "edit": {
+      "title": "{vehicle} bearbeiten",
+      "save": "Änderungen speichern",
+      "cancel": "Abbrechen",
+      "saveFailed": "Wir konnten deine Änderungen nicht speichern. Bitte versuche es erneut.",
+      "fieldError": "Bitte prüfe diesen Wert",
+      "noCoolingUnit": "Keine",
+      "groups": {
+        "vehicle": "Fahrzeug",
+        "driving": "Fahrbetrieb",
+        "location": "Standort",
+        "panels": "Module"
+      },
+      "fields": {
+        "name": "Gruppenname",
+        "nameHint": "Zum Beispiel „Lieferwagen Berlin“. Leer lassen, um Stadt und Typ zu verwenden.",
+        "manufacturer": "Hersteller",
+        "model": "Modell",
+        "vehicleType": "Fahrzeugtyp",
+        "engineType": "Antrieb",
+        "quantity": "Anzahl der Fahrzeuge",
+        "cargoType": "Ladung",
+        "coolingUnitType": "Art der Kühlung",
+        "averageDailyDistanceKm": "Tagesstrecke (km)",
+        "energyConsumptionKwhPer100km": "Energieverbrauch (kWh pro 100 km)",
+        "idleHoursPerDay": "Leerlauf (Stunden pro Tag)",
+        "operatingMonthsPerYear": "Einsatzmonate pro Jahr",
+        "winterUsage": "Im Winter im Einsatz",
+        "city": "Stadt",
+        "country": "Land",
+        "parkingType": "Parken",
+        "solarPanelPlacement": "Modulplatzierung",
+        "solarPanelCapacityKw": "Modulleistung (kW)",
+        "payloadReserveKg": "Nutzlastreserve (kg)",
+        "maxRoofLoadKg": "Maximale Dachlast (kg)"
+      },
+      "engineTypes": {
+        "DIESEL": "Diesel",
+        "PETROL": "Benzin",
+        "ELECTRIC": "Elektro",
+        "HYBRID": "Hybrid"
+      },
+      "delete": {
+        "button": "Fahrzeuge löschen",
+        "failed": "Das hat nicht geklappt. Bitte versuche es erneut.",
+        "confirmTitle": "{vehicle} löschen?",
+        "confirmText": "Die Gruppe verschwindet aus deinen Listen. Frühere Berechnungen bleiben im Aktivitätsverlauf.",
+        "confirm": "Löschen",
+        "cancel": "Abbrechen"
+      },
+      "technical": {
+        "summary": "Technische Details",
+        "text": "Wir haben diese Werte mit typischen Angaben für diesen Fahrzeugtyp vorbelegt, du musst sie also nicht kennen. Ändere sie nur, wenn du die genauen Werte hast."
+      }
+    },
+    "error": {
+      "title": "Wir konnten deine Fahrzeuge nicht laden",
+      "text": "Auf unserer Seite ist etwas schiefgelaufen. Bitte versuche es erneut.",
+      "retry": "Erneut versuchen"
+    },
+    "list": {
+      "title": "Fahrzeuggruppen",
+      "columns": {
+        "name": "Name",
+        "type": "Typ",
+        "count": "Anzahl",
+        "location": "Standort"
+      },
+      "edit": "Bearbeiten",
+      "editLabel": "{vehicle} bearbeiten"
+    }
+  },
+  "calculations": {
+    "title": "Berechnungen",
+    "loading": "Berechnungen werden geladen",
+    "history": {
+      "title": "Berechnungsverlauf",
+      "columns": {
+        "vehicle": "Fahrzeug",
+        "count": "Fahrzeuge",
+        "date": "Datum"
+      },
+      "sort": {
+        "label": "Berechnungen sortieren",
+        "options": {
+          "newest": "Neueste zuerst",
+          "oldest": "Älteste zuerst",
+          "vehicle": "Fahrzeug A–Z",
+          "payback": "Schnellste Amortisation"
+        }
+      }
+    },
+    "empty": {
+      "title": "Noch keine Berechnungen",
+      "textForEditors": "Füge ein Fahrzeug hinzu, um deine erste Berechnung zu starten.",
+      "textForViewers": "Bitte einen Eigentümer oder Manager, die erste Berechnung zu starten."
+    },
+    "error": {
+      "title": "Wir konnten deine Berechnungen nicht laden",
+      "text": "Auf unserer Seite ist etwas schiefgelaufen. Bitte versuche es erneut.",
+      "retry": "Erneut versuchen"
+    },
+    "new": "Neue Berechnung"
   }
 }

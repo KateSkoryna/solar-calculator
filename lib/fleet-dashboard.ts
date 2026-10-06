@@ -66,6 +66,7 @@ export async function loadFleetDashboardData(
     orderBy: { createdAt: "desc" },
     select: {
       id: true,
+      name: true,
       manufacturer: true,
       model: true,
       vehicleType: true,
@@ -76,6 +77,7 @@ export async function loadFleetDashboardData(
         take: 1,
         select: {
           id: true,
+          createdAt: true,
           scenarios: {
             where: { kind: ScenarioKind.REALISTIC },
             select: { assumptionSetVersion: true, result: true },
@@ -97,6 +99,7 @@ export async function loadFleetDashboardData(
         latest && realistic && result
           ? {
               id: latest.id,
+              calculatedAt: latest.createdAt,
               assumptionSetVersion: realistic.assumptionSetVersion,
               paybackMonths: result.paybackPeriodMonths,
               annualSavingsEuros: Number(result.annualSavingsAmount),

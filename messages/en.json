@@ -149,7 +149,8 @@
     "actions": {
       "back": "Back",
       "continue": "Continue",
-      "seeResults": "See my results"
+      "seeResults": "See my results",
+      "saveToFleet": "Save to fleet"
     },
     "stepContent": {
       "vehicles": {
@@ -209,7 +210,8 @@
         "label": "Spare payload (kg)",
         "hint": "Weight the vehicle can still carry."
       }
-    }
+    },
+    "saveToFleetFailed": "We could not save this vehicle. Please try again."
   },
   "theme": {
     "light": "Light Mode",
@@ -394,6 +396,7 @@
         "count": "Count",
         "location": "Location",
         "paysOffIn": "Pays off in",
+        "calculatedOn": "Calculated on",
         "status": "Status"
       },
       "status": {
@@ -462,8 +465,7 @@
     },
     "mainNavigation": "Main",
     "fleetLabel": "Fleet",
-    "switchFleet": "Switch fleet",
-    "comingSoon": "This page is on its way."
+    "switchFleet": "Switch fleet"
   },
   "roles": {
     "owner": "Owner",
@@ -758,5 +760,112 @@
       "google": "Sign up with Google"
     },
     "divider": "or with email"
+  },
+  "vehicles": {
+    "title": "Vehicles",
+    "loading": "Loading your vehicles",
+    "edit": {
+      "title": "Edit {vehicle}",
+      "save": "Save changes",
+      "cancel": "Cancel",
+      "saveFailed": "We could not save your changes. Please try again.",
+      "fieldError": "Please check this value",
+      "noCoolingUnit": "None",
+      "groups": {
+        "vehicle": "Vehicle",
+        "driving": "Driving",
+        "location": "Location",
+        "panels": "Panels"
+      },
+      "fields": {
+        "name": "Group name",
+        "nameHint": "For example \"Berlin delivery vans\". Leave empty to use the city and type.",
+        "manufacturer": "Manufacturer",
+        "model": "Model",
+        "vehicleType": "Vehicle type",
+        "engineType": "Engine",
+        "quantity": "Number of vehicles",
+        "cargoType": "Cargo",
+        "coolingUnitType": "Cooling unit type",
+        "averageDailyDistanceKm": "Daily distance (km)",
+        "energyConsumptionKwhPer100km": "Energy use (kWh per 100 km)",
+        "idleHoursPerDay": "Idling (hours per day)",
+        "operatingMonthsPerYear": "Operating months per year",
+        "winterUsage": "Used in winter",
+        "city": "City",
+        "country": "Country",
+        "parkingType": "Parking",
+        "solarPanelPlacement": "Panel placement",
+        "solarPanelCapacityKw": "Panel capacity (kW)",
+        "payloadReserveKg": "Payload reserve (kg)",
+        "maxRoofLoadKg": "Maximum roof load (kg)"
+      },
+      "engineTypes": {
+        "DIESEL": "Diesel",
+        "PETROL": "Petrol",
+        "ELECTRIC": "Electric",
+        "HYBRID": "Hybrid"
+      },
+      "delete": {
+        "button": "Delete vehicles",
+        "failed": "That did not work. Please try again.",
+        "confirmTitle": "Delete {vehicle}?",
+        "confirmText": "The group disappears from your lists. Its past calculations stay in the activity history.",
+        "confirm": "Delete",
+        "cancel": "Cancel"
+      },
+      "technical": {
+        "summary": "Technical details",
+        "text": "We filled these in with typical values for this vehicle type, so you do not need to know them. Change them only if you have the exact figures."
+      }
+    },
+    "error": {
+      "title": "We couldn't load your vehicles",
+      "text": "Something went wrong on our side. Please try again.",
+      "retry": "Try again"
+    },
+    "list": {
+      "title": "Vehicle groups",
+      "columns": {
+        "name": "Name",
+        "type": "Type",
+        "count": "Count",
+        "location": "Location"
+      },
+      "edit": "Edit",
+      "editLabel": "Edit {vehicle}"
+    }
+  },
+  "calculations": {
+    "title": "Calculations",
+    "loading": "Loading your calculations",
+    "history": {
+      "title": "Calculation history",
+      "columns": {
+        "vehicle": "Vehicle",
+        "count": "Vehicles",
+        "date": "Date"
+      },
+      "sort": {
+        "label": "Sort calculations",
+        "options": {
+          "newest": "Newest first",
+          "oldest": "Oldest first",
+          "vehicle": "Vehicle A–Z",
+          "payback": "Fastest payback"
+        }
+      }
+    },
+    "empty": {
+      "title": "No calculations yet",
+      "textForEditors": "Add a vehicle to run your first calculation.",
+      "textForViewers": "Ask an owner or manager to run the first calculation."
+    },
+    "error": {
+      "title": "We couldn't load your calculations",
+      "text": "Something went wrong on our side. Please try again.",
+      "retry": "Try again"
+    },
+    "new": "New calculation"
   }
 }

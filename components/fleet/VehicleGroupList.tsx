@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useLocale, useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { LuChevronRight, LuSearch } from "react-icons/lu";
 import Card from "@/components/common/Card";
 import Text from "@/components/common/Text";
+import { useVehicleDisplayName } from "@/components/fleet/useVehicleDisplayName";
 import GroupStatusPill from "@/components/fleet/GroupStatusPill";
 import { useResultsFormatters } from "@/components/results/useResultsFormatters";
+import { shortCityName } from "@/lib/vehicle-display-name";
 import { FOCUS_RING_CLASSES } from "@/lib/focus-ring";
 import {
   isCalculatedWithCurrentAssumptions,
@@ -22,7 +24,7 @@ import {
 const VEHICLE_TYPE_MESSAGE_NAMESPACE = "calculator.options.vehicleType";
 const NO_VALUE = "—";
 const ROW_GRID_CLASSES =
-  "lg:grid lg:grid-cols-[2fr_1fr_80px_1.4fr_1.4fr_1.4fr] lg:items-center lg:gap-4";
+  "lg:grid lg:grid-cols-[2fr_1fr_70px_1.2fr_1.3fr_1.2fr_1.3fr] lg:items-center lg:gap-4 lg:[&>span:not(:first-child)]:text-center";
 
 interface VehicleGroupListProps {
   groups: FleetVehicleGroup[];
@@ -39,20 +41,21 @@ export default function VehicleGroupList({
 }: VehicleGroupListProps) {
   const t = useTranslations("overview.groups");
   const tVehicleType = useTranslations(VEHICLE_TYPE_MESSAGE_NAMESPACE);
+  const displayName = useVehicleDisplayName();
   const { duration } = useResultsFormatters();
   const locale = useLocale();
+  const format = useFormatter();
   const [searchText, setSearchText] = useState("");
   const isSearchHidden = useMediaQuery(COMPACT_VIEWPORT_MEDIA_QUERY);
   const normalizedSearch = isSearchHidden
     ? ""
     : searchText.trim().toLowerCase();
 
-  const visibleGroups = groups.filter(
-    ({ manufacturer, model, city, vehicleType }) =>
-      [manufacturer, model, city, tVehicleType(vehicleType)]
-        .join(" ")
-        .toLowerCase()
-        .includes(normalizedSearch),
+  const visibleGroups = groups.filter((group) =>
+    [displayName(group), group.city, tVehicleType(group.vehicleType)]
+      .join(" ")
+      .toLowerCase()
+      .includes(normalizedSearch),
   );
 
   const paybackLabel = (group: FleetVehicleGroup) => {
@@ -66,6 +69,11 @@ export default function VehicleGroupList({
       ? t("doesNotPayOff")
       : duration(humaniseDuration(paybackMonths));
   };
+
+  const calculatedOnLabel = ({ latestCalculation }: FleetVehicleGroup) =>
+    latestCalculation
+      ? format.dateTime(latestCalculation.calculatedAt, { dateStyle: "medium" })
+      : NO_VALUE;
 
   const rowPath = ({ latestCalculation }: FleetVehicleGroup) =>
     latestCalculation
@@ -102,6 +110,7 @@ export default function VehicleGroupList({
         <span>{t("columns.count")}</span>
         <span>{t("columns.location")}</span>
         <span>{t("columns.paysOffIn")}</span>
+        <span>{t("columns.calculatedOn")}</span>
         <span>{t("columns.status")}</span>
       </div>
 
@@ -125,10 +134,11 @@ export default function VehicleGroupList({
                   className={`relative flex flex-col gap-2 rounded-lg border border-line p-4 hover:bg-soft lg:rounded-none lg:border-0 lg:border-b lg:px-0 lg:py-4 ${ROW_GRID_CLASSES} ${FOCUS_RING_CLASSES}`}
                 >
                   <span className="pr-8 font-semibold text-ink lg:pr-0">
-                    {group.manufacturer} {group.model}
+                    {displayName(group)}
                   </span>
                   <span className="text-sm text-muted lg:hidden">
-                    {vehicleTypeLabel} · {group.quantity} · {group.city}
+                    {vehicleTypeLabel} · {group.quantity} ·{" "}
+                    {shortCityName(group.city)}
                   </span>
                   <span className="hidden text-[15px] text-ink lg:block">
                     {vehicleTypeLabel}
@@ -137,13 +147,19 @@ export default function VehicleGroupList({
                     {new Intl.NumberFormat(locale).format(group.quantity)}
                   </span>
                   <span className="hidden text-[15px] text-ink lg:block">
-                    {group.city}
+                    {shortCityName(group.city)}
                   </span>
                   <span className="text-[15px] text-ink">
                     <span className="text-sm text-muted lg:hidden">
                       {t("columns.paysOffIn")}:{" "}
                     </span>
                     {paybackLabel(group)}
+                  </span>
+                  <span className="text-sm text-muted lg:text-[15px] lg:text-ink">
+                    <span className="lg:hidden">
+                      {t("columns.calculatedOn")}:{" "}
+                    </span>
+                    {calculatedOnLabel(group)}
                   </span>
                   <span>
                     <GroupStatusPill isCalculated={isCalculated} />

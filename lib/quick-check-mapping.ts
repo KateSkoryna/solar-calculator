@@ -9,7 +9,7 @@ import {
 } from "@/lib/quick-check-schema";
 
 const QUICK_CHECK_ENGINE_TYPE = EngineType.DIESEL;
-const QUICK_CHECK_VEHICLE_MANUFACTURER = "Quick check";
+export const QUICK_CHECK_VEHICLE_MANUFACTURER = "Quick check";
 const DEFAULT_OPERATING_MONTHS_PER_YEAR = 12;
 const DEFAULT_WINTER_USAGE = true;
 const CHILLED_CARGO_TYPE = "CHILLED";
