@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type { ButtonHTMLAttributes, ReactNode, Ref } from "react";
 import { LuLoaderCircle } from "react-icons/lu";
 import {
   buildButtonClassName,
@@ -17,6 +17,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   iconPosition?: ButtonIconPosition;
   loading?: boolean;
   fullWidth?: boolean;
+  ref?: Ref<HTMLButtonElement>;
   children: ReactNode;
 }
 
