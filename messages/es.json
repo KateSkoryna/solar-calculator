@@ -192,7 +192,7 @@
       },
       "energyConsumptionKwhPer100km": {
         "label": "Consumo de energía (kWh cada 100 km)",
-        "hint": "Para vehículos eléctricos."
+        "hint": "Solo se usa en vehículos eléctricos e híbridos. Kilovatios hora cargados ÷ kilómetros recorridos × 100, o la cifra del fabricante."
       },
       "operatingMonthsPerYear": {
         "label": "Meses de uso al año",

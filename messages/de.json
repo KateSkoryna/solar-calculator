@@ -192,7 +192,7 @@
       },
       "energyConsumptionKwhPer100km": {
         "label": "Energieverbrauch (kWh pro 100 km)",
-        "hint": "Für Elektrofahrzeuge."
+        "hint": "Wird nur für Elektro- und Hybridfahrzeuge verwendet. Geladene Kilowattstunden ÷ gefahrene Kilometer × 100 oder die Herstellerangabe."
       },
       "operatingMonthsPerYear": {
         "label": "Einsatzmonate pro Jahr",

@@ -192,7 +192,7 @@
       },
       "energyConsumptionKwhPer100km": {
         "label": "Energy use (kWh per 100 km)",
-        "hint": "For electric vehicles."
+        "hint": "Only used for electric and hybrid vehicles. Kilowatt-hours charged ÷ kilometres driven × 100, or the manufacturer's figure."
       },
       "operatingMonthsPerYear": {
         "label": "Months in use per year",

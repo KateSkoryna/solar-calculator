@@ -17,7 +17,7 @@ export const vehicleInputSchema = z.object({
   parkingType: z.enum(Object.values(ParkingType)),
   quantity: z.number().int().positive(),
   averageDailyDistanceKm: z.number().positive(),
-  energyConsumptionKwhPer100km: z.number().positive(),
+  energyConsumptionKwhPer100km: z.number().nonnegative(),
   solarPanelCapacityKw: z.number().nonnegative(),
   solarPanelPlacement: z.enum(Object.values(SolarPanelPlacement)),
   payloadReserveKg: z.number().nonnegative(),
