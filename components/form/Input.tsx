@@ -7,6 +7,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   hint?: string;
   error?: string;
+  compact?: boolean;
   ref?: Ref<HTMLInputElement>;
 }
 
@@ -14,6 +15,7 @@ export default function Input({
   label,
   hint,
   error,
+  compact = false,
   id,
   className = "",
   ref,
@@ -41,7 +43,7 @@ export default function Input({
         id={inputId}
         aria-invalid={error ? "true" : undefined}
         aria-describedby={describedBy}
-        className={`h-14 w-full rounded-md border bg-surface px-4 text-base text-ink placeholder:text-muted focus:shadow-ring-selected focus:outline-none ${borderClasses} ${className}`}
+        className={`${compact ? "h-12 px-3" : "h-14 px-4"} w-full rounded-md border bg-surface text-base text-ink placeholder:text-muted focus:shadow-ring-selected focus:outline-none ${borderClasses} ${className}`}
       />
       {hint && <FieldHint id={hintId}>{hint}</FieldHint>}
       {error && <FieldError id={errorId}>{error}</FieldError>}

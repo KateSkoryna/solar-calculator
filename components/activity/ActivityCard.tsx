@@ -115,28 +115,33 @@ export default function ActivityCard({ fleetId, users }: ActivityCardProps) {
         />
 
         <Disclosure summary={t("moreFilters")}>
-          <div className="grid gap-4 md:grid-cols-3">
-            <Select
-              label={t("user")}
-              value={actorUserId}
-              onChange={(event) =>
-                applyFilter(setActorUserId, event.target.value)
-              }
-              options={[
-                { value: ALL_USERS_VALUE, label: t("allUsers") },
-                ...users.map(({ id: userId, label }) => ({
-                  value: userId,
-                  label,
-                })),
-              ]}
-            />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <Select
+                compact
+                label={t("user")}
+                value={actorUserId}
+                onChange={(event) =>
+                  applyFilter(setActorUserId, event.target.value)
+                }
+                options={[
+                  { value: ALL_USERS_VALUE, label: t("allUsers") },
+                  ...users.map(({ id: userId, label }) => ({
+                    value: userId,
+                    label,
+                  })),
+                ]}
+              />
+            </div>
             <Input
+              compact
               type="date"
               label={t("from")}
               value={from}
               onChange={(event) => applyFilter(setFrom, event.target.value)}
             />
             <Input
+              compact
               type="date"
               label={t("to")}
               value={to}

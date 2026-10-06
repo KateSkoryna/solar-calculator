@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
-import { LuChevronDown } from "react-icons/lu";
+import DropdownChevron from "@/components/common/DropdownChevron";
 import { locales, type Locale } from "@/i18n";
 import { FOCUS_RING_CLASSES } from "@/lib/focus-ring";
 
@@ -40,13 +40,10 @@ export default function LanguageSwitcher({
     <details ref={detailsRef} className="group relative">
       <summary
         aria-label={t("switcherLabel")}
-        className={`flex min-h-11 cursor-pointer list-none items-center gap-1.5 rounded-full border border-line-strong bg-surface px-4 text-sm font-semibold text-ink hover:border-ink [&::-webkit-details-marker]:hidden ${FOCUS_RING_CLASSES}`}
+        className={`flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-full border border-line-strong bg-surface pl-4 pr-3 text-sm font-semibold text-ink hover:border-ink [&::-webkit-details-marker]:hidden ${FOCUS_RING_CLASSES}`}
       >
         {currentLocale.toUpperCase()}
-        <LuChevronDown
-          aria-hidden="true"
-          className="size-4 transition-transform duration-150 group-open:rotate-180"
-        />
+        <DropdownChevron />
       </summary>
 
       <ul

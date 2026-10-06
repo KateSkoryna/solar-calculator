@@ -13,7 +13,7 @@ export default function WorkspaceTopBar({
   currentFleetSlug,
 }: WorkspaceTopBarProps) {
   return (
-    <div className="flex items-center pt-4 md:pt-6 lg:hidden">
+    <div className="relative z-20 flex items-center pt-4 md:pt-6 lg:hidden">
       <FleetSwitcher
         fleets={fleets}
         currentFleetSlug={currentFleetSlug}

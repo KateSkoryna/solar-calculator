@@ -16,7 +16,7 @@ export default function WorkspaceIconRail({
   const navLinks = useWorkspaceNavLinks(currentFleetSlug);
 
   return (
-    <aside className="sticky top-6 hidden w-[88px] shrink-0 self-start rounded-xl border border-line bg-side py-3 md:block lg:hidden">
+    <aside className="sticky top-6 z-10 hidden w-[88px] shrink-0 self-start rounded-xl border border-line bg-side py-3 md:block lg:hidden">
       <nav aria-label={t("mainNavigation")} className="w-full px-2">
         <ul className="flex list-none flex-col gap-1">
           {navLinks.map(({ key, label, href, Icon, isCurrent }) => (

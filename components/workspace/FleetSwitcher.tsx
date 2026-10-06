@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
-import { LuChevronDown } from "react-icons/lu";
+import DropdownChevron from "@/components/common/DropdownChevron";
 import { FOCUS_RING_CLASSES } from "@/lib/focus-ring";
 import { fleetOverviewPath } from "@/lib/workspace-path";
 import type { WorkspaceFleet } from "@/lib/workspace-layout-loader";
@@ -12,9 +12,9 @@ type FleetSwitcherVariant = "sidebar" | "compact";
 
 const VARIANT_CLASSES: Record<FleetSwitcherVariant, string> = {
   sidebar:
-    "w-full flex-col items-start gap-0.5 rounded-md border border-line bg-surface px-3 py-2",
+    "w-full flex-col items-start gap-0.5 rounded-md border border-line bg-surface py-2 pl-4 pr-3",
   compact:
-    "max-w-[200px] rounded-full border border-line-strong bg-surface px-4",
+    "max-w-[200px] rounded-full border border-line-strong bg-surface pl-4 pr-3",
 };
 
 interface FleetSwitcherProps {
@@ -51,12 +51,7 @@ export default function FleetSwitcher({
         <span className="truncate text-[15px] font-semibold text-ink">
           {currentFleetName}
         </span>
-        {hasSeveralFleets && (
-          <LuChevronDown
-            aria-hidden="true"
-            className="size-4 shrink-0 text-ink transition-transform duration-150 group-open:rotate-180"
-          />
-        )}
+        {hasSeveralFleets && <DropdownChevron className="text-ink" />}
       </span>
     </>
   );
