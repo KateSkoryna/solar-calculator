@@ -83,6 +83,16 @@ describe("vehicleEditFormSchema", () => {
     expect(vehicleEditFormSchema.safeParse(original).success).toBe(true);
   });
 
+  it("accepts zero energy use for an unpowered trailer", () => {
+    expect(
+      vehicleEditFormSchema.safeParse({
+        ...original,
+        vehicleType: "TRAILER",
+        energyConsumptionKwhPer100km: 0,
+      }).success,
+    ).toBe(true);
+  });
+
   it("rejects a non-positive quantity", () => {
     expect(
       vehicleEditFormSchema.safeParse({ ...original, quantity: 0 }).success,
