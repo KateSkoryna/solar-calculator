@@ -2029,6 +2029,66 @@ The overview page asks one question, "can this person edit?", and uses the answe
 const canAddVehicles = FLEET_EDITOR_ROLES.includes(access.role);
 ```
 
+### Designing from a system instead of a mockup
+
+The vehicles and calculations pages have no canvas design. Instead of inventing new looks, they are written down first in `design-guidelines.md` (sections 8.8 and 8.9: purpose, content order, a breakpoint table) and then built only from parts that already exist: `Card`, `Heading`, `Button`, `GroupStatusPill`, the list rows from the dashboard. The one missing part, a confirm dialog, became a new shared component instead of a one-off, so the next page that needs "are you sure?" can reuse it:
+
+```tsx
+<ConfirmDialog
+  title={t("confirmTitle", { vehicle: vehicleName })}
+  text={t("confirmText")}
+  confirmLabel={t("confirmDelete")}
+  cancelLabel={t("cancel")}
+  onConfirm={deleteVehicle}
+  onCancel={() => setIsConfirmingDelete(false)}
+/>
+```
+
+### List and detail patterns
+
+A list answers "which one?" and a detail page answers "tell me about this one". Each row of the vehicle list is a link to the latest result (the detail), while the actions (Edit, Run calculation, Delete) sit beside the link, never inside it, because a button inside a link is invalid HTML and clicks would fight each other. The list takes an optional `renderActions` function, so the dashboard shows the same rows without any actions:
+
+```tsx
+<VehicleGroupList
+  groups={groups}
+  renderActions={(group) => (
+    <VehicleRowActions
+      group={group}
+      fleetId={fleet.id}
+      canEdit={canEdit}
+      canDelete={canDelete}
+    />
+  )}
+/>
+```
+
+The edit page sends only the fields that changed, so the audit log can say exactly what changed and an untouched form sends nothing at all:
+
+```ts
+const changedFields = Object.fromEntries(
+  Object.entries(rest).filter(
+    ([field, value]) =>
+      value !== original[field as keyof VehicleEditFormValues],
+  ),
+);
+```
+
+### Reusing a wizard in a second context
+
+The calculator wizard now runs in two places: the public page (answers kept in the browser, last button "See my results") and the fleet workspace (nothing stored in the browser, last button "Save to fleet", which posts to the quick-checks API). One optional prop switches the mode, and everything else, steps, validation and answers panel, stays shared:
+
+```tsx
+<CalculatorWizard fleet={{ id: pageAccess.fleet.id, slug: fleetSlug }} />
+```
+
+```ts
+if (fleet) {
+  await saveToFleet(fleet, quickCheckAnswers);
+  return;
+}
+router.push(resultsPath(locale, encodeQuickCheck(quickCheckAnswers)));
+```
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit

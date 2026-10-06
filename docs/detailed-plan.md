@@ -608,24 +608,6 @@ Every step follows [`design-guidelines.md`](./design-guidelines.md) and the prev
   3. Standard checks S1–S4, S6, S8–S10 pass.
 - **Owner review (browser):** `/en/login`, `/en/register`, `/en/check-email`, `/en/onboarding` at three widths against the Login previews; the full sign-up flow with an email link and with Google.
 
-### Step 3.14 — Vehicles and calculations pages
-
-- **Depends on:** 3.13
-- **Purpose:** The navigation links to these pages; they are not on the canvas, so they are built from the design system.
-- **Concepts to learn:** designing from a system instead of a mockup, list/detail patterns, reusing a wizard in a second context
-- **Instructions:**
-  1. First add sections "8.8 Vehicles" and "8.9 Calculations" to `design-guidelines.md`: purpose, content order and a breakpoint table, in the style of 8.5.
-  2. `/[slug]/vehicles`: list of vehicle groups (reuse `VehicleGroupList`), each with edit and "Run calculation" for editors, soft delete with a confirm dialog (`danger` button).
-  3. `/[slug]/vehicles/new`: `CalculatorWizard` in fleet mode; the last button is "Save to fleet" and posts to the quick-checks API.
-  4. `/[slug]/vehicles/[vehicleId]/edit`: form with all vehicle fields (reuse the wizard's controls), PATCH on save.
-  5. `/[slug]/calculations`: history (vehicle, date, realistic payback, assumption version, status pill "Calculated" or "Needs calculation" when stale), each row linking to the result.
-- **Definition of done:**
-  1. The two guideline sections exist (`grep -n "### 8.8 Vehicles\|### 8.9 Calculations" docs/design-guidelines.md`).
-  2. Tests: fleet-mode wizard posts to `/api/fleets/<id>/quick-checks`; Viewers see no edit, run or delete actions; the delete dialog requires confirmation; a stale calculation shows "Needs calculation".
-  3. Every page has loading, empty and error states (one test each for the lists).
-  4. Standard checks S1–S4, S6, S8–S10 pass.
-- **Owner review (browser):** `/en/berlin/vehicles`, `/new`, `/edit`, `/en/berlin/calculations` at three widths; add a vehicle, edit it, run a calculation, delete it.
-
 ### Step 3.15 — Read-only demo fleet
 
 - **Depends on:** 3.14
