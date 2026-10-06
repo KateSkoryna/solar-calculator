@@ -34,9 +34,38 @@ function group(
     vehicleType: VehicleType.VAN,
     city: "Berlin",
     quantity,
+    editedAt: null,
     latestCalculation,
   };
 }
+
+describe("aggregateFleetKpis after an edit", () => {
+  it("leaves out a group whose vehicles were edited after the calculation", () => {
+    const edited = {
+      ...group(4, calculation({ id: "old" })),
+      editedAt: new Date("2026-04-01T10:00:00Z"),
+    };
+
+    const kpis = aggregateFleetKpis(
+      [edited, group(1, calculation({ id: "fresh" }))],
+      CURRENT_VERSION,
+    );
+
+    expect(kpis.calculatedGroupCount).toBe(1);
+    expect(kpis.notCalculatedYetCount).toBe(1);
+  });
+
+  it("keeps a group that was edited before its calculation", () => {
+    const editedEarlier = {
+      ...group(4, calculation()),
+      editedAt: new Date("2026-02-01T10:00:00Z"),
+    };
+
+    expect(
+      aggregateFleetKpis([editedEarlier], CURRENT_VERSION).calculatedGroupCount,
+    ).toBe(1);
+  });
+});
 
 describe("aggregateFleetKpis", () => {
   it("reports nothing for an empty fleet", () => {

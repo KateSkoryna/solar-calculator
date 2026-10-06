@@ -9,6 +9,7 @@ export interface CalculationHistoryRow extends NamedVehicle {
   assumptionSetVersion: string | null;
   paybackMonths: number | null;
   hasResult: boolean;
+  vehicleEditedAt: Date | null;
 }
 
 export async function loadFleetCalculationHistory(
@@ -28,6 +29,7 @@ export async function loadFleetCalculationHistory(
           vehicleType: true,
           city: true,
           quantity: true,
+          editedAt: true,
         },
       },
       scenarios: {
@@ -38,13 +40,15 @@ export async function loadFleetCalculationHistory(
   });
 
   return calculations.map(({ id, createdAt, vehicle, scenarios }) => {
+    const { editedAt, ...vehicleFields } = vehicle;
     const realistic = scenarios[0];
     const result = realistic?.result ?? null;
 
     return {
       id,
       createdAt,
-      ...vehicle,
+      ...vehicleFields,
+      vehicleEditedAt: editedAt,
       assumptionSetVersion: realistic?.assumptionSetVersion ?? null,
       paybackMonths: result?.paybackPeriodMonths ?? null,
       hasResult: result !== null,

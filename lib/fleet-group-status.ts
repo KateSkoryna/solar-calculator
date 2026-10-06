@@ -17,6 +17,7 @@ export interface FleetVehicleGroup {
   vehicleType: VehicleType;
   city: string;
   quantity: number;
+  editedAt: Date | null;
   latestCalculation: GroupCalculation | null;
 }
 
@@ -27,7 +28,11 @@ export function isCurrentAssumptionVersion(
   return assumptionSetVersion === currentAssumptionSetVersion;
 }
 
-export function isCalculatedWithCurrentAssumptions(
+export function wasEditedAfter(editedAt: Date | null, calculatedAt: Date) {
+  return editedAt !== null && editedAt.getTime() > calculatedAt.getTime();
+}
+
+export function isResultUpToDate(
   group: FleetVehicleGroup,
   currentAssumptionSetVersion: string,
 ): group is FleetVehicleGroup & { latestCalculation: GroupCalculation } {
@@ -36,6 +41,7 @@ export function isCalculatedWithCurrentAssumptions(
     isCurrentAssumptionVersion(
       group.latestCalculation.assumptionSetVersion,
       currentAssumptionSetVersion,
-    )
+    ) &&
+    !wasEditedAfter(group.editedAt, group.latestCalculation.calculatedAt)
   );
 }

@@ -66,6 +66,25 @@ afterAll(async () => {
   await prisma.$disconnect();
 });
 
+describe("marking a vehicle as edited", () => {
+  it("sets editedAt on an update so older results count as outdated", async () => {
+    expect(
+      (
+        await prisma.vehicle.findUniqueOrThrow({
+          where: { id: fixtures.vehicleA.id },
+        })
+      ).editedAt,
+    ).toBeNull();
+
+    await patchVehicle({ averageDailyDistanceKm: DISTANCE_AFTER_KM });
+
+    const vehicle = await prisma.vehicle.findUniqueOrThrow({
+      where: { id: fixtures.vehicleA.id },
+    });
+    expect(vehicle.editedAt).toBeInstanceOf(Date);
+  });
+});
+
 describe("recording what a vehicle update changed", () => {
   it("stores the old and new value of the changed field", async () => {
     await patchVehicle({ averageDailyDistanceKm: DISTANCE_AFTER_KM });

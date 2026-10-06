@@ -807,7 +807,11 @@
       "technical": {
         "summary": "Detalles técnicos",
         "text": "Los hemos rellenado con valores típicos para este tipo de vehículo, así que no necesitas conocerlos. Cámbialos solo si tienes las cifras exactas."
-      }
+      },
+      "saveAndRecalculate": "Guardar y recalcular",
+      "recalculationFailed": "No pudimos calcular el nuevo resultado. Tus cambios están guardados; puedes recalcular desde aquí.",
+      "saveNote": "Guardar no cambia los resultados existentes. Recalcula para obtener un resultado nuevo con los datos cambiados; el anterior permanece en el historial de cálculos.",
+      "invalidFields": "Algunos valores no son válidos. Revisa los campos marcados más abajo."
     },
     "error": {
       "title": "No pudimos cargar tus vehículos",

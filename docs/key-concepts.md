@@ -1995,16 +1995,20 @@ Deleted vehicles are filtered out in the same query (`deletedAt: null`), and eve
 
 ### Handling stale assumption versions
 
-Every stored calculation remembers which assumption set it used (prices, solar yield, emission factors). When the assumptions are updated, old results are still correct for their time, but they must not be mixed with new ones in one total. The dashboard calls a result "current" only if its version matches the assumption set the app uses today. Stale groups are left out of the sums and shown as "Needs calculation" in the list, so the owner knows to run them again:
+Every stored calculation remembers which assumption set it used (prices, solar yield, emission factors) and is a dated snapshot of the vehicle data it was run with. Old results are still correct for their time, but they must not be mixed with new ones in one total. The dashboard calls a result "up to date" only if its version matches today's assumption set **and** the vehicle group was not edited after the calculation (`editedAt` is set by the vehicle PATCH route). Outdated groups are left out of the sums and shown as "Needs calculation"; "Save and recalculate" on the edit page creates a fresh snapshot and keeps the old one in the history:
 
 ```ts
-export function isCalculatedWithCurrentAssumptions(
+export function isResultUpToDate(
   group: FleetVehicleGroup,
   currentAssumptionSetVersion: string,
 ) {
   return (
     group.latestCalculation !== null &&
-    group.latestCalculation.assumptionSetVersion === currentAssumptionSetVersion
+    isCurrentAssumptionVersion(
+      group.latestCalculation.assumptionSetVersion,
+      currentAssumptionSetVersion,
+    ) &&
+    !wasEditedAfter(group.editedAt, group.latestCalculation.calculatedAt)
   );
 }
 ```
