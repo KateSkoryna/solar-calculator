@@ -66,6 +66,7 @@ export async function loadFleetDashboardData(
     orderBy: { createdAt: "desc" },
     select: {
       id: true,
+      name: true,
       manufacturer: true,
       model: true,
       vehicleType: true,

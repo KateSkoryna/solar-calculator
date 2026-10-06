@@ -11,6 +11,7 @@ export interface GroupCalculation {
 
 export interface FleetVehicleGroup {
   vehicleId: string;
+  name: string | null;
   manufacturer: string;
   model: string;
   vehicleType: VehicleType;

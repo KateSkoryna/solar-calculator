@@ -28,6 +28,7 @@ function group(
 ): FleetVehicleGroup {
   return {
     vehicleId: `vehicle_${quantity}_${latestCalculation?.id ?? "none"}`,
+    name: null,
     manufacturer: "Ford",
     model: "Transit",
     vehicleType: VehicleType.VAN,

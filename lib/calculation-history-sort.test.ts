@@ -7,8 +7,11 @@ function row(
 ): CalculationHistoryRow {
   return {
     id,
+    name: null,
     manufacturer: "Ford",
     model: "Transit",
+    vehicleType: "VAN" as const,
+    city: "Berlin",
     quantity: 1,
     createdAt: new Date("2026-03-01T10:00:00Z"),
     assumptionSetVersion: "2026.1",

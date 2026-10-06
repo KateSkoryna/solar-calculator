@@ -1,10 +1,9 @@
 import { ScenarioKind } from "@/app/generated/prisma/enums";
 import { prisma } from "@/lib/prisma";
+import type { NamedVehicle } from "@/lib/vehicle-display-name";
 
-export interface CalculationHistoryRow {
+export interface CalculationHistoryRow extends NamedVehicle {
   id: string;
-  manufacturer: string;
-  model: string;
   quantity: number;
   createdAt: Date;
   assumptionSetVersion: string | null;
@@ -22,7 +21,14 @@ export async function loadFleetCalculationHistory(
       id: true,
       createdAt: true,
       vehicle: {
-        select: { manufacturer: true, model: true, quantity: true },
+        select: {
+          name: true,
+          manufacturer: true,
+          model: true,
+          vehicleType: true,
+          city: true,
+          quantity: true,
+        },
       },
       scenarios: {
         where: { kind: ScenarioKind.REALISTIC },
