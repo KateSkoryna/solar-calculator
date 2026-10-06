@@ -608,25 +608,6 @@ Every step follows [`design-guidelines.md`](./design-guidelines.md) and the prev
   3. Standard checks S1–S4, S6, S8–S10 pass.
 - **Owner review (browser):** `/en/login`, `/en/register`, `/en/check-email`, `/en/onboarding` at three widths against the Login previews; the full sign-up flow with an email link and with Google.
 
-### Step 3.13 — Fleet dashboard
-
-- **Depends on:** 3.12
-- **Purpose:** "What does solar mean for my whole fleet, and what needs my attention?"
-- **Concepts to learn:** "latest row per group" queries, handling stale assumption versions, pure aggregation functions, role-based actions
-- **Instructions:**
-  1. Create `lib/fleet-dashboard.ts`: `loadFleetDashboardData(fleetId)` (latest calculation per non-deleted vehicle with its realistic result) and a pure `aggregateFleetKpis(groups, currentAssumptionSetVersion)`:
-     - could save per year = sum of realistic annual savings of groups calculated with the current assumption set;
-     - average payback = mean of those groups' paybacks weighted by vehicle quantity (groups with `null` payback excluded and counted separately);
-     - CO₂ avoided = sum;
-     - not calculated yet = groups without a calculation plus groups calculated with an older assumption set.
-  2. Create `app/[locale]/[fleetSlug]/overview/page.tsx` per guidelines 8.5: header with Add vehicles (editors only, → `/[slug]/vehicles/new`), KPI row, vehicle groups list (`components/fleet/VehicleGroupList.tsx`), recent activity (2 items + link), with loading, empty and error states. The report-in-progress card is added in 4.7.
-  3. Mark the guidelines' open question 12.8 as decided with these rules.
-- **Definition of done:**
-  1. `lib/fleet-dashboard.test.ts` covers: an empty fleet, mixed current/stale groups, a group with `null` payback, the weighted average with quantities 1 and 9, and a group without a calculation.
-  2. Component tests: the empty state shows the sentence and the Add vehicles action for editors; a Viewer sees no Add vehicles button; "based on {n} calculated groups" shows the right n.
-  3. Standard checks S1–S4, S6, S8–S10 pass.
-- **Owner review (browser):** `/en/berlin` as owner and viewer at three widths and in dark mode against the Dashboard previews; a new empty fleet shows the empty state.
-
 ### Step 3.14 — Vehicles and calculations pages
 
 - **Depends on:** 3.13

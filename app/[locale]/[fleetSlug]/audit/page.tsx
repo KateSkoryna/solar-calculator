@@ -1,28 +1,12 @@
 import { notFound, redirect } from "next/navigation";
-import type { Session } from "next-auth";
 import { auth } from "@/auth";
 import Heading from "@/components/common/Heading";
 import TeamAndActivityView from "@/components/team/TeamAndActivityView";
 import { prisma } from "@/lib/prisma";
-import {
-  ANY_FLEET_ROLE,
-  FLEET_EDITOR_ROLES,
-  FLEET_OWNER_ONLY,
-  ForbiddenError,
-  requireFleetRole,
-} from "@/lib/fleet-auth";
-import { findFleetBySlug } from "@/lib/fleet-repo";
+import { FLEET_EDITOR_ROLES, FLEET_OWNER_ONLY } from "@/lib/fleet-auth";
+import { loadFleetPageAccess } from "@/lib/fleet-page-access";
 import { loginPath } from "@/lib/public-paths";
 import { getTranslations } from "next-intl/server";
-
-async function findMemberAccess(session: Session, fleetId: string) {
-  try {
-    return await requireFleetRole(session, fleetId, ANY_FLEET_ROLE);
-  } catch (error) {
-    if (error instanceof ForbiddenError) return null;
-    throw error;
-  }
-}
 
 export default async function TeamAndActivityPage({
   params,
@@ -36,12 +20,13 @@ export default async function TeamAndActivityPage({
     redirect(loginPath(locale));
   }
 
-  const fleet = await findFleetBySlug(fleetSlug);
-  const access = fleet ? await findMemberAccess(session, fleet.id) : null;
+  const pageAccess = await loadFleetPageAccess(session, fleetSlug);
 
-  if (!fleet || !access) {
+  if (!pageAccess) {
     notFound();
   }
+
+  const { fleet, access } = pageAccess;
 
   const t = await getTranslations("audit");
   const memberships = await prisma.fleetMembership.findMany({

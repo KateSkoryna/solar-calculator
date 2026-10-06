@@ -1,12 +1,14 @@
+import type { ReactNode } from "react";
 import InfoTooltip from "@/components/common/InfoTooltip";
 import Text from "@/components/common/Text";
 
 interface StatTileProps {
   label: string;
   value: string;
-  explanation: string;
+  explanation: ReactNode;
   tooltip?: string;
   emphasis?: boolean;
+  valueOnTwoLines?: boolean;
 }
 
 export default function StatTile({
@@ -15,8 +17,12 @@ export default function StatTile({
   explanation,
   tooltip,
   emphasis = false,
+  valueOnTwoLines = false,
 }: StatTileProps) {
   const quietTone = emphasis ? "on-dark-muted" : "muted";
+  const valueClasses = valueOnTwoLines
+    ? "whitespace-pre-line md:text-3xl lg:text-4xl"
+    : "whitespace-nowrap md:text-4xl lg:text-[44px]";
 
   return (
     <div className="animate-rise">
@@ -35,7 +41,7 @@ export default function StatTile({
           </Text>
         </div>
         <p
-          className={`font-display text-[28px] leading-none font-extrabold tracking-[-0.02em] whitespace-nowrap tabular-nums md:text-4xl lg:text-[44px] ${
+          className={`font-display text-[28px] leading-none font-extrabold tracking-[-0.02em] tabular-nums ${valueClasses} ${
             emphasis ? "text-lime" : "text-ink"
           }`}
         >

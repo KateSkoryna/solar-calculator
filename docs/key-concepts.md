@@ -1973,6 +1973,62 @@ Tabs are not links: they switch panels on the same page. The tab list needs `rol
 
 On tablet and desktop both panels are visible at once, so the tab list is hidden there with `md:hidden` and the inactive panel uses `hidden md:block`.
 
+### "Latest row per group" queries
+
+A vehicle can be calculated many times, but the dashboard only cares about the newest result. Instead of loading every calculation and picking in code, the query asks the database for just one per vehicle: sort the calculations newest first and take one, inside the vehicle query. Only the realistic scenario's result is selected, so the page gets three small numbers per vehicle and not the whole result:
+
+```ts
+calculations: {
+  orderBy: { createdAt: "desc" },
+  take: 1,
+  select: {
+    id: true,
+    scenarios: {
+      where: { kind: ScenarioKind.REALISTIC },
+      select: { assumptionSetVersion: true, result: true },
+    },
+  },
+},
+```
+
+Deleted vehicles are filtered out in the same query (`deletedAt: null`), and every query is scoped to one `fleetId`, so one fleet can never see another's groups.
+
+### Handling stale assumption versions
+
+Every stored calculation remembers which assumption set it used (prices, solar yield, emission factors). When the assumptions are updated, old results are still correct for their time, but they must not be mixed with new ones in one total. The dashboard calls a result "current" only if its version matches the assumption set the app uses today. Stale groups are left out of the sums and shown as "Needs calculation" in the list, so the owner knows to run them again:
+
+```ts
+export function isCalculatedWithCurrentAssumptions(
+  group: FleetVehicleGroup,
+  currentAssumptionSetVersion: string,
+) {
+  return (
+    group.latestCalculation !== null &&
+    group.latestCalculation.assumptionSetVersion === currentAssumptionSetVersion
+  );
+}
+```
+
+### Pure aggregation functions
+
+The numbers on the dashboard come from `aggregateFleetKpis`, a plain function: groups in, numbers out, no database, no React. That makes it easy to test with a handful of made-up groups (an empty fleet, stale groups, a group that never pays off), and the page stays a thin layer that loads data and shows it. The average payback shows why the rules matter: it is weighted by vehicle count, so a group of nine vans counts nine times as much as a single truck, and groups that never pay off are left out and mentioned separately instead of silently skewing the average:
+
+```ts
+const weightedPaybackMonths = groupsWithPayback.reduce(
+  (total, { quantity, latestCalculation }) =>
+    total + (latestCalculation.paybackMonths ?? 0) * quantity,
+  0,
+);
+```
+
+### Role-based actions on the dashboard
+
+The overview page asks one question, "can this person edit?", and uses the answer for the Add vehicles button. The empty state follows the same rule: an editor sees "Add your first vehicle" with a button, a viewer sees a sentence telling them to ask an owner or manager. Hiding the button is a courtesy; the vehicle routes still check the role on the server:
+
+```tsx
+const canAddVehicles = FLEET_EDITOR_ROLES.includes(access.role);
+```
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit

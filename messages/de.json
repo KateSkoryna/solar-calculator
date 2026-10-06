@@ -367,6 +367,51 @@
     "cancel": "Abbrechen",
     "actionError": "Das Team konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut."
   },
+  "overview": {
+    "title": "Ihre Flotte auf einen Blick",
+    "addVehicles": "Fahrzeuge hinzufügen",
+    "loading": "Flottenübersicht wird geladen",
+    "kpis": {
+      "couldSave": "Mögliche Ersparnis pro Jahr",
+      "couldSaveNote": "wenn alle berechneten Gruppen Module bekommen",
+      "averagePayback": "Durchschnittliche Amortisation",
+      "basedOn": "basierend auf {count, plural, one {# berechneten Gruppe} other {# berechneten Gruppen}}",
+      "withoutPayback": "{count, plural, one {# Gruppe amortisiert sich nie und bleibt außen vor} other {# Gruppen amortisieren sich nie und bleiben außen vor}}",
+      "co2Avoided": "Vermiedenes CO₂ pro Jahr",
+      "co2Note": "aus berechneten Gruppen",
+      "noneCalculated": "noch keine berechneten Gruppen",
+      "vehicles": "Fahrzeuge",
+      "inGroups": "in {count, plural, one {# Gruppe} other {# Gruppen}}"
+    },
+    "groups": {
+      "title": "Fahrzeuggruppen",
+      "search": "Fahrzeuge suchen",
+      "noMatch": "Keine Fahrzeuge passen zu Ihrer Suche.",
+      "doesNotPayOff": "Amortisiert sich nicht",
+      "columns": {
+        "vehicle": "Fahrzeug",
+        "type": "Typ",
+        "count": "Anzahl",
+        "location": "Standort",
+        "paysOffIn": "Amortisation nach",
+        "status": "Status"
+      },
+      "status": {
+        "calculated": "Berechnet",
+        "needsCalculation": "Berechnung nötig"
+      }
+    },
+    "empty": {
+      "title": "Noch keine Fahrzeuge",
+      "textForEditors": "Fügen Sie Ihr erstes Fahrzeug hinzu, um zu sehen, was Solar Ihrer Flotte sparen könnte.",
+      "textForViewers": "Bitten Sie einen Inhaber oder Manager, das erste Fahrzeug hinzuzufügen."
+    },
+    "error": {
+      "title": "Die Flottenübersicht konnte nicht geladen werden",
+      "text": "Bei uns ist etwas schiefgelaufen. Bitte versuchen Sie es erneut.",
+      "retry": "Erneut versuchen"
+    }
+  },
   "common": {
     "moreInfo": "Weitere Informationen"
   },

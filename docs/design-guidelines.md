@@ -575,16 +575,16 @@ Each screen lists route, purpose, content order per breakpoint, states and inter
 
 **Decided:** no passwords (Google or an email link sent from Gmail; step 1.3).
 
-### 8.5 Fleet dashboard — `/[locale]/[fleetSlug]` (new route) [Fleet dashboard, · dark, · tablet, · mobile]
+### 8.5 Fleet dashboard — `/[locale]/[fleetSlug]/overview` (new route) [Fleet dashboard, · dark, · tablet, · mobile]
 
 **Purpose:** "What does solar mean for my whole fleet, and what needs my attention?"
 
 **Content order:**
 
 1. Page header: context line "{fleet} · {n} vehicles" → h1 "Your fleet at a glance" → primary "Add vehicles" (+ icon) right.
-2. KPI row (4): Could save per year (`hero` tile, lime value, note "if all calculated groups get panels") · Average payback · CO₂ avoided per year · Not calculated yet (count + "Run it now →" link).
+2. KPI row (4): Could save per year (`hero` tile, lime value, note "if all calculated groups get panels") · Average payback · CO₂ avoided per year · Vehicles (total count, "in {n} groups"). The page header has no vehicle count; groups that need a new calculation are shown by the status pill in the list.
 3. Vehicle groups card: title + search (desktop inline input 260 px; tablet icon button that expands; mobile omitted) → list (7.15) with Vehicle, Type, Count, Location, Pays off in, Status. Rows link to the latest result for that group.
-4. Bottom row (desktop 2 columns, tablet/mobile stacked): Report in progress card (7.19; hidden when no job is running) · Recent activity (2 latest items + "See all activity →").
+4. Bottom row: Report in progress card (7.19; hidden when no job is running). Recent activity is not shown here; the Team & activity page has it.
 
 |                 | Desktop    | Tablet        | Mobile                                        |
 | --------------- | ---------- | ------------- | --------------------------------------------- |
@@ -809,7 +809,7 @@ These are gaps between the design and the current backend. Resolve before or dur
 5. **Public results route.** Results currently exist only per fleet (auth required). The public flow needs an unauthenticated result view (client-side calculation or a short-lived anonymous calculation) and a "save to fleet" handoff after sign-up. **Decided:** the engine runs in the browser from sessionStorage answers; after sign-up the answers are saved and the server recalculates (steps 2.6, 3.8). Sign-up creates the user's fleet from the Company field (step 2.5).
 6. **Activity sentences with before/after values.** Requires audit events to store changed fields with old and new values. If not available, use the fallback sentence (8.6). **Decided:** `VEHICLE_UPDATED` stores `{ field, from, to }` going forward; older events use the fallback (step 3.12).
 7. **CO₂ equivalents ("≈ 300 trees").** Only show if the assumption set provides a sourced conversion factor.
-8. **Dashboard aggregates.** Define whether "Could save per year" sums latest results per vehicle group and how groups with outdated assumption versions are treated.
+8. **Dashboard aggregates.** **Decided:** only groups whose latest calculation uses the current assumption set count. "Could save per year" and "CO₂ avoided per year" sum their realistic results; "Average payback" is their paybacks weighted by vehicle count, leaving out groups that never pay off and saying so; groups with no calculation or with an older assumption set are shown as "Needs calculation" in the list (step 3.13).
 9. **Password minimum.** **Decided:** no passwords at all; sign-in is Google or an email link (steps 1.3, 3.10).
 10. **Savings model.** **Decided:** the engine sums every savings type that applies (cooling-unit fuel, less idling, fewer battery breakdowns, alternator fuel, direct charging) and shows the breakdown; no vehicle type is ruled out in advance (steps 2.1, 2.2).
 11. **Screens not on the canvas.** Vehicles, Calculations, vehicle group detail (estimated vs. measured), CSV import and the live state are built from these guidelines; their layout specs are added to section 8 in steps 3.14 and 5.10.

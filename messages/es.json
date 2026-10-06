@@ -367,6 +367,51 @@
     "cancel": "Cancelar",
     "actionError": "No hemos podido actualizar el equipo. Inténtalo de nuevo."
   },
+  "overview": {
+    "title": "Tu flota de un vistazo",
+    "addVehicles": "Añadir vehículos",
+    "loading": "Cargando el resumen de la flota",
+    "kpis": {
+      "couldSave": "Podría ahorrar al año",
+      "couldSaveNote": "si todos los grupos calculados llevan paneles",
+      "averagePayback": "Amortización media",
+      "basedOn": "basado en {count, plural, one {# grupo calculado} other {# grupos calculados}}",
+      "withoutPayback": "{count, plural, one {# grupo nunca se amortiza y queda fuera} other {# grupos nunca se amortizan y quedan fuera}}",
+      "co2Avoided": "CO₂ evitado al año",
+      "co2Note": "de los grupos calculados",
+      "noneCalculated": "aún no hay grupos calculados",
+      "vehicles": "Vehículos",
+      "inGroups": "en {count, plural, one {# grupo} other {# grupos}}"
+    },
+    "groups": {
+      "title": "Grupos de vehículos",
+      "search": "Buscar vehículos",
+      "noMatch": "Ningún vehículo coincide con tu búsqueda.",
+      "doesNotPayOff": "No se amortiza",
+      "columns": {
+        "vehicle": "Vehículo",
+        "type": "Tipo",
+        "count": "Cantidad",
+        "location": "Ubicación",
+        "paysOffIn": "Se amortiza en",
+        "status": "Estado"
+      },
+      "status": {
+        "calculated": "Calculado",
+        "needsCalculation": "Falta calcular"
+      }
+    },
+    "empty": {
+      "title": "Aún no hay vehículos",
+      "textForEditors": "Añade tu primer vehículo para ver cuánto podría ahorrar tu flota con energía solar.",
+      "textForViewers": "Pide a un propietario o gestor que añada el primer vehículo."
+    },
+    "error": {
+      "title": "No hemos podido cargar el resumen de la flota",
+      "text": "Algo ha salido mal por nuestra parte. Inténtalo de nuevo.",
+      "retry": "Reintentar"
+    }
+  },
   "common": {
     "moreInfo": "Más información"
   },

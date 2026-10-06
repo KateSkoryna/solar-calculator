@@ -39,3 +39,15 @@ export function isWorkspaceNavItemCurrent(pathname: string, href: string) {
     normalizedPathname === href || normalizedPathname.startsWith(`${href}/`)
   );
 }
+
+export function workspaceNavItemPath(
+  locale: string,
+  fleetSlug: string,
+  messageKey: WorkspaceNavItem["messageKey"],
+) {
+  const item = WORKSPACE_NAV_ITEMS.find(
+    (navItem) => navItem.messageKey === messageKey,
+  );
+  if (!item) throw new Error(`Unknown workspace nav item: ${messageKey}`);
+  return workspaceNavHref(locale, fleetSlug, item);
+}
