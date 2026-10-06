@@ -13,9 +13,8 @@ import {
 } from "@/lib/fleet-dashboard";
 import { FLEET_EDITOR_ROLES } from "@/lib/fleet-auth";
 import { loadFleetPageAccess } from "@/lib/fleet-page-access";
-import { loginPath } from "@/lib/public-paths";
+import { calculatorPath, loginPath } from "@/lib/public-paths";
 import { workspaceNavItemPath } from "@/lib/workspace-nav";
-import { fleetNewVehiclePath } from "@/lib/workspace-path";
 
 export default async function FleetOverviewPage({
   params,
@@ -41,7 +40,7 @@ export default async function FleetOverviewPage({
   const currentAssumptionSetVersion = ASSUMPTION_SET_V1.version;
   const groups = await loadFleetDashboardData(fleet.id);
   const vehiclesPath = workspaceNavItemPath(locale, fleetSlug, "vehicles");
-  const newVehiclePath = fleetNewVehiclePath(locale, fleetSlug);
+  const addVehiclesPath = calculatorPath(locale);
   const vehicleCount = groups.reduce(
     (total, { quantity }) => total + quantity,
     0,
@@ -54,14 +53,14 @@ export default async function FleetOverviewPage({
           {t("title")}
         </Heading>
         {canAddVehicles && groups.length > 0 && (
-          <AddVehiclesLink href={newVehiclePath} />
+          <AddVehiclesLink href={addVehiclesPath} />
         )}
       </div>
 
       {groups.length === 0 ? (
         <FleetEmptyState
           canAddVehicles={canAddVehicles}
-          newVehiclePath={newVehiclePath}
+          addVehiclesPath={addVehiclesPath}
         />
       ) : (
         <>

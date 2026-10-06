@@ -2084,19 +2084,13 @@ const changedFields = Object.fromEntries(
 
 ### Reusing a wizard in a second context
 
-The calculator wizard now runs in two places: the public page (answers kept in the browser, last button "See my results") and the fleet workspace (nothing stored in the browser, last button "Save to fleet", which posts to the quick-checks API). One optional prop switches the mode, and everything else, steps, validation and answers panel, stays shared:
+The fleet pages need a way to add vehicles, and the calculator wizard already collects exactly those answers. Instead of building a second copy inside the workspace, "Add vehicles" simply links to the calculator page, and the result's "Save to fleet" card stores the vehicle and its first calculation through the quick-checks API. One wizard means one set of steps, validation and wording to maintain:
 
 ```tsx
-<CalculatorWizard fleet={{ id: pageAccess.fleet.id, slug: fleetSlug }} />
+<AddVehiclesLink href={calculatorPath(locale)} />
 ```
 
-```ts
-if (fleet) {
-  await saveToFleet(fleet, quickCheckAnswers);
-  return;
-}
-router.push(resultsPath(locale, encodeQuickCheck(quickCheckAnswers)));
-```
+(An earlier version of this step added a `fleet` mode to the wizard with its own route; it was removed because it duplicated everything the calculator already does.)
 
 ---
 

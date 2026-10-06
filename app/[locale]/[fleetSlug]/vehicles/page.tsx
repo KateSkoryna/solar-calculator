@@ -8,8 +8,7 @@ import VehicleList from "@/components/fleet/VehicleList";
 import { FLEET_EDITOR_ROLES } from "@/lib/fleet-auth";
 import { loadFleetPageAccess } from "@/lib/fleet-page-access";
 import { loadFleetVehicles } from "@/lib/fleet-vehicles";
-import { loginPath } from "@/lib/public-paths";
-import { fleetNewVehiclePath } from "@/lib/workspace-path";
+import { calculatorPath, loginPath } from "@/lib/public-paths";
 
 export default async function FleetVehiclesPage({
   params,
@@ -32,7 +31,7 @@ export default async function FleetVehiclesPage({
   const canEdit = FLEET_EDITOR_ROLES.includes(pageAccess.access.role);
   const t = await getTranslations("vehicles");
   const vehicles = await loadFleetVehicles(pageAccess.fleet.id);
-  const newVehiclePath = fleetNewVehiclePath(locale, fleetSlug);
+  const addVehiclesPath = calculatorPath(locale);
 
   return (
     <div className="flex flex-col gap-6">
@@ -41,14 +40,14 @@ export default async function FleetVehiclesPage({
           {t("title")}
         </Heading>
         {canEdit && vehicles.length > 0 && (
-          <AddVehiclesLink href={newVehiclePath} />
+          <AddVehiclesLink href={addVehiclesPath} />
         )}
       </div>
 
       {vehicles.length === 0 ? (
         <FleetEmptyState
           canAddVehicles={canEdit}
-          newVehiclePath={newVehiclePath}
+          addVehiclesPath={addVehiclesPath}
         />
       ) : (
         <VehicleList

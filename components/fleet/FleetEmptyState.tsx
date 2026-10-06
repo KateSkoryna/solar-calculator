@@ -6,12 +6,12 @@ import AddVehiclesLink from "@/components/fleet/AddVehiclesLink";
 
 interface FleetEmptyStateProps {
   canAddVehicles: boolean;
-  newVehiclePath: string;
+  addVehiclesPath: string;
 }
 
 export default function FleetEmptyState({
   canAddVehicles,
-  newVehiclePath,
+  addVehiclesPath,
 }: FleetEmptyStateProps) {
   const t = useTranslations("overview.empty");
 
@@ -23,7 +23,7 @@ export default function FleetEmptyState({
       <Text tone="muted">
         {canAddVehicles ? t("textForEditors") : t("textForViewers")}
       </Text>
-      {canAddVehicles && <AddVehiclesLink href={newVehiclePath} />}
+      {canAddVehicles && <AddVehiclesLink href={addVehiclesPath} />}
     </Card>
   );
 }

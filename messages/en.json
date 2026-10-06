@@ -149,8 +149,7 @@
     "actions": {
       "back": "Back",
       "continue": "Continue",
-      "seeResults": "See my results",
-      "saveToFleet": "Save to fleet"
+      "seeResults": "See my results"
     },
     "stepContent": {
       "vehicles": {
@@ -210,8 +209,7 @@
         "label": "Spare payload (kg)",
         "hint": "Weight the vehicle can still carry."
       }
-    },
-    "saveToFleetFailed": "We could not save this vehicle. Please try again."
+    }
   },
   "theme": {
     "light": "Light Mode",
