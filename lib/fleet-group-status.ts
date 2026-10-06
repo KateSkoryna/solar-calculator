@@ -2,6 +2,7 @@ import type { VehicleType } from "@/app/generated/prisma/enums";
 
 export interface GroupCalculation {
   id: string;
+  calculatedAt: Date;
   assumptionSetVersion: string;
   paybackMonths: number | null;
   annualSavingsEuros: number;
@@ -18,12 +19,22 @@ export interface FleetVehicleGroup {
   latestCalculation: GroupCalculation | null;
 }
 
+export function isCurrentAssumptionVersion(
+  assumptionSetVersion: string,
+  currentAssumptionSetVersion: string,
+) {
+  return assumptionSetVersion === currentAssumptionSetVersion;
+}
+
 export function isCalculatedWithCurrentAssumptions(
   group: FleetVehicleGroup,
   currentAssumptionSetVersion: string,
 ): group is FleetVehicleGroup & { latestCalculation: GroupCalculation } {
   return (
     group.latestCalculation !== null &&
-    group.latestCalculation.assumptionSetVersion === currentAssumptionSetVersion
+    isCurrentAssumptionVersion(
+      group.latestCalculation.assumptionSetVersion,
+      currentAssumptionSetVersion,
+    )
   );
 }

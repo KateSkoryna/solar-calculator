@@ -13,6 +13,7 @@ function calculation(
 ): GroupCalculation {
   return {
     id: "calc_1",
+    calculatedAt: new Date("2026-03-04T10:00:00Z"),
     assumptionSetVersion: CURRENT_VERSION,
     paybackMonths: 60,
     annualSavingsEuros: 1000,

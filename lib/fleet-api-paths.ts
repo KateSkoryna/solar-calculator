@@ -15,3 +15,15 @@ export function fleetMemberApiPath(fleetId: string, userId: string) {
 export function fleetAuditEventsApiPath(fleetId: string) {
   return `${FLEETS_API_PATH}/${fleetId}/audit-events`;
 }
+
+export function fleetVehiclesApiPath(fleetId: string) {
+  return `${FLEETS_API_PATH}/${fleetId}/vehicles`;
+}
+
+export function fleetVehicleApiPath(fleetId: string, vehicleId: string) {
+  return `${fleetVehiclesApiPath(fleetId)}/${vehicleId}`;
+}
+
+export function fleetCalculationsApiPath(fleetId: string) {
+  return `${FLEETS_API_PATH}/${fleetId}/calculations`;
+}
