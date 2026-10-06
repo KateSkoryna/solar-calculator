@@ -16,6 +16,27 @@ interface ResultsViewProps {
   actions?: ReactNode;
   saveCard?: ReactNode;
   provenance?: ProvenanceDetails;
+  embedded?: boolean;
+}
+
+const RESULTS_LAYOUT_CLASSES = "flex flex-col gap-8 text-left lg:gap-10";
+
+function ResultsLayout({
+  embedded,
+  children,
+}: {
+  embedded: boolean;
+  children: ReactNode;
+}) {
+  if (embedded) {
+    return <div className={RESULTS_LAYOUT_CLASSES}>{children}</div>;
+  }
+
+  return (
+    <PageContainer className={`${RESULTS_LAYOUT_CLASSES} py-6 md:py-10`}>
+      {children}
+    </PageContainer>
+  );
 }
 
 export default function ResultsView({
@@ -23,13 +44,14 @@ export default function ResultsView({
   actions,
   saveCard,
   provenance,
+  embedded = false,
 }: ResultsViewProps) {
   const t = useTranslations("results.tiles");
   const { money, tonnes, rangeOf } = useResultsFormatters();
   const { tiles } = viewModel;
 
   return (
-    <PageContainer className="flex flex-col gap-8 py-6 text-left md:py-10 lg:gap-10">
+    <ResultsLayout embedded={embedded}>
       {actions}
       <div className="flex flex-col gap-4">
         <ResultsContextLine summary={viewModel.summary} />
@@ -69,6 +91,6 @@ export default function ResultsView({
         />
         {saveCard}
       </div>
-    </PageContainer>
+    </ResultsLayout>
   );
 }
