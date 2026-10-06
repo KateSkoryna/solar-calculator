@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
-import { useLocale, useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { LuChevronRight, LuSearch } from "react-icons/lu";
 import Card from "@/components/common/Card";
 import Text from "@/components/common/Text";
@@ -22,13 +22,16 @@ import {
 const VEHICLE_TYPE_MESSAGE_NAMESPACE = "calculator.options.vehicleType";
 const NO_VALUE = "—";
 const ROW_GRID_CLASSES =
-  "lg:grid lg:grid-cols-[2fr_1fr_80px_1.4fr_1.4fr_1.4fr] lg:items-center lg:gap-4";
+  "lg:grid lg:grid-cols-[2fr_1fr_70px_1.2fr_1.3fr_1.2fr_1.3fr] lg:items-center lg:gap-4 lg:[&>span:not(:first-child)]:text-center";
+const ACTIONS_COLUMN_CLASSES = "lg:w-[300px] lg:shrink-0";
+const ACTIONS_HEADER_PADDING_CLASSES = "lg:pr-[316px]";
 
 interface VehicleGroupListProps {
   groups: FleetVehicleGroup[];
   currentAssumptionSetVersion: string;
   fleetPath: string;
   vehiclesPath: string;
+  renderActions?: (group: FleetVehicleGroup) => ReactNode;
 }
 
 export default function VehicleGroupList({
@@ -36,11 +39,13 @@ export default function VehicleGroupList({
   currentAssumptionSetVersion,
   fleetPath,
   vehiclesPath,
+  renderActions,
 }: VehicleGroupListProps) {
   const t = useTranslations("overview.groups");
   const tVehicleType = useTranslations(VEHICLE_TYPE_MESSAGE_NAMESPACE);
   const { duration } = useResultsFormatters();
   const locale = useLocale();
+  const format = useFormatter();
   const [searchText, setSearchText] = useState("");
   const isSearchHidden = useMediaQuery(COMPACT_VIEWPORT_MEDIA_QUERY);
   const normalizedSearch = isSearchHidden
@@ -66,6 +71,11 @@ export default function VehicleGroupList({
       ? t("doesNotPayOff")
       : duration(humaniseDuration(paybackMonths));
   };
+
+  const calculatedOnLabel = ({ latestCalculation }: FleetVehicleGroup) =>
+    latestCalculation
+      ? format.dateTime(latestCalculation.calculatedAt, { dateStyle: "medium" })
+      : NO_VALUE;
 
   const rowPath = ({ latestCalculation }: FleetVehicleGroup) =>
     latestCalculation
@@ -95,13 +105,14 @@ export default function VehicleGroupList({
     >
       <div
         aria-hidden="true"
-        className={`hidden border-b border-line pb-3 text-[13px] font-semibold text-muted ${ROW_GRID_CLASSES}`}
+        className={`hidden border-b border-line pb-3 text-[13px] font-semibold text-muted ${ROW_GRID_CLASSES} ${renderActions ? ACTIONS_HEADER_PADDING_CLASSES : ""}`}
       >
         <span>{t("columns.vehicle")}</span>
         <span>{t("columns.type")}</span>
         <span>{t("columns.count")}</span>
         <span>{t("columns.location")}</span>
         <span>{t("columns.paysOffIn")}</span>
+        <span>{t("columns.calculatedOn")}</span>
         <span>{t("columns.status")}</span>
       </div>
 
@@ -119,10 +130,13 @@ export default function VehicleGroupList({
             const vehicleTypeLabel = tVehicleType(group.vehicleType);
 
             return (
-              <li key={group.vehicleId} className="mb-0">
+              <li
+                key={group.vehicleId}
+                className="mb-0 flex flex-col gap-2 lg:flex-row lg:items-center lg:gap-4 lg:border-b lg:border-line"
+              >
                 <Link
                   href={rowPath(group)}
-                  className={`relative flex flex-col gap-2 rounded-lg border border-line p-4 hover:bg-soft lg:rounded-none lg:border-0 lg:border-b lg:px-0 lg:py-4 ${ROW_GRID_CLASSES} ${FOCUS_RING_CLASSES}`}
+                  className={`relative flex flex-col gap-2 rounded-lg border border-line p-4 hover:bg-soft lg:min-w-0 lg:flex-1 lg:rounded-none lg:border-0 lg:px-0 lg:py-4 ${ROW_GRID_CLASSES} ${FOCUS_RING_CLASSES}`}
                 >
                   <span className="pr-8 font-semibold text-ink lg:pr-0">
                     {group.manufacturer} {group.model}
@@ -145,6 +159,12 @@ export default function VehicleGroupList({
                     </span>
                     {paybackLabel(group)}
                   </span>
+                  <span className="text-sm text-muted lg:text-[15px] lg:text-ink">
+                    <span className="lg:hidden">
+                      {t("columns.calculatedOn")}:{" "}
+                    </span>
+                    {calculatedOnLabel(group)}
+                  </span>
                   <span>
                     <GroupStatusPill isCalculated={isCalculated} />
                   </span>
@@ -153,6 +173,11 @@ export default function VehicleGroupList({
                     className="absolute top-4 right-4 size-5 text-muted lg:hidden"
                   />
                 </Link>
+                {renderActions && (
+                  <div className={ACTIONS_COLUMN_CLASSES}>
+                    {renderActions(group)}
+                  </div>
+                )}
               </li>
             );
           })}
