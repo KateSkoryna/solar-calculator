@@ -784,19 +784,11 @@
         "engineType": "Engine",
         "quantity": "Number of vehicles",
         "cargoType": "Cargo",
-        "coolingUnitType": "Cooling unit type",
-        "averageDailyDistanceKm": "Daily distance (km)",
-        "energyConsumptionKwhPer100km": "Energy use (kWh per 100 km)",
-        "idleHoursPerDay": "Idling (hours per day)",
-        "operatingMonthsPerYear": "Operating months per year",
         "winterUsage": "Used in winter",
         "city": "City",
         "country": "Country",
         "parkingType": "Parking",
-        "solarPanelPlacement": "Panel placement",
-        "solarPanelCapacityKw": "Panel capacity (kW)",
-        "payloadReserveKg": "Payload reserve (kg)",
-        "maxRoofLoadKg": "Maximum roof load (kg)"
+        "solarPanelPlacement": "Panel placement"
       },
       "engineTypes": {
         "DIESEL": "Diesel",

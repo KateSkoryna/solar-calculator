@@ -16,6 +16,7 @@ import Input from "@/components/form/Input";
 import Select, { type SelectOption } from "@/components/form/Select";
 import { EU_COUNTRY_CODES } from "@/lib/assumptions/eu-countries";
 import { COOLING_UNIT_TYPES } from "@/lib/assumptions/types";
+import { OPTIONAL_NUMBER_FIELDS } from "@/lib/calculator-form";
 import { fleetVehicleApiPath } from "@/lib/fleet-api-paths";
 import {
   isChilledVehicle,
@@ -64,6 +65,8 @@ export default function VehicleEditForm({
 }: VehicleEditFormProps) {
   const t = useTranslations("vehicles.edit");
   const tOptions = useTranslations(OPTION_MESSAGE_NAMESPACE);
+  const tExactNumbers = useTranslations("calculator.exactNumbers");
+  const tQuestions = useTranslations("calculator.questions");
   const locale = useLocale();
   const router = useRouter();
   const [hasSaveFailed, setHasSaveFailed] = useState(false);
@@ -149,12 +152,24 @@ export default function VehicleEditForm({
     }
     const isNumber = !["name", "manufacturer", "model", "city"].includes(field);
     const typedField = field as keyof VehicleEditFormValues;
+    const isExactNumber = (
+      OPTIONAL_NUMBER_FIELDS as readonly string[]
+    ).includes(field);
+    const label = isExactNumber
+      ? tExactNumbers(`${field}.label`)
+      : t(`fields.${field}`);
+    const hint = isExactNumber
+      ? tExactNumbers(`${field}.hint`)
+      : field === "name"
+        ? t("fields.nameHint")
+        : undefined;
+
     return (
       <Input
         key={field}
-        label={t(`fields.${field}`)}
+        label={label}
         error={fieldError(typedField)}
-        hint={field === "name" ? t("fields.nameHint") : undefined}
+        hint={hint}
         {...(isNumber
           ? {
               type: "number",
@@ -205,7 +220,7 @@ export default function VehicleEditForm({
             {fields.map((field) => renderField(field))}
             {key === "vehicle" && showCoolingUnit && (
               <Select
-                label={t("fields.coolingUnitType")}
+                label={tQuestions("coolingUnitType")}
                 options={coolingOptions}
                 {...register("coolingUnitType")}
               />
