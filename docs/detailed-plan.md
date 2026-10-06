@@ -150,7 +150,7 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 | 3.8  | Public results page                                | DONE   |                                             |
 | 3.9  | Fleet results page                                 | DONE   |                                             |
 | 3.10 | Auth screens                                       | DONE   | Approved — 2026-10-05                       |
-| 3.11 | Workspace shell                                    | DONE   |                                             |
+| 3.11 | Workspace shell                                    | DONE   | Approved — 2026-10-05                       |
 | 3.12 | Team & activity page                               | DONE   |                                             |
 | 3.13 | Fleet dashboard                                    | DONE   |                                             |
 | 3.14 | Vehicles and calculations pages                    | DONE   |                                             |
