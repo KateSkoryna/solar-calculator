@@ -25,7 +25,7 @@ const translateDuration = createTranslator({
 });
 
 function longDuration(totalMonths: number) {
-  return formatDuration(humaniseDuration(totalMonths), "long", (key, values) =>
+  return formatDuration(humaniseDuration(totalMonths), (key, values) =>
     translateDuration(key as never, values as never),
   );
 }

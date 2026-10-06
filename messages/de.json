@@ -549,8 +549,8 @@
       "dailyDistance": "{kilometres} km pro Tag"
     },
     "verdict": {
-      "PAYS_OFF": "Ja – Solar rechnet sich nach etwa <duration></duration>.",
-      "SLOWLY": "Solar rechnet sich langsam – nach etwa <duration></duration>.",
+      "PAYS_OFF": "Ja – Solar rechnet sich nach etwa <duration>.</duration>",
+      "SLOWLY": "Solar rechnet sich langsam – nach etwa <duration>.</duration>",
       "UNLIKELY": "Solar rechnet sich für diese Konstellation wahrscheinlich nicht.",
       "unlikelySuggestion": "Probieren Sie Module nur auf dem Dach oder prüfen Sie die genauen Zahlen.",
       "range": "Zwischen {shortest} und {longest}, je nach Sonne und Preisen.",
@@ -558,16 +558,9 @@
       "lead": "Danach behält Ihre Flotte rund {annualSavings} pro Jahr, die sonst für Kraftstoff draufgingen."
     },
     "duration": {
-      "long": {
-        "yearsAndMonths": "{years, plural, one {# Jahr} other {# Jahren}} {months, plural, one {# Monat} other {# Monaten}}",
-        "yearsOnly": "{years, plural, one {# Jahr} other {# Jahren}}",
-        "monthsOnly": "{months, plural, one {# Monat} other {# Monaten}}"
-      },
-      "short": {
-        "yearsAndMonths": "{years} J. {months} Mon.",
-        "yearsOnly": "{years} J.",
-        "monthsOnly": "{months} Mon."
-      }
+      "yearsAndMonths": "{years, plural, one {# Jahr} other {# Jahren}} {months, plural, one {# Monat} other {# Monaten}}",
+      "yearsOnly": "{years, plural, one {# Jahr} other {# Jahren}}",
+      "monthsOnly": "{months, plural, one {# Monat} other {# Monaten}}"
     },
     "units": {
       "tonnes": "{value} t"
