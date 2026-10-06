@@ -149,7 +149,8 @@
     "actions": {
       "back": "Atrás",
       "continue": "Continuar",
-      "seeResults": "Ver mis resultados"
+      "seeResults": "Ver mis resultados",
+      "saveToFleet": "Guardar en la flota"
     },
     "stepContent": {
       "vehicles": {
@@ -209,7 +210,8 @@
         "label": "Carga útil disponible (kg)",
         "hint": "Peso que el vehículo aún puede llevar."
       }
-    }
+    },
+    "saveToFleetFailed": "No pudimos guardar este vehículo. Inténtalo de nuevo."
   },
   "theme": {
     "light": "Modo Claro",
@@ -394,6 +396,7 @@
         "count": "Cantidad",
         "location": "Ubicación",
         "paysOffIn": "Se amortiza en",
+        "calculatedOn": "Calculado el",
         "status": "Estado"
       },
       "status": {
@@ -462,8 +465,7 @@
     },
     "mainNavigation": "Principal",
     "fleetLabel": "Flota",
-    "switchFleet": "Cambiar de flota",
-    "comingSoon": "Esta página está en camino."
+    "switchFleet": "Cambiar de flota"
   },
   "roles": {
     "owner": "Propietario",
@@ -758,5 +760,100 @@
       "google": "Registrarse con Google"
     },
     "divider": "o con correo electrónico"
+  },
+  "vehicles": {
+    "title": "Vehículos",
+    "loading": "Cargando tus vehículos",
+    "actions": {
+      "edit": "Editar",
+      "editLabel": "Editar {vehicle}",
+      "run": "Ejecutar cálculo",
+      "runLabel": "Ejecutar cálculo para {vehicle}",
+      "delete": "Eliminar",
+      "deleteLabel": "Eliminar {vehicle}",
+      "failed": "No ha funcionado. Inténtalo de nuevo.",
+      "confirmTitle": "¿Eliminar {vehicle}?",
+      "confirmText": "El vehículo desaparece de tus listas. Sus cálculos anteriores permanecen en el historial de actividad.",
+      "confirmDelete": "Eliminar",
+      "cancel": "Cancelar"
+    },
+    "edit": {
+      "title": "Editar {vehicle}",
+      "save": "Guardar cambios",
+      "cancel": "Cancelar",
+      "saveFailed": "No pudimos guardar tus cambios. Inténtalo de nuevo.",
+      "fieldError": "Revisa este valor",
+      "noCoolingUnit": "Ninguna",
+      "groups": {
+        "vehicle": "Vehículo",
+        "driving": "Conducción",
+        "location": "Ubicación",
+        "panels": "Paneles"
+      },
+      "fields": {
+        "manufacturer": "Fabricante",
+        "model": "Modelo",
+        "vehicleType": "Tipo de vehículo",
+        "engineType": "Motor",
+        "quantity": "Número de vehículos",
+        "cargoType": "Carga",
+        "coolingUnitType": "Tipo de refrigeración",
+        "averageDailyDistanceKm": "Distancia diaria (km)",
+        "energyConsumptionKwhPer100km": "Consumo de energía (kWh por 100 km)",
+        "idleHoursPerDay": "Ralentí (horas al día)",
+        "operatingMonthsPerYear": "Meses de uso al año",
+        "winterUsage": "Se usa en invierno",
+        "city": "Ciudad",
+        "country": "País",
+        "parkingType": "Aparcamiento",
+        "solarPanelPlacement": "Ubicación de los paneles",
+        "solarPanelCapacityKw": "Potencia de los paneles (kW)",
+        "payloadReserveKg": "Reserva de carga útil (kg)",
+        "maxRoofLoadKg": "Carga máxima del techo (kg)"
+      },
+      "engineTypes": {
+        "DIESEL": "Diésel",
+        "PETROL": "Gasolina",
+        "ELECTRIC": "Eléctrico",
+        "HYBRID": "Híbrido"
+      }
+    },
+    "error": {
+      "title": "No pudimos cargar tus vehículos",
+      "text": "Algo salió mal por nuestra parte. Inténtalo de nuevo.",
+      "retry": "Reintentar"
+    }
+  },
+  "calculations": {
+    "title": "Cálculos",
+    "loading": "Cargando tus cálculos",
+    "history": {
+      "title": "Historial de cálculos",
+      "columns": {
+        "vehicle": "Vehículo",
+        "count": "Vehículos",
+        "date": "Fecha"
+      },
+      "sort": {
+        "label": "Ordenar cálculos",
+        "options": {
+          "newest": "Más recientes primero",
+          "oldest": "Más antiguos primero",
+          "vehicle": "Vehículo A–Z",
+          "payback": "Amortización más rápida"
+        }
+      }
+    },
+    "empty": {
+      "title": "Aún no hay cálculos",
+      "textForEditors": "Añade un vehículo para ejecutar tu primer cálculo.",
+      "textForViewers": "Pide a un propietario o gestor que ejecute el primer cálculo."
+    },
+    "error": {
+      "title": "No pudimos cargar tus cálculos",
+      "text": "Algo salió mal por nuestra parte. Inténtalo de nuevo.",
+      "retry": "Reintentar"
+    },
+    "new": "Nuevo cálculo"
   }
 }

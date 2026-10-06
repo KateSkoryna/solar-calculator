@@ -149,7 +149,8 @@
     "actions": {
       "back": "Back",
       "continue": "Continue",
-      "seeResults": "See my results"
+      "seeResults": "See my results",
+      "saveToFleet": "Save to fleet"
     },
     "stepContent": {
       "vehicles": {
@@ -209,7 +210,8 @@
         "label": "Spare payload (kg)",
         "hint": "Weight the vehicle can still carry."
       }
-    }
+    },
+    "saveToFleetFailed": "We could not save this vehicle. Please try again."
   },
   "theme": {
     "light": "Light Mode",
@@ -394,6 +396,7 @@
         "count": "Count",
         "location": "Location",
         "paysOffIn": "Pays off in",
+        "calculatedOn": "Calculated on",
         "status": "Status"
       },
       "status": {
@@ -462,8 +465,7 @@
     },
     "mainNavigation": "Main",
     "fleetLabel": "Fleet",
-    "switchFleet": "Switch fleet",
-    "comingSoon": "This page is on its way."
+    "switchFleet": "Switch fleet"
   },
   "roles": {
     "owner": "Owner",
@@ -758,5 +760,100 @@
       "google": "Sign up with Google"
     },
     "divider": "or with email"
+  },
+  "vehicles": {
+    "title": "Vehicles",
+    "loading": "Loading your vehicles",
+    "actions": {
+      "edit": "Edit",
+      "editLabel": "Edit {vehicle}",
+      "run": "Run calculation",
+      "runLabel": "Run calculation for {vehicle}",
+      "delete": "Delete",
+      "deleteLabel": "Delete {vehicle}",
+      "failed": "That did not work. Please try again.",
+      "confirmTitle": "Delete {vehicle}?",
+      "confirmText": "The vehicle disappears from your lists. Its past calculations stay in the activity history.",
+      "confirmDelete": "Delete",
+      "cancel": "Cancel"
+    },
+    "edit": {
+      "title": "Edit {vehicle}",
+      "save": "Save changes",
+      "cancel": "Cancel",
+      "saveFailed": "We could not save your changes. Please try again.",
+      "fieldError": "Please check this value",
+      "noCoolingUnit": "None",
+      "groups": {
+        "vehicle": "Vehicle",
+        "driving": "Driving",
+        "location": "Location",
+        "panels": "Panels"
+      },
+      "fields": {
+        "manufacturer": "Manufacturer",
+        "model": "Model",
+        "vehicleType": "Vehicle type",
+        "engineType": "Engine",
+        "quantity": "Number of vehicles",
+        "cargoType": "Cargo",
+        "coolingUnitType": "Cooling unit type",
+        "averageDailyDistanceKm": "Daily distance (km)",
+        "energyConsumptionKwhPer100km": "Energy use (kWh per 100 km)",
+        "idleHoursPerDay": "Idling (hours per day)",
+        "operatingMonthsPerYear": "Operating months per year",
+        "winterUsage": "Used in winter",
+        "city": "City",
+        "country": "Country",
+        "parkingType": "Parking",
+        "solarPanelPlacement": "Panel placement",
+        "solarPanelCapacityKw": "Panel capacity (kW)",
+        "payloadReserveKg": "Payload reserve (kg)",
+        "maxRoofLoadKg": "Maximum roof load (kg)"
+      },
+      "engineTypes": {
+        "DIESEL": "Diesel",
+        "PETROL": "Petrol",
+        "ELECTRIC": "Electric",
+        "HYBRID": "Hybrid"
+      }
+    },
+    "error": {
+      "title": "We couldn't load your vehicles",
+      "text": "Something went wrong on our side. Please try again.",
+      "retry": "Try again"
+    }
+  },
+  "calculations": {
+    "title": "Calculations",
+    "loading": "Loading your calculations",
+    "history": {
+      "title": "Calculation history",
+      "columns": {
+        "vehicle": "Vehicle",
+        "count": "Vehicles",
+        "date": "Date"
+      },
+      "sort": {
+        "label": "Sort calculations",
+        "options": {
+          "newest": "Newest first",
+          "oldest": "Oldest first",
+          "vehicle": "Vehicle A–Z",
+          "payback": "Fastest payback"
+        }
+      }
+    },
+    "empty": {
+      "title": "No calculations yet",
+      "textForEditors": "Add a vehicle to run your first calculation.",
+      "textForViewers": "Ask an owner or manager to run the first calculation."
+    },
+    "error": {
+      "title": "We couldn't load your calculations",
+      "text": "Something went wrong on our side. Please try again.",
+      "retry": "Try again"
+    },
+    "new": "New calculation"
   }
 }
