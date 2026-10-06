@@ -12,7 +12,7 @@ import { useResultsFormatters } from "@/components/results/useResultsFormatters"
 import { shortCityName } from "@/lib/vehicle-display-name";
 import { FOCUS_RING_CLASSES } from "@/lib/focus-ring";
 import {
-  isCalculatedWithCurrentAssumptions,
+  isResultUpToDate,
   type FleetVehicleGroup,
 } from "@/lib/fleet-group-status";
 import { humaniseDuration } from "@/lib/results-view-model";
@@ -59,9 +59,7 @@ export default function VehicleGroupList({
   );
 
   const paybackLabel = (group: FleetVehicleGroup) => {
-    if (
-      !isCalculatedWithCurrentAssumptions(group, currentAssumptionSetVersion)
-    ) {
+    if (!isResultUpToDate(group, currentAssumptionSetVersion)) {
       return NO_VALUE;
     }
     const { paybackMonths } = group.latestCalculation;
@@ -121,7 +119,7 @@ export default function VehicleGroupList({
       ) : (
         <ul className="m-0 flex list-none flex-col gap-3 p-0 lg:gap-0">
           {visibleGroups.map((group) => {
-            const isCalculated = isCalculatedWithCurrentAssumptions(
+            const isCalculated = isResultUpToDate(
               group,
               currentAssumptionSetVersion,
             );

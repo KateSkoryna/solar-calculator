@@ -57,7 +57,7 @@ export async function PATCH(
       });
       const updated = await tx.vehicle.update({
         where: { ...vehicleKey, deletedAt: null },
-        data,
+        data: { ...data, editedAt: new Date() },
       });
 
       await recordAuditEvent(tx, {

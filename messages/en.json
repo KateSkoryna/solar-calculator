@@ -807,7 +807,11 @@
       "technical": {
         "summary": "Technical details",
         "text": "We filled these in with typical values for this vehicle type, so you do not need to know them. Change them only if you have the exact figures."
-      }
+      },
+      "saveAndRecalculate": "Save and recalculate",
+      "recalculationFailed": "We could not calculate the new result. Your changes are saved; you can recalculate from here.",
+      "saveNote": "Saving does not change existing results. Recalculate to get a new result for the changed data; the old one stays in the calculation history.",
+      "invalidFields": "Some values are not valid. Please check the fields marked below."
     },
     "error": {
       "title": "We couldn't load your vehicles",

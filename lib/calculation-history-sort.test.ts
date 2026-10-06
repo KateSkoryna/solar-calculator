@@ -17,6 +17,7 @@ function row(
     assumptionSetVersion: "2026.1",
     paybackMonths: 50,
     hasResult: true,
+    vehicleEditedAt: null,
     ...overrides,
   };
 }

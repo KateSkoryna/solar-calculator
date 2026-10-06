@@ -23,6 +23,7 @@ function row(overrides: Partial<CalculationHistoryRow> = {}) {
     assumptionSetVersion: CURRENT_VERSION,
     paybackMonths: 52,
     hasResult: true,
+    vehicleEditedAt: null,
     ...overrides,
   };
 }
@@ -68,6 +69,12 @@ describe("CalculationHistoryList", () => {
     expect(
       screen.getByRole("link", { name: /Ford Transit/ }).textContent,
     ).not.toContain("· 12");
+  });
+
+  it("shows Needs calculation when the vehicle was edited after the calculation", () => {
+    renderHistory([row({ vehicleEditedAt: new Date("2026-04-01T10:00:00Z") })]);
+
+    expect(screen.getByText(statusMessages.needsCalculation)).toBeVisible();
   });
 
   it("says when a calculation never pays off", () => {

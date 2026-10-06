@@ -165,6 +165,7 @@ model Vehicle {
   latitude                     Float?
   longitude                    Float?
   sourceQuickCheckHash         String?
+  editedAt                     DateTime?
   deletedAt                    DateTime?
   createdAt                    DateTime            @default(now())
 

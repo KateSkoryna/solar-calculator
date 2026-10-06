@@ -37,6 +37,7 @@ function group(overrides: Partial<FleetVehicleGroup> = {}): FleetVehicleGroup {
     vehicleType: VehicleType.VAN,
     city: "Berlin",
     quantity: 10,
+    editedAt: null,
     latestCalculation: calculation(),
     ...overrides,
   };

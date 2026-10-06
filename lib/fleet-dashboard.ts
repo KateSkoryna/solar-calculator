@@ -1,6 +1,6 @@
 import { ScenarioKind } from "@/app/generated/prisma/enums";
 import {
-  isCalculatedWithCurrentAssumptions,
+  isResultUpToDate,
   type FleetVehicleGroup,
   type GroupCalculation,
 } from "@/lib/fleet-group-status";
@@ -22,7 +22,7 @@ export function aggregateFleetKpis(
   currentAssumptionSetVersion: string,
 ): FleetKpis {
   const currentGroups = groups.filter((group) =>
-    isCalculatedWithCurrentAssumptions(group, currentAssumptionSetVersion),
+    isResultUpToDate(group, currentAssumptionSetVersion),
   ) as (FleetVehicleGroup & { latestCalculation: GroupCalculation })[];
   const groupsWithPayback = currentGroups.filter(
     ({ latestCalculation }) => latestCalculation.paybackMonths !== null,
@@ -72,6 +72,7 @@ export async function loadFleetDashboardData(
       vehicleType: true,
       city: true,
       quantity: true,
+      editedAt: true,
       calculations: {
         orderBy: { createdAt: "desc" },
         take: 1,

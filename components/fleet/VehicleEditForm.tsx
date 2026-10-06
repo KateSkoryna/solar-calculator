@@ -17,7 +17,10 @@ import Select, { type SelectOption } from "@/components/form/Select";
 import { EU_COUNTRY_CODES } from "@/lib/assumptions/eu-countries";
 import { COOLING_UNIT_TYPES } from "@/lib/assumptions/types";
 import { OPTIONAL_NUMBER_FIELDS } from "@/lib/calculator-form";
-import { fleetVehicleApiPath } from "@/lib/fleet-api-paths";
+import {
+  fleetCalculationsApiPath,
+  fleetVehicleApiPath,
+} from "@/lib/fleet-api-paths";
 import {
   isChilledVehicle,
   NO_COOLING_UNIT,
@@ -29,7 +32,7 @@ import {
   type VehicleEditFormValues,
   type VehicleNumberField,
 } from "@/lib/vehicle-edit-form";
-import { fleetVehiclesPath } from "@/lib/workspace-path";
+import { fleetCalculationPath, fleetVehiclesPath } from "@/lib/workspace-path";
 import { VehicleType } from "@/app/generated/prisma/enums";
 
 const ENGINE_TYPES = ["DIESEL", "PETROL", "ELECTRIC", "HYBRID"] as const;
@@ -70,11 +73,14 @@ export default function VehicleEditForm({
   const locale = useLocale();
   const router = useRouter();
   const [hasSaveFailed, setHasSaveFailed] = useState(false);
+  const [hasRecalculationFailed, setHasRecalculationFailed] = useState(false);
+  const [hasInvalidFields, setHasInvalidFields] = useState(false);
+  const [isRecalculating, setIsRecalculating] = useState(false);
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors, isDirty, isSubmitting },
   } = useForm<VehicleEditFormValues>({
     resolver: zodResolver(vehicleEditFormSchema),
     defaultValues: initialValues,
@@ -184,33 +190,65 @@ export default function VehicleEditForm({
     );
   };
 
-  const save = handleSubmit(async (values) => {
-    setHasSaveFailed(false);
-    const update = toVehicleUpdate(values, initialValues);
+  const save = (shouldRecalculate: boolean) =>
+    handleSubmit(
+      async (values) => {
+        setHasInvalidFields(false);
+        setIsRecalculating(shouldRecalculate);
+        setHasSaveFailed(false);
+        setHasRecalculationFailed(false);
+        const update = toVehicleUpdate(values, initialValues);
 
-    if (Object.keys(update).length > 0) {
-      const response = await fetch(fleetVehicleApiPath(fleetId, vehicleId), {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(update),
-      }).catch(() => null);
+        if (Object.keys(update).length > 0) {
+          const response = await fetch(
+            fleetVehicleApiPath(fleetId, vehicleId),
+            {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(update),
+            },
+          ).catch(() => null);
 
-      if (!response?.ok) {
-        setHasSaveFailed(true);
-        return;
-      }
-    }
+          if (!response?.ok) {
+            setHasSaveFailed(true);
+            return;
+          }
+        }
 
-    router.push(vehiclesPath);
-    router.refresh();
-  });
+        if (shouldRecalculate) {
+          const response = await fetch(fleetCalculationsApiPath(fleetId), {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ vehicleId }),
+          }).catch(() => null);
 
+          if (!response?.ok) {
+            setHasRecalculationFailed(true);
+            return;
+          }
+          const { calculation } = (await response.json()) as {
+            calculation: { id: string };
+          };
+          router.push(fleetCalculationPath(locale, fleetSlug, calculation.id));
+          router.refresh();
+          return;
+        }
+
+        router.push(vehiclesPath);
+        router.refresh();
+      },
+      () => setHasInvalidFields(true),
+    );
+
+  const hasTechnicalFieldError = VEHICLE_TECHNICAL_FIELDS.some(
+    (field) => errors[field],
+  );
   const showCoolingUnit = isChilledVehicle({
     cargoType: useWatch({ control, name: "cargoType" }),
   });
 
   return (
-    <form noValidate onSubmit={save} className="flex flex-col gap-6">
+    <form noValidate onSubmit={save(false)} className="flex flex-col gap-6">
       <Heading level={1} size="display-s">
         {t("title", { vehicle: vehicleName })}
       </Heading>
@@ -229,7 +267,10 @@ export default function VehicleEditForm({
         </Card>
       ))}
       <Card as="section">
-        <Disclosure summary={t("technical.summary")}>
+        <Disclosure
+          summary={t("technical.summary")}
+          defaultOpen={hasTechnicalFieldError}
+        >
           <div className="flex flex-col gap-4 pt-2">
             <p className="text-[15px] text-muted">{t("technical.text")}</p>
             <div className="grid gap-4 md:grid-cols-2">
@@ -238,9 +279,26 @@ export default function VehicleEditForm({
           </div>
         </Disclosure>
       </Card>
+      {hasInvalidFields && <FormAlert>{t("invalidFields")}</FormAlert>}
       {hasSaveFailed && <FormAlert>{t("saveFailed")}</FormAlert>}
+      {hasRecalculationFailed && (
+        <FormAlert>{t("recalculationFailed")}</FormAlert>
+      )}
+      <p className="text-[15px] text-muted">{t("saveNote")}</p>
       <div className="flex flex-wrap gap-3">
-        <Button type="submit" loading={isSubmitting}>
+        <Button
+          loading={isSubmitting && isRecalculating}
+          disabled={isSubmitting || !isDirty}
+          onClick={save(true)}
+        >
+          {t("saveAndRecalculate")}
+        </Button>
+        <Button
+          type="submit"
+          variant="secondary"
+          loading={isSubmitting && !isRecalculating}
+          disabled={isSubmitting || !isDirty}
+        >
           {t("save")}
         </Button>
         <ButtonLink href={vehiclesPath} variant="secondary">

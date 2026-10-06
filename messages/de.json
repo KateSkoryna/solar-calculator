@@ -807,7 +807,11 @@
       "technical": {
         "summary": "Technische Details",
         "text": "Wir haben diese Werte mit typischen Angaben für diesen Fahrzeugtyp vorbelegt, du musst sie also nicht kennen. Ändere sie nur, wenn du die genauen Werte hast."
-      }
+      },
+      "saveAndRecalculate": "Speichern und neu berechnen",
+      "recalculationFailed": "Wir konnten das neue Ergebnis nicht berechnen. Deine Änderungen sind gespeichert; du kannst hier erneut berechnen.",
+      "saveNote": "Beim Speichern ändern sich bestehende Ergebnisse nicht. Berechne neu, um ein neues Ergebnis für die geänderten Daten zu erhalten; das alte bleibt im Berechnungsverlauf.",
+      "invalidFields": "Einige Werte sind ungültig. Bitte prüfe die unten markierten Felder."
     },
     "error": {
       "title": "Wir konnten deine Fahrzeuge nicht laden",

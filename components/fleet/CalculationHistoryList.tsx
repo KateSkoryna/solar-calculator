@@ -17,7 +17,10 @@ import {
 } from "@/lib/calculation-history-sort";
 import { FOCUS_RING_CLASSES } from "@/lib/focus-ring";
 import type { CalculationHistoryRow } from "@/lib/fleet-calculation-history";
-import { isCurrentAssumptionVersion } from "@/lib/fleet-group-status";
+import {
+  isCurrentAssumptionVersion,
+  wasEditedAfter,
+} from "@/lib/fleet-group-status";
 import { humaniseDuration } from "@/lib/results-view-model";
 import { fleetCalculationPath } from "@/lib/workspace-path";
 
@@ -65,13 +68,16 @@ export default function CalculationHistoryList({
   const isCurrent = ({
     hasResult,
     assumptionSetVersion,
+    vehicleEditedAt,
+    createdAt,
   }: CalculationHistoryRow) =>
     hasResult &&
     assumptionSetVersion !== null &&
     isCurrentAssumptionVersion(
       assumptionSetVersion,
       currentAssumptionSetVersion,
-    );
+    ) &&
+    !wasEditedAfter(vehicleEditedAt, createdAt);
 
   return (
     <Card
