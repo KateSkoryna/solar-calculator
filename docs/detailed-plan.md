@@ -150,10 +150,10 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 | 3.8  | Public results page                                | DONE   |                                             |
 | 3.9  | Fleet results page                                 | DONE   |                                             |
 | 3.10 | Auth screens                                       | DONE   | Approved — 2026-10-05                       |
-| 3.11 | Workspace shell                                    | TODO   |                                             |
-| 3.12 | Team & activity page                               | TODO   |                                             |
-| 3.13 | Fleet dashboard                                    | TODO   |                                             |
-| 3.14 | Vehicles and calculations pages                    | TODO   |                                             |
+| 3.11 | Workspace shell                                    | DONE   |                                             |
+| 3.12 | Team & activity page                               | DONE   |                                             |
+| 3.13 | Fleet dashboard                                    | DONE   |                                             |
+| 3.14 | Vehicles and calculations pages                    | DONE   |                                             |
 | 3.15 | Read-only demo fleet                               | TODO   |                                             |
 | 3.16 | Accessibility, copy and cleanup pass               | TODO   |                                             |
 | 4.1  | Temporal in Docker Compose and a worker            | TODO   |                                             |
