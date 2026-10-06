@@ -619,10 +619,10 @@ Each screen lists route, purpose, content order per breakpoint, states and inter
 **Content order:**
 
 1. Page header: h1 "Vehicles" → primary "Add vehicles" (+ icon) right, editors only.
-2. Vehicle groups card (same list as 8.5, with search) plus an actions area per row: "Edit" (`secondary`, `sm`), "Run calculation" (`primary`, `sm`) for Owners and Managers; "Delete" (`danger`, `sm`) for Owners only, matching the API. Viewers see the list without actions.
-3. Delete opens a confirm dialog ("Delete {vehicle}?", the consequence in one sentence, `danger` "Delete" + `secondary` "Cancel"). Focus starts on Cancel; Escape cancels.
+2. Vehicle groups card: one row per group with Name (the group name, falling back to manufacturer and model, or "{city} {count} {type}", for example "Madrid 7 Bus", for quick checks), Type, Count and Location. No status, payback, date or distance; those belong to Overview, Calculations and the edit page. Editors get one `secondary` "Edit" button per row; viewers see the same rows without it. A row is a group of identical vehicles, so editing it changes all of them.
+3. Delete lives at the bottom of the edit page (Owners only): `danger` "Delete vehicles" opens a confirm dialog ("Delete {name}?", the consequence in one sentence, `danger` "Delete" + `secondary` "Cancel"). Focus starts on Cancel; Escape cancels.
 4. `/vehicles/new`: the calculator wizard (8.2) in fleet mode, without the page container. The last button reads "Save to fleet" and posts to the quick-checks API; success lands on the new result.
-5. `/vehicles/[vehicleId]/edit`: h1 "Edit {vehicle}" → a form card with grouped fields (Vehicle, Driving, Location, Panels) using the shared form controls → "Save changes" (`primary`) and "Cancel" (`secondary`). Only changed fields are sent.
+5. `/vehicles/[vehicleId]/edit`: h1 "Edit {name}" → a form card with grouped fields (Vehicle with the optional group name first, Driving, Location, Panel placement), then a collapsed "Technical details" disclosure with energy use, panel capacity, payload reserve and roof load, which are prefilled with typical values because fleet owners rarely know them using the shared form controls → "Save changes" (`primary`), "Cancel" (`secondary`) and, for Owners, "Delete vehicles" (`danger`) on the right. Only changed fields are sent.
 
 |        | Desktop                                  | Tablet               | Mobile                            |
 | ------ | ---------------------------------------- | -------------------- | --------------------------------- |
@@ -638,7 +638,7 @@ Each screen lists route, purpose, content order per breakpoint, states and inter
 
 **Content order:**
 
-1. Page header: h1 "Calculations" → primary "New calculation" (+ icon) right, editors only; it opens the add-vehicle wizard, which saves the vehicle together with its first calculation.
+1. Page header: h1 "Calculations" → primary "New calculation" (+ icon) right, editors only; it opens the calculator page (`/[locale]/calculator`); its result offers "Save to fleet".
 2. History card: title "Calculation history" + sort control (Newest first, Oldest first, Vehicle A–Z, Fastest payback) → rows newest first with Vehicle, Count, Date, Pays off in (realistic scenario), Status pill ("Calculated" or "Needs calculation" when the assumption version is not the current one). Each row links to its result.
 3. Empty state: "No calculations yet" with a link to add vehicles for editors.
 

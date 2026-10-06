@@ -2046,20 +2046,29 @@ The vehicles and calculations pages have no canvas design. Instead of inventing 
 
 ### List and detail patterns
 
-A list answers "which one?" and a detail page answers "tell me about this one". Each row of the vehicle list is a link to the latest result (the detail), while the actions (Edit, Run calculation, Delete) sit beside the link, never inside it, because a button inside a link is invalid HTML and clicks would fight each other. The list takes an optional `renderActions` function, so the dashboard shows the same rows without any actions:
+A list answers "which one?" and a detail page answers "tell me about this one". Each row of the vehicle list carries one "Edit" button that opens that vehicle's edit page, the detail. Viewers, who cannot edit, see the same rows without the button. The destructive action (Delete) lives on the detail page, behind a confirm dialog, where it is harder to hit by accident:
 
 ```tsx
-<VehicleGroupList
-  groups={groups}
-  renderActions={(group) => (
-    <VehicleRowActions
-      group={group}
-      fleetId={fleet.id}
-      canEdit={canEdit}
-      canDelete={canDelete}
-    />
-  )}
-/>
+{
+  canEdit && (
+    <ButtonLink
+      href={fleetEditVehiclePath(locale, fleetSlug, vehicle.id)}
+      variant="secondary"
+      size="sm"
+    >
+      {t("edit")}
+    </ButtonLink>
+  );
+}
+```
+
+A row is a group of identical vehicles (count 9 is one record), so each group gets an optional name; without one, the list falls back to something readable:
+
+```ts
+if (name) return name;
+if (manufacturer === QUICK_CHECK_VEHICLE_MANUFACTURER)
+  return `${shortCityName(city)} ${quantity} ${vehicleTypeLabel}`;
+return `${manufacturer} ${model}`;
 ```
 
 The edit page sends only the fields that changed, so the audit log can say exactly what changed and an untouched form sends nothing at all:
