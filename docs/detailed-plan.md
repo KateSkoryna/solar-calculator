@@ -2,7 +2,7 @@
 
 This plan turns [`implementation-plan.md`](./implementation-plan.md) and [`design-guidelines.md`](./design-guidelines.md) into small steps that an AI agent (Claude Sonnet 5.5) executes one at a time inside the `/loop` skill. The owner reviews every step before the next one starts.
 
-Milestones are numbered in the order they run (1 → 7). They do not match the milestone numbers in `implementation-plan.md` or the older headings in `key-concepts.md`.
+Milestones are numbered in the order they run (1 → 8). They do not match the milestone numbers in `implementation-plan.md` or the older headings in `key-concepts.md`.
 
 ---
 
@@ -188,6 +188,10 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 | 7.5  | End-to-end tests                                   | TODO   | Owner runs them                             |
 | 7.6  | Handoff documentation                              | TODO   |                                             |
 | 7.7  | Preview deployment smoke test                      | TODO   | Owner sets a Vercel bypass secret in GitHub |
+| 8.1  | Super-admin guard and audit trail                  | TODO   |                                             |
+| 8.2  | Admin fleets API                                   | TODO   |                                             |
+| 8.3  | Admin console pages                                | TODO   | Owner provides an admin test account        |
+| 8.4  | Archive and restore a fleet                        | TODO   | Owner confirms archiving is wanted first    |
 
 ---
 
@@ -196,6 +200,7 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 These are settled. Steps rely on them; do not revisit them without the owner.
 
 - **Product shape:** a public quick check (4 questions, instant verdict, no login) leads into a fleet workspace. Accuracy grows from _Rough_ (presets) to _Precise_ (measured telemetry). Every number shows where it came from.
+- **Super admin:** a super admin is a user who is a member of the admin fleet named by `ADMIN_FLEET_ID`. Inside any other fleet a super admin acts as an owner. The admin console lives at `/[locale]/admin/fleets`; admin routes and pages check the database on every request, never only the session token.
 - **Core stack stays TypeScript:** Next.js 16, Auth.js, Prisma 7, TanStack Query, Recharts, next-intl, Temporal (TypeScript SDK).
 - **One Python service** (`services/telemetry`: FastAPI, Pydantic, pandas, pvlib, pytest) handles solar physics and telemetry only. Prisma is the single owner of database migrations. TypeScript types for its API are generated from its OpenAPI schema.
 - **Real-time:** Server-Sent Events from Next.js, fed by Postgres `LISTEN/NOTIFY`. No WebSockets.
@@ -1176,3 +1181,72 @@ Also a Python deep dive: every step's concepts go into `docs/key-concepts.md` wi
   3. `package.json` has the `smoke` script.
   4. Standard checks S1–S3, S8–S10 pass.
 - **Owner actions:** in Vercel enable Protection Bypass for Automation and copy the secret; add it to the GitHub repository secrets as `VERCEL_AUTOMATION_BYPASS_SECRET`; open a pull request and confirm `preview-smoke` is green.
+
+---
+
+## Milestone 8: Super-admin console
+
+Goal: the owner of the product can see and manage every fleet from one place, without touching the database. Every privileged action leaves an audit trail the fleet's own owners can see.
+
+### Step 8.1 — Super-admin guard and audit trail
+
+- **Depends on:** 3.12
+- **Purpose:** One strict, fresh check for "is this person a super admin", and a visible trail when a super admin looks into someone else's fleet.
+- **Concepts to learn:** stale session tokens vs fresh database checks, defense in depth, auditing privileged access
+- **Instructions:**
+  1. Create `lib/super-admin.ts` with `requireSuperAdmin(session)`: reads the membership in `ADMIN_FLEET_ID` from the database on every call (the token's `isSuperAdmin` is only used to decide whether to show the Admin link) and throws `ForbiddenError` otherwise. A failed attempt records `ACCESS_DENIED` with reason `NOT_SUPER_ADMIN`.
+  2. Add `AuditAction.SUPER_ADMIN_FLEET_VIEWED` (recorded by the admin fleet page in 8.3) and `AuditAction.FLEET_UPDATED` (used by the rename in 8.2, metadata `changes: [{ field, from, to }]`). Add their sentences to `lib/activity-sentences.ts` and `audit.events.*` in `messages/en.json`, `de.json` and `es.json` ("{actor} opened this fleet as an administrator", "{actor} renamed the fleet from {from} to {to}").
+  3. Add `admin` to `RESERVED_FLEET_SLUGS` in `lib/fleet-slug.ts`.
+- **Definition of done:**
+  1. API test: `requireSuperAdmin` passes for a member of the admin fleet; rejects a signed-out visitor and an ordinary owner; and rejects a user whose admin membership was deleted after their token was issued.
+  2. A rejected call writes an `ACCESS_DENIED` audit event with reason `NOT_SUPER_ADMIN`.
+  3. `lib/activity-sentences.test.ts` still passes (every `AuditAction` has a mapping); `lib/fleet-slug.test.ts` passes and a fleet named "Admin" gets a different slug.
+  4. Standard checks S1–S4, S6, S8–S10 pass.
+
+### Step 8.2 — Admin fleets API
+
+- **Depends on:** 8.1
+- **Purpose:** List every fleet with the numbers an administrator needs, and rename one.
+- **Concepts to learn:** aggregate queries without N+1, search and pagination, privileged routes next to tenant routes
+- **Instructions:**
+  1. `GET /api/admin/fleets?query=&page=&pageSize=`: `requireSuperAdmin`. Returns fleets (not the admin fleet) with name, slug, created date, owner emails, member count, vehicle count (not deleted), calculation count and last activity (latest audit event). `query` matches name, slug or an owner's email, case-insensitive. Load the counts with grouped queries for the whole page, not one query per fleet. Add `lib/admin-fleet-query-schema.ts` for the parameters.
+  2. `GET /api/admin/fleets/[fleetId]`: the same numbers plus members with roles and pending invitations.
+  3. `PATCH /api/admin/fleets/[fleetId]`: rename only (the slug never changes). Records `FLEET_UPDATED` with `changes`.
+  4. Member changes by a super admin keep using the existing `/api/fleets/[fleetId]/members` routes, which already treat a super admin as an owner.
+- **Definition of done:**
+  1. API tests: every admin route returns 403 for an ordinary owner and for a signed-out visitor.
+  2. The list returns counts that match the seeded fixtures (members, vehicles, calculations), excludes the admin fleet, finds a fleet by an owner's email, and paginates.
+  3. Renaming stores `{ field: "name", from, to }`, keeps the slug and is audited.
+  4. Standard checks S1–S4, S6, S8–S10 pass.
+
+### Step 8.3 — Admin console pages
+
+- **Depends on:** 8.2
+- **Purpose:** One place where the owner of the product sees and manages all fleets.
+- **Concepts to learn:** server-side page guards, reusing a tenant component in an admin context, links that only show for the right people
+- **Instructions:**
+  1. `app/[locale]/(public)/admin/fleets/page.tsx` (server): a search field, a table (name, slug, owners, members, vehicles, calculations, last activity, created) with pagination; below 768 px each fleet is a card instead of a table row. Loading, empty and error states. A visitor who is not a super admin gets a 404.
+  2. `app/[locale]/(public)/admin/fleets/[fleetId]/page.tsx` (server): summary tiles, a rename form, the existing `components/team/TeamCard.tsx` with `canManageTeam` true, an "Open workspace" button to `/[locale]/[slug]/overview`, and the banner "You are viewing this fleet as an administrator." Loading the page records `SUPER_ADMIN_FLEET_VIEWED`.
+  3. Show an "Admin" item in the user menu (`UserProfileButton` and `MobileMenu`) only when `session.user.isSuperAdmin`; the pages themselves re-check with `requireSuperAdmin`.
+  4. Add the `admin.*` messages to `en.json`, `de.json` and `es.json`. No raw enum names in any text.
+- **Definition of done:**
+  1. Component tests: the table shows one row per fleet with its counts; typing in search requests the API with `query`; the user menu shows Admin only for a super admin.
+  2. A test proves the admin page loader returns not-found for an ordinary user.
+  3. Standard checks S1–S4, S6, S8–S10 pass.
+- **Owner review (browser):** sign in as a super admin (add one test user to `fleet_admin`) and open `/en/admin/fleets` at three widths: search, open a fleet, rename it, change a member's role, open its workspace and check the "opened this fleet as an administrator" line in that fleet's activity. Then sign in as an ordinary user and confirm `/en/admin/fleets` is a 404.
+
+### Step 8.4 — Archive and restore a fleet
+
+- **Depends on:** 8.3
+- **Purpose:** Let the administrator switch a fleet off (for example for non-payment or a deletion request) without losing its data, and switch it back on.
+- **Concepts to learn:** soft delete at the tenant level, enforcing it in the authorization helper, reversible privileged actions
+- **Instructions:**
+  1. Add `Fleet.archivedAt DateTime?` to `prisma/schema.prisma` with a migration.
+  2. `requireFleetRole` rejects members of an archived fleet with `ForbiddenError` (a super admin still passes); `loadWorkspaceLayout` returns null for an archived fleet; the `/workspace` redirect and the fleet switcher skip archived fleets; a user with only archived fleets goes to onboarding.
+  3. `POST /api/admin/fleets/[fleetId]/archive` and `.../restore` (super admin only), recording `FLEET_ARCHIVED` and `FLEET_RESTORED` with sentences in all three languages.
+  4. The admin list gets an Active / Archived filter and a status pill; the detail page gets Archive (a `danger` button with a confirm dialog) or Restore.
+- **Definition of done:**
+  1. API tests: an archived fleet's members get 403 on its routes and 404 on its workspace; a super admin still opens it; restoring brings access back; archive and restore are audited.
+  2. The workspace redirect test: a user with one active and one archived fleet lands on the active one.
+  3. Standard checks S1–S6, S8–S10 pass.
+- **Owner actions:** confirm that archiving is wanted before this step starts.
