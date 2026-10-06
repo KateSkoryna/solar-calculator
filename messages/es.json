@@ -149,8 +149,7 @@
     "actions": {
       "back": "Atrás",
       "continue": "Continuar",
-      "seeResults": "Ver mis resultados",
-      "saveToFleet": "Guardar en la flota"
+      "seeResults": "Ver mis resultados"
     },
     "stepContent": {
       "vehicles": {
@@ -210,8 +209,7 @@
         "label": "Carga útil disponible (kg)",
         "hint": "Peso que el vehículo aún puede llevar."
       }
-    },
-    "saveToFleetFailed": "No pudimos guardar este vehículo. Inténtalo de nuevo."
+    }
   },
   "theme": {
     "light": "Modo Claro",

@@ -22,10 +22,6 @@ export function fleetVehiclesPath(locale: string, fleetSlug: string) {
   return `/${locale}/${fleetSlug}/vehicles`;
 }
 
-export function fleetNewVehiclePath(locale: string, fleetSlug: string) {
-  return `${fleetVehiclesPath(locale, fleetSlug)}/new`;
-}
-
 export function fleetEditVehiclePath(
   locale: string,
   fleetSlug: string,

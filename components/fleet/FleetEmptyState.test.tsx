@@ -6,25 +6,25 @@ import {
 } from "@/test-support/render-with-intl";
 
 const emptyMessages = englishMessages.overview.empty;
-const NEW_VEHICLE_PATH = "/en/berlin/vehicles/new";
+const ADD_VEHICLES_PATH = "/en/calculator";
 
 describe("FleetEmptyState", () => {
   it("tells an editor what to do and offers to add vehicles", () => {
     renderWithIntl(
-      <FleetEmptyState canAddVehicles newVehiclePath={NEW_VEHICLE_PATH} />,
+      <FleetEmptyState canAddVehicles addVehiclesPath={ADD_VEHICLES_PATH} />,
     );
 
     expect(screen.getByText(emptyMessages.textForEditors)).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: englishMessages.overview.addVehicles }),
-    ).toHaveAttribute("href", NEW_VEHICLE_PATH);
+    ).toHaveAttribute("href", ADD_VEHICLES_PATH);
   });
 
   it("shows a viewer the sentence without an Add vehicles button", () => {
     renderWithIntl(
       <FleetEmptyState
         canAddVehicles={false}
-        newVehiclePath={NEW_VEHICLE_PATH}
+        addVehiclesPath={ADD_VEHICLES_PATH}
       />,
     );
 

@@ -612,7 +612,7 @@ Each screen lists route, purpose, content order per breakpoint, states and inter
 
 **Sentence generation:** map each audit action to a message key with placeholders (`audit.events.vehicleUpdatedField`: "{actor} changed {field} for {vehicle} from {from} to {to}"). Fallback when old/new values are not stored: "{actor} edited {vehicle}". Never render raw enum names like `VEHICLE_UPDATED`.
 
-### 8.8 Vehicles — `/[locale]/[fleetSlug]/vehicles`, `/vehicles/new`, `/vehicles/[vehicleId]/edit` (built from the design system, no canvas)
+### 8.8 Vehicles — `/[locale]/[fleetSlug]/vehicles`, `/vehicles/[vehicleId]/edit` (built from the design system, no canvas)
 
 **Purpose:** "Which vehicles do we have, and how do I add, change or recalculate them?"
 
@@ -621,7 +621,7 @@ Each screen lists route, purpose, content order per breakpoint, states and inter
 1. Page header: h1 "Vehicles" → primary "Add vehicles" (+ icon) right, editors only.
 2. Vehicle groups card: one row per group with Name (the group name, falling back to manufacturer and model, or "{city} {count} {type}", for example "Madrid 7 Bus", for quick checks), Type, Count and Location. No status, payback, date or distance; those belong to Overview, Calculations and the edit page. Editors get one `secondary` "Edit" button per row; viewers see the same rows without it. A row is a group of identical vehicles, so editing it changes all of them.
 3. Delete lives at the bottom of the edit page (Owners only): `danger` "Delete vehicles" opens a confirm dialog ("Delete {name}?", the consequence in one sentence, `danger` "Delete" + `secondary` "Cancel"). Focus starts on Cancel; Escape cancels.
-4. `/vehicles/new`: the calculator wizard (8.2) in fleet mode, without the page container. The last button reads "Save to fleet" and posts to the quick-checks API; success lands on the new result.
+4. "Add vehicles" (and the empty-state button) opens the calculator page (8.2) instead of a second wizard; its result offers "Save to fleet". There is no `/vehicles/new` route.
 5. `/vehicles/[vehicleId]/edit`: h1 "Edit {name}" → a form card with grouped fields (Vehicle with the optional group name first, Driving, Location, Panel placement), then a collapsed "Technical details" disclosure with energy use, panel capacity, payload reserve and roof load, which are prefilled with typical values because fleet owners rarely know them using the shared form controls → "Save changes" (`primary`), "Cancel" (`secondary`) and, for Owners, "Delete vehicles" (`danger`) on the right. Only changed fields are sent.
 
 |        | Desktop                                  | Tablet               | Mobile                            |
@@ -630,7 +630,7 @@ Each screen lists route, purpose, content order per breakpoint, states and inter
 | Wizard | Steps, question and answers in 3 columns | Question and answers | Single column, answers last       |
 | Edit   | Two-column form groups                   | Two-column form      | Single column, sticky actions off |
 
-**Rules:** empty fleet shows the 8.5 empty state; viewers opening `/new` or `/edit` get the not-found page; every route has a loading skeleton and an error card with "Try again".
+**Rules:** empty fleet shows the 8.5 empty state; viewers opening `/edit` get the not-found page; every route has a loading skeleton and an error card with "Try again".
 
 ### 8.9 Calculations — `/[locale]/[fleetSlug]/calculations` (built from the design system, no canvas)
 

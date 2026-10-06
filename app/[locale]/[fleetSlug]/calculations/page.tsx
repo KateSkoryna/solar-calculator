@@ -13,7 +13,6 @@ import { FLEET_EDITOR_ROLES } from "@/lib/fleet-auth";
 import { loadFleetCalculationHistory } from "@/lib/fleet-calculation-history";
 import { loadFleetPageAccess } from "@/lib/fleet-page-access";
 import { calculatorPath, loginPath } from "@/lib/public-paths";
-import { fleetNewVehiclePath } from "@/lib/workspace-path";
 
 export default async function FleetCalculationsPage({
   params,
@@ -64,9 +63,7 @@ export default async function FleetCalculationsPage({
               ? t("empty.textForEditors")
               : t("empty.textForViewers")}
           </Text>
-          {canAddVehicles && (
-            <AddVehiclesLink href={fleetNewVehiclePath(locale, fleetSlug)} />
-          )}
+          {canAddVehicles && <AddVehiclesLink href={calculatorPath(locale)} />}
         </Card>
       ) : (
         <CalculationHistoryList

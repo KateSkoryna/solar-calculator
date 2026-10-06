@@ -149,8 +149,7 @@
     "actions": {
       "back": "Zurück",
       "continue": "Weiter",
-      "seeResults": "Ergebnis ansehen",
-      "saveToFleet": "In Flotte speichern"
+      "seeResults": "Ergebnis ansehen"
     },
     "stepContent": {
       "vehicles": {
@@ -210,8 +209,7 @@
         "label": "Freie Nutzlast (kg)",
         "hint": "Gewicht, das das Fahrzeug noch tragen kann."
       }
-    },
-    "saveToFleetFailed": "Wir konnten dieses Fahrzeug nicht speichern. Bitte versuche es erneut."
+    }
   },
   "theme": {
     "light": "Heller Modus",
