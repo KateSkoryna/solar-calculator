@@ -142,6 +142,7 @@ model FleetInvitation {
 model Vehicle {
   id                           String              @id @default(cuid())
   fleetId                      String
+  name                         String?
   manufacturer                 String
   model                        String
   vehicleType                  VehicleType

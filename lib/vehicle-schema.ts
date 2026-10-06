@@ -9,6 +9,7 @@ import {
 } from "@/app/generated/prisma/enums";
 
 export const vehicleInputSchema = z.object({
+  name: z.string().trim().min(1).max(80).nullable().optional(),
   manufacturer: z.string().min(1),
   model: z.string().min(1),
   vehicleType: z.enum(Object.values(VehicleType)),
