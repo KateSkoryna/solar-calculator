@@ -1,13 +1,15 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { LuChevronRight, LuSearch } from "react-icons/lu";
 import Card from "@/components/common/Card";
 import Text from "@/components/common/Text";
+import { useVehicleDisplayName } from "@/components/fleet/useVehicleDisplayName";
 import GroupStatusPill from "@/components/fleet/GroupStatusPill";
 import { useResultsFormatters } from "@/components/results/useResultsFormatters";
+import { shortCityName } from "@/lib/vehicle-display-name";
 import { FOCUS_RING_CLASSES } from "@/lib/focus-ring";
 import {
   isCalculatedWithCurrentAssumptions,
@@ -23,15 +25,12 @@ const VEHICLE_TYPE_MESSAGE_NAMESPACE = "calculator.options.vehicleType";
 const NO_VALUE = "—";
 const ROW_GRID_CLASSES =
   "lg:grid lg:grid-cols-[2fr_1fr_70px_1.2fr_1.3fr_1.2fr_1.3fr] lg:items-center lg:gap-4 lg:[&>span:not(:first-child)]:text-center";
-const ACTIONS_COLUMN_CLASSES = "lg:w-[300px] lg:shrink-0";
-const ACTIONS_HEADER_PADDING_CLASSES = "lg:pr-[316px]";
 
 interface VehicleGroupListProps {
   groups: FleetVehicleGroup[];
   currentAssumptionSetVersion: string;
   fleetPath: string;
   vehiclesPath: string;
-  renderActions?: (group: FleetVehicleGroup) => ReactNode;
 }
 
 export default function VehicleGroupList({
@@ -39,10 +38,10 @@ export default function VehicleGroupList({
   currentAssumptionSetVersion,
   fleetPath,
   vehiclesPath,
-  renderActions,
 }: VehicleGroupListProps) {
   const t = useTranslations("overview.groups");
   const tVehicleType = useTranslations(VEHICLE_TYPE_MESSAGE_NAMESPACE);
+  const displayName = useVehicleDisplayName();
   const { duration } = useResultsFormatters();
   const locale = useLocale();
   const format = useFormatter();
@@ -52,12 +51,11 @@ export default function VehicleGroupList({
     ? ""
     : searchText.trim().toLowerCase();
 
-  const visibleGroups = groups.filter(
-    ({ manufacturer, model, city, vehicleType }) =>
-      [manufacturer, model, city, tVehicleType(vehicleType)]
-        .join(" ")
-        .toLowerCase()
-        .includes(normalizedSearch),
+  const visibleGroups = groups.filter((group) =>
+    [displayName(group), group.city, tVehicleType(group.vehicleType)]
+      .join(" ")
+      .toLowerCase()
+      .includes(normalizedSearch),
   );
 
   const paybackLabel = (group: FleetVehicleGroup) => {
@@ -105,7 +103,7 @@ export default function VehicleGroupList({
     >
       <div
         aria-hidden="true"
-        className={`hidden border-b border-line pb-3 text-[13px] font-semibold text-muted ${ROW_GRID_CLASSES} ${renderActions ? ACTIONS_HEADER_PADDING_CLASSES : ""}`}
+        className={`hidden border-b border-line pb-3 text-[13px] font-semibold text-muted ${ROW_GRID_CLASSES}`}
       >
         <span>{t("columns.vehicle")}</span>
         <span>{t("columns.type")}</span>
@@ -130,19 +128,17 @@ export default function VehicleGroupList({
             const vehicleTypeLabel = tVehicleType(group.vehicleType);
 
             return (
-              <li
-                key={group.vehicleId}
-                className="mb-0 flex flex-col gap-2 lg:flex-row lg:items-center lg:gap-4 lg:border-b lg:border-line"
-              >
+              <li key={group.vehicleId} className="mb-0">
                 <Link
                   href={rowPath(group)}
-                  className={`relative flex flex-col gap-2 rounded-lg border border-line p-4 hover:bg-soft lg:min-w-0 lg:flex-1 lg:rounded-none lg:border-0 lg:px-0 lg:py-4 ${ROW_GRID_CLASSES} ${FOCUS_RING_CLASSES}`}
+                  className={`relative flex flex-col gap-2 rounded-lg border border-line p-4 hover:bg-soft lg:rounded-none lg:border-0 lg:border-b lg:px-0 lg:py-4 ${ROW_GRID_CLASSES} ${FOCUS_RING_CLASSES}`}
                 >
                   <span className="pr-8 font-semibold text-ink lg:pr-0">
-                    {group.manufacturer} {group.model}
+                    {displayName(group)}
                   </span>
                   <span className="text-sm text-muted lg:hidden">
-                    {vehicleTypeLabel} · {group.quantity} · {group.city}
+                    {vehicleTypeLabel} · {group.quantity} ·{" "}
+                    {shortCityName(group.city)}
                   </span>
                   <span className="hidden text-[15px] text-ink lg:block">
                     {vehicleTypeLabel}
@@ -151,7 +147,7 @@ export default function VehicleGroupList({
                     {new Intl.NumberFormat(locale).format(group.quantity)}
                   </span>
                   <span className="hidden text-[15px] text-ink lg:block">
-                    {group.city}
+                    {shortCityName(group.city)}
                   </span>
                   <span className="text-[15px] text-ink">
                     <span className="text-sm text-muted lg:hidden">
@@ -173,11 +169,6 @@ export default function VehicleGroupList({
                     className="absolute top-4 right-4 size-5 text-muted lg:hidden"
                   />
                 </Link>
-                {renderActions && (
-                  <div className={ACTIONS_COLUMN_CLASSES}>
-                    {renderActions(group)}
-                  </div>
-                )}
               </li>
             );
           })}

@@ -13,8 +13,11 @@ const statusMessages = englishMessages.overview.groups.status;
 function row(overrides: Partial<CalculationHistoryRow> = {}) {
   return {
     id: "calc_1",
+    name: null,
     manufacturer: "Ford",
     model: "Transit",
+    vehicleType: "VAN" as const,
+    city: "Berlin",
     quantity: 3,
     createdAt: new Date("2026-03-04T10:00:00Z"),
     assumptionSetVersion: CURRENT_VERSION,

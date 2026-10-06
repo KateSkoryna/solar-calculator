@@ -31,6 +31,7 @@ function calculation(overrides: Partial<GroupCalculation> = {}) {
 function group(overrides: Partial<FleetVehicleGroup> = {}): FleetVehicleGroup {
   return {
     vehicleId: "vehicle_1",
+    name: null,
     manufacturer: "Ford",
     model: "Transit",
     vehicleType: VehicleType.VAN,

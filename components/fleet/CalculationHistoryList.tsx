@@ -6,6 +6,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import { LuChevronRight } from "react-icons/lu";
 import DropdownChevron from "@/components/common/DropdownChevron";
 import Card from "@/components/common/Card";
+import { useVehicleDisplayName } from "@/components/fleet/useVehicleDisplayName";
 import GroupStatusPill from "@/components/fleet/GroupStatusPill";
 import { useResultsFormatters } from "@/components/results/useResultsFormatters";
 import {
@@ -41,6 +42,7 @@ export default function CalculationHistoryList({
   const tGroups = useTranslations("overview.groups");
   const format = useFormatter();
   const { duration } = useResultsFormatters();
+  const displayName = useVehicleDisplayName();
   const sortId = useId();
   const [sortOption, setSortOption] = useState<CalculationSortOption>(
     DEFAULT_CALCULATION_SORT,
@@ -119,7 +121,7 @@ export default function CalculationHistoryList({
               className={`relative flex flex-col gap-2 rounded-lg border border-line p-4 hover:bg-soft lg:rounded-none lg:border-0 lg:border-b lg:px-0 lg:py-4 ${ROW_GRID_CLASSES} ${FOCUS_RING_CLASSES}`}
             >
               <span className="pr-8 font-semibold text-ink lg:pr-0">
-                {row.manufacturer} {row.model}
+                {displayName(row)}
               </span>
               <span className="text-sm text-muted lg:text-[15px] lg:text-ink">
                 <span className="lg:hidden">{t("columns.count")}: </span>
