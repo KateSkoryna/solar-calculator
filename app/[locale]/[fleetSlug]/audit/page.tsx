@@ -2,7 +2,6 @@ import { notFound, redirect } from "next/navigation";
 import type { Session } from "next-auth";
 import { auth } from "@/auth";
 import Heading from "@/components/common/Heading";
-import Text from "@/components/common/Text";
 import TeamAndActivityView from "@/components/team/TeamAndActivityView";
 import { prisma } from "@/lib/prisma";
 import {
@@ -56,14 +55,9 @@ export default async function TeamAndActivityPage({
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-2">
-        <Text size="small" tone="muted">
-          {fleet.name}
-        </Text>
-        <Heading level={1} size="display-s">
-          {t("title")}
-        </Heading>
-      </div>
+      <Heading level={1} size="display-s">
+        {t("title")}
+      </Heading>
       <TeamAndActivityView
         fleetId={fleet.id}
         currentUserId={session.user.id}

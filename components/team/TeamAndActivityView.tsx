@@ -62,7 +62,7 @@ export default function TeamAndActivityView({
         </div>
       )}
 
-      <div className="grid items-start gap-6 lg:grid-cols-[400px_1fr]">
+      <div className="grid items-start gap-6 xl:grid-cols-[400px_1fr]">
         <div
           role={canSeeActivity ? "tabpanel" : undefined}
           id={TEAM_PANEL_ID}
