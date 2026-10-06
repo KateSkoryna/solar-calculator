@@ -367,6 +367,51 @@
     "cancel": "Cancel",
     "actionError": "We couldn't update the team. Please try again."
   },
+  "overview": {
+    "title": "Your fleet at a glance",
+    "addVehicles": "Add vehicles",
+    "loading": "Loading your fleet overview",
+    "kpis": {
+      "couldSave": "Could save per year",
+      "couldSaveNote": "if all calculated groups get panels",
+      "averagePayback": "Average payback",
+      "basedOn": "based on {count, plural, one {# calculated group} other {# calculated groups}}",
+      "withoutPayback": "{count, plural, one {# group never pays off and is left out} other {# groups never pay off and are left out}}",
+      "co2Avoided": "CO₂ avoided per year",
+      "co2Note": "from calculated groups",
+      "noneCalculated": "no calculated groups yet",
+      "vehicles": "Vehicles",
+      "inGroups": "in {count, plural, one {# group} other {# groups}}"
+    },
+    "groups": {
+      "title": "Vehicle groups",
+      "search": "Search vehicles",
+      "noMatch": "No vehicles match your search.",
+      "doesNotPayOff": "Does not pay off",
+      "columns": {
+        "vehicle": "Vehicle",
+        "type": "Type",
+        "count": "Count",
+        "location": "Location",
+        "paysOffIn": "Pays off in",
+        "status": "Status"
+      },
+      "status": {
+        "calculated": "Calculated",
+        "needsCalculation": "Needs calculation"
+      }
+    },
+    "empty": {
+      "title": "No vehicles yet",
+      "textForEditors": "Add your first vehicle to see what solar could save your fleet.",
+      "textForViewers": "Ask an owner or manager to add the first vehicle."
+    },
+    "error": {
+      "title": "We couldn't load your fleet overview",
+      "text": "Something went wrong on our side. Please try again.",
+      "retry": "Try again"
+    }
+  },
   "common": {
     "moreInfo": "More information"
   },
