@@ -12,7 +12,7 @@ import { ASSUMPTION_SET_V1 } from "@/lib/assumptions/v1";
 import { FLEET_EDITOR_ROLES } from "@/lib/fleet-auth";
 import { loadFleetCalculationHistory } from "@/lib/fleet-calculation-history";
 import { loadFleetPageAccess } from "@/lib/fleet-page-access";
-import { loginPath } from "@/lib/public-paths";
+import { calculatorPath, loginPath } from "@/lib/public-paths";
 import { fleetNewVehiclePath } from "@/lib/workspace-path";
 
 export default async function FleetCalculationsPage({
@@ -45,7 +45,7 @@ export default async function FleetCalculationsPage({
         </Heading>
         {canAddVehicles && rows.length > 0 && (
           <ButtonLink
-            href={fleetNewVehiclePath(locale, fleetSlug)}
+            href={calculatorPath(locale)}
             size="sm"
             icon={<LuPlus aria-hidden="true" className="size-4" />}
           >
