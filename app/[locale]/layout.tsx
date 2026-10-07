@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { SessionProvider } from "@/components/providers/SessionProvider";
 import { QueryProvider } from "@/components/providers/QueryProvider";
 import "../globals.css";
+import { PAGE_TOP_ID } from "@/lib/public-paths";
 import { isValidLocale } from "@/lib/utils";
 
 const bricolageGrotesque = Bricolage_Grotesque({
@@ -48,6 +49,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
+        id={PAGE_TOP_ID}
         className={`${bricolageGrotesque.variable} ${instrumentSans.variable} flex min-h-dvh flex-col`}
       >
         <SessionProvider>

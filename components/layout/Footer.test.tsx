@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react";
 import Footer from "./Footer";
+import { PAGE_TOP_ID } from "@/lib/public-paths";
 import {
   englishMessages,
   renderWithIntl,
@@ -10,8 +11,16 @@ describe("Footer", () => {
     renderWithIntl(<Footer />);
 
     expect(screen.getByRole("contentinfo")).toHaveTextContent(
-      `© ${new Date().getFullYear()} Solar Calculator`,
+      `© ${new Date().getFullYear()} Solar Calculator. All rights reserved.`,
     );
+  });
+
+  it("offers a way back to the top of the page", () => {
+    renderWithIntl(<Footer />);
+
+    expect(
+      screen.getByRole("link", { name: englishMessages.footer.backToTop }),
+    ).toHaveAttribute("href", `#${PAGE_TOP_ID}`);
   });
 
   it("links to the privacy and legal notice pages", () => {

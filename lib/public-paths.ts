@@ -1,3 +1,4 @@
+export const PAGE_TOP_ID = "top";
 export const HOW_IT_WORKS_SECTION_ID = "how-it-works";
 
 export function homePath(locale: string) {
