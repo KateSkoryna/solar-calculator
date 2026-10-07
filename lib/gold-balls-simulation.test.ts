@@ -2,6 +2,7 @@ import {
   BALL_COUNT,
   WANDERER_COUNT,
   GoldBallsSimulation,
+  motionScaleFor,
   type Bounds,
   type SunShape,
 } from "@/lib/gold-balls-simulation";
@@ -15,6 +16,8 @@ const SEED_SETTLED_FRAMES = 60 * 5.2;
 const MAX_SINGLE_BALL_RADIUS = 9;
 const JOINING_BALL_COUNT = BALL_COUNT - WANDERER_COUNT;
 const PHASE_TOLERANCE_PIXELS = 1;
+const MAX_SPEED_CHANGE_SHARE = 0.15;
+const SPEED_TOLERANCE = 40;
 
 function seededRandom(seed: number) {
   let state = seed;
@@ -192,5 +195,39 @@ describe("GoldBallsSimulation", () => {
       expect(ball.y).toBeGreaterThanOrEqual(0);
       expect(ball.y).toBeLessThanOrEqual(BOUNDS.height);
     }
+  });
+});
+
+describe("GoldBallsSimulation motion", () => {
+  it("eases into rolling instead of throwing the balls in new directions", () => {
+    const simulation = createSimulation();
+    let speedsBefore: number[] = [];
+    while (simulation.phase === "falling") {
+      speedsBefore = simulation.balls.map((ball) =>
+        Math.hypot(ball.vx, ball.vy),
+      );
+      simulation.step(FRAME_SECONDS);
+    }
+
+    expect(simulation.phase).toBe("rolling");
+    const ballsKeepingPace = simulation.balls.filter((ball, ballIndex) => {
+      const speedChange = Math.abs(
+        Math.hypot(ball.vx, ball.vy) - speedsBefore[ballIndex],
+      );
+      return (
+        speedChange <
+        speedsBefore[ballIndex] * MAX_SPEED_CHANGE_SHARE + SPEED_TOLERANCE
+      );
+    });
+    expect(ballsKeepingPace.length).toBeGreaterThan(BALL_COUNT * 0.8);
+    for (const ball of simulation.balls) {
+      expect(ball.rollSpeed).not.toBeNull();
+    }
+  });
+
+  it("moves faster in a panel larger than the reference size", () => {
+    expect(motionScaleFor(BOUNDS)).toBe(1);
+    expect(motionScaleFor({ width: 1440, height: 1040 })).toBe(1.5);
+    expect(motionScaleFor({ width: 4000, height: 4000 })).toBe(1.6);
   });
 });
