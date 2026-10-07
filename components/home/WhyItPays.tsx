@@ -40,7 +40,7 @@ export default function WhyItPays() {
         {VALUE_CARDS.map(({ key, Icon, emphasised }, cardIndex) => (
           <li
             key={key}
-            className={`mb-0 flex flex-col gap-3.5 rounded-2xl border p-6 text-left transition duration-200 hover:-translate-y-1 hover:shadow-hover xl:p-7 ${
+            className={`flex flex-col gap-3.5 rounded-2xl border p-6 text-left transition duration-200 hover:-translate-y-1 hover:shadow-hover xl:p-7 ${
               emphasised
                 ? "border-transparent bg-hero"
                 : "border-line bg-surface"
@@ -48,7 +48,9 @@ export default function WhyItPays() {
           >
             <span
               className={`flex size-13 items-center justify-center rounded-md ${
-                emphasised ? "bg-lime text-on-lime" : "bg-lime-soft text-lime-soft-ink"
+                emphasised
+                  ? "bg-lime text-on-lime"
+                  : "bg-lime-soft text-lime-soft-ink"
               }`}
             >
               <Icon aria-hidden="true" className="size-6.5" />

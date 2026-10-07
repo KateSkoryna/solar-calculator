@@ -45,7 +45,7 @@ function HeaderBar({ user }: HeaderBarProps) {
         <nav aria-label={t("mainNavigation")} className="hidden lg:block">
           <ul className="flex items-center gap-4 xl:gap-8">
             {navLinks.map(({ label, href }) => (
-              <li key={href} className="mb-0">
+              <li key={href}>
                 <Link
                   href={href}
                   className={`rounded-sm text-[13px] font-semibold whitespace-nowrap text-ink xl:text-[15px] hover:text-lime-soft-ink ${FOCUS_RING_CLASSES}`}

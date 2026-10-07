@@ -13,7 +13,7 @@ export const DEFAULT_STEPPER_MAXIMUM = 999;
 const WHOLE_NUMBER_PATTERN = /^\d+$/;
 const SUBMIT_KEY = "Enter";
 
-const STEPPER_BUTTON_CLASSES = `inline-flex size-14 shrink-0 items-center justify-center rounded-md border border-line-strong bg-surface text-ink hover:border-ink disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-line-strong ${FOCUS_RING_CLASSES}`;
+const STEPPER_BUTTON_CLASSES = `inline-flex size-14 shrink-0 cursor-pointer items-center justify-center rounded-md border border-line-strong bg-surface text-ink hover:border-ink disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-line-strong ${FOCUS_RING_CLASSES}`;
 
 interface NumberStepperProps {
   label: string;

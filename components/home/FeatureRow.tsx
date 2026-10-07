@@ -49,7 +49,7 @@ export default function FeatureRow({
         {points.length > 0 && (
           <ul className="flex list-none flex-col gap-3">
             {points.map((point) => (
-              <li key={point} className="mb-0 flex items-start gap-3">
+              <li key={point} className="flex items-start gap-3">
                 <LuCheck
                   aria-hidden="true"
                   className="mt-0.5 size-5 shrink-0 stroke-[2.5] text-lime-soft-ink"

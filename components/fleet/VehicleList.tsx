@@ -40,7 +40,7 @@ export default function VehicleList({
       </div>
       <ul className="m-0 flex list-none flex-col gap-3 p-0 lg:gap-0">
         {vehicles.map((vehicle) => (
-          <li key={vehicle.id} className="mb-0">
+          <li key={vehicle.id}>
             <div
               className={`flex flex-col gap-2 rounded-lg border border-line p-4 lg:rounded-none lg:border-0 lg:border-b lg:px-0 lg:py-4 ${ROW_GRID_CLASSES}`}
             >

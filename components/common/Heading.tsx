@@ -67,7 +67,7 @@ export default function Heading({
       ref={ref}
       id={id}
       tabIndex={tabIndex}
-      className={`mb-0 ${HEADING_SIZE_CLASSES[size]} ${TEXT_TONE_CLASSES[tone]} ${className}`}
+      className={`hyphens-auto wrap-break-word ${HEADING_SIZE_CLASSES[size]} ${TEXT_TONE_CLASSES[tone]} ${className}`}
     >
       {children}
     </HeadingTag>

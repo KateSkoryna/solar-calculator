@@ -86,7 +86,7 @@ export default function TeamCard({
         {members.map((member) => (
           <li
             key={member.userId}
-            className="mb-0 flex items-center gap-3 border-t border-line py-3 first:border-t-0 first:pt-0"
+            className="flex items-center gap-3 border-t border-line py-3 first:border-t-0 first:pt-0"
           >
             <Avatar
               name={userDisplayName(member)}
@@ -121,8 +121,10 @@ export default function TeamCard({
             <Text as="div" key={role} size="small" tone="muted">
               <dt className="inline font-semibold text-ink">
                 {tRoles(messageKey)}
+                <span aria-hidden="true" className="font-normal text-muted">
+                  {" — "}
+                </span>
               </dt>
-              {" — "}
               <dd className="inline">{t(`roleExplainer.${messageKey}`)}</dd>
             </Text>
           );

@@ -43,7 +43,7 @@ export default function Input({
         id={inputId}
         aria-invalid={error ? "true" : undefined}
         aria-describedby={describedBy}
-        className={`${compact ? "h-12 px-3" : "h-14 px-4"} w-full rounded-md border bg-surface text-base text-ink placeholder:text-muted focus:shadow-ring-selected focus:outline-none ${borderClasses} ${className}`}
+        className={`${compact ? "h-12 px-3" : "h-14 px-4"} w-full rounded-md border bg-surface text-base text-ink [appearance:textfield] placeholder:text-muted [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none focus:shadow-ring-selected focus:outline-none ${borderClasses} ${className}`}
       />
       {hint && <FieldHint id={hintId}>{hint}</FieldHint>}
       {error && <FieldError id={errorId}>{error}</FieldError>}

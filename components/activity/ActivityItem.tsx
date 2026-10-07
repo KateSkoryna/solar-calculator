@@ -40,7 +40,7 @@ export default function ActivityItem({ event, now }: ActivityItemProps) {
   });
 
   return (
-    <li className="mb-0 flex items-start gap-3 border-t border-line py-4 first:border-t-0 first:pt-0">
+    <li className="flex items-start gap-3 border-t border-line py-4 first:border-t-0 first:pt-0">
       <span
         aria-hidden="true"
         className="flex size-[34px] shrink-0 items-center justify-center rounded-sm bg-soft text-ink"

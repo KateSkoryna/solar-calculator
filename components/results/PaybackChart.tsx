@@ -110,7 +110,7 @@ export default function PaybackChart({ chart }: PaybackChartProps) {
           </div>
           <ul className="flex list-none flex-wrap gap-x-5 gap-y-2">
             {SCENARIO_KINDS.map((kind) => (
-              <li key={kind} className="mb-0 flex items-center gap-2">
+              <li key={kind} className="flex items-center gap-2">
                 <span
                   aria-hidden="true"
                   className={`w-6 ${LINE_STYLES[kind].legendClasses}`}
@@ -203,29 +203,31 @@ export default function PaybackChart({ chart }: PaybackChartProps) {
             {caption}
           </Text>
         </figcaption>
-        <table className="sr-only">
-          <caption>{t("tableCaption")}</caption>
-          <thead>
-            <tr>
-              <th scope="col">{t("tableYear")}</th>
-              {SCENARIO_KINDS.map((kind) => (
-                <th key={kind} scope="col">
-                  {t(`legend.${kind}`)}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {chart.points.map((point) => (
-              <tr key={point.year}>
-                <th scope="row">{t("tableYearRow", { year: point.year })}</th>
+        <div className="sr-only">
+          <table>
+            <caption>{t("tableCaption")}</caption>
+            <thead>
+              <tr>
+                <th scope="col">{t("tableYear")}</th>
                 {SCENARIO_KINDS.map((kind) => (
-                  <td key={kind}>{money(point[kind])}</td>
+                  <th key={kind} scope="col">
+                    {t(`legend.${kind}`)}
+                  </th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {chart.points.map((point) => (
+                <tr key={point.year}>
+                  <th scope="row">{t("tableYearRow", { year: point.year })}</th>
+                  {SCENARIO_KINDS.map((kind) => (
+                    <td key={kind}>{money(point[kind])}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </figure>
     </Card>
   );

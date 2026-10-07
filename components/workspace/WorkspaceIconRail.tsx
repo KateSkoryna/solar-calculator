@@ -20,7 +20,7 @@ export default function WorkspaceIconRail({
       <nav aria-label={t("mainNavigation")} className="w-full px-2">
         <ul className="flex list-none flex-col gap-1">
           {navLinks.map(({ key, label, href, Icon, isCurrent }) => (
-            <li key={key} className="mb-0">
+            <li key={key}>
               <Link
                 href={href}
                 aria-current={isCurrent ? "page" : undefined}

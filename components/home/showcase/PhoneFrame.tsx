@@ -34,7 +34,7 @@ export default function PhoneFrame({
         <div className="-mx-3.5 flex items-center justify-between border-b border-line px-3.5 pb-2.5">
           <Logo className="origin-left scale-[0.82]" />
           <span className="flex size-9 items-center justify-center rounded-full border border-line-strong bg-surface">
-            <LuMenu className="size-4" />
+            <LuMenu aria-hidden="true" className="size-4" />
           </span>
         </div>
         {children}

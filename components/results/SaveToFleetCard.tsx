@@ -109,12 +109,12 @@ export default function SaveToFleetCard({
       {usedTypicalValues && (
         <>
           <Text className="!text-lime-soft-ink">{t("presetIntro")}</Text>
-          <ul className="flex flex-col gap-1 pl-1">
+          <ul className="flex list-inside list-disc flex-col gap-1 pl-1">
             {typicalValueInputs.map((inputKey) => (
               <Text
                 key={inputKey}
                 as="li"
-                className="mb-0 font-semibold !text-lime-soft-ink"
+                className="font-semibold !text-lime-soft-ink"
               >
                 {translateInput(inputKey)}
               </Text>

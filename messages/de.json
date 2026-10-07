@@ -330,7 +330,7 @@
   "auth": {
     "genericError": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
     "signingIn": "Anmeldung läuft...",
-    "oauthAccountNotLinked": "Diese E-Mail-Adresse ist bereits mit einer anderen Anmeldemethode registriert. Nutze stattdessen den Anmeldelink, der an diese Adresse gesendet wird.",
+    "oauthAccountNotLinked": "Diese E-Mail-Adresse ist bereits mit einer anderen Anmeldemethode registriert. Nutzen Sie stattdessen den Anmeldelink, der an diese Adresse gesendet wird.",
     "linkExpiredOrUsed": "Dieser Link ist abgelaufen oder wurde bereits verwendet. Senden Sie einen neuen.",
     "emailSignInFailed": "Wir konnten den Anmeldelink gerade nicht senden. Bitte versuchen Sie es später erneut oder melden Sie sich mit Google an.",
     "loading": "Wird geladen..."
@@ -511,12 +511,12 @@
     "differentEmail": "Andere E-Mail verwenden"
   },
   "signInEmail": {
-    "subject": "Dein Anmeldelink für SunFleet",
-    "intro": "Nutze den folgenden Link, um dich bei SunFleet anzumelden.",
+    "subject": "Ihr Anmeldelink für SunFleet",
+    "intro": "Nutzen Sie den folgenden Link, um sich bei SunFleet anzumelden.",
     "button": "Anmelden",
     "expiry": "Dieser Link funktioniert nur einmal und läuft in {minutes} Minuten ab.",
-    "ignore": "Wenn du diese E-Mail nicht angefordert hast, kannst du sie ignorieren.",
-    "fallback": "Falls die Schaltfläche nicht funktioniert, kopiere diesen Link in deinen Browser:"
+    "ignore": "Wenn Sie diese E-Mail nicht angefordert haben, können Sie sie ignorieren.",
+    "fallback": "Falls die Schaltfläche nicht funktioniert, kopieren Sie diesen Link in Ihren Browser:"
   },
   "onboarding": {
     "title": "Richten Sie Ihren Arbeitsbereich ein",
@@ -841,8 +841,8 @@
       "title": "{vehicle} bearbeiten",
       "save": "Änderungen speichern",
       "cancel": "Abbrechen",
-      "saveFailed": "Wir konnten deine Änderungen nicht speichern. Bitte versuche es erneut.",
-      "fieldError": "Bitte prüfe diesen Wert",
+      "saveFailed": "Wir konnten Ihre Änderungen nicht speichern. Bitte versuchen Sie es erneut.",
+      "fieldError": "Bitte prüfen Sie diesen Wert",
       "noCoolingUnit": "Keine",
       "groups": {
         "vehicle": "Fahrzeug",
@@ -873,24 +873,24 @@
       },
       "delete": {
         "button": "Fahrzeuge löschen",
-        "failed": "Das hat nicht geklappt. Bitte versuche es erneut.",
+        "failed": "Das hat nicht geklappt. Bitte versuchen Sie es erneut.",
         "confirmTitle": "{vehicle} löschen?",
-        "confirmText": "Die Gruppe verschwindet aus deinen Listen. Frühere Berechnungen bleiben im Aktivitätsverlauf.",
+        "confirmText": "Die Gruppe verschwindet aus Ihren Listen. Frühere Berechnungen bleiben im Aktivitätsverlauf.",
         "confirm": "Löschen",
         "cancel": "Abbrechen"
       },
       "technical": {
         "summary": "Technische Details",
-        "text": "Wir haben diese Werte mit typischen Angaben für diesen Fahrzeugtyp vorbelegt, du musst sie also nicht kennen. Ändere sie nur, wenn du die genauen Werte hast."
+        "text": "Wir haben diese Werte mit typischen Angaben für diesen Fahrzeugtyp vorbelegt, Sie müssen sie also nicht kennen. Ändern Sie sie nur, wenn Sie die genauen Werte haben."
       },
       "saveAndRecalculate": "Speichern und neu berechnen",
-      "recalculationFailed": "Wir konnten das neue Ergebnis nicht berechnen. Deine Änderungen sind gespeichert; du kannst hier erneut berechnen.",
-      "saveNote": "Beim Speichern ändern sich bestehende Ergebnisse nicht. Berechne neu, um ein neues Ergebnis für die geänderten Daten zu erhalten; das alte bleibt im Berechnungsverlauf.",
-      "invalidFields": "Einige Werte sind ungültig. Bitte prüfe die unten markierten Felder."
+      "recalculationFailed": "Wir konnten das neue Ergebnis nicht berechnen. Ihre Änderungen sind gespeichert; Sie können hier erneut berechnen.",
+      "saveNote": "Beim Speichern ändern sich bestehende Ergebnisse nicht. Berechnen Sie neu, um ein neues Ergebnis für die geänderten Daten zu erhalten; das alte bleibt im Berechnungsverlauf.",
+      "invalidFields": "Einige Werte sind ungültig. Bitte prüfen Sie die unten markierten Felder."
     },
     "error": {
-      "title": "Wir konnten deine Fahrzeuge nicht laden",
-      "text": "Auf unserer Seite ist etwas schiefgelaufen. Bitte versuche es erneut.",
+      "title": "Wir konnten Ihre Fahrzeuge nicht laden",
+      "text": "Auf unserer Seite ist etwas schiefgelaufen. Bitte versuchen Sie es erneut.",
       "retry": "Erneut versuchen"
     },
     "list": {
@@ -927,12 +927,12 @@
     },
     "empty": {
       "title": "Noch keine Berechnungen",
-      "textForEditors": "Füge ein Fahrzeug hinzu, um deine erste Berechnung zu starten.",
-      "textForViewers": "Bitte einen Eigentümer oder Manager, die erste Berechnung zu starten."
+      "textForEditors": "Fügen Sie ein Fahrzeug hinzu, um Ihre erste Berechnung zu starten.",
+      "textForViewers": "Bitten Sie einen Inhaber oder Manager, die erste Berechnung zu starten."
     },
     "error": {
-      "title": "Wir konnten deine Berechnungen nicht laden",
-      "text": "Auf unserer Seite ist etwas schiefgelaufen. Bitte versuche es erneut.",
+      "title": "Wir konnten Ihre Berechnungen nicht laden",
+      "text": "Auf unserer Seite ist etwas schiefgelaufen. Bitte versuchen Sie es erneut.",
       "retry": "Erneut versuchen"
     },
     "new": "Neue Berechnung"

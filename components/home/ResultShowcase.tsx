@@ -70,7 +70,7 @@ export default function ResultShowcase() {
             className={`top-[calc(23%-16px)] -right-8 max-w-60 ${SCROLL_REVEAL_CLASSES.fromRight} ${SCROLL_STAGGER_CLASSES[3]}`}
           >
             <span className="flex items-center gap-2.5">
-              <LuLink className="size-5 shrink-0" />
+              <LuLink aria-hidden="true" className="size-5 shrink-0" />
               <span className="text-sm font-semibold">
                 {t("home.result.share")}
               </span>

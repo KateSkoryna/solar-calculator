@@ -94,7 +94,7 @@ export default function CalculationHistoryList({
             onChange={(event) =>
               setSortOption(event.target.value as CalculationSortOption)
             }
-            className="h-10 appearance-none rounded-full border border-line-strong bg-surface pr-10 pl-4 text-sm font-semibold text-ink focus:border-ink focus:outline-none"
+            className="h-10 w-full appearance-none rounded-full border border-line-strong bg-surface pr-10 pl-4 text-sm font-semibold text-ink focus:border-ink focus:outline-none"
           >
             {CALCULATION_SORT_OPTIONS.map((option) => (
               <option key={option} value={option}>
@@ -121,7 +121,7 @@ export default function CalculationHistoryList({
       </div>
       <ul className="m-0 flex list-none flex-col gap-3 p-0 lg:gap-0">
         {sortedRows.map((row) => (
-          <li key={row.id} className="mb-0">
+          <li key={row.id}>
             <Link
               href={fleetCalculationPath(locale, fleetSlug, row.id)}
               className={`relative flex flex-col gap-2 rounded-lg border border-line p-4 hover:bg-soft lg:rounded-none lg:border-0 lg:border-b lg:px-0 lg:py-4 ${ROW_GRID_CLASSES} ${FOCUS_RING_CLASSES}`}

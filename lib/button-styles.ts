@@ -18,7 +18,7 @@ export const DEFAULT_BUTTON_VARIANT: ButtonVariant = "primary";
 export const DEFAULT_BUTTON_SIZE: ButtonSize = "md";
 
 const BUTTON_BASE_CLASSES =
-  "inline-flex items-center justify-center rounded-full border font-body font-semibold transition duration-200 ease-standard active:translate-y-0";
+  "inline-flex cursor-pointer items-center justify-center rounded-full border font-body font-semibold transition duration-200 ease-standard active:translate-y-0";
 
 const BUTTON_VARIANT_CLASSES: Record<ButtonVariant, string> = {
   primary:

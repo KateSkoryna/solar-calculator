@@ -45,7 +45,7 @@ export default function AuthShell({ children }: AuthShellProps) {
                 as="li"
                 size="body"
                 tone="on-dark-muted"
-                className="mb-0 flex items-center gap-2.5"
+                className="flex items-center gap-2.5"
               >
                 <LuCheck
                   aria-hidden="true"

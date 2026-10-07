@@ -24,7 +24,7 @@ describe("buildSignInEmail", () => {
       signInUrlWithCallback("https://solar.example.com/de/user"),
     );
 
-    expect(email.subject).toBe("Dein Anmeldelink für SunFleet");
+    expect(email.subject).toBe("Ihr Anmeldelink für SunFleet");
   });
 
   it("mentions the 15 minute lifetime", async () => {

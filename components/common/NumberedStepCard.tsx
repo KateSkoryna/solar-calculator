@@ -16,7 +16,7 @@ export default function NumberedStepCard({
 }: NumberedStepCardProps) {
   return (
     <li
-      className={`mb-0 flex gap-4 rounded-lg border border-line bg-surface p-5 transition duration-200 hover:-translate-y-0.5 hover:shadow-hover lg:flex-col lg:p-8 ${className}`}
+      className={`flex gap-4 rounded-lg border border-line bg-surface p-5 transition duration-200 hover:-translate-y-0.5 hover:shadow-hover lg:flex-col lg:p-8 ${className}`}
     >
       <span
         aria-hidden="true"

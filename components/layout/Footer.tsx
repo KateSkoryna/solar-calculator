@@ -23,13 +23,13 @@ export default function Footer() {
         <nav aria-label={t("legalNavigation")}>
           <ul className="flex list-none flex-wrap justify-center gap-x-8 gap-y-2 md:justify-start">
             {legalLinks.map(({ label, href }) => (
-              <li key={href} className="mb-0 text-muted">
+              <li key={href} className="text-muted">
                 <Link href={href} className={FOOTER_LINK_CLASSES}>
                   {label}
                 </Link>
               </li>
             ))}
-            <li className="mb-0 text-muted">
+            <li className="text-muted">
               <a
                 href={`#${PAGE_TOP_ID}`}
                 className={`inline-flex items-center gap-1.5 ${FOOTER_LINK_CLASSES}`}

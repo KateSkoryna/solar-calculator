@@ -50,13 +50,13 @@ export default function LanguageSwitcher({
         className={`absolute z-50 flex min-w-40 list-none flex-col gap-1 rounded-md border border-line bg-surface p-2 shadow-hover ${menuPositionClasses}`}
       >
         {locales.map((locale) => (
-          <li key={locale} className="mb-0">
+          <li key={locale}>
             <button
               type="button"
               lang={locale}
               aria-current={currentLocale === locale ? "true" : undefined}
               onClick={() => switchLocale(locale)}
-              className={`w-full justify-start rounded-sm px-3 py-2 text-left text-sm font-semibold text-ink hover:bg-soft aria-[current]:bg-soft ${FOCUS_RING_CLASSES}`}
+              className={`flex w-full cursor-pointer justify-start rounded-sm px-3 py-2 text-left text-sm font-semibold text-ink hover:bg-soft aria-[current]:bg-soft ${FOCUS_RING_CLASSES}`}
             >
               {t(locale)}
             </button>

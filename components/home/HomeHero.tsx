@@ -73,7 +73,7 @@ export default function HomeHero() {
             <FloatingCard className="bottom-[8%] -left-8 animate-float">
               <span className="flex items-center gap-3">
                 <span className="flex size-10 items-center justify-center rounded-md bg-lime-soft text-lime-soft-ink">
-                  <LuTrendingUp className="size-5" />
+                  <LuTrendingUp aria-hidden="true" className="size-5" />
                 </span>
                 <span className="flex flex-col gap-0.5">
                   <Text as="span" size="caption" tone="muted">

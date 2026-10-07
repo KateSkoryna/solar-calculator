@@ -2133,6 +2133,39 @@ The mock screens size everything in container query units (`cqw`), so a screen s
 </div>
 ```
 
+### Auditing accessibility with axe (WCAG 2.2 AA)
+
+WCAG 2.2 AA is the set of rules a screen must meet to be usable with a keyboard, a screen reader or low vision. axe is a rule engine that checks a rendered page against the part of those rules a machine can judge: missing labels, buttons without a name, invalid ARIA, broken list and heading structure. `jest-axe` runs it inside a Jest test, so a regression fails the test run. Here it lives on the `lab-accessibility-audit` branch and is rerun on demand instead of on every change. It cannot judge contrast or keyboard order in jsdom, so those stay on the "check in the browser" list in the design guidelines.
+
+```ts
+const axe = configureAxe({ rules: { region: { enabled: false } } });
+
+export async function expectNoAxeViolations(container: HTMLElement) {
+  expect(await axe(container)).toHaveNoViolations();
+}
+```
+
+Components are rendered as fragments, so the page-level `region` rule is switched off. Pages that need a heading get one rendered above the component, the way the real page does. The first run found a real bug: the role list in the team card put a loose " — " text node directly inside a `<dl>`, which is invalid. The dash moved into the `<dt>`.
+
+### Translation length expansion
+
+German runs about 30% longer than English and Spanish about 20%. A button, tab or card sized for the English word breaks in the other languages, so no text container has a fixed width and cards are allowed to wrap. The copy review also checks consistency inside one language: the German messages mixed the formal "Sie" with an informal "du" in the vehicle and calculation screens and in the sign-in email, and all of it now uses "Sie":
+
+```json
+"intro": "Nutzen Sie den folgenden Link, um sich bei SunFleet anzumelden."
+```
+
+### Removing global CSS that fights utilities
+
+A global rule such as `li { margin-bottom: 0.5rem }` or `button { font-weight: 600 }` sits under every utility class, so each component that wants something else has to cancel it first. That is why a dozen list items carried `mb-0`. Removing the global rules leaves Tailwind's own reset as the only baseline, and each element states what it needs. What the old rules used to supply moved into the component that depended on it, for example the pointer cursor on buttons:
+
+```ts
+const BUTTON_BASE_CLASSES =
+  "inline-flex cursor-pointer items-center justify-center rounded-full border font-body font-semibold transition duration-200 ease-standard active:translate-y-0";
+```
+
+`globals.css` now holds the design tokens, the keyframes, the reduced-motion rule, `box-sizing` and the `body` colours and font.
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit
