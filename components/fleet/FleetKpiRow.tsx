@@ -1,10 +1,10 @@
 import { useFormatter, useTranslations } from "next-intl";
 import StatTile from "@/components/results/StatTile";
+import { KILOGRAMS_PER_TONNE } from "@/lib/calculation-engine/constants";
 import { useResultsFormatters } from "@/components/results/useResultsFormatters";
 import type { FleetKpis } from "@/lib/fleet-dashboard";
 import { humaniseDuration, type DurationParts } from "@/lib/results-view-model";
 
-const KILOGRAMS_PER_TONNE = 1000;
 const NO_VALUE = "—";
 const NON_BREAKING_SPACE = "\u00a0";
 

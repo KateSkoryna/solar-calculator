@@ -2,12 +2,11 @@ import { ASSUMPTION_SET_V1 } from "@/lib/assumptions/v1";
 import { calculate } from "@/lib/calculation-engine";
 import {
   CENTS_PER_EURO,
+  KILOGRAMS_PER_TONNE,
   MONTHS_PER_YEAR,
 } from "@/lib/calculation-engine/constants";
 import { quickCheckToCalculationInput } from "@/lib/quick-check-mapping";
 import type { QuickCheckAnswers } from "@/lib/quick-check-schema";
-
-const KILOGRAMS_PER_TONNE = 1000;
 
 export const HOME_EXAMPLE_QUICK_CHECK: QuickCheckAnswers = {
   vehicleType: "VAN",
