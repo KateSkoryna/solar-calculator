@@ -1,4 +1,4 @@
-# Solar Calculator for Commercial Vehicles
+# SunFleet – Solar Payback Calculator for Commercial Fleets
 
 A multi-tenant web app that helps commercial fleet operators (buses, trucks, vans, trailers) evaluate solar panel investments — plus the fleet management, authorization, and vehicle/calculation domain model behind it.
 
@@ -94,7 +94,7 @@ The calculator's multi-step form UI exists on the frontend but is not yet wired 
    EMAIL_SERVER_PORT="465"
    EMAIL_SERVER_USER="<gmail address>"
    EMAIL_SERVER_PASSWORD="<gmail app password>"
-   EMAIL_FROM="Solar Calculator <gmail address>"
+   EMAIL_FROM="SunFleet <gmail address>"
    ```
 
    The email variables are listed in `.env.example`. Without `EMAIL_SERVER_PASSWORD` in development, sign-in links are printed in the terminal instead of being emailed. Add `http://localhost:3002/api/auth/callback/google` as an authorised redirect URI in your Google OAuth client.

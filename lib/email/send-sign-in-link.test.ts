@@ -60,7 +60,7 @@ describe("sendSignInLink daily limit", () => {
     expect(mockedSendEmail).toHaveBeenCalledWith(
       expect.objectContaining({
         to: "user-0@example.com",
-        subject: "Your sign-in link for Solar Calculator",
+        subject: "Your sign-in link for SunFleet",
       }),
     );
   });

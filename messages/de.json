@@ -18,7 +18,7 @@
     "whyItPays": {
       "eyebrow": "Warum es sich für Unternehmen lohnt",
       "title": "Eine Wirtschaftlichkeitsrechnung für Fahrzeug-Solar, kein Verkaufsgespräch.",
-      "lead": "Flottenverantwortliche brauchen eine Zahl, die sie in der Budgetrunde vertreten können. Der Solarrechner liefert diese Zahl und zeigt, woher sie stammt.",
+      "lead": "Flottenverantwortliche brauchen eine Zahl, die sie in der Budgetrunde vertreten können. SunFleet liefert diese Zahl und zeigt, woher sie stammt.",
       "costsTitle": "Niedrigere Betriebskosten",
       "costsBody": "Sehen Sie, wie viel Kraftstoff und Strom die Module pro Jahr ersetzen: beim Fahren, im Leerlauf und bei Kühlaggregaten.",
       "paybackTitle": "Ein klares Amortisationsdatum",
@@ -299,7 +299,7 @@
     "logout": "Abmelden"
   },
   "header": {
-    "title": "Solarrechner",
+    "title": "SunFleet",
     "calculator": "Rechner",
     "about": "Über uns",
     "howItWorks": "So funktioniert es",
@@ -316,7 +316,7 @@
     "product": "Produkt"
   },
   "footer": {
-    "copyright": "© {currentYear} Solarrechner. Alle Rechte vorbehalten.",
+    "copyright": "© {currentYear} SunFleet. Alle Rechte vorbehalten.",
     "privacy": "Datenschutz",
     "legalNotice": "Impressum",
     "legalNavigation": "Rechtliches",
@@ -511,8 +511,8 @@
     "differentEmail": "Andere E-Mail verwenden"
   },
   "signInEmail": {
-    "subject": "Dein Anmeldelink für Solar Calculator",
-    "intro": "Nutze den folgenden Link, um dich bei Solar Calculator anzumelden.",
+    "subject": "Dein Anmeldelink für SunFleet",
+    "intro": "Nutze den folgenden Link, um dich bei SunFleet anzumelden.",
     "button": "Anmelden",
     "expiry": "Dieser Link funktioniert nur einmal und läuft in {minutes} Minuten ab.",
     "ignore": "Wenn du diese E-Mail nicht angefordert hast, kannst du sie ignorieren.",
@@ -600,7 +600,7 @@
   },
   "privacyPage": {
     "title": "Datenschutz",
-    "intro": "Diese Seite erklärt in einfachen Worten, welche personenbezogenen Daten der Solarrechner speichert und warum.",
+    "intro": "Diese Seite erklärt in einfachen Worten, welche personenbezogenen Daten SunFleet speichert und warum.",
     "sections": {
       "calculator": {
         "title": "Rechner ohne Konto nutzen",
@@ -650,7 +650,7 @@
       },
       "purpose": {
         "title": "Über diese Website",
-        "body": "Der Solarrechner ist ein privates, nicht kommerzielles Portfolio-Projekt."
+        "body": "SunFleet ist ein privates, nicht kommerzielles Portfolio-Projekt."
       },
       "liability": {
         "title": "Schätzungen, keine Angebote",

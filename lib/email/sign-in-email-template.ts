@@ -11,7 +11,7 @@ const EMAIL_COLORS = {
 const EMAIL_FONT_STACK =
   "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif";
 
-const BRAND_NAME = "Solar Calculator";
+const BRAND_NAME = "SunFleet";
 
 export interface SignInEmailTemplateContent {
   locale: string;

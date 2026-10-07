@@ -13,7 +13,7 @@ import {
 } from "@/lib/results-view-model";
 
 export const SHOWCASE_FLEET_NAME = "Nordwind Logistics";
-export const SHOWCASE_FLEET_ADDRESS = "solar-calculator.app/nordwind/overview";
+export const SHOWCASE_FLEET_ADDRESS = "sunfleet.example/nordwind/overview";
 
 const SHOWCASE_CALCULATED_AT = new Date("2026-01-15T09:00:00Z");
 
