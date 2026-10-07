@@ -18,7 +18,7 @@
     "whyItPays": {
       "eyebrow": "Por qué compensa a las empresas",
       "title": "Un análisis de rentabilidad de la solar para vehículos, no un discurso de ventas.",
-      "lead": "Quien gestiona una flota necesita una cifra que pueda defender en una reunión de presupuesto. Calculadora Solar te da esa cifra y te enseña de dónde sale.",
+      "lead": "Quien gestiona una flota necesita una cifra que pueda defender en una reunión de presupuesto. SunFleet te da esa cifra y te enseña de dónde sale.",
       "costsTitle": "Menos costes de operación",
       "costsBody": "Consulta cuánto combustible y electricidad sustituyen los paneles cada año: al circular, al ralentí y en los equipos de frío.",
       "paybackTitle": "Una fecha de amortización clara",
@@ -299,7 +299,7 @@
     "logout": "Cerrar Sesión"
   },
   "header": {
-    "title": "Calculadora Solar",
+    "title": "SunFleet",
     "calculator": "Calculadora",
     "about": "Acerca de",
     "howItWorks": "Cómo funciona",
@@ -316,7 +316,7 @@
     "product": "Producto"
   },
   "footer": {
-    "copyright": "© {currentYear} Calculadora Solar. Todos los derechos reservados.",
+    "copyright": "© {currentYear} SunFleet. Todos los derechos reservados.",
     "privacy": "Privacidad",
     "legalNotice": "Aviso legal",
     "legalNavigation": "Información legal",
@@ -511,8 +511,8 @@
     "differentEmail": "Usar otro correo"
   },
   "signInEmail": {
-    "subject": "Tu enlace de acceso a Solar Calculator",
-    "intro": "Usa el siguiente enlace para acceder a Solar Calculator.",
+    "subject": "Tu enlace de acceso a SunFleet",
+    "intro": "Usa el siguiente enlace para acceder a SunFleet.",
     "button": "Acceder",
     "expiry": "Este enlace solo funciona una vez y caduca en {minutes} minutos.",
     "ignore": "Si no has solicitado este correo, puedes ignorarlo.",
@@ -600,7 +600,7 @@
   },
   "privacyPage": {
     "title": "Privacidad",
-    "intro": "Esta página explica con palabras sencillas qué datos personales guarda la Calculadora Solar y por qué.",
+    "intro": "Esta página explica con palabras sencillas qué datos personales guarda SunFleet y por qué.",
     "sections": {
       "calculator": {
         "title": "Usar la calculadora sin cuenta",
@@ -650,7 +650,7 @@
       },
       "purpose": {
         "title": "Sobre este sitio web",
-        "body": "La Calculadora Solar es un proyecto de portafolio privado y sin ánimo de lucro."
+        "body": "SunFleet es un proyecto de portafolio privado y sin ánimo de lucro."
       },
       "liability": {
         "title": "Estimaciones, no presupuestos",

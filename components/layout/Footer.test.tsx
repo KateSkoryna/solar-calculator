@@ -11,7 +11,7 @@ describe("Footer", () => {
     renderWithIntl(<Footer />);
 
     expect(screen.getByRole("contentinfo")).toHaveTextContent(
-      `© ${new Date().getFullYear()} Solar Calculator. All rights reserved.`,
+      `© ${new Date().getFullYear()} SunFleet. All rights reserved.`,
     );
   });
 

@@ -210,7 +210,7 @@ Flat by default: borders (`line`) do the separation. Shadows only for:
 - **Style:** stroke only, 1.5 px (large, ≥32 px) or 2 px (≤24 px), round caps and joins, `currentColor`.
 - **Sizes:** 16 (inline meta), 18–20 (buttons, nav), 22 (tab bar), 36–44 (choice cards).
 - **Never** use emoji as icons. Icon-only buttons MUST have `aria-label`.
-- **Logo (placeholder):** a plain circle mark — a `forest` circle with a smaller centred `sun` (gold) circle, no rays — plus "Solar Calculator" in Display 700. On dark panels the outer circle uses `ground` at low opacity so it stays visible. **The owner will replace this mark with a custom image later**, so it lives only in the one `Logo` component (`components/common/Logo.tsx`) and is never redrawn elsewhere. The sun-with-rays mark on the canvas is retired.
+- **Logo (placeholder):** a plain circle mark — a `forest` circle with a smaller centred `sun` (gold) circle, no rays — plus "SunFleet" in Display 700. On dark panels the outer circle uses `ground` at low opacity so it stays visible. **The owner will replace this mark with a custom image later**, so it lives only in the one `Logo` component (`components/common/Logo.tsx`) and is never redrawn elsewhere. The sun-with-rays mark on the canvas is retired.
 
 ### 4.7 Illustration
 
@@ -491,7 +491,7 @@ Each screen lists route, purpose, content order per breakpoint, states and inter
 3. Example panel: forest panel with the brand illustration (gold circle placeholder, 4.7); white floating card: "Example · 10 delivery vans · Berlin" + Sample badge, "Pays off in [X] years" (`display` 800), 3 mini stats (Saved per year, CO₂ avoided, Fuel saved) on `ground` tiles. Values MUST come from a real pre-computed example calculation or remain placeholders; never invent them.
 4. "How it works": 3 numbered cards (1 Tell us about your vehicles, 2 Say where they operate, 3 Get a clear answer).
 5. "Built for" dark band: Delivery & logistics, Public transport, Refrigerated transport (lime line icons).
-6. Footer: "© {year} Solar Calculator" + "Independent · Estimates, not quotes".
+6. Footer: "© {year} SunFleet" + "Independent · Estimates, not quotes".
 
 |              | Desktop                                                 | Tablet                                           | Mobile                                                                               |
 | ------------ | ------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------ |

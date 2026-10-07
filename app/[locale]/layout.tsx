@@ -25,8 +25,9 @@ const instrumentSans = Instrument_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Solar Calculator for Commercial Vehicles",
-  description: "Calculate your solar panel ROI and environmental impact",
+  title: "SunFleet – Solar Payback Calculator for Commercial Fleets",
+  description:
+    "Find out if solar panels pay off for your vans, trucks, trailers and buses: payback time, yearly savings and avoided CO₂.",
 };
 
 export default async function LocaleLayout({

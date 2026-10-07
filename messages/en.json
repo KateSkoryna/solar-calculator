@@ -18,7 +18,7 @@
     "whyItPays": {
       "eyebrow": "Why it pays for companies",
       "title": "A business case for vehicle solar, not a sales pitch.",
-      "lead": "Fleet managers need a number they can defend in a budget meeting. Solar Calculator gives you that number and shows where it comes from.",
+      "lead": "Fleet managers need a number they can defend in a budget meeting. SunFleet gives you that number and shows where it comes from.",
       "costsTitle": "Lower running costs",
       "costsBody": "See how much fuel and electricity the panels replace each year, for driving, idling and cooling units.",
       "paybackTitle": "A clear payback date",
@@ -299,7 +299,7 @@
     "logout": "Logout"
   },
   "header": {
-    "title": "Solar Calculator",
+    "title": "SunFleet",
     "calculator": "Calculator",
     "about": "About",
     "howItWorks": "How it works",
@@ -316,7 +316,7 @@
     "product": "Product"
   },
   "footer": {
-    "copyright": "© {currentYear} Solar Calculator. All rights reserved.",
+    "copyright": "© {currentYear} SunFleet. All rights reserved.",
     "privacy": "Privacy",
     "legalNotice": "Legal notice",
     "legalNavigation": "Legal",
@@ -511,8 +511,8 @@
     "differentEmail": "Use a different email"
   },
   "signInEmail": {
-    "subject": "Your sign-in link for Solar Calculator",
-    "intro": "Use the link below to sign in to Solar Calculator.",
+    "subject": "Your sign-in link for SunFleet",
+    "intro": "Use the link below to sign in to SunFleet.",
     "button": "Sign in",
     "expiry": "This link works once and expires in {minutes} minutes.",
     "ignore": "If you didn't ask for this email, you can ignore it.",
@@ -600,7 +600,7 @@
   },
   "privacyPage": {
     "title": "Privacy",
-    "intro": "This page explains in plain words which personal data Solar Calculator stores and why.",
+    "intro": "This page explains in plain words which personal data SunFleet stores and why.",
     "sections": {
       "calculator": {
         "title": "Using the calculator without an account",
@@ -650,7 +650,7 @@
       },
       "purpose": {
         "title": "About this website",
-        "body": "Solar Calculator is a private, non-commercial portfolio project."
+        "body": "SunFleet is a private, non-commercial portfolio project."
       },
       "liability": {
         "title": "Estimates, not quotes",
