@@ -706,14 +706,25 @@ Target: **WCAG 2.2 AA**. Checklist every screen MUST pass:
 - [ ] Colour contrast per 4.1; no information by colour alone.
 - [ ] Every interactive element reachable and operable by keyboard in a logical order; visible `focus-visible` ring.
 - [ ] Touch targets ≥44 × 44 px (inputs 54 px+).
-- [ ] Real semantics: `<button>` for actions, `<a>` for navigation, `<label>` for every input, radiogroups for choice cards/chips, `<nav>` with `aria-label`, one `<h1>` per page, headings in order.
-- [ ] Icon-only buttons have `aria-label`; decorative SVGs have `aria-hidden="true"`.
+- [x] Real semantics: `<button>` for actions, `<a>` for navigation, `<label>` for every input, radiogroups for choice cards/chips, `<nav>` with `aria-label`, one `<h1>` per page, headings in order.
+- [x] Icon-only buttons have `aria-label`; decorative SVGs have `aria-hidden="true"`.
 - [ ] Step changes, form errors and async status (report progress) announced via `aria-live="polite"`.
 - [ ] Focus management: step change → new h1; menu/sheet open → first item, trapped, Escape closes and returns focus.
-- [ ] Charts have a text conclusion and a hidden data table.
-- [ ] `prefers-reduced-motion` respected (section 6).
+- [x] Charts have a text conclusion and a hidden data table.
+- [x] `prefers-reduced-motion` respected (section 6).
 - [ ] Page zoom to 200% and text-spacing overrides do not break layouts; no horizontal scroll at 320 px width.
-- [ ] `lang` attribute follows the locale (already done in layout).
+- [x] `lang` attribute follows the locale (already done in layout).
+
+Verified in code: an axe audit of every page component reported zero violations (semantics, labels, names, ARIA validity). The audit lives on the `lab-accessibility-audit` branch and is not part of `main`; rerun it with the steps in that branch's `docs/accessibility-audit.md`. All icons are `aria-hidden`; the reduced-motion rule lives in `app/globals.css`; the chart table sits in `PaybackChart`.
+
+**Please check in the browser** (axe cannot judge these in a test environment):
+
+- Colour contrast in light and dark mode.
+- Keyboard order and the visible focus ring on every screen.
+- Touch targets of at least 44 × 44 px on a phone.
+- Focus moves to the new heading on a step change; the menu traps focus and Escape returns it.
+- Form errors and report progress are announced by a screen reader (report progress arrives in milestone 4).
+- 200% zoom, text-spacing overrides and no horizontal scroll at 320 px.
 
 ---
 

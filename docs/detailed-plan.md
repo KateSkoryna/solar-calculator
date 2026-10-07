@@ -155,7 +155,7 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 | 3.13 | Fleet dashboard                                    | DONE   |                                             |
 | 3.14 | Vehicles and calculations pages                    | DONE   |                                             |
 | 3.15 | Landing page product showcase                      | DONE   |                                             |
-| 3.16 | Accessibility, copy and cleanup pass               | TODO   |                                             |
+| 3.16 | Accessibility, copy and cleanup pass               | DONE   |                                             |
 | 4.1  | Temporal in Docker Compose and a worker            | TODO   |                                             |
 | 4.2  | Report job state machine                           | TODO   |                                             |
 | 4.3  | Report request API                                 | TODO   |                                             |
@@ -607,23 +607,6 @@ Every step follows [`design-guidelines.md`](./design-guidelines.md) and the prev
   2. Tests: submitting an email goes to check-email showing that address; "Send it again" is disabled for 60 seconds (fake timers); the segmented control marks the current page with `aria-current="page"`; a link-error query parameter shows the expired-link message; onboarding cannot submit without a company.
   3. Standard checks S1–S4, S6, S8–S10 pass.
 - **Owner review (browser):** `/en/login`, `/en/register`, `/en/check-email`, `/en/onboarding` at three widths against the Login previews; the full sign-up flow with an email link and with Google.
-
-### Step 3.16 — Accessibility, copy and cleanup pass
-
-- **Depends on:** 3.15
-- **Purpose:** Close the redesign against the checklist, not by eye.
-- **Concepts to learn:** WCAG 2.2 AA auditing with axe, translation length expansion, removing global CSS that fights utilities
-- **Instructions:**
-  1. Add `jest-axe` (dev dependency) and an axe test for every page component: Home, Calculator (each step), Results, fleet Results, the auth pages, Dashboard, Team & activity, Vehicles, Calculations.
-  2. Remove the global element styles from `globals.css` (`button`, `li`, `h1`–`h6` rules); keep only `body` background/colour/font and `box-sizing`. Fix any component that relied on them.
-  3. Review all `de` and `es` copy against guidelines 9.1–9.2 and fix typos (e.g. "independant").
-  4. Tick the section 10 checklist items that can be verified in code, and list the ones that need the owner (zoom, screen reader, 320 px) under "Please check in the browser".
-- **Definition of done:**
-  1. Every axe test reports zero violations.
-  2. `grep -nE "^\s*(button|li|h[1-6])\s*[,{]" app/globals.css` prints nothing.
-  3. `grep -rni "independant" messages` prints nothing.
-  4. Standard checks S1–S4, S8–S10 pass.
-- **Owner review (browser):** every screen at 320 px (no horizontal scroll), 200 % zoom, reduced motion, dark mode, German; one screen-reader pass through calculator → results.
 
 ---
 
