@@ -2096,6 +2096,43 @@ The fleet pages need a way to add vehicles, and the calculator wizard already co
 
 (An earlier version of this step added a `fleet` mode to the wizard with its own route; it was removed because it duplicated everything the calculator already does.)
 
+### CSS scroll-driven animations
+
+A normal animation runs over time. A scroll-driven one runs over the scroll position: `animation-timeline: view()` ties the progress to how far an element has travelled through the viewport, so scrolling back up plays it backwards. No JavaScript and no scroll listener are involved. The landing page uses one utility and picks the keyframes through a CSS variable:
+
+```css
+@utility scroll-reveal {
+  @supports (animation-timeline: view()) {
+    animation: var(--scroll-reveal-keyframes, scroll-rise) linear both;
+    animation-timeline: view();
+    animation-range: entry var(--scroll-reveal-start, 0%) cover
+      var(--scroll-reveal-end, 32%);
+  }
+}
+```
+
+One trap: `overflow: hidden` turns an element into a scroll container, and `view()` then tracks that container instead of the page, so the animation never moves. Sections that hold scroll-driven children use `overflow-clip` instead, which clips without creating a scroll container.
+
+### Progressive enhancement with `@supports`
+
+The animation above only exists inside `@supports (animation-timeline: view())`. A browser that does not know the property skips the whole block, and the elements simply sit in their final place. Nothing is hidden by default and then revealed, so there is no state where content can stay invisible. Reduced motion is handled by the global rule in `globals.css` that switches every animation off.
+
+### Showing the product without screenshots
+
+The landing page shows the dashboard and the result page as small live components instead of image files. They use the same design tokens and the same translations as the real pages, so they follow the light and dark theme and all three languages without extra work. Their numbers come from the calculation engine, not from hand-typed sample values:
+
+```ts
+kpis: aggregateFleetKpis(fleetGroups, ASSUMPTION_SET_V1.version),
+```
+
+The mock screens size everything in container query units (`cqw`), so a screen scales like a picture when its frame gets narrower. Each one is exposed to assistive technology as a single image with a written description:
+
+```tsx
+<div role="img" aria-label={label} className={className}>
+  {children}
+</div>
+```
+
 ---
 
 _Next up in the plan: Step 2.8 (PII inventory), 2.9 (authorization/audit
