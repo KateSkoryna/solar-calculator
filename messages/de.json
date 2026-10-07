@@ -242,10 +242,11 @@
     "mainNavigation": "Hauptnavigation"
   },
   "footer": {
-    "copyright": "© {currentYear} Solarrechner",
+    "copyright": "© {currentYear} Solarrechner. Alle Rechte vorbehalten.",
     "privacy": "Datenschutz",
     "legalNotice": "Impressum",
-    "legalNavigation": "Rechtliches"
+    "legalNavigation": "Rechtliches",
+    "backToTop": "Nach oben"
   },
   "calculation": {
     "notFoundTitle": "Berechnung",

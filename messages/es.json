@@ -242,10 +242,11 @@
     "mainNavigation": "Principal"
   },
   "footer": {
-    "copyright": "© {currentYear} Calculadora Solar",
+    "copyright": "© {currentYear} Calculadora Solar. Todos los derechos reservados.",
     "privacy": "Privacidad",
     "legalNotice": "Aviso legal",
-    "legalNavigation": "Información legal"
+    "legalNavigation": "Información legal",
+    "backToTop": "Volver arriba"
   },
   "calculation": {
     "notFoundTitle": "Cálculo",

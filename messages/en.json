@@ -242,10 +242,11 @@
     "mainNavigation": "Main"
   },
   "footer": {
-    "copyright": "© {currentYear} Solar Calculator",
+    "copyright": "© {currentYear} Solar Calculator. All rights reserved.",
     "privacy": "Privacy",
     "legalNotice": "Legal notice",
-    "legalNavigation": "Legal"
+    "legalNavigation": "Legal",
+    "backToTop": "Back to top"
   },
   "calculation": {
     "notFoundTitle": "Calculation",
