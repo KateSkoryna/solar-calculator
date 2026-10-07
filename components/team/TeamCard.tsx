@@ -121,8 +121,10 @@ export default function TeamCard({
             <Text as="div" key={role} size="small" tone="muted">
               <dt className="inline font-semibold text-ink">
                 {tRoles(messageKey)}
+                <span aria-hidden="true" className="font-normal text-muted">
+                  {" — "}
+                </span>
               </dt>
-              {" — "}
               <dd className="inline">{t(`roleExplainer.${messageKey}`)}</dd>
             </Text>
           );
