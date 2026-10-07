@@ -284,8 +284,8 @@
     }
   },
   "theme": {
-    "light": "Modo Claro",
-    "dark": "Modo Oscuro",
+    "light": "Modo claro",
+    "dark": "Modo oscuro",
     "toggleAriaLabel": "Cambiar tema"
   },
   "language": {
@@ -296,7 +296,7 @@
   },
   "clientmenu": {
     "signin": "Registrarse",
-    "logout": "Cerrar Sesión"
+    "logout": "Cerrar sesión"
   },
   "header": {
     "title": "SunFleet",
