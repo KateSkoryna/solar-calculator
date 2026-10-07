@@ -53,7 +53,7 @@ export default function CheckEmailPanel() {
         aria-hidden="true"
         className="flex size-14 items-center justify-center rounded-full bg-lime-soft text-lime-soft-ink"
       >
-        <LuMailCheck className="size-7" />
+        <LuMailCheck aria-hidden="true" className="size-7" />
       </span>
       <div className="flex flex-col gap-3">
         <Heading level={1} size="display-s">

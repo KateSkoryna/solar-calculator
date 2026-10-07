@@ -15,7 +15,7 @@ export default function InfoTooltip({ text }: InfoTooltipProps) {
         aria-label={t("moreInfo")}
         className="ml-1 text-ink hover:text-lime-soft-ink focus:text-lime-soft-ink focus:outline-none"
       >
-        <FiInfo size={14} />
+        <FiInfo aria-hidden="true" size={14} />
       </button>
       <span
         role="tooltip"
