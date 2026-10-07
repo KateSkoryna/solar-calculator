@@ -11,6 +11,10 @@ export function howItWorksPath(locale: string) {
   return `${homePath(locale)}#${HOW_IT_WORKS_SECTION_ID}`;
 }
 
+export function whyItPaysPath(locale: string) {
+  return `${homePath(locale)}#${WHY_IT_PAYS_SECTION_ID}`;
+}
+
 export function productPath(locale: string) {
   return `${homePath(locale)}#${PRODUCT_SECTION_ID}`;
 }

@@ -311,7 +311,9 @@
     "openMenu": "Abrir menú",
     "closeMenu": "Cerrar menú",
     "menuTitle": "Menú",
-    "mainNavigation": "Principal"
+    "mainNavigation": "Principal",
+    "whyItPays": "Por qué compensa",
+    "product": "Producto"
   },
   "footer": {
     "copyright": "© {currentYear} Calculadora Solar. Todos los derechos reservados.",

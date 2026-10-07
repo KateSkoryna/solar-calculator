@@ -47,7 +47,12 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html
+      lang={locale}
+      data-scroll-behavior="smooth"
+      className="scroll-smooth"
+      suppressHydrationWarning
+    >
       <body
         id={PAGE_TOP_ID}
         className={`${bricolageGrotesque.variable} ${instrumentSans.variable} flex min-h-dvh flex-col`}
