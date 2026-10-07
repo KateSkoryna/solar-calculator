@@ -154,7 +154,7 @@ Status values: `TODO` · `IN PROGRESS` · `REVIEW` · `CHANGES` · `BLOCKED` · 
 | 3.12 | Team & activity page                               | DONE   |                                             |
 | 3.13 | Fleet dashboard                                    | DONE   |                                             |
 | 3.14 | Vehicles and calculations pages                    | DONE   |                                             |
-| 3.15 | Read-only demo fleet                               | TODO   |                                             |
+| 3.15 | Landing page product showcase                      | DONE   |                                             |
 | 3.16 | Accessibility, copy and cleanup pass               | TODO   |                                             |
 | 4.1  | Temporal in Docker Compose and a worker            | TODO   |                                             |
 | 4.2  | Report job state machine                           | TODO   |                                             |
@@ -607,22 +607,6 @@ Every step follows [`design-guidelines.md`](./design-guidelines.md) and the prev
   2. Tests: submitting an email goes to check-email showing that address; "Send it again" is disabled for 60 seconds (fake timers); the segmented control marks the current page with `aria-current="page"`; a link-error query parameter shows the expired-link message; onboarding cannot submit without a company.
   3. Standard checks S1–S4, S6, S8–S10 pass.
 - **Owner review (browser):** `/en/login`, `/en/register`, `/en/check-email`, `/en/onboarding` at three widths against the Login previews; the full sign-up flow with an email link and with Google.
-
-### Step 3.15 — Read-only demo fleet
-
-- **Depends on:** 3.14
-- **Purpose:** Reviewers see the workspace in one click without signing up.
-- **Concepts to learn:** safe demo access (read-only role, data reset), feature switches through environment variables, abuse prevention
-- **Instructions:**
-  1. Create `prisma/demo-seed.ts` (script `npm run demo:reset`): recreates fleet `demo` ("Nordwind Logistics (demo)") with 8 vehicle groups (vans, refrigerated trailers with each cooling-unit type, a bus, a long-haul truck; several EU cities), engine-computed calculations, members with each role, and a set of audit events. User `demo@solar-calculator.app` is a `VIEWER`.
-  2. Add an Auth.js Credentials provider with id `demo` that signs in the demo user without a password, active only when `DEMO_MODE_ENABLED === "true"`. Add its callback path to `RATE_LIMITED_ROUTES`.
-  3. Add "Explore a demo fleet" to the home hero (secondary) and the login page, shown only in demo mode.
-- **Definition of done:**
-  1. Tests: the demo provider is absent when `DEMO_MODE_ENABLED` is unset; the demo user has only the `VIEWER` role; a POST to vehicles as the demo user returns 403; the demo button is not rendered without demo mode.
-  2. `npm run demo:reset` runs twice in a row without errors, and the fleet has exactly 8 groups afterwards.
-  3. Standard checks S1–S6, S8–S10 pass.
-- **Owner actions:** set `DEMO_MODE_ENABLED=true` locally and in Vercel.
-- **Owner review (browser):** from `/en`, "Explore a demo fleet" opens the demo dashboard; no editing actions are visible.
 
 ### Step 3.16 — Accessibility, copy and cleanup pass
 
