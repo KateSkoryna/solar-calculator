@@ -56,13 +56,13 @@ function StepRail({
       {steps.map((step, stepIndex) => {
         const stepState = stepStateOf(stepIndex, currentStepIndex);
         return (
-          <li key={step.label} className="mb-0">
+          <li key={step.label}>
             <button
               type="button"
               aria-current={stepState === "current" ? "step" : undefined}
               disabled={stepState !== "done" || !onStepSelect}
               onClick={() => onStepSelect?.(stepIndex)}
-              className={`flex min-h-[52px] w-full items-center justify-start gap-3 rounded-md px-2 py-1.5 text-left disabled:cursor-default disabled:opacity-100 ${FOCUS_RING_CLASSES}`}
+              className={`flex min-h-[52px] w-full cursor-pointer items-center justify-start gap-3 rounded-md px-2 py-1.5 text-left disabled:cursor-default disabled:opacity-100 ${FOCUS_RING_CLASSES}`}
             >
               <span
                 aria-hidden="true"
@@ -99,7 +99,7 @@ function StepBars({ steps, currentStepIndex }: StepIndicatorProps) {
           <li
             key={step.label}
             aria-current={stepState === "current" ? "step" : undefined}
-            className="mb-0 flex flex-col gap-2"
+            className="flex flex-col gap-2"
           >
             <span
               aria-hidden="true"

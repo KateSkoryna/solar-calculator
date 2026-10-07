@@ -126,7 +126,7 @@ export default function VehicleGroupList({
             const vehicleTypeLabel = tVehicleType(group.vehicleType);
 
             return (
-              <li key={group.vehicleId} className="mb-0">
+              <li key={group.vehicleId}>
                 <Link
                   href={rowPath(group)}
                   className={`relative flex flex-col gap-2 rounded-lg border border-line p-4 hover:bg-soft lg:rounded-none lg:border-0 lg:border-b lg:px-0 lg:py-4 ${ROW_GRID_CLASSES} ${FOCUS_RING_CLASSES}`}

@@ -9,7 +9,7 @@ import { FOCUS_RING_CLASSES } from "@/lib/focus-ring";
 import { accountPath } from "@/lib/public-paths";
 import { signOutToHome } from "@/lib/sign-out";
 
-const MENU_ITEM_CLASSES = `flex w-full items-center justify-start gap-2 rounded-md px-3 py-2.5 text-left text-[15px] font-semibold text-ink hover:bg-soft ${FOCUS_RING_CLASSES}`;
+const MENU_ITEM_CLASSES = `flex w-full cursor-pointer items-center justify-start gap-2 rounded-md px-3 py-2.5 text-left text-[15px] font-semibold text-ink hover:bg-soft ${FOCUS_RING_CLASSES}`;
 
 interface UserProfileButtonProps {
   name: string;
@@ -33,7 +33,7 @@ export default function UserProfileButton({
         aria-expanded={isMenuOpen}
         aria-controls={menuId}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
-        className={`rounded-full ${FOCUS_RING_CLASSES}`}
+        className={`inline-flex cursor-pointer rounded-full ${FOCUS_RING_CLASSES}`}
       >
         <Avatar name={name} imageUrl={imageUrl} />
       </button>

@@ -110,7 +110,7 @@ export default function PaybackChart({ chart }: PaybackChartProps) {
           </div>
           <ul className="flex list-none flex-wrap gap-x-5 gap-y-2">
             {SCENARIO_KINDS.map((kind) => (
-              <li key={kind} className="mb-0 flex items-center gap-2">
+              <li key={kind} className="flex items-center gap-2">
                 <span
                   aria-hidden="true"
                   className={`w-6 ${LINE_STYLES[kind].legendClasses}`}

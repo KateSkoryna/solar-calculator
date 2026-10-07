@@ -22,7 +22,7 @@ export default function WorkspaceTabBar({
     >
       <ul className="m-0 grid list-none auto-cols-fr grid-flow-col p-0">
         {navLinks.map(({ key, label, href, Icon, isCurrent }) => (
-          <li key={key} className="mb-0">
+          <li key={key}>
             <Link
               href={href}
               aria-current={isCurrent ? "page" : undefined}

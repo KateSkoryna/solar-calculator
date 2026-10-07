@@ -37,7 +37,7 @@ function buildSegmentClasses(isActive: boolean) {
   const stateClasses = isActive
     ? "bg-surface text-ink shadow-tab"
     : "text-muted hover:text-ink";
-  return `inline-flex min-h-11 items-center justify-center rounded-full px-4 text-[15px] font-semibold transition-colors duration-200 ${FOCUS_RING_CLASSES} ${stateClasses}`;
+  return `inline-flex min-h-11 cursor-pointer items-center justify-center rounded-full px-4 text-[15px] font-semibold transition-colors duration-200 ${FOCUS_RING_CLASSES} ${stateClasses}`;
 }
 
 export function getTabId(tabId: string) {

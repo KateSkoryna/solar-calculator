@@ -24,7 +24,7 @@ export default function SavingsBreakdown({ lines }: SavingsBreakdownProps) {
       </div>
       <ul className="flex list-none flex-col gap-5">
         {lines.map((line) => (
-          <li key={line.type} className="mb-0 flex flex-col gap-2">
+          <li key={line.type} className="flex flex-col gap-2">
             <div className="flex flex-wrap items-baseline justify-between gap-x-4">
               <Text as="span" className="font-semibold">
                 {t(`types.${line.type}`)}

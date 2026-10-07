@@ -18,7 +18,7 @@ export default async function UserPage() {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="bg-surface p-8 rounded-lg shadow-md max-w-md w-full">
-        <h1 className="text-2xl font-bold text-lime-soft-ink mb-6">
+        <h1 className="font-display text-2xl font-extrabold text-lime-soft-ink mb-6">
           {t("welcome", {
             name: session.user.name || session.user.email || "",
           })}
@@ -48,7 +48,7 @@ export default async function UserPage() {
           >
             <button
               type="submit"
-              className="w-full bg-red-500 text-white p-3 rounded-md font-medium hover:opacity-90 transition-opacity"
+              className="w-full cursor-pointer bg-red-500 text-white p-3 rounded-md font-medium hover:opacity-90 transition-opacity"
             >
               {tMenu("logout")}
             </button>

@@ -63,7 +63,7 @@ export default function BuiltFor() {
           ({ key, Icon, cardClasses, iconClasses, onDark }, itemIndex) => (
             <li
               key={key}
-              className={`mb-0 flex min-h-56 flex-col justify-between gap-6 rounded-2xl p-6 text-left transition duration-200 hover:-translate-y-1 hover:shadow-hover lg:min-h-64 lg:p-8 ${cardClasses} ${SCROLL_REVEAL_CLASSES.zoom} ${SCROLL_STAGGER_CLASSES[itemIndex]}`}
+              className={`flex min-h-56 flex-col justify-between gap-6 rounded-2xl p-6 text-left transition duration-200 hover:-translate-y-1 hover:shadow-hover lg:min-h-64 lg:p-8 ${cardClasses} ${SCROLL_REVEAL_CLASSES.zoom} ${SCROLL_STAGGER_CLASSES[itemIndex]}`}
             >
               <Icon
                 aria-hidden="true"

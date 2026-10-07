@@ -14,7 +14,7 @@ import { signOutToHome } from "@/lib/sign-out";
 
 const DESKTOP_VIEWPORT_MEDIA_QUERY = "(min-width: 1024px)";
 
-const ICON_BUTTON_CLASSES = `inline-flex size-11 items-center justify-center rounded-full border border-line-strong bg-surface text-ink hover:border-ink ${FOCUS_RING_CLASSES}`;
+const ICON_BUTTON_CLASSES = `inline-flex size-11 cursor-pointer items-center justify-center rounded-full border border-line-strong bg-surface text-ink hover:border-ink ${FOCUS_RING_CLASSES}`;
 
 const MENU_LINK_CLASSES = `block rounded-md px-3 py-3 text-lg font-semibold text-ink hover:bg-soft ${FOCUS_RING_CLASSES}`;
 
@@ -102,7 +102,7 @@ export default function MobileMenu({ navLinks, isSignedIn }: MobileMenuProps) {
         <nav aria-label={t("mainNavigation")}>
           <ul className="flex flex-col gap-1">
             {navLinks.map(({ label, href }) => (
-              <li key={href} className="mb-0">
+              <li key={href}>
                 <Link
                   href={href}
                   onClick={closeMenu}
@@ -113,7 +113,7 @@ export default function MobileMenu({ navLinks, isSignedIn }: MobileMenuProps) {
               </li>
             ))}
             {isSignedIn && (
-              <li className="mb-0">
+              <li>
                 <Link
                   href={accountPath(locale)}
                   onClick={closeMenu}

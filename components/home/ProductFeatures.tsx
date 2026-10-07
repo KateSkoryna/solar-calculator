@@ -40,7 +40,7 @@ export default function ProductFeatures() {
         extra={
           <ul className="flex list-none flex-wrap gap-2.5">
             {Object.values(Role).map((role) => (
-              <li key={role} className="mb-0">
+              <li key={role}>
                 <RolePill role={role} />
               </li>
             ))}

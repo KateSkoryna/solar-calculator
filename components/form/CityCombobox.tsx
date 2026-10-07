@@ -204,7 +204,7 @@ export default function CityCombobox({
                 event.preventDefault();
                 selectCity(city);
               }}
-              className="mb-0 flex cursor-pointer flex-col rounded-sm px-3 py-2 hover:bg-soft aria-selected:bg-soft"
+              className="flex cursor-pointer flex-col rounded-sm px-3 py-2 hover:bg-soft aria-selected:bg-soft"
             >
               <span className="text-base font-semibold text-ink">
                 {city.name}

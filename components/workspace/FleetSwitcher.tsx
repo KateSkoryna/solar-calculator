@@ -77,7 +77,7 @@ export default function FleetSwitcher({
         className={`absolute left-0 z-50 flex min-w-full list-none flex-col gap-1 rounded-md border border-line bg-surface p-2 shadow-hover ${menuPositionClasses}`}
       >
         {fleets.map(({ id, name, slug }) => (
-          <li key={id} className="mb-0">
+          <li key={id}>
             <Link
               href={fleetOverviewPath(locale, slug)}
               aria-current={slug === currentFleetSlug ? "true" : undefined}
