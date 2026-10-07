@@ -8,9 +8,7 @@ interface ResultsContextLineProps {
   summary: ResultsViewModel["summary"];
 }
 
-export default function ResultsContextLine({
-  summary,
-}: ResultsContextLineProps) {
+export function useResultsContextLine(summary: ResultsViewModel["summary"]) {
   const t = useTranslations();
   const format = useFormatter();
   const contextParts = [
@@ -29,9 +27,17 @@ export default function ResultsContextLine({
     t(`calculator.options.solarPanelPlacement.${summary.solarPanelPlacement}`),
   ].filter(Boolean);
 
+  return contextParts.join(CONTEXT_PART_SEPARATOR);
+}
+
+export default function ResultsContextLine({
+  summary,
+}: ResultsContextLineProps) {
+  const contextLine = useResultsContextLine(summary);
+
   return (
     <Text tone="muted" className="animate-rise">
-      {contextParts.join(CONTEXT_PART_SEPARATOR)}
+      {contextLine}
     </Text>
   );
 }

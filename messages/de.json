@@ -1,20 +1,84 @@
 {
   "home": {
-    "badge": "Kostenlos · keine Anmeldung für eine Schätzung nötig",
-    "title": "Finden Sie heraus, ob sich Solarmodule für Ihre Transporter und Lkw lohnen.",
-    "lead": "Beantworten Sie vier kurze Fragen zu Ihren Fahrzeugen. Sie erhalten eine klare Schätzung der Einsparungen, der Amortisationszeit und des vermiedenen CO₂.",
+    "badge": "Kostenlose Schätzung · keine Anmeldung nötig",
+    "title": "Wissen Sie, ob sich Solar für Ihre Flotte lohnt, <highlight>bevor Sie einen Euro ausgeben.</highlight>",
+    "lead": "Beantworten Sie vier Fragen zu Ihren Transportern, Lkw, Aufliegern oder Bussen. Sie erhalten Amortisationszeit, jährliche Ersparnis und vermiedenes CO₂ und behalten jede Fahrzeuggruppe in einem Arbeitsbereich im Blick.",
     "cta": "Schätzung starten",
-    "ctaHint": "Dauert etwa 2 Minuten",
-    "example": {
-      "label": "Beispiel · {quantity} Lieferwagen · {city}",
-      "sampleBadge": "Beispiel",
-      "paybackHeadline": "Rechnet sich in {years, plural, one {# Jahr} other {# Jahren}}",
-      "paybackNever": "Rechnet sich nicht innerhalb von {years} Jahren",
-      "savedPerYear": "Ersparnis pro Jahr",
-      "co2Avoided": "Vermiedenes CO₂ pro Jahr",
-      "co2Value": "{tonnes} t",
-      "solarEnergy": "Solarenergie pro Jahr",
-      "solarEnergyValue": "{kilowattHours} kWh"
+    "secondaryCta": "Produkt ansehen",
+    "ctaHint": "Etwa 2 Minuten",
+    "sampleData": "Beispieldaten",
+    "dashboard": {
+      "screenLabel": "Beispiel einer Flottenübersicht mit jährlicher Ersparnis, durchschnittlicher Amortisation, vermiedenem CO₂ und einer Liste der Fahrzeuggruppen",
+      "vehicles": "{count, plural, one {# Fahrzeug} other {# Fahrzeuge}}",
+      "groupLine": "{type} · {count}",
+      "notCalculated": "Noch nicht berechnet",
+      "groupCount": "{count, plural, one {# Gruppe} other {# Gruppen}}",
+      "runNow": "Jetzt berechnen"
+    },
+    "whyItPays": {
+      "eyebrow": "Warum es sich für Unternehmen lohnt",
+      "title": "Eine Wirtschaftlichkeitsrechnung für Fahrzeug-Solar, kein Verkaufsgespräch.",
+      "lead": "Flottenverantwortliche brauchen eine Zahl, die sie in der Budgetrunde vertreten können. Der Solarrechner liefert diese Zahl und zeigt, woher sie stammt.",
+      "costsTitle": "Niedrigere Betriebskosten",
+      "costsBody": "Sehen Sie, wie viel Kraftstoff und Strom die Module pro Jahr ersetzen: beim Fahren, im Leerlauf und bei Kühlaggregaten.",
+      "paybackTitle": "Ein klares Amortisationsdatum",
+      "paybackBody": "Pessimistisches, realistisches und optimistisches Szenario, damit Sie die Spanne kennen, bevor Sie ein Budget freigeben.",
+      "co2Title": "CO₂-Werte für Ihren Bericht",
+      "co2Body": "Vermiedene Emissionen pro Fahrzeuggruppe und für die ganze Flotte, bereit für Ihren Nachhaltigkeitsbericht.",
+      "trustTitle": "Zahlen, die Sie prüfen können",
+      "trustBody": "Jede Eingabe und jede Annahme ist mit ihrer Quelle aufgeführt. Schätzungen, keine Angebote, und hier gibt es nichts zu kaufen."
+    },
+    "result": {
+      "eyebrow": "Das Ergebnis",
+      "title": "Ein Bildschirm beantwortet die Frage: Lohnt es sich?",
+      "lead": "Zuerst ein Urteil in klaren Worten, dann das Geld, das CO₂ und das Jahr, in dem sich die Module bezahlt gemacht haben.",
+      "screenLabel": "Beispielergebnis für zehn Lieferwagen in Berlin mit Amortisationszeit, jährlicher Ersparnis, einmaligen Kosten, vermiedenem CO₂ und einem Diagramm der über zehn Jahre aufsummierten Ersparnis",
+      "rangeTitle": "Spanne der Ergebnisse",
+      "share": "Teilen Sie das Ergebnis mit einem Link",
+      "firstYear": "Jahr 1",
+      "lastYear": "Jahr {year}",
+      "paidOff": "Bezahlt in Jahr {year}"
+    },
+    "features": {
+      "calculator": {
+        "eyebrow": "Rechner",
+        "title": "Vier Fragen. Keine Tabelle, kein Verkaufsgespräch.",
+        "body": "Wählen Sie den Fahrzeugtyp, die Anzahl, die Ladung und den Einsatzort. Bei einem Wert unsicher? Wir setzen einen typischen Wert ein und sagen Ihnen das.",
+        "point1": "Transporter, Lkw, Auflieger und Busse",
+        "point2": "Kühltransport mit Diesel-, motorgetriebener oder elektrischer Kühlung",
+        "point3": "Sonnendaten für Ihre Stadt, auch im Winter",
+        "previewLabel": "Erster Schritt des Rechners mit der Frage nach der Art der Fahrzeuge"
+      },
+      "workspace": {
+        "eyebrow": "Flotten-Arbeitsbereich",
+        "title": "Ihre ganze Flotte, zusammengerechnet.",
+        "body": "Speichern Sie jede Schätzung als Fahrzeuggruppe. Die Übersicht summiert die Ersparnis, mittelt die Amortisation und zeigt, welche Gruppen noch eine Berechnung brauchen.",
+        "point1": "Gruppe bearbeiten und in einem Schritt neu berechnen",
+        "point2": "Veraltete Ergebnisse werden markiert und nie stillschweigend weiterverwendet",
+        "point3": "Vollständiger Berechnungsverlauf für jedes Fahrzeug",
+        "previewLabel": "Beispiel einer Flottensumme mit drei Fahrzeuggruppen und ihren Amortisationszeiten"
+      },
+      "team": {
+        "eyebrow": "Team & Aktivität",
+        "title": "Holen Sie die Finanzabteilung dazu. Behalten Sie die Kontrolle.",
+        "body": "Laden Sie Kolleginnen und Kollegen als Inhaber, Manager oder Betrachter ein. Jede Änderung an einem Fahrzeug oder einer Berechnung steht in klaren Sätzen im Aktivitätsprotokoll.",
+        "signIn": "Anmeldung per E-Mail-Link oder Google. Keine Passwörter zu verwalten.",
+        "previewLabel": "Beispiel eines Aktivitätsprotokolls mit drei aktuellen Änderungen von Teammitgliedern",
+        "ownerName": "Anna Weber",
+        "managerName": "Jonas Keller",
+        "addedTime": "Gestern",
+        "changedTime": "Vor 2 Stunden",
+        "changedFrom": "120 km",
+        "changedTo": "140 km"
+      }
+    },
+    "mobile": {
+      "eyebrow": "Mobil",
+      "title": "Funktioniert auf dem Betriebshof, nicht nur am Schreibtisch.",
+      "lead": "Jede Seite ist zuerst für das Smartphone gebaut. Erstellen Sie eine Schätzung direkt am Fahrzeug und prüfen Sie die Übersicht auf dem Weg ins Meeting. Helles und dunkles Design inklusive.",
+      "calculatorLabel": "Rechner auf dem Smartphone mit der Frage, wie weit ein Fahrzeug an einem normalen Tag fährt",
+      "dashboardLabel": "Flottenübersicht auf dem Smartphone mit jährlicher Ersparnis und Fahrzeuggruppen",
+      "resultLabel": "Ergebnis auf dem Smartphone mit Amortisationszeit, jährlicher Ersparnis und vermiedenem CO₂"
     },
     "howItWorks": {
       "title": "So funktioniert es",
@@ -23,16 +87,24 @@
       "step2Title": "Sagen Sie, wo sie unterwegs sind",
       "step2Body": "Wählen Sie die Stadt und wie weit die Fahrzeuge an einem normalen Tag fahren.",
       "step3Title": "Erhalten Sie eine klare Antwort",
-      "step3Body": "Sehen Sie die Amortisationszeit, die jährliche Ersparnis und woher jede Zahl stammt."
+      "step3Body": "Sehen Sie die Amortisationszeit, die jährliche Ersparnis und woher jede Zahl stammt.",
+      "step4Title": "Speichern Sie es in Ihrer Flotte",
+      "step4Body": "Optional: Erstellen Sie ein kostenloses Konto, um Ergebnisse zu behalten, weitere Gruppen hinzuzufügen und Ihr Team einzuladen."
     },
     "builtFor": {
       "title": "Gemacht für",
+      "headline": "Flotten jeder Größe, von einem Transporter bis zu Hunderten.",
       "deliveryTitle": "Lieferung & Logistik",
       "deliveryBody": "Transporter und Lkw, die oft halten und am Straßenrand im Leerlauf stehen.",
       "transitTitle": "Öffentlicher Verkehr",
       "transitBody": "Busse, bei denen Licht, Türen und Klima den ganzen Tag laufen.",
       "chilledTitle": "Kühltransport",
       "chilledBody": "Auflieger und Transporter, deren Kühlaggregate im Stand Kraftstoff verbrauchen."
+    },
+    "closing": {
+      "title": "Finden Sie in zwei Minuten heraus, ob sich Solar für Ihre Flotte lohnt.",
+      "lead": "Kostenlos, unabhängig und ohne Konto. Schätzungen, keine Angebote.",
+      "secondaryCta": "Kostenloses Konto erstellen"
     }
   },
   "calculator": {

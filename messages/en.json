@@ -1,20 +1,84 @@
 {
   "home": {
-    "badge": "Free · no sign-up needed for an estimate",
-    "title": "Find out if solar panels pay off for your vans and trucks.",
-    "lead": "Answer four quick questions about your vehicles. You get a clear estimate of the savings, the payback time and the CO₂ you avoid.",
+    "badge": "Free estimate · no sign-up needed",
+    "title": "Know if solar pays off for your fleet <highlight>before you spend a euro.</highlight>",
+    "lead": "Answer four questions about your vans, trucks, trailers or buses. Get the payback time, yearly savings and avoided CO₂, then track every vehicle group in one workspace.",
     "cta": "Start my estimate",
-    "ctaHint": "Takes about 2 minutes",
-    "example": {
-      "label": "Example · {quantity} delivery vans · {city}",
-      "sampleBadge": "Sample",
-      "paybackHeadline": "Pays off in {years, plural, one {# year} other {# years}}",
-      "paybackNever": "Does not pay off within {years} years",
-      "savedPerYear": "Saved per year",
-      "co2Avoided": "CO₂ avoided per year",
-      "co2Value": "{tonnes} t",
-      "solarEnergy": "Solar energy per year",
-      "solarEnergyValue": "{kilowattHours} kWh"
+    "secondaryCta": "See the product",
+    "ctaHint": "About 2 minutes",
+    "sampleData": "Sample data",
+    "dashboard": {
+      "screenLabel": "Sample fleet dashboard with yearly savings, average payback, avoided CO₂ and a list of vehicle groups",
+      "vehicles": "{count, plural, one {# vehicle} other {# vehicles}}",
+      "groupLine": "{type} · {count}",
+      "notCalculated": "Not calculated yet",
+      "groupCount": "{count, plural, one {# group} other {# groups}}",
+      "runNow": "Run it now"
+    },
+    "whyItPays": {
+      "eyebrow": "Why it pays for companies",
+      "title": "A business case for vehicle solar, not a sales pitch.",
+      "lead": "Fleet managers need a number they can defend in a budget meeting. Solar Calculator gives you that number and shows where it comes from.",
+      "costsTitle": "Lower running costs",
+      "costsBody": "See how much fuel and electricity the panels replace each year, for driving, idling and cooling units.",
+      "paybackTitle": "A clear payback date",
+      "paybackBody": "Pessimistic, realistic and optimistic scenarios, so you know the range before you commit a budget.",
+      "co2Title": "CO₂ figures you can report",
+      "co2Body": "Avoided emissions per vehicle group and for the whole fleet, ready for your sustainability report.",
+      "trustTitle": "Numbers you can check",
+      "trustBody": "Every input and assumption is listed with its source. Estimates, never quotes, and nothing to buy here."
+    },
+    "result": {
+      "eyebrow": "The result",
+      "title": "One screen answers the question: does it pay off?",
+      "lead": "A plain-language verdict first, then the money, the CO₂ and the year the panels have paid for themselves.",
+      "screenLabel": "Sample result for ten delivery vans in Berlin with the payback time, yearly savings, one-time cost, avoided CO₂ and a chart of savings adding up over ten years",
+      "rangeTitle": "Range of outcomes",
+      "share": "Share the result with one link",
+      "firstYear": "Year 1",
+      "lastYear": "Year {year}",
+      "paidOff": "Paid off in year {year}"
+    },
+    "features": {
+      "calculator": {
+        "eyebrow": "Calculator",
+        "title": "Four questions. No spreadsheet, no sales call.",
+        "body": "Pick the vehicle type, how many you run, what they carry and where they operate. Not sure about a value? We fill in a typical one and tell you that we did.",
+        "point1": "Vans, trucks, trailers and buses",
+        "point2": "Refrigerated transport with diesel, engine-driven or electric cooling",
+        "point3": "Sunlight data for your city, winter included",
+        "previewLabel": "First calculator step asking what kind of vehicles you have"
+      },
+      "workspace": {
+        "eyebrow": "Fleet workspace",
+        "title": "Your whole fleet, added up.",
+        "body": "Save each estimate as a vehicle group. The dashboard totals the savings, averages the payback and shows which groups still need a calculation.",
+        "point1": "Edit a group and recalculate in one step",
+        "point2": "Outdated results are marked, never silently reused",
+        "point3": "Full calculation history for every vehicle",
+        "previewLabel": "Sample fleet total with three vehicle groups and their payback times"
+      },
+      "team": {
+        "eyebrow": "Team & activity",
+        "title": "Bring in finance. Keep control.",
+        "body": "Invite colleagues as owner, manager or viewer. Every change to a vehicle or a calculation is written to the activity log in plain sentences.",
+        "signIn": "Sign in with an email link or Google. No passwords to manage.",
+        "previewLabel": "Sample activity log with three recent changes by team members",
+        "ownerName": "Anna Weber",
+        "managerName": "Jonas Keller",
+        "addedTime": "Yesterday",
+        "changedTime": "2 hours ago",
+        "changedFrom": "120 km",
+        "changedTo": "140 km"
+      }
+    },
+    "mobile": {
+      "eyebrow": "Mobile",
+      "title": "Works in the depot, not only at the desk.",
+      "lead": "Every page is built for a phone first. Run an estimate next to the vehicle, check the dashboard on the way to a meeting. Light and dark theme included.",
+      "calculatorLabel": "Calculator on a phone, asking how far one vehicle drives on a normal day",
+      "dashboardLabel": "Fleet dashboard on a phone with yearly savings and vehicle groups",
+      "resultLabel": "Result on a phone with the payback time, yearly savings and avoided CO₂"
     },
     "howItWorks": {
       "title": "How it works",
@@ -23,16 +87,24 @@
       "step2Title": "Say where they operate",
       "step2Body": "Choose the city and how far the vehicles drive on a normal day.",
       "step3Title": "Get a clear answer",
-      "step3Body": "See the payback time, the yearly savings and where every number comes from."
+      "step3Body": "See the payback time, the yearly savings and where every number comes from.",
+      "step4Title": "Save it to your fleet",
+      "step4Body": "Optional: create a free account to keep results, add more groups and invite your team."
     },
     "builtFor": {
       "title": "Built for",
+      "headline": "Fleets of every size, from one van to hundreds.",
       "deliveryTitle": "Delivery & logistics",
       "deliveryBody": "Vans and trucks that stop often and idle at the kerb.",
       "transitTitle": "Public transport",
       "transitBody": "Buses that keep lights, doors and climate running all day.",
       "chilledTitle": "Refrigerated transport",
       "chilledBody": "Trailers and vans whose cooling units burn fuel while parked."
+    },
+    "closing": {
+      "title": "Find out in two minutes if solar pays off for your fleet.",
+      "lead": "Free, independent and without an account. Estimates, not quotes.",
+      "secondaryCta": "Create a free account"
     }
   },
   "calculator": {

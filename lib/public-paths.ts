@@ -1,5 +1,7 @@
 export const PAGE_TOP_ID = "top";
 export const HOW_IT_WORKS_SECTION_ID = "how-it-works";
+export const WHY_IT_PAYS_SECTION_ID = "why-it-pays";
+export const PRODUCT_SECTION_ID = "product";
 
 export function homePath(locale: string) {
   return `/${locale}`;
@@ -7,6 +9,10 @@ export function homePath(locale: string) {
 
 export function howItWorksPath(locale: string) {
   return `${homePath(locale)}#${HOW_IT_WORKS_SECTION_ID}`;
+}
+
+export function productPath(locale: string) {
+  return `${homePath(locale)}#${PRODUCT_SECTION_ID}`;
 }
 
 export function calculatorPath(locale: string) {

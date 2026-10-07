@@ -1,12 +1,14 @@
 import type { ReactNode } from "react";
 
-export const BADGE_VARIANTS = ["sample", "info"] as const;
+export const BADGE_VARIANTS = ["sample", "info", "on-dark"] as const;
 
 type BadgeVariant = (typeof BADGE_VARIANTS)[number];
 
 const BADGE_VARIANT_CLASSES: Record<BadgeVariant, string> = {
   sample: "bg-soft px-2.5 py-1 text-xs text-muted",
   info: "bg-lime-soft px-3.5 py-2 text-[13px] text-lime-soft-ink",
+  "on-dark":
+    "border border-lime/35 bg-lime/15 px-3.5 py-2 text-[13px] text-lime",
 };
 
 interface BadgeProps {

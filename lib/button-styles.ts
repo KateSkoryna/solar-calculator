@@ -6,6 +6,7 @@ export const BUTTON_VARIANTS = [
   "secondary",
   "ghost",
   "danger",
+  "on-dark",
 ] as const;
 
 export const BUTTON_SIZES = ["lg", "md", "sm"] as const;
@@ -26,6 +27,7 @@ const BUTTON_VARIANT_CLASSES: Record<ButtonVariant, string> = {
   secondary: "border-line-strong bg-surface text-ink hover:border-ink",
   ghost: "border-transparent bg-transparent text-ink hover:border-ink",
   danger: "border-transparent bg-danger text-white hover:border-ink",
+  "on-dark": "border-white/40 bg-transparent text-white hover:border-white",
 };
 
 const BUTTON_SIZE_CLASSES: Record<ButtonSize, string> = {
