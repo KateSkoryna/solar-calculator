@@ -311,7 +311,9 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "menuTitle": "Menu",
-    "mainNavigation": "Main"
+    "mainNavigation": "Main",
+    "whyItPays": "Why it pays",
+    "product": "Product"
   },
   "footer": {
     "copyright": "© {currentYear} Solar Calculator. All rights reserved.",

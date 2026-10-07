@@ -311,7 +311,9 @@
     "openMenu": "Menü öffnen",
     "closeMenu": "Menü schließen",
     "menuTitle": "Menü",
-    "mainNavigation": "Hauptnavigation"
+    "mainNavigation": "Hauptnavigation",
+    "whyItPays": "Warum es sich lohnt",
+    "product": "Produkt"
   },
   "footer": {
     "copyright": "© {currentYear} Solarrechner. Alle Rechte vorbehalten.",

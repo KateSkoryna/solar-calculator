@@ -33,7 +33,7 @@ function HeaderBar({ user }: HeaderBarProps) {
   );
 
   return (
-    <header className="relative z-50 border-b border-line bg-ground">
+    <header className="sticky top-0 z-50 border-b border-line bg-ground">
       <PageContainer className="flex min-h-[72px] items-center justify-between gap-4 lg:min-h-20">
         <Link
           href={homePath(locale)}
@@ -43,12 +43,12 @@ function HeaderBar({ user }: HeaderBarProps) {
         </Link>
 
         <nav aria-label={t("mainNavigation")} className="hidden lg:block">
-          <ul className="flex items-center gap-8">
+          <ul className="flex items-center gap-4 xl:gap-8">
             {navLinks.map(({ label, href }) => (
               <li key={href} className="mb-0">
                 <Link
                   href={href}
-                  className={`rounded-sm text-[15px] font-semibold text-ink hover:text-lime-soft-ink ${FOCUS_RING_CLASSES}`}
+                  className={`rounded-sm text-[13px] font-semibold whitespace-nowrap text-ink xl:text-[15px] hover:text-lime-soft-ink ${FOCUS_RING_CLASSES}`}
                 >
                   {label}
                 </Link>
