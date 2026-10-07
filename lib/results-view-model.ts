@@ -1,6 +1,7 @@
 import type { DistanceBand } from "@/lib/assumptions/types";
 import {
   CENTS_PER_EURO,
+  KILOGRAMS_PER_TONNE,
   MONTHS_PER_YEAR,
   SERIES_YEARS,
 } from "@/lib/calculation-engine/constants";
@@ -62,7 +63,6 @@ const INPUT_KEYS = Object.keys(INPUT_VALUE_KINDS) as InputKey[];
 const PAYS_OFF_MAX_MONTHS = SERIES_YEARS * MONTHS_PER_YEAR;
 const MINIMUM_DURATION_MONTHS = 1;
 const FIRST_YEAR = 1;
-const KILOGRAMS_PER_TONNE = 1000;
 const TONNES_DECIMAL_PLACES = 3;
 const BREAK_EVEN_YEAR_DECIMAL_PLACES = 2;
 const FULL_PERCENT = 100;
