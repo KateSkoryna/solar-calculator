@@ -32,6 +32,7 @@ export interface GoldBall {
   state: BallState;
   isWanderer: boolean;
   attractedSeconds: number;
+  rollSpeed: number | null;
 }
 
 export type SimulationPhase =
@@ -75,6 +76,20 @@ const WANDER_TURN_RADIANS_PER_SECOND = 5;
 const MAX_STEP_SECONDS = 1 / 30;
 const SUBSTEPS_PER_STEP = 3;
 const FULL_PROGRESS = 1;
+const REFERENCE_PANEL_SIZE = 520;
+const MAX_MOTION_SCALE = 1.6;
+const MOTION_SCALE_GROWTH = 0.5;
+const MAX_RADIUS_SCALE = 1.4;
+const ROLL_SPEED_EASE_RATE = 3;
+const RESTING_SPEED = 1;
+const NUDGE_SPEED = 2;
+
+export function motionScaleFor(bounds: Bounds) {
+  const sizeRatio =
+    Math.min(bounds.width, bounds.height) / REFERENCE_PANEL_SIZE;
+  const scale = 1 + (sizeRatio - 1) * MOTION_SCALE_GROWTH;
+  return Math.min(Math.max(scale, 1), MAX_MOTION_SCALE);
+}
 
 function randomBetween(random: RandomSource, minimum: number, maximum: number) {
   return minimum + random() * (maximum - minimum);
@@ -88,19 +103,25 @@ function createBall(
   bounds: Bounds,
   random: RandomSource,
   isWanderer: boolean,
+  motionScale: number,
 ): GoldBall {
-  const radius = randomBetween(random, MIN_BALL_RADIUS, MAX_BALL_RADIUS);
+  const radiusScale = Math.min(motionScale, MAX_RADIUS_SCALE);
+  const radius =
+    randomBetween(random, MIN_BALL_RADIUS, MAX_BALL_RADIUS) * radiusScale;
 
   return {
     x: randomBetween(random, radius, bounds.width - radius),
     y: -radius - random() * bounds.height * SPAWN_HEIGHT_RATIO,
-    vx: randomBetween(random, -BREAK_MIN_SPEED, BREAK_MIN_SPEED) / 2,
+    vx:
+      (randomBetween(random, -BREAK_MIN_SPEED, BREAK_MIN_SPEED) / 2) *
+      motionScale,
     vy: 0,
     radius,
     baseRadius: radius,
     state: "free",
     isWanderer,
     attractedSeconds: 0,
+    rollSpeed: null,
   };
 }
 
@@ -233,13 +254,15 @@ export class GoldBallsSimulation {
   private clusterArea = 0;
   private obstacle: Rectangle | null = null;
   private sun: SunShape | null = null;
+  private readonly motionScale: number;
 
   constructor(
     private bounds: Bounds,
     private readonly random: RandomSource = Math.random,
   ) {
+    this.motionScale = motionScaleFor(bounds);
     this.balls = Array.from({ length: BALL_COUNT }, (_, index) =>
-      createBall(bounds, random, index < WANDERER_COUNT),
+      createBall(bounds, random, index < WANDERER_COUNT, this.motionScale),
     );
   }
 
@@ -253,8 +276,8 @@ export class GoldBallsSimulation {
         wanderer.radius,
         bounds.height - wanderer.radius,
       );
-      wanderer.vx = Math.cos(angle) * WANDER_SPEED;
-      wanderer.vy = Math.sin(angle) * WANDER_SPEED;
+      wanderer.vx = Math.cos(angle) * WANDER_SPEED * simulation.motionScale;
+      wanderer.vy = Math.sin(angle) * WANDER_SPEED * simulation.motionScale;
     }
     simulation.phase = "merged";
     simulation.mergeProgress = FULL_PROGRESS;
@@ -334,14 +357,9 @@ export class GoldBallsSimulation {
 
   private breakBalls() {
     for (const ball of this.balls) {
-      const angle = this.random() * Math.PI * 2;
-      const speed = randomBetween(
-        this.random,
-        BREAK_MIN_SPEED,
-        BREAK_MAX_SPEED,
-      );
-      ball.vx = Math.cos(angle) * speed;
-      ball.vy = Math.sin(angle) * speed;
+      ball.rollSpeed =
+        randomBetween(this.random, BREAK_MIN_SPEED, BREAK_MAX_SPEED) *
+        this.motionScale;
     }
   }
 
@@ -430,13 +448,16 @@ export class GoldBallsSimulation {
 
   private moveFreeBalls(seconds: number) {
     const freeBalls = this.balls.filter((ball) => ball.state === "free");
-    const gravity = this.phase === "falling" ? GRAVITY : NO_GRAVITY;
+    const gravity =
+      this.phase === "falling" ? GRAVITY * this.motionScale : NO_GRAVITY;
+    const isRolling = this.phase === "rolling";
     const isCeilingSolid = this.phase !== "falling";
     const isWandering = this.phase !== "falling" && this.phase !== "rolling";
     const sunBlocker = this.sunBlocker();
 
     for (const ball of freeBalls) {
       if (isWandering && ball.isWanderer) this.wander(ball, seconds);
+      if (isRolling) this.easeToRollSpeed(ball, seconds);
       ball.vy += gravity * seconds;
       ball.x += ball.vx * seconds;
       ball.y += ball.vy * seconds;
@@ -467,11 +488,30 @@ export class GoldBallsSimulation {
     return this.isMerged ? this.sun : null;
   }
 
+  private easeToRollSpeed(ball: GoldBall, seconds: number) {
+    if (ball.rollSpeed === null) return;
+
+    const speed = Math.hypot(ball.vx, ball.vy);
+    if (speed < RESTING_SPEED) {
+      const angle = this.random() * Math.PI * 2;
+      ball.vx = Math.cos(angle) * NUDGE_SPEED;
+      ball.vy = Math.sin(angle) * NUDGE_SPEED;
+      return;
+    }
+
+    const easedSpeed =
+      speed +
+      (ball.rollSpeed - speed) *
+        Math.min(ROLL_SPEED_EASE_RATE * seconds, FULL_PROGRESS);
+    ball.vx *= easedSpeed / speed;
+    ball.vy *= easedSpeed / speed;
+  }
+
   private wander(ball: GoldBall, seconds: number) {
     const speed = Math.hypot(ball.vx, ball.vy);
     const easedSpeed =
       speed +
-      (WANDER_SPEED - speed) *
+      (WANDER_SPEED * this.motionScale - speed) *
         Math.min(WANDER_SPEED_EASE_RATE * seconds, FULL_PROGRESS);
     const heading =
       Math.atan2(ball.vy, ball.vx) +
@@ -495,10 +535,11 @@ export class GoldBallsSimulation {
 
       ball.attractedSeconds += seconds;
       const distance = distanceBetween(ball, cluster);
-      const speed = Math.min(
-        ATTRACTION_ACCELERATION * ball.attractedSeconds,
-        ATTRACTION_MAX_SPEED,
-      );
+      const speed =
+        Math.min(
+          ATTRACTION_ACCELERATION * ball.attractedSeconds,
+          ATTRACTION_MAX_SPEED,
+        ) * this.motionScale;
       const desiredVx = ((cluster.x - ball.x) / distance) * speed;
       const desiredVy = ((cluster.y - ball.y) / distance) * speed;
       ball.vx += (desiredVx - ball.vx) * steering;

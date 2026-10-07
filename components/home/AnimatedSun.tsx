@@ -31,6 +31,11 @@ const SPARKLE_CORE_ALPHA = 0.7;
 const SPARKLE_BODY_ALPHA = 0.28;
 const TWINKLE_DEPTH = 0.3;
 const TWINKLE_RADIANS_PER_SECOND = 7;
+const SIMULATION_STEP_SECONDS = 1 / 30;
+const MAX_FRAME_SECONDS = 0.1;
+const MAX_PIXEL_RATIO = 2;
+const LARGE_CANVAS_AREA = 600_000;
+const LARGE_CANVAS_PIXEL_RATIO = 1;
 const ERASE_COMPOSITE = "destination-out";
 const DRAW_COMPOSITE = "source-over";
 
@@ -46,13 +51,25 @@ function relativeRectangle(element: Element, container: Element): Rectangle {
   };
 }
 
-export default function AnimatedSun() {
+function canvasPixelRatio(container: Element) {
+  const isLargeCanvas =
+    container.clientWidth * container.clientHeight > LARGE_CANVAS_AREA;
+  return isLargeCanvas
+    ? LARGE_CANVAS_PIXEL_RATIO
+    : Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO);
+}
+
+interface AnimatedSunProps {
+  ambient?: boolean;
+}
+
+export default function AnimatedSun({ ambient = false }: AnimatedSunProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sunRef = useRef<HTMLDivElement>(null);
   const growingSunRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useMediaQuery(REDUCED_MOTION_MEDIA_QUERY);
   const [hasSunAppeared, setHasSunAppeared] = useState(false);
-  const isSunVisible = hasSunAppeared || prefersReducedMotion;
+  const isSunVisible = hasSunAppeared || prefersReducedMotion || ambient;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -87,7 +104,8 @@ export default function AnimatedSun() {
       width: container.clientWidth,
       height: container.clientHeight,
     };
-    const simulation = hasPlayedSunAnimation()
+    const startsAmbient = ambient || hasPlayedSunAnimation();
+    const simulation = startsAmbient
       ? GoldBallsSimulation.ambient(bounds)
       : new GoldBallsSimulation(bounds);
     let isSunFinished = false;
@@ -97,10 +115,14 @@ export default function AnimatedSun() {
     let isSunFollowingCluster = false;
 
     const measureLayout = () => {
-      const pixelRatio = window.devicePixelRatio || 1;
-      canvas.width = container.clientWidth * pixelRatio;
-      canvas.height = container.clientHeight * pixelRatio;
-      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      const pixelRatio = canvasPixelRatio(container);
+      const pixelWidth = Math.round(container.clientWidth * pixelRatio);
+      const pixelHeight = Math.round(container.clientHeight * pixelRatio);
+      if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
+        canvas.width = pixelWidth;
+        canvas.height = pixelHeight;
+        context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      }
       simulation.resize({
         width: container.clientWidth,
         height: container.clientHeight,
@@ -185,13 +207,18 @@ export default function AnimatedSun() {
           : (timestamp - previousTimestamp) / MILLISECONDS_PER_SECOND;
       previousTimestamp = timestamp;
 
-      simulation.step(deltaSeconds);
+      let remainingSeconds = Math.min(deltaSeconds, MAX_FRAME_SECONDS);
+      while (remainingSeconds > 0) {
+        const stepSeconds = Math.min(remainingSeconds, SIMULATION_STEP_SECONDS);
+        simulation.step(stepSeconds);
+        remainingSeconds -= stepSeconds;
+      }
       draw(timestamp / MILLISECONDS_PER_SECOND);
       growSunWithCluster();
 
       if (simulation.isMerged && !isSunFinished) {
         isSunFinished = true;
-        markSunAnimationPlayed();
+        if (!ambient) markSunAnimationPlayed();
         growingSun.style.transform = "";
         setHasSunAppeared(true);
       }
@@ -207,7 +234,7 @@ export default function AnimatedSun() {
       cancelAnimationFrame(animationFrame);
       resizeObserver.disconnect();
     };
-  }, [prefersReducedMotion]);
+  }, [prefersReducedMotion, ambient]);
 
   return (
     <>
