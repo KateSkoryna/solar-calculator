@@ -1,20 +1,84 @@
 {
   "home": {
-    "badge": "Gratis · sin registro para obtener una estimación",
-    "title": "Descubre si los paneles solares compensan en tus furgonetas y camiones.",
-    "lead": "Responde cuatro preguntas rápidas sobre tus vehículos. Obtendrás una estimación clara del ahorro, del plazo de amortización y del CO₂ que evitas.",
+    "badge": "Estimación gratis · sin registro",
+    "title": "Descubre si la energía solar compensa en tu flota <highlight>antes de gastar un euro.</highlight>",
+    "lead": "Responde cuatro preguntas sobre tus furgonetas, camiones, remolques o autobuses. Obtén el plazo de amortización, el ahorro anual y el CO₂ evitado, y sigue cada grupo de vehículos en un solo espacio de trabajo.",
     "cta": "Empezar mi estimación",
-    "ctaHint": "Lleva unos 2 minutos",
-    "example": {
-      "label": "Ejemplo · {quantity} furgonetas de reparto · {city}",
-      "sampleBadge": "Ejemplo",
-      "paybackHeadline": "Se amortiza en {years, plural, one {# año} other {# años}}",
-      "paybackNever": "No se amortiza en {years} años",
-      "savedPerYear": "Ahorro al año",
-      "co2Avoided": "CO₂ evitado al año",
-      "co2Value": "{tonnes} t",
-      "solarEnergy": "Energía solar al año",
-      "solarEnergyValue": "{kilowattHours} kWh"
+    "secondaryCta": "Ver el producto",
+    "ctaHint": "Unos 2 minutos",
+    "sampleData": "Datos de ejemplo",
+    "dashboard": {
+      "screenLabel": "Panel de flota de ejemplo con el ahorro anual, la amortización media, el CO₂ evitado y una lista de grupos de vehículos",
+      "vehicles": "{count, plural, one {# vehículo} other {# vehículos}}",
+      "groupLine": "{type} · {count}",
+      "notCalculated": "Aún sin calcular",
+      "groupCount": "{count, plural, one {# grupo} other {# grupos}}",
+      "runNow": "Calcular ahora"
+    },
+    "whyItPays": {
+      "eyebrow": "Por qué compensa a las empresas",
+      "title": "Un análisis de rentabilidad de la solar para vehículos, no un discurso de ventas.",
+      "lead": "Quien gestiona una flota necesita una cifra que pueda defender en una reunión de presupuesto. Calculadora Solar te da esa cifra y te enseña de dónde sale.",
+      "costsTitle": "Menos costes de operación",
+      "costsBody": "Consulta cuánto combustible y electricidad sustituyen los paneles cada año: al circular, al ralentí y en los equipos de frío.",
+      "paybackTitle": "Una fecha de amortización clara",
+      "paybackBody": "Escenarios pesimista, realista y optimista, para que conozcas el rango antes de comprometer un presupuesto.",
+      "co2Title": "Cifras de CO₂ que puedes comunicar",
+      "co2Body": "Emisiones evitadas por grupo de vehículos y para toda la flota, listas para tu informe de sostenibilidad.",
+      "trustTitle": "Números que puedes comprobar",
+      "trustBody": "Cada dato y cada supuesto aparece con su fuente. Estimaciones, nunca presupuestos, y aquí no hay nada que comprar."
+    },
+    "result": {
+      "eyebrow": "El resultado",
+      "title": "Una pantalla responde a la pregunta: ¿compensa?",
+      "lead": "Primero un veredicto en lenguaje claro; después el dinero, el CO₂ y el año en que los paneles quedan pagados.",
+      "screenLabel": "Resultado de ejemplo para diez furgonetas de reparto en Berlín con el plazo de amortización, el ahorro anual, el coste único, el CO₂ evitado y un gráfico del ahorro acumulado en diez años",
+      "rangeTitle": "Rango de resultados",
+      "share": "Comparte el resultado con un enlace",
+      "firstYear": "Año 1",
+      "lastYear": "Año {year}",
+      "paidOff": "Pagado en el año {year}"
+    },
+    "features": {
+      "calculator": {
+        "eyebrow": "Calculadora",
+        "title": "Cuatro preguntas. Sin hoja de cálculo ni llamada comercial.",
+        "body": "Elige el tipo de vehículo, cuántos tienes, qué transportan y dónde circulan. ¿Dudas con algún valor? Ponemos uno típico y te lo decimos.",
+        "point1": "Furgonetas, camiones, remolques y autobuses",
+        "point2": "Transporte refrigerado con frío diésel, accionado por el motor o eléctrico",
+        "point3": "Datos de sol de tu ciudad, invierno incluido",
+        "previewLabel": "Primer paso de la calculadora, que pregunta qué tipo de vehículos tienes"
+      },
+      "workspace": {
+        "eyebrow": "Espacio de la flota",
+        "title": "Toda tu flota, sumada.",
+        "body": "Guarda cada estimación como un grupo de vehículos. El panel suma el ahorro, promedia la amortización y muestra qué grupos necesitan aún un cálculo.",
+        "point1": "Edita un grupo y recalcula en un solo paso",
+        "point2": "Los resultados desactualizados se marcan y nunca se reutilizan sin avisar",
+        "point3": "Historial completo de cálculos de cada vehículo",
+        "previewLabel": "Total de flota de ejemplo con tres grupos de vehículos y sus plazos de amortización"
+      },
+      "team": {
+        "eyebrow": "Equipo y actividad",
+        "title": "Suma a finanzas. Mantén el control.",
+        "body": "Invita a tus compañeros como propietario, gestor o lector. Cada cambio en un vehículo o en un cálculo queda escrito en el registro de actividad con frases claras.",
+        "signIn": "Inicia sesión con un enlace por correo o con Google. Sin contraseñas que gestionar.",
+        "previewLabel": "Registro de actividad de ejemplo con tres cambios recientes de miembros del equipo",
+        "ownerName": "Anna Weber",
+        "managerName": "Jonas Keller",
+        "addedTime": "Ayer",
+        "changedTime": "Hace 2 horas",
+        "changedFrom": "120 km",
+        "changedTo": "140 km"
+      }
+    },
+    "mobile": {
+      "eyebrow": "Móvil",
+      "title": "Funciona en la base, no solo en el escritorio.",
+      "lead": "Cada página está pensada primero para el móvil. Haz una estimación junto al vehículo y consulta el panel de camino a una reunión. Tema claro y oscuro incluidos.",
+      "calculatorLabel": "Calculadora en un móvil, que pregunta cuánto recorre un vehículo en un día normal",
+      "dashboardLabel": "Panel de flota en un móvil con el ahorro anual y los grupos de vehículos",
+      "resultLabel": "Resultado en un móvil con el plazo de amortización, el ahorro anual y el CO₂ evitado"
     },
     "howItWorks": {
       "title": "Cómo funciona",
@@ -23,16 +87,24 @@
       "step2Title": "Indica dónde circulan",
       "step2Body": "Elige la ciudad y cuánto recorren los vehículos en un día normal.",
       "step3Title": "Recibe una respuesta clara",
-      "step3Body": "Consulta el plazo de amortización, el ahorro anual y de dónde sale cada cifra."
+      "step3Body": "Consulta el plazo de amortización, el ahorro anual y de dónde sale cada cifra.",
+      "step4Title": "Guárdalo en tu flota",
+      "step4Body": "Opcional: crea una cuenta gratuita para conservar los resultados, añadir más grupos e invitar a tu equipo."
     },
     "builtFor": {
       "title": "Pensado para",
+      "headline": "Flotas de cualquier tamaño, de una furgoneta a cientos.",
       "deliveryTitle": "Reparto y logística",
       "deliveryBody": "Furgonetas y camiones que paran a menudo y esperan con el motor en marcha.",
       "transitTitle": "Transporte público",
       "transitBody": "Autobuses que mantienen luces, puertas y climatización todo el día.",
       "chilledTitle": "Transporte refrigerado",
       "chilledBody": "Remolques y furgonetas cuyos equipos de frío consumen combustible parados."
+    },
+    "closing": {
+      "title": "Descubre en dos minutos si la energía solar compensa en tu flota.",
+      "lead": "Gratis, independiente y sin cuenta. Estimaciones, no presupuestos.",
+      "secondaryCta": "Crear una cuenta gratuita"
     }
   },
   "calculator": {
