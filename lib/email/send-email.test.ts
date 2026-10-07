@@ -19,7 +19,7 @@ const smtpEnvironment = {
   EMAIL_SERVER_PORT: "465",
   EMAIL_SERVER_USER: "sender@gmail.com",
   EMAIL_SERVER_PASSWORD: "app-password",
-  EMAIL_FROM: "Solar Calculator <sender@gmail.com>",
+  EMAIL_FROM: "SunFleet <sender@gmail.com>",
 };
 
 const originalEnvironment = { ...process.env };
