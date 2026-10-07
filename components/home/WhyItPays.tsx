@@ -48,7 +48,7 @@ export default function WhyItPays() {
           >
             <span
               className={`flex size-13 items-center justify-center rounded-md ${
-                emphasised ? "bg-lime text-on-lime" : "bg-lime-soft text-forest"
+                emphasised ? "bg-lime text-on-lime" : "bg-lime-soft text-lime-soft-ink"
               }`}
             >
               <Icon aria-hidden="true" className="size-6.5" />

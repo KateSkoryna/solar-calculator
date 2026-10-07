@@ -49,7 +49,7 @@ export default function CalculatorPreview() {
                     : "border-line"
                 }`}
               >
-                <VehicleIcon className="size-7 stroke-[1.6] text-forest" />
+                <VehicleIcon className="size-7 stroke-[1.6] text-lime-soft-ink" />
                 {t(`calculator.options.vehicleType.${vehicleType}`)}
               </div>
             );
