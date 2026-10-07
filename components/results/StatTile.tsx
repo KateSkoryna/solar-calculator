@@ -27,7 +27,7 @@ export default function StatTile({
   return (
     <div className="animate-rise">
       <div
-        className={`flex h-full items-center justify-between gap-4 rounded-xl border p-6 text-left transition duration-200 hover:-translate-y-[3px] hover:shadow-hover md:flex-col md:items-start md:justify-start md:gap-2.5 lg:p-7 ${
+        className={`flex h-full items-center justify-between gap-3 rounded-xl border p-4 text-left min-[360px]:gap-4 min-[360px]:p-6 transition duration-200 hover:-translate-y-[3px] hover:shadow-hover md:flex-col md:items-start md:justify-start md:gap-2.5 lg:p-7 ${
           emphasis ? "border-transparent bg-hero" : "border-line bg-surface"
         }`}
       >
@@ -41,7 +41,7 @@ export default function StatTile({
           </Text>
         </div>
         <p
-          className={`font-display text-[28px] leading-none font-extrabold tracking-[-0.02em] tabular-nums ${valueClasses} ${
+          className={`font-display text-2xl leading-none font-extrabold tracking-[-0.02em] tabular-nums min-[360px]:text-[28px] ${valueClasses} ${
             emphasis ? "text-lime" : "text-ink"
           }`}
         >
